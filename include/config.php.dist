@@ -1,0 +1,205 @@
+<?php
+
+/**
+**	config.php
+**
+** This file contains the configurable parts of the
+** placement database system. This is the file that
+** should be edited for the specific site.
+**
+** This file contains some SENSITIVE data.
+** It should be kept out of the Apache directory tree
+** in an ideal world, and should not be world
+** readable!
+**
+** Initial coding : Colin Turner
+**
+*/
+
+// System wide debugging
+$conf['debug'] = FALSE;
+
+// Closed for maintenance
+$conf['closed'] = FALSE;
+
+// The name of the computer hosting this system
+$conf['webhost'] = 'opus.ulster.ac.uk';
+
+// The name of the institution or programme
+$conf['institution'] = 'University of Ulster'';
+
+$conf['appname'] = "OPUS";
+$conf['instname'] = "the University of Ulster";
+
+
+// The URL for the pdp system
+$conf['pdp'] = array();
+$conf['pdp']['host'] = "http://pds.ulster.ac.uk";
+$conf['pdp']['user'] = "";
+$conf['pdp']['pass'] = "";
+
+// The URL for reporting bugs
+// Please don't modify this, it's best if it comes to the central site and you can help there
+$conf['support_site'] = array();
+$conf['support_site']['reportbug'] = "http://foss.ulster.ac.uk/bugs/?func=additem&group=opus";
+
+// Information for web services
+$conf['webservices'] = array();
+$conf['webservices']['url'] = "http://";
+$conf['webservices']['username'] = "web_service";
+$conf['webservices']['password'] = "";
+
+// Various email addresses
+$conf['email'] = array();
+$conf['email']['webmaster'] = '';
+$conf['email']['admin']     = '';
+
+$conf['name'] = array();
+$conf['name']['webmaster'] = ''; 
+$conf['name']['admin']     = '';
+
+// Details for the principal root user
+$conf['proot'] = array();
+$conf['proot']['title'] = "Dr";
+$conf['proot']['firstname'] = "Inthe";
+$conf['proot']['surname'] = "House";
+$conf['proot']['position'] = "";
+$conf['proot']['email'] = "";
+
+// Database credentials
+$conf['database'] = array();
+$conf['database']['host']     = '';
+$conf['database']['database'] = '';
+$conf['database']['username'] = '';
+$conf['database']['password'] = '';
+//$conf['database']['host']     = '';
+//$conf['database']['database'] = '';
+//$conf['database']['username'] = '';
+//$conf['database']['password'] = '';
+
+
+// Web directories, include trailing slashes
+// These are all HREF paths from the host above
+$conf['paths'] = array();
+
+// Comment out the following for the working server.
+//$conf['paths']['test'] = '/test';
+
+
+$conf['paths']['session']    = "/web/users/pms/session/";
+$conf['paths']['css']        = $conf['paths']['test'] . '/css/';
+$conf['paths']['style']      = $conf['paths']['css'] . '/placement.css';
+$conf['paths']['ocvstyle']   = '/ocv/style.css';
+$conf['paths']['base']       = $conf['paths']['test'] . '/';         // Base directory
+$conf['paths']['student']    = $conf['paths']['test'] . '/';         // Student pages
+$conf['paths']['staff']      = $conf['paths']['test'] . '/staff/';   // Staff pages
+$conf['paths']['company']    = $conf['paths']['test'] . '/company/'; // Company pages
+$conf['paths']['supervisor'] = $conf['paths']['test'] . '/supervisor/'; // Company pages
+$conf['paths']['admin']      = $conf['paths']['test'] . '/admin/';   // Admin pages
+$conf['paths']['assessment'] = $conf['paths']['test'] . '/assessment/';
+$conf['paths']['images']     = '/images/';  // Images path
+
+// These path are different, they should not be stored
+// within the normal apache tree, but the user running
+// the web server should be able to access them (read and write).
+$conf['paths']['resources'] = '/web/users/pms/resources/'; // Resources path
+$conf['paths']['photos']    = '/web/users/pms/photos/';    // Photos of users path
+//$conf['paths']['templates'] = '/home/colin/dev/placement/html/';
+//$conf['paths']['templates'] = '/var/www/';
+$conf['paths']['templates'] = '/web/vhosts/pms/';
+
+$conf['files'] = array();
+$conf['files']['lockout'] = '/home/colin/locked'; // Shutout non admin for maintenance
+
+// Scripts and their locations
+$conf['scripts']['user'] = array();
+$conf['scripts']['user']['index']        = sprintf("%sindex.php", $conf['paths']['base']);
+$conf['scripts']['user']['login']        = sprintf("%slogin.php", $conf['paths']['base']);
+$conf['scripts']['user']['resources']    = sprintf("%sresources.php", $conf['paths']['base']);
+$conf['scripts']['user']['photos']       = sprintf("%sphoto.php", $conf['paths']['base']);
+$conf['scripts']['user']['assessment']   = sprintf("%stemplate_assessment.php", $conf['paths']['assessment']);
+$conf['scripts']['user']['helpdir']      = sprintf("%shelp_directory.php", $conf['paths']['base']);
+
+
+$conf['scripts']['admin'] = array();
+$conf['scripts']['admin']['index']       = sprintf("%sindex.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['password']    = sprintf("%spassword.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['newuser']     = sprintf("%snewuser.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['import']      = sprintf("%simport.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['studentdir']  = sprintf("%sstudent_dir.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['courses']     = sprintf("%scourses.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['edithelp']    = sprintf("%sedit_help.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['resourcedir'] = sprintf("%sresources.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['assessments'] = sprintf("%sassessments.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['viewlog']     = sprintf("%sview_log.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['status']      = sprintf("%sstatus.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['automail']    = sprintf("%sautomail.php", $conf['paths']['admin']);
+$conf['scripts']['admin']['admindir']    = sprintf("%sadmins.php", $conf['paths']['admin']);
+
+$conf['scripts']['staff']['index']       = sprintf("%sindex.php", $conf['paths']['staff']);
+$conf['scripts']['staff']['directory']   = sprintf("%sstaff.php", $conf['paths']['staff']);
+
+$conf['scripts']['student'] = array();
+$conf['scripts']['student']['index']     = sprintf("%sstudent.php", $conf['paths']['student']);
+$conf['scripts']['student']['viewcv']    = sprintf("%sview_cv.php", $conf['paths']['student']);
+$conf['scripts']['student']['viewcvpdf'] = sprintf("%sview_cvpdf.php", $conf['paths']['student']);
+$conf['scripts']['student']['pdetails']  = sprintf("%spdetails.php", $conf['paths']['student']);
+$conf['scripts']['student']['cdetails']  = sprintf("%scdetails.php", $conf['paths']['student']);
+$conf['scripts']['student']['edetails']  = sprintf("%sedetails.php", $conf['paths']['student']);
+$conf['scripts']['student']['odetails']  = sprintf("%sodetails.php", $conf['paths']['student']);
+$conf['scripts']['student']['wdetails']  = sprintf("%swdetails.php", $conf['paths']['student']);
+$conf['scripts']['student']['assessment']= sprintf("%sassessment.php", $conf['paths']['student']);
+$conf['scripts']['student']['applications'] = sprintf("%sapplications.php", $conf['paths']['student']);
+$conf['scripts']['student']['timeline'] = sprintf("%stimeline.php", $conf['paths']['student']);
+$conf['scripts']['student']['notes'] = sprintf("%snotes.php", $conf['paths']['student']);
+
+
+// New transition scripts from Gareth's system
+$conf['scripts']['student']['newcvindex']   = sprintf("%socv/index.php", $conf['paths']['student']); 
+$conf['scripts']['student']['neweditcv']    = sprintf("%socv/editinfo.php", $conf['paths']['student']);
+$conf['scripts']['student']['newviewcvpdf'] = sprintf("%socv/viewspdf2.php", $conf['paths']['student']);
+$conf['scripts']['student']['newemailcv']   = sprintf("%socv/viewsemail.php", $conf['paths']['student']);
+
+// New transition scripts for PDP system
+$conf['scripts']['student']['pdpcvpdf']     = sprintf("%spdpcv.php", $conf['paths']['student']);
+
+$conf['scripts']['company']['index']     = sprintf("%sindex.php", $conf['paths']['company']);
+$conf['scripts']['company']['directory'] = sprintf("%sview_company.php", $conf['paths']['company']);
+$conf['scripts']['company']['edit']      = sprintf("%sedit_company.php", $conf['paths']['company']);
+$conf['scripts']['company']['contacts']  = sprintf("%scontacts.php", $conf['paths']['company']);
+$conf['scripts']['company']['cover']     = sprintf("%scover.php", $conf['paths']['company']);
+
+$conf['scripts']['supervisor']['index']     = sprintf("%sindex.php", $conf['paths']['supervisor']);
+
+// Logging control
+// Time stamp to proceed log lines (see the date()) function of php
+$conf['logs']['date']                   = 'd M H:i:s';
+
+// The access log is the most commonly used one
+$conf['logs']['access']                 = array();
+$conf['logs']['access']['file']         = '/web/users/pms/log/access.log';
+$conf['logs']['access']['debug']        = 0;
+
+$conf['logs']['debug']                  = array();
+$conf['logs']['debug']['file']          = '/web/users/pms/log/debug.log';
+$conf['logs']['debug']['debug']         = 0;
+
+$conf['logs']['system']                 = array();
+$conf['logs']['system']['file']         = '/web/users/pms/log/system.log';
+$conf['logs']['system']['debug']        = 0;
+
+$conf['logs']['security']               = array();
+$conf['logs']['security']['file']       = '/web/users/pms/log/security.log';
+$conf['logs']['security']['debug']      = 10;
+
+$conf['logs']['admin']                  = array();
+$conf['logs']['admin']['file']          = '/web/users/pms/log/admin.log';
+$conf['logs']['admin']['debug']         = 10;
+
+// Actual system preferences
+$conf['prefs'] = array();
+$conf['prefs']['maxcompanies'] = 55;     // Maximum number of companies per student
+$conf['prefs']['yearstart']    = "0930"; // Start of academic year in MMDD form.
+$conf['prefs']['allocation']   = 5120;   // Default allocation of space
+
+?>

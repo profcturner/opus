@@ -1,0 +1,35 @@
+OPUS
+
+Online Placement (University) System
+
+Copyright the University of Ulster
+
+http://foss.ulster.ac.uk/projects/opus/
+
+This code is under the GPL version 2. Please see LICENSE for more details.
+
+-=-
+
+This code is somewhere between versions 3.2 and 3.3 of OPUS. I'd hoped to
+complete 3.3 before the date of 27th February when I promised I'd release
+code but that hasn't been possible. As a result, the code is not
+immediately useful, but 3.2 contains a lot of redundant code that I would
+prefer not to release.
+
+I'm releasing this today to prove we (the University of Ulster) mean business.
+Over the next week or so, 3.3 will be complete and all development will now
+take place from this server, so you'll see the live version. When a stable
+version is complete, I will tag it as such and make an announcement.
+
+When appropriate I will create some install scripts and instructions, and as
+you may notice, some debian packages.
+
+Sorry for the interim status.
+
+There is a small amount of 3rd party code in here, which should be distributable
+under the GPL licence, I will highlight more of this soon.
+
+-=-
+
+Dr Colin Turner
+c.turner@ulster.ac.uk
