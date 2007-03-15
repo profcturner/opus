@@ -1,6 +1,6 @@
-opus (3.1.2-1) unstable; urgency=low
+opus (3.2.0-1) unstable; urgency=low
 
-  * Initial release
+  * Initial release, this is for TESTING only, do NOT BUILD
 
- -- colin <c.turner@ulster.ac.uk>  Thu,  7 Dec 2006 23:41:39 +0000
+ -- Colin Turner <c.turner@ulster.ac.uk>  Thu,  15 March 2007 22:00:00 +0000
 

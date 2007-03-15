@@ -1,22 +1,19 @@
-This package was debianized by Colin Turner <c.turner@ulster.ac.uk> on
-Thu,  7 Dec 2006 23:41:39 +0000.
+This package was created by the upstream author: Dr Colin Turner <c.turner@ulster.ac.uk>
 
-It was downloaded from <fill in http/ftp site>
-
-Upstream Author: <put author(s) name and email here>
-
-Copyright: <put the year(s) of the copyright, and the names of the
-            copyright holder(s) here>
+Copyright: 2001-2007 University of Ulster
 
 License:
 
-<Put the license of the package here>
+OPUS is released under the GPL (Gnu Public License) v2. See the LICENSE file in the
+top directory for details.
 
+Some components, specifically the xinha JavaScript HTML editor have their own licenses,
+not incompatible with the debian free software definitions.
 
-The Debian packaging is (C) 2006, colin <c.turner@ulster.ac.uk> and
+The Debian packaging is (C) 2007, colin <c.turner@ulster.ac.uk> and
 is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
 
+-=-
 
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
+For the xinha license, see html/jsincludes/htmlarea/license.txt
 
