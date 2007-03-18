@@ -1,0 +1,70 @@
+#!/bin/sh -e
+
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+if [ "$1" = "configure" ]
+then
+  echo "testing..."
+fi
+
+# Write the debconf recorded values to config.php insert
+touch /etc/opus/debconf_config.php
+db_get opus/fq_hostname
+echo "\$conf['webhost'] = '$RET'" >> /etc/opus/debconf_config.php
+db_get opus/institution
+echo "\$conf['institution'] = '$RET'" >> /etc/opus/debconf_config.php
+echo "\$conf['database'] = array()" >> /etc/opus/debconf_config.php
+db_get opus/db_hostname
+echo "\$conf['database']['hostname'] = '$RET'" >>  /etc/opus/debconf_config.php
+db_get opus/db_database
+echo "\$conf['database']['database'] = '$RET'" >>  /etc/opus/debconf_config.php
+db_get opus/db_username
+echo "\$conf['database']['username'] = '$RET'" >>  /etc/opus/debconf_config.php
+db_get opus/db_password
+echo "\$conf['database']['password'] = '$RET'" >>  /etc/opus/debconf_config.php
+chown www-data:root /etc/opus/debconf_config.php
+chmod 640 /etc/opus/debconf_config.php
+
+
+# Create the database
+#echo "CREATE DATABASE"
+
+#if [ "$RET" = "false" ]; then
+#    /etc/init.d/subliminal_messages start "I like debian."
+#fi
+
+# Install a symlink from the config file to the /etc directory
+if [ "$1" = "configure" ] && [ ! -e /usr/share/opus/include/config.php ]
+then
+  echo "Installing initial OPUS configuration..."
+  echo "WARNING: This is currently a very simple Debian package, you *will* need"
+  echo "to edit /etc/opus/config.php with relevant details to get OPUS to work for you"
+  sleep 4
+  ln -s /etc/opus/config.php /usr/share/opus/include/config.php
+fi
+
+# Ensure log file stubs are present, have the right ownership and permissions
+if [ "$1" = "configure" ]
+then
+  chown www-data:root /var/log/opus
+  chmod 770 /var/log/opus
+  if [ ! -e /var/log/opus/access.log ]; then touch /var/log/opus/access.log; chown www-data:root /var/log/opus/access.log; chmod 660 /var/log/opus/access.log; fi
+  if [ ! -e /var/log/opus/cron.log ]; then touch /var/log/opus/cron.log; chown www-data:root /var/log/opus/cron.log; chmod 660 /var/log/opus/cron.log; fi
+  if [ ! -e /var/log/opus/security.log ]; then touch /var/log/opus/security.log; chown www-data:root /var/log/opus/security.log; chmod 660 /var/log/opus/security.log; fi
+  if [ ! -e /var/log/opus/admin.log ]; then touch /var/log/opus/admin.log; chown www-data:root /var/log/opus/admin.log; chmod 660 /var/log/opus/admin.log; fi
+  if [ ! -e /var/log/opus/debug.log ]; then touch /var/log/opus/debug.log; chown www-data:root /var/log/opus/debug.log; chmod 660 /var/log/opus/debug.log; fi
+fi
+
+# Install the apache2 configuration if required
+if [ "$1" = "configure" ] && [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/opus.conf ]
+then
+  echo "Installing OPUS apache2 configuration..."
+  ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
+  /etc/init.d/apache2 restart
+fi
+
+
+# At some point, we might need to check for a few pear modules (mail ones)
+
+# We will want to create a database, and import a minimal SQL set

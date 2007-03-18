@@ -1,0 +1,40 @@
+Template: opus/fq_hostname
+Type: string
+Default: localhost
+Description: fully qualified hostname for this computer
+ This is the name by which this computer will be known on the network.
+ You will not want to use localhost on a production server, since OPUS
+ will send emails linking to this address.
+
+Template: opus/institution
+Type: string
+Default: University of Somewhere
+Description: the title of your institution
+
+Template: opus/root_db_password
+Type: password
+Default:
+Description: please enter the root password for your MySQL configuration, this 
+ is used only for creating the OPUS database and will be removed after this.
+
+Template: opus/db_hostname
+Type: string
+Default: localhost
+Description: please give the fully qualified hostname for the machine hosting the
+ database for OPUS. Leave this as localhost if you are running the database on
+ the same machine.
+
+Template: opus/db_database
+Type: string
+Default: opus
+Description: please give the database name used for the OPUS database
+
+Template: opus/db_username
+Type: string
+Default: opus
+Description: please give the username used to access the OPUS database
+
+Template: opus/db_password
+Type: password
+Default: 
+Description: please give a password for use to access the OPUS database

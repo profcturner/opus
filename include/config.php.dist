@@ -23,18 +23,18 @@ $conf['debug'] = FALSE;
 $conf['closed'] = FALSE;
 
 // The name of the computer hosting this system
-$conf['webhost'] = 'opus.ulster.ac.uk';
+$conf['webhost'] = 'localhost';
 
 // The name of the institution or programme
-$conf['institution'] = 'University of Ulster'';
+$conf['institution'] = 'University of Somewhere';
 
 $conf['appname'] = "OPUS";
-$conf['instname'] = "the University of Ulster";
+$conf['instname'] = "the University of Somewhere";
 
 
 // The URL for the pdp system
 $conf['pdp'] = array();
-$conf['pdp']['host'] = "http://pds.ulster.ac.uk";
+$conf['pdp']['host'] = "http://localhost/pds";
 $conf['pdp']['user'] = "";
 $conf['pdp']['pass'] = "";
 
@@ -177,23 +177,23 @@ $conf['logs']['date']                   = 'd M H:i:s';
 
 // The access log is the most commonly used one
 $conf['logs']['access']                 = array();
-$conf['logs']['access']['file']         = '/web/users/pms/log/access.log';
+$conf['logs']['access']['file']         = '/var/log/opus/access.log';
 $conf['logs']['access']['debug']        = 0;
 
 $conf['logs']['debug']                  = array();
-$conf['logs']['debug']['file']          = '/web/users/pms/log/debug.log';
+$conf['logs']['debug']['file']          = '/var/log/opus//debug.log';
 $conf['logs']['debug']['debug']         = 0;
 
 $conf['logs']['system']                 = array();
-$conf['logs']['system']['file']         = '/web/users/pms/log/system.log';
+$conf['logs']['system']['file']         = '/var/log/opus/system.log';
 $conf['logs']['system']['debug']        = 0;
 
 $conf['logs']['security']               = array();
-$conf['logs']['security']['file']       = '/web/users/pms/log/security.log';
+$conf['logs']['security']['file']       = '/var/log/opus/security.log';
 $conf['logs']['security']['debug']      = 10;
 
 $conf['logs']['admin']                  = array();
-$conf['logs']['admin']['file']          = '/web/users/pms/log/admin.log';
+$conf['logs']['admin']['file']          = '/var/log/opus/admin.log';
 $conf['logs']['admin']['debug']         = 10;
 
 // Actual system preferences

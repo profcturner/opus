@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: opus
 Architecture: any
-Depends: apache | apache-ssl | apache-perl | apache2, php5 | php5-cgi | php5 | php5-cgi | libapache2-mod-php5, php5-mysql, smarty
+Depends: apache | apache-ssl | apache-perl | apache2, php5 | php5-cgi | php5 | php5-cgi | libapache2-mod-php5, php5-mysql, smarty, php-pear
 Recommends: php5-gd
 Description: On-line Placement University System
  OPUS is a comprehensive web based tool for
