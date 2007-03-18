@@ -34,7 +34,7 @@ deb-opus: deb-opus-etc
 
 deb-opus-etc: 
 	mkdir -p ${debetc}/opus
-	cp include/config.php.dist ${debetc}/opus/config.php
+	cp include/config.php.debian ${debetc}/opus/config.php
 	cp etc/apache2.conf ${debetc}/opus/apache2.conf
 
 

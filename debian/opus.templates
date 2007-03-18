@@ -14,8 +14,8 @@ Description: the title of your institution
 Template: opus/root_db_password
 Type: password
 Default:
-Description: please enter the root password for your MySQL configuration, this 
- is used only for creating the OPUS database and will be removed after this.
+Description: please enter the root password for your MySQL configuration 
+ This is used only for creating the OPUS database and will be removed after this.
 
 Template: opus/db_hostname
 Type: string
