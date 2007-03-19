@@ -66,21 +66,21 @@ include('debconf_config.php');
 $conf['paths'] = array();
 
 // Comment out the following for the working server.
-//$conf['paths']['test'] = '/test';
+$conf['paths']['base'] = '/opus';
 
 
 $conf['paths']['session']    = "/tmp/";
-$conf['paths']['css']        = $conf['paths']['test'] . '/css/';
+$conf['paths']['css']        = $conf['paths']['base'] . '/css/';
 $conf['paths']['style']      = $conf['paths']['css'] . '/placement.css';
 $conf['paths']['ocvstyle']   = '/ocv/style.css';
-$conf['paths']['base']       = $conf['paths']['test'] . '/';         // Base directory
-$conf['paths']['student']    = $conf['paths']['test'] . '/';         // Student pages
-$conf['paths']['staff']      = $conf['paths']['test'] . '/staff/';   // Staff pages
-$conf['paths']['company']    = $conf['paths']['test'] . '/company/'; // Company pages
-$conf['paths']['supervisor'] = $conf['paths']['test'] . '/supervisor/'; // Company pages
-$conf['paths']['admin']      = $conf['paths']['test'] . '/admin/';   // Admin pages
-$conf['paths']['assessment'] = $conf['paths']['test'] . '/assessment/';
-$conf['paths']['images']     = '/images/';  // Images path
+$conf['paths']['base']       = $conf['paths']['base'] . '/';         // Base directory
+$conf['paths']['student']    = $conf['paths']['base'] . '/';         // Student pages
+$conf['paths']['staff']      = $conf['paths']['base'] . '/staff/';   // Staff pages
+$conf['paths']['company']    = $conf['paths']['base'] . '/company/'; // Company pages
+$conf['paths']['supervisor'] = $conf['paths']['base'] . '/supervisor/'; // Company pages
+$conf['paths']['admin']      = $conf['paths']['base'] . '/admin/';   // Admin pages
+$conf['paths']['assessment'] = $conf['paths']['base'] . '/assessment/';
+$conf['paths']['images']     = $conf['paths']['base'] . '/images/';  // Images path
 
 // These path are different, they should not be stored
 // within the normal apache tree, but the user running
