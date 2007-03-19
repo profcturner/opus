@@ -14,13 +14,15 @@ Description: the title of your institution
 Template: opus/root_db_password
 Type: password
 Default:
-Description: please enter the root password for your MySQL configuration 
+Description: what is your MySQL admin password
+ Please enter the root password for your MySQL configuration 
  This is used only for creating the OPUS database and will be removed after this.
 
 Template: opus/db_hostname
 Type: string
 Default: localhost
-Description: please give the fully qualified hostname for the machine hosting the
+Description: fully qualified hostname for the MySQL server you will use
+ Please give the fully qualified hostname for the machine hosting the
  database for OPUS. Leave this as localhost if you are running the database on
  the same machine.
 
