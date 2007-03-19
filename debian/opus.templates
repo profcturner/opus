@@ -1,27 +1,30 @@
 Template: opus/fq_hostname
 Type: string
 Default: localhost
-Description: fully qualified hostname for this computer
+Description: fully qualified hostname for this computer:
  This is the name by which this computer will be known on the network.
  You will not want to use localhost on a production server, since OPUS
  will send emails linking to this address.
 
 Template: opus/institution
 Type: string
-Default: University of Somewhere
-Description: the title of your institution
+Default: University of Somewhere:
+Description: the title of your institution:
+ OPUS will use the title of your institution in appropriate places such as
+ web pages and emails.
 
 Template: opus/root_db_password
 Type: password
 Default:
-Description: what is your MySQL admin password
+Description: MySQL admin password:
+ OPUS stores its data in a MySQL database.
  Please enter the root password for your MySQL configuration 
  This is used only for creating the OPUS database and will be removed after this.
 
 Template: opus/db_hostname
 Type: string
 Default: localhost
-Description: fully qualified hostname for the MySQL server you will use
+Description: fully qualified hostname for the MySQL server you will use:
  Please give the fully qualified hostname for the machine hosting the
  database for OPUS. Leave this as localhost if you are running the database on
  the same machine.
@@ -29,14 +32,17 @@ Description: fully qualified hostname for the MySQL server you will use
 Template: opus/db_database
 Type: string
 Default: opus
-Description: please give the database name used for the OPUS database
+Description: database name used for OPUS:
+ Please give the database name you wish to use for OPUS here.
 
 Template: opus/db_username
 Type: string
 Default: opus
-Description: please give the username used to access the OPUS database
+Description: username used for OPUS database:
+ Please give the database username you wish to use for OPUS here.
 
 Template: opus/db_password
 Type: password
 Default: 
-Description: please give a password for use to access the OPUS database
+Description: password used for OPUS database:
+ Please give the database password you wish to use for OPUS here.
