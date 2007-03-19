@@ -97,10 +97,8 @@ if [ "$1" = "configure" ] && [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/
 then
   echo "Installing OPUS apache2 configuration..."
   ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
-  apachectl2 restart
+  apache2ctl restart
 fi
 
 
 # At some point, we might need to check for a few pear modules (mail ones)
-
-# We will want to create a database, and import a minimal SQL set
