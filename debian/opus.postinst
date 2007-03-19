@@ -76,7 +76,7 @@ then
   then
     echo "creating the MySQL database ..."
     # No database exists, start from scratch
-    echo "CREATE DATABASE $data_database" | mysql -h $data_hostname -u root --password=$root_db_password
+    echo "CREATE DATABASE IF NOT EXISTS $data_database" | mysql -h $data_hostname -u root --password=$root_db_password
     echo "GRANT ALL ON $data_database.* TO $data_username@$data_hostname IDENTIFIED BY '$data_password' " | mysql -h $data_hostname -u root --password=$root_db_password
     if [ -e /usr/share/doc/opus/sql_patch/schema.sql.gz ]
     then
