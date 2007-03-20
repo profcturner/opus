@@ -59,7 +59,7 @@ switch($mode)
 right_column("StudentCVPersonal");
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 
 function edit_pdetails()

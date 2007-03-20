@@ -18,15 +18,15 @@ if(!isset($_SESSION['user']))
   $root_admins = get_root_admins();
   $smarty->assign("root_admins", $root_admins);
   $smarty->display("help/help_directory/root_admins.tpl");
-  page_footer("");
+  $page->end();
   exit;
 }
 
 // Authenticate user so that the right people see the right thing
 auth_user("user");
 
-page_header("Help Directory");     // Calls the function for the header
-print_menu("");                  // Print the menu
+$page = new HTMLOPUS("Help Directory");     // Calls the function for the header
+
 
 $smarty->display("help/help_directory/header.tpl");
 
@@ -85,7 +85,7 @@ $root_admins = get_root_admins();
 $smarty->assign("root_admins", $root_admins);
 $smarty->display("help/help_directory/root_admins.tpl");
 
-page_footer("");
+$page->end();
 
 function visitor_help()
 {

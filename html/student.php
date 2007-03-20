@@ -317,7 +317,7 @@ if(is_student()) touch_last_index();
 echo "<a name=\"otherresources\">";
 $smarty->display("other_student_resources.tpl");
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 function print_company_result($result, $start)
 {

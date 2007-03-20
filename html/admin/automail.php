@@ -54,7 +54,7 @@ switch($mode)
 
   
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 
 /**
@@ -182,7 +182,7 @@ function delete_mail()
 
     echo "<P ALIGN=\"CENTER\"><A HREF=\"$PHP_SELF?mode=DeleteMail&" .
          "lang=$lang&lookup=$lookup&confirm=1\">Click here to delete template</A></P>";
-    page_footer();
+    $page->end();
     exit(0);
   }
 

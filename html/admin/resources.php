@@ -66,7 +66,7 @@ switch($mode)
 
   
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 
 /*
@@ -135,7 +135,7 @@ function resource_delete()
     echo "<P ALIGN=\"CENTER\"><A HREF=\"$PHP_SELF?mode=ResourceDelete&" .
          "lang=$lang&company_id=$company_id&lookup=$lookup&resource_id=$resource_id&confirm=1\">" .
          "Click here to delete prompt</A></P>";
-    page_footer();
+    $page->end();
     exit(0);
   }
 

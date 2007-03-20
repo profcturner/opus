@@ -114,6 +114,6 @@ else
   echo "<P>" . preg_replace("/\n/", "<BR/>\n", $letter) . "</P>\n";
 }
 
-page_footer();
+$page->end();
 
 ?>

@@ -100,7 +100,7 @@ switch($mode)
 //right_column("pdetails");
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 
 function contact_startsearch()
@@ -193,7 +193,7 @@ function contacts_search_results()
     printf("<P ALIGN=\"CENTER\">No contacts could be found to match ");
     printf("the search criteria.</P>");
   
-    page_footer();
+    $page->end();
     exit(0);
   }
   echo "<TABLE ALIGN=\"CENTER\" BORDER=\"0\">\n";
@@ -731,7 +731,7 @@ function contact_delete()
            "from " . htmlspecialchars(get_company_name($company_id)) . "</P>\n";
       $log['admin']-LogPrint("contact " . $user_name . " was detached from company " .
                              get_company_name($company_id));
-      page_footer();
+      $page->end();
       exit(0);
     }
     else{

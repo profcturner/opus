@@ -28,7 +28,7 @@ output_help("Feedback");
 
 report_form();
 
-page_footer();			// Calls the function for the footer
+$page->end();
 
 
 $components = array();

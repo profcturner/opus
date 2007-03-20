@@ -26,7 +26,6 @@ if(!check_default_policy('status', 'user'))
   print_auth_failure("ACCESS");
 
 page_header('System Status');   // Calls the function for the header
-print_menu("admin");                  // Print the menu for the admin user
 
 switch($mode)
 {
@@ -56,7 +55,7 @@ function EditChannels_Off()
 }
 
 
-page_footer();			// Calls the function for the footer
+$page->end();			// Calls the function for the footer
 
 ?>
 

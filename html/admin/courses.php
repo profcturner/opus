@@ -28,8 +28,7 @@ db_connect()
 auth_user("admin");
 
 
-page_header("Edit Courses & Groups");     // Calls the function for the header
-print_menu("");                  // Print the menu
+$page = new HTMLOPUS("Edit Courses & Groups", "configuration");  // Calls the function for the header
 
 if(empty($mode)) $mode = Schools_DisplayList;
 
@@ -196,7 +195,7 @@ switch($mode){
 }
 
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 function EditCourse()
 {

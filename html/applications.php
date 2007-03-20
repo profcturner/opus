@@ -266,6 +266,6 @@ function show_companies()
 }
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 ?>

@@ -58,7 +58,7 @@ switch($mode)
   right_column("cdetails");
 
   // Print the footer and finish the page
-  page_footer();			
+  $page->end();			
 
 
 /*
@@ -129,7 +129,7 @@ function change_password()
     print("<P ALIGN=\"CENTER\">The passwords you entered ");
     print("do not match, please press the back button and ");
     print("try again.</P>\n");
-    page_footer();
+    $page->end();
     exit;
   }
 
@@ -137,7 +137,7 @@ function change_password()
     print("<P ALIGN=\"CENTER\">The passwords you entered ");
     print("are empty, please press the back button and ");
     print("try again.</P>\n");
-    page_footer();
+    $page->end();
     exit;
   }
 

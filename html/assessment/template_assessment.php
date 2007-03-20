@@ -108,7 +108,7 @@ if(is_company())
 }
 
 // Allow the option to suppress the menu
-if(!($_REQUEST['printer_friendly'])) print_menu("");
+//if(!($_REQUEST['printer_friendly'])) print_menu("");
 
 // Load the data
 $assessment_object = new PMSAssessment($cassessment_id, $assessed_id, $assessor_id);
@@ -132,7 +132,7 @@ switch($mode)
       die_gracefully("Sorry, you are not permitted to see this assessment");
     }
     $assessment_object->displayTemplate();
-    page_footer("");
+    $page->end();
 
     break;
 
@@ -145,7 +145,7 @@ switch($mode)
     }
     $assessment_object->saveResults();
     $assessment_object->displayTemplate();
-    page_footer("");
+    $page->end();
 
     break;
 

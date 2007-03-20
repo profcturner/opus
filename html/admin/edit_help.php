@@ -60,7 +60,7 @@ switch($mode)
 
   
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 
 /**
@@ -189,7 +189,7 @@ function Help_Delete()
 
     echo "<P ALIGN=\"CENTER\"><A HREF=\"$PHP_SELF?mode=Help_Delete&" .
          "id=$id&confirm=1\">Click here to delete prompt</A></P>";
-    page_footer();
+    $page->end();
     exit(0);
   }
 

@@ -61,7 +61,7 @@ switch($mode)
    echo "Invalid mode";
 }
 
-page_footer("");
+$page->end();
 
 /**
 **	@function student_display_notes()

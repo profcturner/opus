@@ -21,8 +21,7 @@ db_connect()
 // Authenticate user so that the right people see the right thing
 auth_user("admin");
 
-page_header('Log Viewer');   // Calls the function for the header
-print_menu("admin");         // Print the menu for the admin user
+$page = new HTMLOPUS("Log Viewer", "information");
 
 echo "<H2 ALIGN=\"CENTER\">Log Viewer</H2>\n";
 
@@ -169,7 +168,7 @@ function log_view($logname, $search, $lines)
   pclose($handle);
 }
 
-page_footer();			// Calls the function for the footer
+$page->end();
 
 ?>
 

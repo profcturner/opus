@@ -42,7 +42,7 @@ switch($mode)
 }
 
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 function Students_Import()
 {

@@ -25,8 +25,7 @@ auth_user("admin");
 if(!check_default_policy('status', 'user'))
   print_auth_failure("ACCESS");
 
-page_header('System Status');   // Calls the function for the header
-print_menu("admin");                  // Print the menu for the admin user
+$page = new HTMLOPUS("System Status", "information");   // Calls the function for the header
 
 user_status();
 
@@ -364,7 +363,7 @@ function log_view($logname, $search, $lines)
 
 }
 
-page_footer();			// Calls the function for the footer
+$page->end();
 
 ?>
 

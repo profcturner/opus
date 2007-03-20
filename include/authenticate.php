@@ -2,7 +2,7 @@
 
 include_once("class.Cookie.php");
 include_once("Lastitems.class.php");
-include_once('common.php');
+//require('common.php');
 include('policy.php');
 include('database.php');
 

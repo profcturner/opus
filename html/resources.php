@@ -52,7 +52,7 @@ switch($mode)
 
 // Print the footer and finish the page
 if($mode != DownloadResource){
-  page_footer();
+  $page->end();
 }
 
 
@@ -155,7 +155,7 @@ function delete_help()
 
     echo "<P ALIGN=\"CENTER\"><A HREF=\"$PHP_SELF?mode=EditHelpDeleteHelp&" .
          "lang=$lang&lookup=$lookup&confirm=1\">Click here to delete prompt</A></P>";
-    page_footer();
+    $page->end();
     exit(0);
   }
 

@@ -118,13 +118,8 @@ switch($mode)
 
 }
 
-
-
-// Print out the help column on rigth hand side
-//right_column("pdetails");
-
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 
 function staff_simplesearch()
@@ -299,7 +294,7 @@ function staff_showsearch()
     printf("<P ALIGN=\"CENTER\">No staff members could be found to match ");
     printf("the search criteria.</P>");
   
-    page_footer();
+    $page->end();
     exit(0);
   }
 

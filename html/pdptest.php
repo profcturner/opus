@@ -29,7 +29,7 @@ $smarty->assign_by_ref("templates", $templates);
 $smarty->assign_by_ref("test", $test);
 
 
-page_footer();
+$page->end();
 
 
 ?>

@@ -35,7 +35,7 @@ switch($mode)
       page_header("General SQL Query");
     display_sqlresults();
     if($type == "HTML")
-      page_footer();
+      $page->end();
     break;
 }
 
@@ -52,7 +52,6 @@ function display_sqlform()
   global $log;
 
   page_header("General SQL Query");
-  print_menu("");
   print("<H2 ALIGN=\"CENTER\">Enter Query</H2>\n");
 
   printf("<FORM METHOD=\"post\" ACTION=\"%s?mode=%s\">\n",
@@ -75,7 +74,7 @@ function display_sqlform()
   printf("</TABLE>\n");
   printf("</FORM>\n"); 
   $log['admin']->LogPrint("SQL Query form displayed");
-  page_footer();
+  $page->end();
 }
 
 

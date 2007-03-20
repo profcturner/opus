@@ -23,7 +23,6 @@ auth_user("root");
 // The Page Header file
 $page = new HTMLOPUS("Assessment Administration", "configuration");
 
-print_menu("admin");  
 
 // The default mode for the global variable
 if(empty ($mode)) $mode = "AssessmentShowList";
@@ -76,7 +75,7 @@ switch($mode)
 
   
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 
 /**
@@ -247,7 +246,7 @@ function assessment_delete()
          "assessment_id=$assessment_id&confirm=1\">" .
          "Click here to delete prompt</A></P>";
     echo "<P><A HREF=\"$PHP_SELF\">Click to return to assessment list.</A></P>";
-    page_footer();
+    $page->end();
     exit(0);
   }
 

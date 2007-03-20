@@ -86,6 +86,6 @@ function print_company_quick_info($company_id)
 
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 ?>

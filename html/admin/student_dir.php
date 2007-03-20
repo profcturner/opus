@@ -42,10 +42,6 @@ if(!is_root() && !check_default_policy("student", "list"))
 if($mode != "StudentBroadSheet")
 {
   $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-  //page_header('Student Directory');                        // Calls the function for the header
-
-  //if(!empty($student_id)) print_menu("student");
-  //else print_menu("");                // Print the menu for the student user
 }
 
 if(empty($mode)) $mode = STUDENT_SIMPLESEARCH;
@@ -145,7 +141,6 @@ switch($mode)
 }
 
 // Print the footer and finish the page
-//page_footer();
 $page->end();
 
 function student_set_assessor()

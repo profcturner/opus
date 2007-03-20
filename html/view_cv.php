@@ -46,7 +46,7 @@ if(is_student()) $student_id = get_id();
 
 if(empty($_SESSION['user']['lasttime'])){
   welcome_login();
-  page_footer();
+  $page->end();
   exit;
 }
 
@@ -61,7 +61,7 @@ display_odetails();
 right_column("StudentCVView");
 
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 
 function display_studentname()

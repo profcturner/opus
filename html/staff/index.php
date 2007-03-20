@@ -34,6 +34,6 @@ echo "<H2 ALIGN=\"CENTER\">Welcome " .
 
 output_help("StaffHome");
 
-page_footer();
+$page->end();
 
 ?>

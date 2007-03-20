@@ -43,9 +43,6 @@ if(is_student())
 }
 $page = new HTMLOPUS("Company List", "directories");	// Calls the function for the header
 
-if(is_admin() && !empty($student_id)) print_menu("student");
-else print_menu("");			// Print the menu for the relevant user
-
 // Students are carefully anchored to themselves only!
 if(is_student()){
   $student_id = get_id();
@@ -100,7 +97,7 @@ switch($mode)
 //right_column("pdetails");
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 function get_vacancy($vacancy_id)
 {

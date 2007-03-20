@@ -63,7 +63,7 @@ switch($mode)
 right_column("StudentCVContacts");
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 
 function create_contact_record($student_id)

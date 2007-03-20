@@ -50,7 +50,7 @@ assessment_regime($student_id);
 //right_column("StudentCVView");
 
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 ?>
 

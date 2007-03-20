@@ -93,7 +93,7 @@ switch($mode)
 }
 
 // Print the footer and finish the page
-page_footer();			
+$page->end();
 
 
 function create_other_record($student_id)

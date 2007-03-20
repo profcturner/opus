@@ -173,6 +173,6 @@ $student_id = $placement_info['student_id'];
 
 assessment_regime($student_id);
 
-page_footer();
+$page->end();
 
 ?>

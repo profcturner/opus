@@ -35,8 +35,6 @@ if(!check_default_policy("student", "create"))
 // The Page Header file
 page_header("New User Creation");
 
-print_menu("admin");  
-
 // The default mode for the global variable
 if(empty ($mode)) $mode = NEW_USER;
 
@@ -56,7 +54,7 @@ switch($mode)
 
   
 // Print the footer and finish the page
-page_footer();
+$page->end();
 
 
 function new_user()

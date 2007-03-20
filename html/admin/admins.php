@@ -110,8 +110,7 @@ switch($mode)
 }
 
 // Print the footer and finish the page
-page_footer();			
-//$smarty->display('footer.tpl');
+$page->end();
 
 /**
 **	@function get_policy_companies

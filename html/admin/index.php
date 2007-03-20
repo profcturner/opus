@@ -23,7 +23,6 @@ db_connect()
 auth_user("admin");
 
 //page_header('Administration Menu');   // Calls the function for the header
-//print_menu("admin");                  // Print the menu for the admin user
 
 $page = new HTMLOPUS('Administration Menu', 'home', 'Home');
 
@@ -101,7 +100,7 @@ echo "Show changes in the last " .
 touch_last_index();
 
 $page->end();
-//page_footer();			// Calls the function for the footer
+
 
 function print_company_result($result, $start)
 {
