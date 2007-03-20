@@ -64,26 +64,40 @@ then
   chown www-data:root /etc/opus/*.php
   chmod 640 /etc/opus/*.php
 
-  # get the root password
-  db_get opus/root_db_password
-  root_db_password=$RET
+  # Do we have the root password for MySQL?
+  db_get opus/have_root_password
+  have_password=$RET
+  
+  if [ $have_password = "yes" ]
+  then
+    # get the root password
+    db_get opus/root_db_password
+    root_db_password=$RET
+  fi
 
-  # Ensuring idempotency of the script with respect to mysql is very difficult
-  # especially with no formal database hooks. This is made hard by the fact
-  # that the mysql client program only returns 1 on an error, and more information
-  # is only in text. I don't even know how the text will appear in other
-  # languages, so all I can do is regexp search for an error number :-(
+  # It is hard to be idempotent and fully effective here. We have to rely on the
+  # supplied database not clashing with an existing one, since we can't easily
+  # tell if the existing database is there from a previous install (or on a
+  # totally different server.
   
   echo "creating the MySQL database ..."
-  # This call could be happening on an upgrade, in which case it is likely
-  # no config script has been recently called and the root db password was
-  # reset, in which case this will bomb out on the password, but we won't care
-  # since it was probably done before. We need to redirect stderr so we can read
-  # it.
-  set +e
-  # try a trivial query, logging in as MySQL root
-  command_result=`echo "SELECT VERSION()" | mysql -h $data_hostname -u root --password=$root_db_password 2>&1`
-  if [ "$?" -eq 0 ]
+  
+  if [ "$have_password" = "yes" ]
+    set +e
+    # try a trivial query, logging in as MySQL root
+    command_result=`echo "SELECT VERSION()" | mysql -h $data_hostname -u root --password=$root_db_password 2>&1`
+    if [ "$?" -neq 0 ]
+    then
+      # We don't have valid root credentials
+      have_password="no"
+      # Warn the user it's all gone fubar
+      db_input high opus/invalid_root_password || true
+      db_go
+    fi
+  fi
+  
+  # Ok, let's try to go on
+  if [ "$have_password" = "yes" ]
   then
     # It went ok! Try some more... Back to strict error checking.
     # We want to know if these bomb out
@@ -92,16 +106,19 @@ then
     echo "CREATE DATABASE IF NOT EXISTS $data_database" | mysql -h $data_hostname -u root --password=$root_db_password
     # Ensure permissions are set up
     echo "GRANT ALL ON $data_database.* TO $data_username@$data_hostname IDENTIFIED BY '$data_password' " | mysql -h $data_hostname -u root --password=$root_db_password
+    # Now, try using the user just created to import schema
     echo "Installing initial schema ..."
-    gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u root --password=$root_db_password $data_database
+    gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
   else
-    # It failed, either the root password is wrong, or it was reset after a
-    # previous installation. We can still (and should still) try to install
-    # the schema, although more sophisticated upgrades will need to be added
-    # here again
+    # All we can do is use the non-root credentials for the schema import
     set -e
-    gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u root --password=$root_db_password $data_database
+    echo "Installing initial schema ..."
+    gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
   fi
+  
+  # TODO: We need to write the code (for new versions) to sequentially apply
+  # SQL patches from the sql_patch directory. This is moot for now since this is the
+  # first external launch
 
   # Remove any root password
   db_reset opus/root_db_password

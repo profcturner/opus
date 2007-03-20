@@ -62,19 +62,25 @@ then
     rm -rf /var/log/opus
   fi
 
-  # remove the database, while we still probably have the credentials
-  # note that the root password should have been reset and so we don't expect to find it.
-  db_get opus/db_hostname
-  data_hostname=$RET
-  db_get opus/db_database
-  data_database=$RET
-  db_get opus/db_username
-  data_username=$RET
-  db_get opus/db_password
-  data_password=$RET
-
-  echo "Removing OPUS MySQL database ..."
-  echo "DROP DATABASE $data_database" | mysql -h $data_hostname -u $data_username --password=$data_password
+  db_get opus/nuke_db_on_purge
+  if [ "$RET" = "yes" ]
+  then
+    # remove the database, while we still probably have the credentials
+    # note that the root password should have been reset and so we don't expect to find it.
+    db_get opus/db_hostname
+    data_hostname=$RET
+    db_get opus/db_database
+    data_database=$RET
+    db_get opus/db_username
+    data_username=$RET
+    db_get opus/db_password
+    data_password=$RET
+  
+    echo "Removing OPUS MySQL database ..."
+    echo "DROP DATABASE $data_database" | mysql -h $data_hostname -u $data_username --password=$data_password
+  else
+    echo "NOT removing the database as per your debconf settings ..."
+  fi
 
   if [ -e /etc/opus/debconf_config.php ]
   then
