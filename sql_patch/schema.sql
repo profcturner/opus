@@ -197,25 +197,6 @@ CREATE TABLE IF NOT EXISTS `automail` (
   `contents` text
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `bugs`
---
-
-
-CREATE TABLE IF NOT EXISTS `bugs` (
-  `type` set('bug','wishlist') NOT NULL default '',
-  `component_id` int(10) unsigned NOT NULL default '0',
-  `importance` set('minor','normal','grave','critical') NOT NULL default '',
-  `created` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `accepted` timestamp NOT NULL default '0000-00-00 00:00:00',
-  `resolve` timestamp NOT NULL default '0000-00-00 00:00:00',
-  `status` set('open','closed') NOT NULL default '',
-  `text` text NOT NULL,
-  `reportedby` int(10) unsigned NOT NULL default '0',
-  `acceptedby` int(10) unsigned NOT NULL default '0',
-  `bug_id` int(10) unsigned NOT NULL auto_increment,
-  PRIMARY KEY  (`bug_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `channelassociations`
@@ -352,27 +333,6 @@ CREATE TABLE IF NOT EXISTS `coursedirectors` (
   `policy_id` int(10) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `coursegroup`
---
-
-
-CREATE TABLE IF NOT EXISTS `coursegroup` (
-  `group_id` int(10) unsigned NOT NULL default '0',
-  `course_id` int(10) unsigned NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `coursegrouping`
---
-
-
-CREATE TABLE IF NOT EXISTS `coursegrouping` (
-  `descript` varchar(100) NOT NULL default '',
-  `details` text NOT NULL,
-  `group_id` int(10) unsigned NOT NULL auto_increment,
-  PRIMARY KEY  (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `courses`
@@ -646,93 +606,6 @@ CREATE TABLE IF NOT EXISTS `notes` (
   PRIMARY KEY  (`note_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `ocvcomponent`
---
-
-
-CREATE TABLE IF NOT EXISTS `ocvcomponent` (
-  `componentid` int(11) NOT NULL auto_increment,
-  `componentname` varchar(255) NOT NULL default '',
-  `orientation` int(1) NOT NULL default '0',
-  `singular` int(1) NOT NULL default '0',
-  `creator` varchar(255) default NULL,
-  `careers` int(1) NOT NULL default '0',
-  `componenthelp` text,
-  `rowwidths` varchar(25) default NULL,
-  PRIMARY KEY  (`componentid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `ocvfield`
---
-
-
-CREATE TABLE IF NOT EXISTS `ocvfield` (
-  `componentid` int(11) NOT NULL default '0',
-  `fieldid` int(11) NOT NULL default '0',
-  `fieldname` varchar(255) NOT NULL default '',
-  `type` int(3) NOT NULL default '0',
-  `data` text,
-  `fieldhelp` text,
-  `visible` int(1) default '1',
-  `settings` text,
-  PRIMARY KEY  (`componentid`,`fieldid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `ocvstudent2template`
---
-
-
-CREATE TABLE IF NOT EXISTS `ocvstudent2template` (
-  `studentid` varchar(25) NOT NULL default '',
-  `templateid` int(11) NOT NULL default '0',
-  `status` int(1) NOT NULL default '0',
-  PRIMARY KEY  (`studentid`,`templateid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `ocvstudentdata`
---
-
-
-CREATE TABLE IF NOT EXISTS `ocvstudentdata` (
-  `studentid` varchar(25) NOT NULL default '',
-  `componentid` int(11) NOT NULL default '0',
-  `fieldid` int(11) NOT NULL default '0',
-  `rowid` int(11) NOT NULL default '0',
-  `data` text NOT NULL,
-  PRIMARY KEY  (`studentid`,`componentid`,`fieldid`,`rowid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `ocvtemplate`
---
-
-
-CREATE TABLE IF NOT EXISTS `ocvtemplate` (
-  `templateid` int(11) default NULL,
-  `componentid` int(11) default NULL,
-  `lefty` int(2) default NULL,
-  `righty` int(2) default NULL,
-  `settings` text,
-  `data` blob
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `ocvtemplatedescription`
---
-
-
-CREATE TABLE IF NOT EXISTS `ocvtemplatedescription` (
-  `templateid` int(11) NOT NULL auto_increment,
-  `templatename` text,
-  `creator` varchar(125) default NULL,
-  `settings` text,
-  `templatehelp` text,
-  PRIMARY KEY  (`templateid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `placement`
