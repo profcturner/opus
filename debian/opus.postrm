@@ -45,6 +45,11 @@ then
   then
     rm /usr/share/opus/include/config.php
   fi
+  # Remove compiled templates
+  if [ -e /usr/share/opus/templates_c ]
+  then
+    rm -rf /usr/share/opus/templates_c
+  fi
 fi
 
 # Code for purge
