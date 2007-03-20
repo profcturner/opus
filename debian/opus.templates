@@ -8,7 +8,7 @@ Description: fully qualified hostname for this computer:
 
 Template: opus/institution
 Type: string
-Default: University of Somewhere:
+Default: University of Somewhere
 Description: the title of your institution:
  OPUS will use the title of your institution in appropriate places such as
  web pages and emails.
@@ -46,3 +46,30 @@ Type: password
 Default: 
 Description: password used for OPUS database:
  Please give the database password you wish to use for OPUS here.
+
+Template: opus/proot_title
+Type: string
+Default: Mr
+Description: salutation (Mr, Dr etc) of first user
+
+Template: opus/proot_firstname
+Type: string
+Default: 
+Description: first name of first user
+
+Template: opus/proot_surname
+Type: string
+Default: 
+Description: surname of first user
+
+Template: opus/proot_position
+Type: string
+Default: 
+Description: position (manager etc) of first user
+
+Template: opus/proot_email
+Type: string
+Default: 
+Description: email of first user
+ Please give the principal root user of the OPUS system, this
+ must be functional since account details will be sent to it.
