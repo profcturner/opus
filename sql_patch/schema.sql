@@ -12,8 +12,8 @@
 -- Table structure for table `adminactivity`
 --
 
-DROP TABLE IF EXISTS `adminactivity`;
-CREATE TABLE `adminactivity` (
+
+CREATE TABLE IF NOT EXISTS `adminactivity` (
   `admin_id` int(10) unsigned NOT NULL default '0',
   `activity_id` int(10) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -22,8 +22,8 @@ CREATE TABLE `adminactivity` (
 -- Table structure for table `admincourse`
 --
 
-DROP TABLE IF EXISTS `admincourse`;
-CREATE TABLE `admincourse` (
+
+CREATE TABLE IF NOT EXISTS `admincourse` (
   `admin_id` int(10) unsigned NOT NULL default '0',
   `course_id` int(10) unsigned NOT NULL default '0',
   `policy_id` int(10) unsigned default NULL
@@ -33,8 +33,8 @@ CREATE TABLE `admincourse` (
 -- Table structure for table `admins`
 --
 
-DROP TABLE IF EXISTS `admins`;
-CREATE TABLE `admins` (
+
+CREATE TABLE IF NOT EXISTS `admins` (
   `title` varchar(10) NOT NULL default '',
   `firstname` varchar(80) NOT NULL default '',
   `surname` varchar(80) NOT NULL default '',
@@ -54,8 +54,8 @@ CREATE TABLE `admins` (
 -- Table structure for table `adminschool`
 --
 
-DROP TABLE IF EXISTS `adminschool`;
-CREATE TABLE `adminschool` (
+
+CREATE TABLE IF NOT EXISTS `adminschool` (
   `admin_id` int(10) unsigned NOT NULL default '0',
   `school_id` int(10) unsigned NOT NULL default '0',
   `policy_id` int(10) unsigned default NULL
@@ -65,8 +65,8 @@ CREATE TABLE `adminschool` (
 -- Table structure for table `assessment`
 --
 
-DROP TABLE IF EXISTS `assessment`;
-CREATE TABLE `assessment` (
+
+CREATE TABLE IF NOT EXISTS `assessment` (
   `description` tinytext NOT NULL,
   `student_description` tinytext,
   `template_filename` tinytext,
@@ -80,8 +80,8 @@ CREATE TABLE `assessment` (
 -- Table structure for table `assessmentgroupcourse`
 --
 
-DROP TABLE IF EXISTS `assessmentgroupcourse`;
-CREATE TABLE `assessmentgroupcourse` (
+
+CREATE TABLE IF NOT EXISTS `assessmentgroupcourse` (
   `group_id` int(10) unsigned NOT NULL default '0',
   `startyear` year(4) default NULL,
   `endyear` year(4) default NULL,
@@ -94,8 +94,8 @@ CREATE TABLE `assessmentgroupcourse` (
 -- Table structure for table `assessmentgroups`
 --
 
-DROP TABLE IF EXISTS `assessmentgroups`;
-CREATE TABLE `assessmentgroups` (
+
+CREATE TABLE IF NOT EXISTS `assessmentgroups` (
   `name` varchar(80) NOT NULL default '',
   `comments` text,
   `group_id` int(10) unsigned NOT NULL auto_increment,
@@ -106,8 +106,8 @@ CREATE TABLE `assessmentgroups` (
 -- Table structure for table `assessmentregime`
 --
 
-DROP TABLE IF EXISTS `assessmentregime`;
-CREATE TABLE `assessmentregime` (
+
+CREATE TABLE IF NOT EXISTS `assessmentregime` (
   `group_id` int(10) unsigned NOT NULL default '0',
   `assessment_id` int(10) unsigned NOT NULL default '0',
   `weighting` float NOT NULL default '0',
@@ -126,8 +126,8 @@ CREATE TABLE `assessmentregime` (
 -- Table structure for table `assessmentresults`
 --
 
-DROP TABLE IF EXISTS `assessmentresults`;
-CREATE TABLE `assessmentresults` (
+
+CREATE TABLE IF NOT EXISTS `assessmentresults` (
   `cassessment_id` int(10) unsigned NOT NULL default '0',
   `assessed_id` int(10) unsigned NOT NULL default '0',
   `name` tinytext NOT NULL,
@@ -138,8 +138,8 @@ CREATE TABLE `assessmentresults` (
 -- Table structure for table `assessmentstructure`
 --
 
-DROP TABLE IF EXISTS `assessmentstructure`;
-CREATE TABLE `assessmentstructure` (
+
+CREATE TABLE IF NOT EXISTS `assessmentstructure` (
   `assessment_id` int(10) unsigned NOT NULL default '0',
   `human` tinytext NOT NULL,
   `type` enum('textual','numeric','checkbox','assesseddate') NOT NULL default 'textual',
@@ -155,8 +155,8 @@ CREATE TABLE `assessmentstructure` (
 -- Table structure for table `assessmenttotals`
 --
 
-DROP TABLE IF EXISTS `assessmenttotals`;
-CREATE TABLE `assessmenttotals` (
+
+CREATE TABLE IF NOT EXISTS `assessmenttotals` (
   `cassessment_id` int(10) unsigned NOT NULL default '0',
   `assessed_id` int(10) unsigned NOT NULL default '0',
   `assessor_id` int(10) unsigned NOT NULL default '0',
@@ -173,8 +173,8 @@ CREATE TABLE `assessmenttotals` (
 -- Table structure for table `assessorother`
 --
 
-DROP TABLE IF EXISTS `assessorother`;
-CREATE TABLE `assessorother` (
+
+CREATE TABLE IF NOT EXISTS `assessorother` (
   `assessed_id` int(10) unsigned NOT NULL default '0',
   `assessor_id` int(10) unsigned NOT NULL default '0',
   `cassessment_id` int(10) unsigned NOT NULL default '0'
@@ -184,8 +184,8 @@ CREATE TABLE `assessorother` (
 -- Table structure for table `automail`
 --
 
-DROP TABLE IF EXISTS `automail`;
-CREATE TABLE `automail` (
+
+CREATE TABLE IF NOT EXISTS `automail` (
   `language` int(10) unsigned default NULL,
   `lookup` tinytext NOT NULL,
   `fromh` tinytext,
@@ -201,8 +201,8 @@ CREATE TABLE `automail` (
 -- Table structure for table `bugs`
 --
 
-DROP TABLE IF EXISTS `bugs`;
-CREATE TABLE `bugs` (
+
+CREATE TABLE IF NOT EXISTS `bugs` (
   `type` set('bug','wishlist') NOT NULL default '',
   `component_id` int(10) unsigned NOT NULL default '0',
   `importance` set('minor','normal','grave','critical') NOT NULL default '',
@@ -221,8 +221,8 @@ CREATE TABLE `bugs` (
 -- Table structure for table `channelassociations`
 --
 
-DROP TABLE IF EXISTS `channelassociations`;
-CREATE TABLE `channelassociations` (
+
+CREATE TABLE IF NOT EXISTS `channelassociations` (
   `permission` set('enable','disable') NOT NULL default '',
   `type` set('course','school','assessmentgroup','activity') NOT NULL default '',
   `object_id` int(10) unsigned default NULL,
@@ -236,8 +236,8 @@ CREATE TABLE `channelassociations` (
 -- Table structure for table `channels`
 --
 
-DROP TABLE IF EXISTS `channels`;
-CREATE TABLE `channels` (
+
+CREATE TABLE IF NOT EXISTS `channels` (
   `name` tinytext NOT NULL,
   `description` tinytext,
   `channel_id` int(10) unsigned NOT NULL auto_increment,
@@ -248,8 +248,8 @@ CREATE TABLE `channels` (
 -- Table structure for table `companies`
 --
 
-DROP TABLE IF EXISTS `companies`;
-CREATE TABLE `companies` (
+
+CREATE TABLE IF NOT EXISTS `companies` (
   `name` varchar(60) NOT NULL default '',
   `address1` varchar(60) NOT NULL default '',
   `address2` varchar(60) default NULL,
@@ -273,8 +273,8 @@ CREATE TABLE `companies` (
 -- Table structure for table `company_id`
 --
 
-DROP TABLE IF EXISTS `company_id`;
-CREATE TABLE `company_id` (
+
+CREATE TABLE IF NOT EXISTS `company_id` (
   `username` varchar(10) NOT NULL default '',
   `password` varchar(10) NOT NULL default '',
   `comp_id` int(10) unsigned NOT NULL default '0'
@@ -284,8 +284,8 @@ CREATE TABLE `company_id` (
 -- Table structure for table `companycontact`
 --
 
-DROP TABLE IF EXISTS `companycontact`;
-CREATE TABLE `companycontact` (
+
+CREATE TABLE IF NOT EXISTS `companycontact` (
   `company_id` int(10) unsigned NOT NULL default '0',
   `contact_id` int(10) unsigned NOT NULL default '0',
   `status` enum('normal','restricted','primary') NOT NULL default 'normal'
@@ -295,8 +295,8 @@ CREATE TABLE `companycontact` (
 -- Table structure for table `companystudent`
 --
 
-DROP TABLE IF EXISTS `companystudent`;
-CREATE TABLE `companystudent` (
+
+CREATE TABLE IF NOT EXISTS `companystudent` (
   `company_id` int(10) unsigned NOT NULL default '0',
   `vacancy_id` int(10) unsigned default NULL,
   `student_id` int(10) unsigned NOT NULL default '0',
@@ -317,8 +317,8 @@ CREATE TABLE `companystudent` (
 -- Table structure for table `companyvacancy`
 --
 
-DROP TABLE IF EXISTS `companyvacancy`;
-CREATE TABLE `companyvacancy` (
+
+CREATE TABLE IF NOT EXISTS `companyvacancy` (
   `company_id` int(10) unsigned default NULL,
   `vacancy_id` int(10) unsigned default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -327,8 +327,8 @@ CREATE TABLE `companyvacancy` (
 -- Table structure for table `contacts`
 --
 
-DROP TABLE IF EXISTS `contacts`;
-CREATE TABLE `contacts` (
+
+CREATE TABLE IF NOT EXISTS `contacts` (
   `title` varchar(5) default NULL,
   `firstname` varchar(20) default NULL,
   `surname` varchar(30) default NULL,
@@ -345,8 +345,8 @@ CREATE TABLE `contacts` (
 -- Table structure for table `coursedirectors`
 --
 
-DROP TABLE IF EXISTS `coursedirectors`;
-CREATE TABLE `coursedirectors` (
+
+CREATE TABLE IF NOT EXISTS `coursedirectors` (
   `course_id` int(10) unsigned NOT NULL default '0',
   `staff_id` int(10) unsigned NOT NULL default '0',
   `policy_id` int(10) unsigned NOT NULL default '0'
@@ -356,8 +356,8 @@ CREATE TABLE `coursedirectors` (
 -- Table structure for table `coursegroup`
 --
 
-DROP TABLE IF EXISTS `coursegroup`;
-CREATE TABLE `coursegroup` (
+
+CREATE TABLE IF NOT EXISTS `coursegroup` (
   `group_id` int(10) unsigned NOT NULL default '0',
   `course_id` int(10) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -366,8 +366,8 @@ CREATE TABLE `coursegroup` (
 -- Table structure for table `coursegrouping`
 --
 
-DROP TABLE IF EXISTS `coursegrouping`;
-CREATE TABLE `coursegrouping` (
+
+CREATE TABLE IF NOT EXISTS `coursegrouping` (
   `descript` varchar(100) NOT NULL default '',
   `details` text NOT NULL,
   `group_id` int(10) unsigned NOT NULL auto_increment,
@@ -378,8 +378,8 @@ CREATE TABLE `coursegrouping` (
 -- Table structure for table `courses`
 --
 
-DROP TABLE IF EXISTS `courses`;
-CREATE TABLE `courses` (
+
+CREATE TABLE IF NOT EXISTS `courses` (
   `course_code` varchar(10) NOT NULL default '',
   `course_name` varchar(50) NOT NULL default '',
   `www` varchar(100) default NULL,
@@ -393,8 +393,8 @@ CREATE TABLE `courses` (
 -- Table structure for table `cv_approval`
 --
 
-DROP TABLE IF EXISTS `cv_approval`;
-CREATE TABLE `cv_approval` (
+
+CREATE TABLE IF NOT EXISTS `cv_approval` (
   `student_id` int(10) unsigned NOT NULL default '0',
   `template_id` int(10) unsigned NOT NULL default '0',
   `approver_id` int(10) unsigned NOT NULL default '0',
@@ -407,8 +407,8 @@ CREATE TABLE `cv_approval` (
 -- Table structure for table `cv_cdetails`
 --
 
-DROP TABLE IF EXISTS `cv_cdetails`;
-CREATE TABLE `cv_cdetails` (
+
+CREATE TABLE IF NOT EXISTS `cv_cdetails` (
   `home_add_l1` varchar(30) NOT NULL default '',
   `home_add_l2` varchar(30) default NULL,
   `home_add_l3` varchar(30) default NULL,
@@ -432,8 +432,8 @@ CREATE TABLE `cv_cdetails` (
 -- Table structure for table `cv_edetails`
 --
 
-DROP TABLE IF EXISTS `cv_edetails`;
-CREATE TABLE `cv_edetails` (
+
+CREATE TABLE IF NOT EXISTS `cv_edetails` (
   `id` int(10) unsigned NOT NULL default '0',
   `place` varchar(40) NOT NULL default '',
   `year` year(4) default NULL,
@@ -447,8 +447,8 @@ CREATE TABLE `cv_edetails` (
 -- Table structure for table `cv_odetails`
 --
 
-DROP TABLE IF EXISTS `cv_odetails`;
-CREATE TABLE `cv_odetails` (
+
+CREATE TABLE IF NOT EXISTS `cv_odetails` (
   `id` int(10) unsigned NOT NULL default '0',
   `activities` blob,
   `achievements` blob,
@@ -475,8 +475,8 @@ CREATE TABLE `cv_odetails` (
 -- Table structure for table `cv_pdetails`
 --
 
-DROP TABLE IF EXISTS `cv_pdetails`;
-CREATE TABLE `cv_pdetails` (
+
+CREATE TABLE IF NOT EXISTS `cv_pdetails` (
   `id` int(10) unsigned NOT NULL default '0',
   `surname` varchar(20) default NULL,
   `firstname` varchar(20) default NULL,
@@ -497,8 +497,8 @@ CREATE TABLE `cv_pdetails` (
 -- Table structure for table `cv_results`
 --
 
-DROP TABLE IF EXISTS `cv_results`;
-CREATE TABLE `cv_results` (
+
+CREATE TABLE IF NOT EXISTS `cv_results` (
   `link` int(11) NOT NULL default '0',
   `subject` varchar(25) NOT NULL default '',
   `grade` varchar(15) default NULL
@@ -508,8 +508,8 @@ CREATE TABLE `cv_results` (
 -- Table structure for table `cv_work`
 --
 
-DROP TABLE IF EXISTS `cv_work`;
-CREATE TABLE `cv_work` (
+
+CREATE TABLE IF NOT EXISTS `cv_work` (
   `id` int(10) unsigned NOT NULL default '0',
   `place` varchar(40) default NULL,
   `start` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
@@ -521,8 +521,8 @@ CREATE TABLE `cv_work` (
 -- Table structure for table `cvgroupcourse`
 --
 
-DROP TABLE IF EXISTS `cvgroupcourse`;
-CREATE TABLE `cvgroupcourse` (
+
+CREATE TABLE IF NOT EXISTS `cvgroupcourse` (
   `group_id` int(10) unsigned NOT NULL default '0',
   `course_id` int(10) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -531,8 +531,8 @@ CREATE TABLE `cvgroupcourse` (
 -- Table structure for table `cvgroups`
 --
 
-DROP TABLE IF EXISTS `cvgroups`;
-CREATE TABLE `cvgroups` (
+
+CREATE TABLE IF NOT EXISTS `cvgroups` (
   `name` varchar(80) NOT NULL default '',
   `comments` text,
   `permissions` set('allowAllTemplates','allowCustom') default NULL,
@@ -545,8 +545,8 @@ CREATE TABLE `cvgroups` (
 -- Table structure for table `cvgrouptemplate`
 --
 
-DROP TABLE IF EXISTS `cvgrouptemplate`;
-CREATE TABLE `cvgrouptemplate` (
+
+CREATE TABLE IF NOT EXISTS `cvgrouptemplate` (
   `group_id` int(10) unsigned NOT NULL default '0',
   `template_id` int(10) unsigned NOT NULL default '0',
   `settings` set('allow','requiresApproval') default NULL
@@ -556,8 +556,8 @@ CREATE TABLE `cvgrouptemplate` (
 -- Table structure for table `cvviewpreferences`
 --
 
-DROP TABLE IF EXISTS `cvviewpreferences`;
-CREATE TABLE `cvviewpreferences` (
+
+CREATE TABLE IF NOT EXISTS `cvviewpreferences` (
   `user_id` int(10) unsigned NOT NULL default '0',
   `howtoview` enum('ask','studentPref','customPref') default NULL,
   `template_id` int(10) unsigned default NULL
@@ -567,8 +567,8 @@ CREATE TABLE `cvviewpreferences` (
 -- Table structure for table `help`
 --
 
-DROP TABLE IF EXISTS `help`;
-CREATE TABLE `help` (
+
+CREATE TABLE IF NOT EXISTS `help` (
   `language` int(10) unsigned default NULL,
   `lookup` tinytext NOT NULL,
   `channel_id` int(10) unsigned default NULL,
@@ -583,8 +583,8 @@ CREATE TABLE `help` (
 -- Table structure for table `id`
 --
 
-DROP TABLE IF EXISTS `id`;
-CREATE TABLE `id` (
+
+CREATE TABLE IF NOT EXISTS `id` (
   `real_name` varchar(60) default NULL,
   `username` tinytext NOT NULL,
   `password` varchar(32) default NULL,
@@ -599,8 +599,8 @@ CREATE TABLE `id` (
 -- Table structure for table `languages`
 --
 
-DROP TABLE IF EXISTS `languages`;
-CREATE TABLE `languages` (
+
+CREATE TABLE IF NOT EXISTS `languages` (
   `language` tinytext NOT NULL,
   `language_id` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`language_id`)
@@ -610,8 +610,8 @@ CREATE TABLE `languages` (
 -- Table structure for table `mime_types`
 --
 
-DROP TABLE IF EXISTS `mime_types`;
-CREATE TABLE `mime_types` (
+
+CREATE TABLE IF NOT EXISTS `mime_types` (
   `type` tinytext NOT NULL,
   `extensions` tinytext,
   `comment` tinytext,
@@ -624,8 +624,8 @@ CREATE TABLE `mime_types` (
 -- Table structure for table `notelink`
 --
 
-DROP TABLE IF EXISTS `notelink`;
-CREATE TABLE `notelink` (
+
+CREATE TABLE IF NOT EXISTS `notelink` (
   `link_type` enum('Student','Staff','Admin','Company','Contact') default NULL,
   `link_id` int(10) unsigned NOT NULL default '0',
   `note_id` int(10) unsigned NOT NULL default '0'
@@ -635,8 +635,8 @@ CREATE TABLE `notelink` (
 -- Table structure for table `notes`
 --
 
-DROP TABLE IF EXISTS `notes`;
-CREATE TABLE `notes` (
+
+CREATE TABLE IF NOT EXISTS `notes` (
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
   `comments` longtext NOT NULL,
   `summary` tinytext,
@@ -650,8 +650,8 @@ CREATE TABLE `notes` (
 -- Table structure for table `ocvcomponent`
 --
 
-DROP TABLE IF EXISTS `ocvcomponent`;
-CREATE TABLE `ocvcomponent` (
+
+CREATE TABLE IF NOT EXISTS `ocvcomponent` (
   `componentid` int(11) NOT NULL auto_increment,
   `componentname` varchar(255) NOT NULL default '',
   `orientation` int(1) NOT NULL default '0',
@@ -667,8 +667,8 @@ CREATE TABLE `ocvcomponent` (
 -- Table structure for table `ocvfield`
 --
 
-DROP TABLE IF EXISTS `ocvfield`;
-CREATE TABLE `ocvfield` (
+
+CREATE TABLE IF NOT EXISTS `ocvfield` (
   `componentid` int(11) NOT NULL default '0',
   `fieldid` int(11) NOT NULL default '0',
   `fieldname` varchar(255) NOT NULL default '',
@@ -684,8 +684,8 @@ CREATE TABLE `ocvfield` (
 -- Table structure for table `ocvstudent2template`
 --
 
-DROP TABLE IF EXISTS `ocvstudent2template`;
-CREATE TABLE `ocvstudent2template` (
+
+CREATE TABLE IF NOT EXISTS `ocvstudent2template` (
   `studentid` varchar(25) NOT NULL default '',
   `templateid` int(11) NOT NULL default '0',
   `status` int(1) NOT NULL default '0',
@@ -696,8 +696,8 @@ CREATE TABLE `ocvstudent2template` (
 -- Table structure for table `ocvstudentdata`
 --
 
-DROP TABLE IF EXISTS `ocvstudentdata`;
-CREATE TABLE `ocvstudentdata` (
+
+CREATE TABLE IF NOT EXISTS `ocvstudentdata` (
   `studentid` varchar(25) NOT NULL default '',
   `componentid` int(11) NOT NULL default '0',
   `fieldid` int(11) NOT NULL default '0',
@@ -710,8 +710,8 @@ CREATE TABLE `ocvstudentdata` (
 -- Table structure for table `ocvtemplate`
 --
 
-DROP TABLE IF EXISTS `ocvtemplate`;
-CREATE TABLE `ocvtemplate` (
+
+CREATE TABLE IF NOT EXISTS `ocvtemplate` (
   `templateid` int(11) default NULL,
   `componentid` int(11) default NULL,
   `lefty` int(2) default NULL,
@@ -724,8 +724,8 @@ CREATE TABLE `ocvtemplate` (
 -- Table structure for table `ocvtemplatedescription`
 --
 
-DROP TABLE IF EXISTS `ocvtemplatedescription`;
-CREATE TABLE `ocvtemplatedescription` (
+
+CREATE TABLE IF NOT EXISTS `ocvtemplatedescription` (
   `templateid` int(11) NOT NULL auto_increment,
   `templatename` text,
   `creator` varchar(125) default NULL,
@@ -738,8 +738,8 @@ CREATE TABLE `ocvtemplatedescription` (
 -- Table structure for table `placement`
 --
 
-DROP TABLE IF EXISTS `placement`;
-CREATE TABLE `placement` (
+
+CREATE TABLE IF NOT EXISTS `placement` (
   `position` varchar(40) default NULL,
   `jobstart` date default NULL,
   `jobend` date default NULL,
@@ -764,8 +764,8 @@ CREATE TABLE `placement` (
 -- Table structure for table `policy`
 --
 
-DROP TABLE IF EXISTS `policy`;
-CREATE TABLE `policy` (
+
+CREATE TABLE IF NOT EXISTS `policy` (
   `descript` varchar(80) NOT NULL default '',
   `help` set('list','create','edit','delete') NOT NULL default '',
   `automail` set('list','create','edit','delete') NOT NULL default '',
@@ -792,8 +792,8 @@ CREATE TABLE `policy` (
 -- Table structure for table `questionnaire_results`
 --
 
-DROP TABLE IF EXISTS `questionnaire_results`;
-CREATE TABLE `questionnaire_results` (
+
+CREATE TABLE IF NOT EXISTS `questionnaire_results` (
   `username` tinytext,
   `name` tinytext NOT NULL,
   `contents` text,
@@ -805,8 +805,8 @@ CREATE TABLE `questionnaire_results` (
 -- Table structure for table `resourcelink`
 --
 
-DROP TABLE IF EXISTS `resourcelink`;
-CREATE TABLE `resourcelink` (
+
+CREATE TABLE IF NOT EXISTS `resourcelink` (
   `resource_id` int(10) unsigned NOT NULL default '0',
   `company_id` int(10) unsigned NOT NULL default '0',
   `vacancy_id` int(10) unsigned default NULL
@@ -816,8 +816,8 @@ CREATE TABLE `resourcelink` (
 -- Table structure for table `resources`
 --
 
-DROP TABLE IF EXISTS `resources`;
-CREATE TABLE `resources` (
+
+CREATE TABLE IF NOT EXISTS `resources` (
   `lookup` tinytext,
   `language_id` int(10) unsigned default NULL,
   `category_id` int(10) unsigned default NULL,
@@ -842,8 +842,8 @@ CREATE TABLE `resources` (
 -- Table structure for table `schools`
 --
 
-DROP TABLE IF EXISTS `schools`;
-CREATE TABLE `schools` (
+
+CREATE TABLE IF NOT EXISTS `schools` (
   `school_name` varchar(80) NOT NULL default '',
   `www` varchar(100) default NULL,
   `status` set('archive') default NULL,
@@ -855,8 +855,8 @@ CREATE TABLE `schools` (
 -- Table structure for table `staff`
 --
 
-DROP TABLE IF EXISTS `staff`;
-CREATE TABLE `staff` (
+
+CREATE TABLE IF NOT EXISTS `staff` (
   `initials` varchar(5) NOT NULL default '',
   `title` varchar(5) NOT NULL default '',
   `firstname` varchar(20) default NULL,
@@ -877,8 +877,8 @@ CREATE TABLE `staff` (
 -- Table structure for table `staffstudent`
 --
 
-DROP TABLE IF EXISTS `staffstudent`;
-CREATE TABLE `staffstudent` (
+
+CREATE TABLE IF NOT EXISTS `staffstudent` (
   `staff_id` int(10) unsigned NOT NULL default '0',
   `student_id` int(10) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -887,8 +887,8 @@ CREATE TABLE `staffstudent` (
 -- Table structure for table `students`
 --
 
-DROP TABLE IF EXISTS `students`;
-CREATE TABLE `students` (
+
+CREATE TABLE IF NOT EXISTS `students` (
   `user_id` int(10) unsigned NOT NULL default '0',
   `year` year(4) NOT NULL default '0000',
   `status` enum('Required','Placed','Exempt Applied','Exempt Given','No Info','Left Course','Suspended','To final year','Not Eligible') default NULL,
@@ -901,8 +901,8 @@ CREATE TABLE `students` (
 -- Table structure for table `timelines`
 --
 
-DROP TABLE IF EXISTS `timelines`;
-CREATE TABLE `timelines` (
+
+CREATE TABLE IF NOT EXISTS `timelines` (
   `student_id` int(10) unsigned NOT NULL default '0',
   `last_updated` datetime default NULL,
   `image` blob
@@ -912,8 +912,8 @@ CREATE TABLE `timelines` (
 -- Table structure for table `vacancies`
 --
 
-DROP TABLE IF EXISTS `vacancies`;
-CREATE TABLE `vacancies` (
+
+CREATE TABLE IF NOT EXISTS `vacancies` (
   `company_id` int(10) unsigned NOT NULL default '0',
   `description` tinytext NOT NULL,
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -941,8 +941,8 @@ CREATE TABLE `vacancies` (
 -- Table structure for table `vacancyactivity`
 --
 
-DROP TABLE IF EXISTS `vacancyactivity`;
-CREATE TABLE `vacancyactivity` (
+
+CREATE TABLE IF NOT EXISTS `vacancyactivity` (
   `vacancy_id` int(10) unsigned NOT NULL default '0',
   `activity_id` int(10) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -951,8 +951,8 @@ CREATE TABLE `vacancyactivity` (
 -- Table structure for table `vacancytype`
 --
 
-DROP TABLE IF EXISTS `vacancytype`;
-CREATE TABLE `vacancytype` (
+
+CREATE TABLE IF NOT EXISTS `vacancytype` (
   `name` varchar(40) default NULL,
   `vacancy_id` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`vacancy_id`)
