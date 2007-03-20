@@ -68,7 +68,7 @@ then
   db_get opus/have_root_password
   have_password=$RET
   
-  if [ $have_password = "yes" ]
+  if [ "$have_password" = "yes" ]
   then
     # get the root password
     db_get opus/root_db_password
@@ -78,11 +78,12 @@ then
   # It is hard to be idempotent and fully effective here. We have to rely on the
   # supplied database not clashing with an existing one, since we can't easily
   # tell if the existing database is there from a previous install (or on a
-  # totally different server.
+  # totally different server).
   
   echo "creating the MySQL database ..."
   
   if [ "$have_password" = "yes" ]
+    then
     set +e
     # try a trivial query, logging in as MySQL root
     command_result=`echo "SELECT VERSION()" | mysql -h $data_hostname -u root --password=$root_db_password 2>&1`
