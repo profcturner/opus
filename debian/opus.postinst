@@ -68,21 +68,39 @@ then
   db_get opus/root_db_password
   root_db_password=$RET
 
-  # Does the database yet exist? Hmm, this uses grep, better check if that's ok
-  echo "hello"
-  echo "show databases" | mysql -u $data_username --password $data_password
-  echo "world"
-  if [ ! "$database_present" = "opus" ]
+  # Ensuring idempotency of the script with respect to mysql is very difficult
+  # especially with no formal database hooks. This is made hard by the fact
+  # that the mysql client program only returns 1 on an error, and more information
+  # is only in text. I don't even know how the text will appear in other
+  # languages, so all I can do is regexp search for an error number :-(
+  
+  echo "creating the MySQL database ..."
+  # This call could be happening on an upgrade, in which case it is likely
+  # no config script has been recently called and the root db password was
+  # reset, in which case this will bomb out on the password, but we won't care
+  # since it was probably done before. We need to redirect stderr so we can read
+  # it.
+  set +e
+  # try a trivial query, logging in as MySQL root
+  command_result=`echo "SELECT VERSION()" | mysql -h $data_hostname -u root --password=$root_db_password 2>&1`
+  if [ "$?" -eq 0 ]
   then
-    echo "creating the MySQL database ..."
-    # No database exists, start from scratch
+    # It went ok! Try some more... Back to strict error checking.
+    # We want to know if these bomb out
+    set -e
+    # Create the actual database
     echo "CREATE DATABASE IF NOT EXISTS $data_database" | mysql -h $data_hostname -u root --password=$root_db_password
+    # Ensure permissions are set up
     echo "GRANT ALL ON $data_database.* TO $data_username@$data_hostname IDENTIFIED BY '$data_password' " | mysql -h $data_hostname -u root --password=$root_db_password
-    if [ -e /usr/share/doc/opus/sql_patch/schema.sql.gz ]
-    then
-      echo "Installing initial schema ..."
-      gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u root --password=$root_db_password $data_database
-    fi
+    echo "Installing initial schema ..."
+    gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u root --password=$root_db_password $data_database
+  else
+    # It failed, either the root password is wrong, or it was reset after a
+    # previous installation. We can still (and should still) try to install
+    # the schema, although more sophisticated upgrades will need to be added
+    # here again
+    set -e
+    gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u root --password=$root_db_password $data_database
   fi
 
   # Remove any root password
