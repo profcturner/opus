@@ -87,7 +87,7 @@ then
     set +e
     # try a trivial query, logging in as MySQL root
     command_result=`echo "SELECT VERSION()" | mysql -h $data_hostname -u root --password=$root_db_password 2>&1`
-    if [ "$?" -neq 0 ]
+    if [ "$?" -ne 0 ]
     then
       # We don't have valid root credentials
       have_password="no"
@@ -115,6 +115,15 @@ then
     set -e
     echo "Installing initial schema ..."
     gzip -d -c /usr/share/doc/opus/sql_patch/schema.sql.gz | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
+  fi
+
+  # OK, schema should be installed, check if any data exists, again
+  num_users=`echo "select count(username) from id" | mysql --skip-column-names -h $data_hostname -u $data_username --password=$data_password $data_database`
+  if [ $num_users -eq 0 ]
+  then
+    # No installed users, better import some data
+    echo "Installing initial data ..."
+    gzip -d -c /usr/share/doc/opus/sql_patch/data.sql.gz | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
   fi
   
   # TODO: We need to write the code (for new versions) to sequentially apply
