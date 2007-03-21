@@ -124,6 +124,13 @@ then
     # No installed users, better import some data
     echo "Installing initial data ..."
     gzip -d -c /usr/share/doc/opus/sql_patch/data.sql.gz | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
+    # Set the email address from debconf data
+    db_get opus/proot_email
+    proot_email=$RET
+    if [ $proot_email != "" ]
+    then
+      echo "update admins set email='$RET' where user_id=1" | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
+    fi
   fi
   
   # TODO: We need to write the code (for new versions) to sequentially apply

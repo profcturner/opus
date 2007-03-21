@@ -66,33 +66,20 @@ Default:
 Description: password used for OPUS database:
  Please give the database password you wish to use for OPUS here.
 
-Template: opus/proot_title
-Type: string
-Default: Mr
-Description: salutation (Mr, Dr etc) of first user
-
-Template: opus/proot_firstname
-Type: string
-Default: 
-Description: first name of first user
-
-Template: opus/proot_surname
-Type: string
-Default: 
-Description: surname of first user
-
-Template: opus/proot_position
-Type: string
-Default: 
-Description: position (manager etc) of first user
-
 Template: opus/proot_email
 Type: string
 Default: 
-Description: email of first user
- Please give the principal root user of the OPUS system, this
- must be functional since account details will be sent to it.
-
+Description: email of admin user
+ OPUS will create an initial account for you, with username "admin"
+ and password "password". Specify an email address for this account
+ here, note that this address will be used to send automatic emails,
+ when no other obvious choice is present, so it should be a help
+ contact of some kind, or expand to a list of appropriate contacts.
+ .
+ Note that you can change this email address from within OPUS later,
+ and that the email address will only be set on an initial import
+ of data.
+ 
 Template: opus/invalid_root_password
 Type: note
 Description: Invalid root MySQL password
