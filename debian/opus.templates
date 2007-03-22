@@ -17,7 +17,7 @@ Template: opus/have_root_password
 Type: select
 Choices: yes, no
 Default: yes
-Description: do you have the root password for the MySQL server?
+Description: root password for the MySQL server is known:
  Sometimes you might be installing OPUS to connect to a remote MySQL server
  that is administrated by someone else. In this case you probably don't
  have the root password for the server. You will need someone else to
@@ -27,7 +27,7 @@ Template: opus/nuke_db_on_purge
 Type: select
 Choices: yes, no
 Default: no
-Description: should the database be deleted when this package is purged?
+Description: delete database when OPUS is purged:
  If you purge this package (not just remove it) should the database that
  is configured for use be deleted at that time. WARNING! This can't be
  undone, if in doubt, say no.
@@ -69,7 +69,7 @@ Description: password used for OPUS database:
 Template: opus/proot_email
 Type: string
 Default: 
-Description: email of admin user
+Description: email of admin user:
  OPUS will create an initial account for you, with username "admin"
  and password "password". Specify an email address for this account
  here, note that this address will be used to send automatic emails,
@@ -79,10 +79,9 @@ Description: email of admin user
  Note that you can change this email address from within OPUS later,
  and that the email address will only be set on an initial import
  of data.
- 
+
 Template: opus/invalid_root_password
 Type: note
 Description: Invalid root MySQL password
  The credentials given to access the MySQL server are failing.
- I will do what I can to go on, but be aware that the database
- may not be installed correctly.
+ Be aware that the database may not be installed correctly.

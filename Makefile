@@ -27,6 +27,9 @@ deb-opus: deb-opus-etc
 	mkdir ${debprefix}/share/opus/templates_cache
 	chown -R www-data:root ${debprefix}/share/opus/
 	chmod -R o-rwx ${debprefix}/share/opus/
+	# Nuke license file for xinha, it is contained in debian/copyright
+	# and disturbs lintian
+	rm ${debprefix}/share/opus/html/jsincludes/htmlarea/license.txt
 	# Make documentation directory
 	mkdir -p ${debprefix}/share/doc/opus
 	cp -rf sql_patch ${debprefix}/share/doc/opus

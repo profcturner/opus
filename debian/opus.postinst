@@ -91,9 +91,10 @@ then
     then
       # We don't have valid root credentials
       have_password="no"
-      # Warn the user it's all gone fubar
-      db_input high opus/invalid_root_password || true
-      db_go
+      # Warn the user it's all gone fubar - but this makes lintian mad, remove for now
+      echo "WARNING! Invalid MySQL root credentials ..."
+      #db_input high opus/invalid_root_password || true
+      #db_go
     fi
   fi
   
