@@ -1,7 +1,29 @@
 # Makefile for OPUS
 
+tar:
+	# Usage
+	@echo "Usage: rel=<version>; rel is set to ${rel}"
+	@test ! -z ${rel}
+	# Empty that target dir first
+	rm -rf ../tarballs/opus-${rel}
+	# takes rel= as argument
+	mkdir -p ../tarballs/opus-${rel}
+	# And any existing tarballs
+	rm -rf ../tarballs/opus_${rel}.orig.tar.gz
+	# Copy new content in
+	cp -rf * ../tarballs/opus-$(rel)
+	# Remove svn files, debian dir and this Makefile, since it
+	# is very debian specific right now
+	rm -rf `find ../tarballs/opus-$(rel) -type d -name ".svn"`
+	rm -rf ../tarballs/opus-${rel}/Makefile
+	rm -rf ../tarballs/opus-$(rel)/debian
+	# actually perform the gzip
+	cd ../tarballs && tar cfz opus_$(rel).orig.tar.gz opus-$(rel)
+	rm -rf ../tarballs/opus-$(rel)
+	@echo "Targz build in ../tarballs"
+
 clean:
-#	find . \( -name "Makefile" -or -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
+	find . \( -name "#*#" -or -name ".#*" -or -name "*~" -or -name ".*~" \) -exec rm -rfv {} \;
 	rm -fv *.cache
 	rm -rf debian/opus
 	rm -rf debian/files
