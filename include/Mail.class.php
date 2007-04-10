@@ -16,22 +16,20 @@
 */
 class Mail
 {
-  var $from;
   var $to;
   var $extra_headers;
-
+  var $subject;
   var $message_body;
   var $attachments;
 
   /**
   * sets up initial variables for a message
   *
-  * @param string $from the sender address for the message
   * @param string $to the recipient addresses for the message
   * @param string $message_body the main text of the message
   * @param string $extra_headers any extra headers should be added here
   */
-  function __construct($from, $subject, $to, $message_body, $extra_headers="")
+  function __construct($to, $subject, $message_body, $extra_headers="")
   {
     $this->from = $from;
     $this->subject = $subject;
