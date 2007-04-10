@@ -25,6 +25,7 @@
 %\usepackage{amsfonts}
 \usepackage{url}
 \usepackage{color}
+\usepackage{listings}
 \usepackage{layout}
 \usepackage[margin=3cm,innermargin=1.5cm,outermargin=1cm,includemp=true,marginparsep=1 cm, marginparwidth=2.5 cm, paperwidth=190 mm,paperheight=260 mm]{geometry}
 \usepackage{ifthen}
@@ -61,6 +62,23 @@
 
 % Headings
 \input{generic/NoteHeadings2.tex}
+
+% Listings package
+\lstset{
+  language=PHP,
+  alsolanguage=HTML,
+  basicstyle=\ttfamily,
+  flexiblecolumns=true,
+  lineskip=-2pt,
+  commentstyle=\color{blue},
+  morecomment=[s][\color{red}]{/**}{*/},
+%  frame=l,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=5,
+  numbersep=5pt,
+  backgroundcolor=\color[rgb]{0.95, 0.95, 0.95}
+}
 
 
 % New environments
@@ -122,7 +140,9 @@
 \setlength{\parskip}{0.2 cm}
 
 \chapter*{Introduction\markboth{Introduction}{}}
-Welcome to the OPUS manual. As you will see this is really a work very much in progress.
+Welcome to the OPUS manual. As you will see this is really a work very much in progress. Please note that the most up-to-date version will always be
+found at the development site for OPUS at \url{http://foss.ulster.ac.uk/projects/opus}, currently only in source repository, but hopefully we will enable
+automatic builds of the documentation in the near future.
 
 %\newpage
 %\pagecolor{red}
@@ -204,10 +224,108 @@ be shown as follows:
 
 \chapter{Installation}
 
+We look at the various requirements of OPUS here and how to install it.
+
+\section{Requirements}
+\index{requirements}
+
+OPUS can be probably be run on top of  any system that supports PHP%
+\footnote{A popular web scripting language (\url{http://www.php.net})} and MySQL.%
+\footnote{A relational database engine (\url{http://www.mysql.com})}
+
+At the time of writing, specific requirements are
+\begin{itemize}
+  \item PHP version 5.1 or higher (since PDO is planned to be used in new code);
+  \item MySQL version 4 or higher;
+  \item Smarty\footnote{A templating enginer (\url{http://smarty.php.net})} version 1.3 or higher;
+  \item Pear;%
+    \footnote{Extensions to PHP, found at \url{http://pear.php.net}. Pear is required for DB support, and was used for mail\_mime support prior to version 3.3.0,
+     but will probably be phased out in version 4.0.0 when built in PDO support is likely to be used.}
+  \item Perl version 5 or higher.\footnote{A powerful scripting language, required for some offline maintainence, available from \url{http://www.perl.com}.}
+\end{itemize}
+
+\section{Operating Systems}
+\index{operating systems}
+\index{Debian GNU/Linux}
+
+It should be straight forward to install OPUS on most variants of Unix, or Linux and, with perhaps some more work Microsoft Windows.
+
+\subsection{GNU/Linux}
+
+Various distributions of GNU/Linux, or simply Linux, as they are often called, are well suited to running OPUS. Almost all modern versions
+package all or most of the requirements listed above.
+
+The absolutely simplest way is to install OPUS on a server running Debian GNU/Linux 4.0 (Etch) or above%
+\footnote{Available for many architectures from \url{http://www.debian.org}.}%
+since OPUS is specifically \emph{packaged} for Debian.
+
+Indeed, using the Debian packages will allow you to greatly circumvent many of the other issues in this, and the following chapter, since
+much of the installation and packaging will be handled automatically.
+
+\subsection{Unix}
+
+As Unix and GNU/Linux are very closely related, most versions of Unix will also run OPUS with ease. Again, most modern Unix versions
+provide packaged versions of the requirements, or most of them.
+
+\subsection{Microsoft Windows}
+
+At this time Windows cannot be recommended for running OPUS since
+\begin{itemize}
+  \item in \emph{very} rare places OPUS calls standard unix style utilities; in particular it uses \texttt{grep} and \texttt{tail} in its log
+    file viewer. These tools can be obtained for the Windows platform however;
+  \item OPUS runs scheduled jobs using \texttt{cron} to perform regular maintainence, you will need to trigger these with the various
+    scheduling tools available on the specific version of Windows you are running (see \texttt{at}) for example;
+  \item OPUS has been designed and run on Linux and Solaris, at present the various installation scripts and snippets we have produced
+    are aimed at such platforms. However, please \emph{do} feel free to send patches with better Windows support.
+\end{itemize}
+
+This is \emph{not} to say that OPUS cannot be run on Windows, and if you have expertise with Windows you will have no problems overcoming these
+hurdles by yourself.
+
+\section{Manual Installation}
+
+If you plan to install OPUS manually, here is some guidance on the important directories you need to manage.
+
+\begin{description}
+  \item[include] contains vital files that the ``main'' scripts of OPUS will use. This should \emph{not} be installed in the web server document root, since
+  it also contains sensitive configuration. However, the web server will need read access to these files.
+  \item[html] contains the ``main'' scripts and content that OPUS provides. This will need to be in the web server tree.
+  \item[templates] contains Smarty templates for output, like include, it should be outside the document root, but accessible to the web server.
+  \item[cron] contains PHP scripts that perform automatic maintainence. 
+  \item[docs] contains files to produce this manual, not required on a production server.
+  \item[etc] contains an example Apache configuration file, suitable for Debian.
+  \item[sql\_patch] contains SQL files for importing the intial schema and data into MySQL.
+\end{description}
+
+One easy way to deal with this is to copy the whole set into a location \emph{not} under the web server tree, and configuring the web server to have
+acess to the html directory only. For Apache, this is more or less done with the file in the etc directory. You will note it also changes the PHP include
+path to use the include path, as well as a Smarty path. You might need to change paths accordingly.
+
+\subsection{Database Creation}
+
+You should now create a new database. Using your mysql client or otherwise. To use the client, launch it from the
+command line like so. If you have (correctly) configured a password for the root user add \lstinline! -p ! to this command.
+\begin{lstlisting}[language=bash]
+mysql -u root
+\end{lstlisting}
+or using a password as required. At the client prompt, create a new database
+\begin{lstlisting}[language=SQL]
+create database opus;
+grant all on opus.* to opus_user@localhost
+  identified by 'database_password';
+\end{lstlisting}
+
+You will need to modify this if the database is on a remote host accordingly. At this point
+you can import the schema files from the sql\_patch directory.
+\begin{lstlisting}[language=SQL]
+source sql_patch/schema.sql
+source sql_patch/data.sql
+\end{lstlisting}
+
 \chapter{Initial Configuration}
 
-After installation, it is necessary to copy the file config.php.dist to
-config.php and customize its values.
+After installation, it is usually necessary to copy the file config.php.dist to
+config.php and customize its values.\footnote{Debian installation will take care of this aspect.}
 
 \chapter{Administrators \& Policies}
 \index{security}
@@ -343,6 +461,7 @@ if a course is not explicitly added to a group it is assumed to be in these
 groups.
 
 \subsection{CV Groups}
+\label{CVGroups}
 
 A CV group defines which CVs can be used by students on these courses.
 
@@ -414,25 +533,219 @@ specify both a start and end year.
 
 \chapter{Student Directory}
 
+The student directory is perhaps the most important administrative feature of OPUS. It provides
+a mechanism to obtain or add information on individual students, and to extract information from
+whole classes of students.
+
+\section{Searching}
+
+\subsection{Simple Searches}
+
+\subsection{Advanced Searches}
+
+\subsection{Communication}
+
+\section{Student Records}
+
+When one has select a student record, there are five tabs that allow you to handle it.
+
+\subsection{CVs}
+\index{CVs}
+
+This tab provides information about the CVs that a student has completed, and whether or not they can
+be used to apply for vacancies. It also provides the mechanism by which a CV can be approved for use
+(or have that approval revoked) if this feature is enabled.
+
+The CV group (see~\ref{CVGroups}) that the student belongs to is given, so that any errors can be seen. Note that
+it is not possible to explictly change the CV Group for a single student, since the grouping is done based on course code.
+
+\subsection{Channels}
+\index{channels}
+
+The channels which the student is automatically subscribed to are shown here. Any errors should be handled by correcting the
+configuration of the channel itself (see~\ref{}).
+
+\subsection{Companies}
+
+This tab shows all the applications for the student record. It is possible to remove any application here, which should be done with caution
+since companies may wonder why this has happened. Note that students do \emph{not} have the ability  to retract an application for this very reason.
+
+If a student has achieved placement with one of these companies the appropriate link can be clicked to begin the process of recording the placement.
+
+\subsection{Status}
+
+This is the most important tab, allowing most of the information that is of day-to-day use to be viewed and edited.
+
+\subsection{Notes}
+
+\section{Management Statistics}
+
+%
+%
+%
+
 \chapter{Company Directory}
+
+\section{Searching for companies}
+
+\section{Adding and updating company records}
+
+\section{Contacts}
+
+\section{Resources}
+
+\section{Companies and channels}
+
+%
+%
+%
 
 \chapter{Contact Directory}
 
+\section{Searching for contacts}
+
+\section{Managing contacts}
+
+\section{Contacts and channels}
+
+%
+%
+%
+
 \chapter{Staff Directory}
+
+\section{Searching for staff}
+
+\section{Managing staff}
+
+\section{Staff and students}
+
+\section{Staff and channels}
+
+%
+%
+%
 
 \chapter{Help, Templates \& Resources}
 
+\section{Help}
+
+\subsection{Creating help}
+
+\subsection{Editing help}
+
+\section{Templates}
+
+\subsection{Creating templates}
+
+\subsection{Editing templates}
+
+\section{Resources}
+
+\subsection{Adding a resource}
+
+\subsection{Resource information}
+
+\subsection{Modifying a resource}
+
+%
+%
+%
+
 \chapter{Logs \& Status}
 
-\chapter{Assessments}
+\section{Log files}
+
+\subsection{Searching the log files}
+
+\section{Status}
+
+%
+%
+%
+
+\chapter{Assessment}
+
+\section{Assessments}
+
+\subsection{Creating an assessment record}
+
+\subsection{Creating an assessment skin}
+
+\section{Creating an assessment regime}
+
+%
+%
+%
 
 \part{Academic Tutor Guide}
 
+\chapter{Academic Tutors}
+
 \part{Company HR Guide}
+
+\chapter{Using OPUS to hire students}
 
 \part{Workplace Supervisor Guide}
 
+\chapter{Using OPUS to help supervise students}
+
 \part{Student Guide}
+
+%
+%
+%
+
+\chapter{OPUS and PDP}
+
+\section{PDP}
+
+\section{The PDSystem}
+
+%
+%
+%
+
+\chapter{Preparing for and Getting a Placement}
+
+\section{CVs}
+
+\section{Covering Letters}
+
+\section{e-Portfolios}
+
+\section{Searching for vacancies}
+
+\section{Applying for vacancies}
+
+\section{Managing applications}
+
+\section{Health \& Safety}
+
+\section{Self assessments}
+
+%
+%
+%
+
+
+\chapter{Using OPUS while on placement}
+
+\section{Announcements}
+
+\section{Resources}
+
+\section{Assessment}
+
+%
+%
+%
+
+\chapter{OPUS after your placement}
+
+\section{Assessment}
+
+\section{Learning the lessons}
 
 %
 % Index
