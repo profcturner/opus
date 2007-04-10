@@ -1,4 +1,11 @@
+#!/usr/bin/php -q
 <?php
+
+// Experimental: In the past we've called cron jobs with massive arguments to specify include paths because
+// 1. php.ini isn't correct, and was overridden in Apache, not appropriate here
+// 2. we sometimes don't have access to php.ini
+// Problem - we don't know the location of Smarty, or Pear
+//set_include_path(../include)
 
 include('common.php');
 include('lookup.php');
