@@ -1,0 +1,448 @@
+%
+% OPUS Manual
+%
+
+% Latex 2e
+
+\pdfcompresslevel=9
+\pdfoutput=1
+
+% Try 12 point
+\documentclass[12 pt]{book}
+%
+% Pick one of the following font packages (if you don't like CM)
+%
+%\usepackage{pslatex}
+\usepackage{times}
+%\usepackage{palatino}
+%\usepackage{newcent}
+%
+%
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{fancyhdr}
+\usepackage[pdftex]{graphicx}
+%\usepackage{amsfonts}
+\usepackage{url}
+\usepackage{color}
+\usepackage{layout}
+\usepackage[margin=3cm,innermargin=1.5cm,outermargin=1cm,includemp=true,marginparsep=1 cm, marginparwidth=2.5 cm, paperwidth=190 mm,paperheight=260 mm]{geometry}
+\usepackage{ifthen}
+%
+% Define some dingbats
+%
+\usepackage{pifont}
+
+%
+% Change the default bullet
+%
+\renewcommand{\labelitemi}{%
+        \raisebox{-.25ex}{\ding{43}}}
+
+%
+% Does it all have to be Arial now? <sigh>
+%
+\renewcommand{\familydefault}{\sfdefault}
+
+\DeclareGraphicsExtensions{.pdf,.png,.mps}
+
+\pdfinfo{
+  /Title (OPUS Manual)
+  /Author (Dr Colin Turner)
+  /Producer (PDFLaTeX)
+}
+
+\makeindex
+
+\begin{document}
+
+% New commands, and notation
+\input{generic/Preamble.tex}
+
+% Headings
+\input{generic/NoteHeadings2.tex}
+
+
+% New environments
+
+\newcommand{\pdstext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor} 
+\newcommand{\opustext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor} 
+\newcommand{\pdsstudentmenu}[1]{\color{blue}{\ttfamily \bfseries #1}\normalcolor} 
+\newcommand{\pdsacademicmenu}[1]{\color{red}{\ttfamily \bfseries #1}\normalcolor} 
+\newcommand{\opusacademicmenu}[1]{\color{red}{\ttfamily \bfseries #1}\normalcolor} 
+\newcommand{\pdsiconcd}{\marginpar{\includegraphics[scale=1.0]{png/icon_cd.png}}}
+\newcommand{\pdsiconsa}{\marginpar{\includegraphics[scale=1.0]{png/icon_sa.png}}}
+\newcommand{\pdsiconmc}{\marginpar{\includegraphics[scale=1.0]{png/icon_mc.png}}}
+\newcommand{\pdsicons}{\marginpar{\includegraphics[scale=1.0]{png/icon_s.png}}}
+\newcommand{\pdsiconpt}{\marginpar{\includegraphics[scale=1.0]{png/icon_pt.png}}}
+\newcommand{\pdsbookletref}[1]
+{\marginpar
+  {\makebox[0 pt][l]
+    {\includegraphics[scale=1.0]{png/icon_book.png}
+  }
+  \parbox{2 cm}{{\sffamily \bfseries \tiny #1}}}}
+
+\newcommand{\pdstip}[1]{{\bfseries TIP!} \emph{#1}}
+\newcommand{\opustip}[1]{{\bfseries TIP!} \emph{#1}}
+
+%
+% Page Dimensions, required to be custom for this job
+%
+\setlength{\paperheight}{260 mm}
+\setlength{\paperwidth}{190 mm}
+\setlength{\pdfpageheight}{\paperheight}
+\setlength{\pdfpagewidth}{\paperwidth}
+
+
+\title{OPUS Manual}
+
+\author{Dr Colin Turner\\\url{c.turner@ulster.ac.uk}}
+
+\date{October, 2006}
+
+%%% ----------------------------------------------------------------------
+
+\pagenumbering{roman}
+\maketitle
+
+\pagestyle{fancy}
+
+\tableofcontents
+\markboth{Contents}{Contents}
+
+%\listoftables
+
+%\listoffigures
+
+%
+% Introduction, unnumbered chapter
+%
+
+\setlength{\parindent}{0 cm}
+\setlength{\parskip}{0.2 cm}
+
+\chapter*{Introduction\markboth{Introduction}{}}
+Welcome to the OPUS manual. As you will see this is really a work very much in progress.
+
+%\newpage
+%\pagecolor{red}
+%\pagecolor{white}
+%\newpage
+
+\chapter{How to use this workbook}
+\pagenumbering{arabic}
+
+You 
+might choose to read this workbook from cover to cover,
+or to dip into it as required. The following conventions
+have been 
+used to help you get the most of this book whatever way you choose to use it. 
+
+\section{Signposts}
+\index{Signposts}
+
+At various points in the workbook, signposts are used in
+the margins to indicate that a section is of specific
+interest to a particular role you may have.
+
+\parbox{2 cm}{\includegraphics{png/icon_cd.png}}
+\parbox{9 cm}{Course Directors ({\bfseries CD}) have many varied responsibilities,
+including often acting as an Adviser of Studies.}
+\index{Course Director}
+\medskip
+
+\parbox{2 cm}{\includegraphics{png/icon_sa.png}}
+\parbox{9 cm}{Studies Advisers ({\bfseries SA}). The PDSystem has a great deal of
+dedicated support for the studies advice process.}
+\index{adviser of study}
+\index{studies adviser|see{adviser of study}}
+\medskip
+
+\parbox{2 cm}{\includegraphics{png/icon_mc.png}}
+\parbox{9 cm}{Module Coordinators ({\bfseries MC}). Many
+of the facilities useful to Course Directors are also
+useful to Module Coordinators.}
+\index{Module Coordinators}
+\medskip
+
+\parbox{2 cm}{\includegraphics{png/icon_s.png}}
+\parbox{9 cm}{Supervisors ({\bfseries S}). For the purposes
+of this workbook, supervisors are taken to include those
+responsible for undergraduate projects, right up to PhD
+supervision.}
+\index{Supervising}
+\medskip
+
+\parbox{2 cm}{\includegraphics{png/icon_pt.png}}
+\parbox{9 cm}{Placement Tutors ({\bfseries 
+PT}). The PDSystem provides many possibilities for
+monitoring and assessing placements, and integrates into
+OPUS. OPUS is another University of Ulster on-line system
+which deals comprehensively with the whole
+placement process: it aids in the tasks of finding students
+a placement; recording their placement information,
+assessing their placement and more. More details can
+be found at \url{http://opus.ulster.ac.uk}.}
+\index{placement!tutors}
+
+\section{Typographical Conventions}
+\index{typographical conventions}
+
+Text which appears on OPUS screens will be
+presented \pdstext{like this}.
+
+Where specific menu selections on OPUS are detailed they will
+be shown as follows: 
+\begin{itemize}
+\item \pdsstudentmenu{Section -> Subsection} when the student strand is discussed; and
+\item \pdsacademicmenu{Section -> Subsection} when the staff strand is being discussed.
+\end{itemize}
+
+\pdstip{Sometimes an important tip will appear like this}.
+
+\part{Administration Guide}
+
+\chapter{Installation}
+
+\chapter{Initial Configuration}
+
+After installation, it is necessary to copy the file config.php.dist to
+config.php and customize its values.
+
+\chapter{Administrators \& Policies}
+\index{security}
+\index{access}
+\index{administrators}
+\index{policies}
+
+You should login with the newly installed ``Super-Admin'' user account. This
+user has no security restrictions imposed on it, and it is unwise to use it
+for day to day purposes. Therefore you will want to make one or more administrator
+accounts.
+
+Normal administrator accounts are bound by \emph{security policies}. These define
+the range of actions that may be undertaken by the user. In addition, it is usually
+the case that administrators are only able to undertake actions on specific courses
+or schools.
+
+\section{Policies}
+\index{policies}
+
+You should begin by considering your security policies. By clicking on
+\opusacademicmenu{Edit Admins} and then the \opusacademicmenu{Policies} tab,
+you will have the opportunity to define a new policy.
+
+Choose a name that reflects your policy and submit it. You are now able to
+edit the permissions for that policy. One of the first options is a priority
+for use in the help directory (see~\ref{}). The lower the priority, the 
+``closer'' this group is to the students, and therefore the
+higher up such users will appear in the dynamic help directory.
+
+You may now check and uncheck boxes as you wish to allocate permissions. 
+In general, the recommendations are that
+\begin{itemize}
+  \item Very few, if any, users should be able to delete items - it damages
+    the ability to use OPUS as an audit tool.
+  \item Few users should be able to create items - these users should be well
+    trained and able to act coherently as a group.
+  \item Give day to day administrators more abilities to edit than create or delete.
+  \item It is possible to create policies that can ``look but not touch'' for those
+    users who only need read access to data.
+\end{itemize}
+
+In general a hierarchy of at least a couple of policies is recommended, to put
+more experienced users in the higher bracket.
+
+There is a default policy for course directors, who have very limited access to
+some administrative features. Many advanced features cannot be enabled
+for this category.
+
+\section{Administrator Users}
+
+Now you have created suitable policies, you are ready to create administrator
+users and allocate them to policies. A policy provides a ceiling on the powers
+of a user - it is possible to curtail them further as needed (see~\ref{}).
+
+Clicking on the \opusacademicmenu{Admins} tab will allow you to list and
+create new administrator users. This is a two step process.
+
+\subsection{Creating Administrators}
+
+Use the form at the bottom of the page to create a new administrator account.
+Most of the fields are self explanatory, but there are some things to note.
+
+\subsubsection{Staff Number}
+
+If the staff number is defined, it will be possible to login using a ``standard''
+single sign-on method. Otherwise the username and password generated must be used.
+
+\subsubsection{Options}
+
+It is possible to define if this user will be shown in the Help Directory. This
+should normally be yes unless this user will not answer enquiries about students etc..
+\opustip{You can uncheck this if you are on leave to cause the
+help directory to automatically work around the absence.}
+
+\subsubsection{Username \& Real name}
+
+Generally you should leave this to ``auto'' and let OPUS work them out for you.
+On successful creation of a new user OPUS will email them their credentials
+(in an email apparently from you).
+
+\subsection{Allocating Activities \& Policies}
+
+Administrator users so created will initially have no security policy defined. This
+renders them virtually useless. You must then locate them in the Administrator listing
+and \opustext{Edit} them. 
+
+\subsubsection{Policies}
+\index{policies}
+
+You can now allocate a security policy for the user. This action will require
+confirmation and will be logged in the security log. Any subsequent change of policy
+will also require this.
+
+\subsubsection{Activities}
+\index{activities}
+\index{help!directory}
+
+Allocating activities to an administrator indicates that they are a useful point of
+contact for companies who operate in that activity, and will be used in formulating
+the Help Directory.
+
+\subsubsection{Root Users}
+\index{root users}
+
+
+If you are logged in as a super-admin or root user you will also be presented with
+an option to promote a ``normal'' administrator user to a ``root'' user and vice versa.
+You should generally keep \emph{very few} root accounts on your system.
+
+\subsection{Editing User Details}
+
+If you are a normal administrator you will only have permission to edit your own
+account, and will not see the details of other accounts.
+
+\chapter{Courses, Groups \& Channels}
+
+Before students are added to the system, it is import to configure schools and
+courses. In addition, the concepts of groups and channels can help you deal
+with courses in an efficient manner later, so it is worth giving some thought
+to that now.
+
+\section{Groups}
+
+OPUS groups courses in two different ways: CV groups and Assessment groups.
+
+A group provides a simple mechanism for dealing with a large number of courses
+in one way. Groups can contain dozens of courses, or a single course that
+requires special handling.
+
+OPUS installs with a default group for CVs and a default group for Assessments;
+if a course is not explicitly added to a group it is assumed to be in these
+groups.
+
+\subsection{CV Groups}
+
+A CV group defines which CVs can be used by students on these courses.
+
+\subsection{Assessment Groups}
+
+An assessment group collects all the courses that are assessed in the same way.
+You can define an assessment regime for each of these groups.
+
+\section{Schools}
+\index{schools}
+
+A school is simply a division that contains a number of courses. You should 
+create one or more schools. For each school it is possible to define its name
+and any webpage it uses.
+
+When editing a school record it is possible to label it as \opustext{archived}. Generally,
+within OPUS data should not be deleted, since this destroys the audit capabilities
+of the system. Labelling an old school as archived removes it from normal visibility
+however.
+
+You may also be able to define which administrators have permissions related to this
+school. You can choose any administrator and a security policy. Normally you will
+wish to use the default policy for the user, but it is also possible to give
+curtailed access to a particular school by using a lower security policy.
+
+\opustip{The default policy for a user always provides a ceiling on their abilities.
+You cannot use a local policy to increase priviledges, only to reduce them.}
+
+\section{Courses}
+
+Editing courses is much like that of schools. When creating courses if only the
+course code is specified OPUS attempts to retrieve the course details from your
+SRS, otherwise you may supply full details.
+
+\subsection{Administration Rights}
+
+Just as for schools it is possible to define what administrators have powers over
+this course.
+
+\opustip{An administrator attached to the school this course is in already has
+permissions for this course. Only use this for administrators who only have
+access to one or two courses.}
+
+\subsection{Course Directors}
+
+You can also define a member of academic staff who is the course director. This
+member of staff will obtain slighly augmented abilities (generally access to the
+student directory (see~\ref{}) and most of its abilities for their students).
+
+\subsection{CV Groups}
+
+You can select a single CV group that this course belongs to. This will define
+which CVs can be used by students on that course, and whether they require vetting.
+
+\subsection{Assessment Groups}
+
+A course is likely to belong to different assessment groups as the years progress and
+assessment regimes change. In OPUS, this is handled by creating a new assessment group
+and recording that students in subsequent years are members of the new group.
+
+For each assessment group a course is allocated into a start and end year may be
+specified. If for example the start year is 2006 and there is no end year then all
+students seeking placement in 2006 or later belong to this group. Similarly an entry
+showing no start year and an end year of 2005 indicates that students seeking
+placement in 2005 and before belong to that group. Obviously it is possible to
+specify both a start and end year.
+
+\chapter{Importing Students}
+
+\chapter{Student Directory}
+
+\chapter{Company Directory}
+
+\chapter{Contact Directory}
+
+\chapter{Staff Directory}
+
+\chapter{Help, Templates \& Resources}
+
+\chapter{Logs \& Status}
+
+\chapter{Assessments}
+
+\part{Academic Tutor Guide}
+
+\part{Company HR Guide}
+
+\part{Workplace Supervisor Guide}
+
+\part{Student Guide}
+
+%
+% Index
+%
+
+\printindex
+\markboth{Index}{}
+\addcontentsline{toc}{chapter}{Index}
+
+\end{document}
+
+
+
