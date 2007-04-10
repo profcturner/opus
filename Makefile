@@ -28,6 +28,11 @@ clean:
 	rm -rf debian/opus
 	rm -rf debian/files
 
+# Make development documentation, you will need phpdoc installed
+devdoc:
+	mkdir -p ../phpdoc/
+	phpdoc -d html -d include -t ../phpdoc/ --title "OPUS Development Documentation"
+
 #
 # Currently contains commands for making with Debian
 #
