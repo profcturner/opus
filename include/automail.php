@@ -1,5 +1,22 @@
 <?php
 
+/**
+* Substitutes fields in the automail templates and sends the message
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
+require_once "Mail.class.php";
+
+/**
+* substitutes template values in an email and sends it appropriately
+*
+* @param string $lookup the unique lookup for the template in a language
+* @param string $mailfields associative array of fields to substitute
+*/
 function automail($lookup, $mailfields)
 {
   global $conf;
@@ -52,13 +69,24 @@ function automail($lookup, $mailfields)
   if(!empty($row["cch"]))   $extra .= "Cc: " . $row["cch"] . "\r\n";
   if(!empty($row["bcch"]))  $extra .= "Bcc: " . $row["bcch"] . "\r\n";
 
+  // Add OPUS information to allow easy automatic handling
+  $extra .= "X-OPUS-Automail-Lookup: $lookup\r\n";
+
   // Send email
-  mail($row["toh"], $row["subject"], $row["contents"], $extra);
+  $mail_object = new Mail($row["toh"], $row["subject"], $row["contents"], $extra);
+  $mail_object->send();
 
   $log['admin']->LogPrint("Auto email $lookup sent from " . $row["fromh"] . 
                           " to " . $row["toh"]);
 }
 
+/**
+* perfoms the substitution of fields in all parts of a message
+*
+* @param string $row the element to substitute, could be to, from, message body etc.
+* @param array $mailfields an associative array of key value substitutions
+* @return the processed input in $row is returned
+*/
 function process_automail_subs($row, $mailfields)
 {
   global $log;
