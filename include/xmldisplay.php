@@ -1,14 +1,14 @@
 <?php
 
-// Nothing more than test of automatic commit tracking
-// Didn't work, trying again...
-
 /**
-**	xmldisplay.php
-**
-** This file contains code to parse the xml style fields
-** used in the script suite.
-**
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+* This file contains code to parse the xml style fields
+* used in the script suite.
+* @deprecated use the new code in xmldisplay2.php for new applications
 */
 
 
