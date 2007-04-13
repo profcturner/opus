@@ -1,5 +1,7 @@
 <?php
 
+// Nothing more than test of automatic commit tracking
+
 /**
 **	xmldisplay.php
 **
