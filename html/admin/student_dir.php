@@ -23,7 +23,8 @@ include('pdp.php');
 include('mail.php');
 include('supervisors.php');
 
-include('CVGroups.php');
+// Version 3 style includes
+require_once 'CV.class.php';
 
 // Connect to the database on the server
 db_connect()
@@ -1364,11 +1365,10 @@ function student_simplesearch()
 }
 
 
-/*
-**	student_CV
-**
-** Access to reading and writing the CV
-**
+/**
+* show all CVs the student has completed, and allow approval mechanisms
+*
+* @todo abstract this to allow internal CV handling once again
 */
 function student_CV()
 {
@@ -1404,60 +1404,8 @@ function student_CV()
     die_gracefully("You do not have permission to view this student's CV");
 
   // Get the completed CVs from the PDSystem. I have finally removed backwards compatibility here
-  $completed_cvs = PDSystem::get_valid_templates($student_id);
-  $archived_cvs = PDSystem::get_archived_cvs($student_id);
-  $archived_cvs = $archived_cvs->xpath('//cv');
-  $group_id = get_student_cvgroup($student_id);
-  $group_name = backend_lookup("cvgroups", "name", "group_id", $group_id);
-  $template_info = CVGroups::get_templates_for_group($group_id);
+  CV::populate_smarty_arrays();
 
-  $cvs = array();
-  $invalid_cvs = array();
-  foreach($completed_cvs as $completed_cv)
-  {
-    $template_id = (int) $completed_cv->id;
-    $template_name = (string) $completed_cv->name;
-    //echo "Debug: CV is " . $completed_cv->name . "<br/>";
-    $cv['template_id'] = $template_id;
-    $cv['name'] = $template_name;
-    // Ok, it's complete, but if it's not in the group, we don't show it...
-    $allowed = TRUE;
-    $approved = cv_approved($student_id, $template_id);
-    $cv['approved'] = $approved;
-    $cv['template_allowed'] = TRUE;
-    
-    // Is the template allowed?
-    if(!$template_info[$template_id]['allow'])
-    {
-      $allowed = FALSE;
-      $cv['problem'] = 'Template Not Allowed';
-      $cv['template_allowed'] = FALSE;
-    }
-    // Is approval required?
-    if($allowed && $template_info[$template_id]['requiresApproval'])
-    {
-      if(!$approved)
-      {
-        // Oops, change our mind
-        $allowed = FALSE;
-        $cv['problem'] = 'CV Not Approved';
-        
-      }
-    }
-    if($allowed) array_push($cvs, $cv);
-    else array_push($invalid_cvs, $cv);
-  }
-  $smarty->assign("cvs", $cvs);
-  $smarty->assign("group_name", $group_name);
-  $smarty->assign("count_completed_cvs", count($completed_cvs));
-  $smarty->assign("count_archived_cvs", count($archived_cvs));
-  $smarty->assign("student_id", $student_id);
-  $smarty->assign("invalid_cvs", $invalid_cvs);
-  //$smarty->assign("completed_cvs", $completed_cvs);
-  $smarty->assign("archived_cvs", $archived_cvs);
-  //$smarty->assign("template_info", $template_info);
-
-  //echo "hello world";
   $smarty->display("admin/student_directory/list_student_cvs.tpl");
 
 }
@@ -2439,69 +2387,39 @@ function print_wizard($item)
   echo "<div name=\"tabbedContainer\" align=\"center\">\n";
   $wizard2->displayTab($item);
   echo "</div>\n";
+}
 
-/*
-  $wizard = new PigletWizard;
-  $wizard->set_path($conf['paths']['images']);
-  $wizard->add_item('CV.gif', 'Edit CV',
-                    $PHP_SELF . "?mode=STUDENT_SHOWCV&student_id=" . $student_id, '');
-  $wizard->add_item('companies.gif', 'Edit companies',
-                    $PHP_SELF . "?mode=STUDENT_DISPLAYCOMPANIES&student_id=" . $student_id, '');
-  $wizard->add_item('status.gif', 'Edit Status',
-                    $PHP_SELF . "?mode=STUDENT_DISPLAYSTATUS&student_id=" . $student_id, '');
-  $wizard->add_item('notes.gif', 'Edit Notes',
-                    $PHP_SELF . "?mode=STUDENT_NOTES&student_id=" . $student_id, '');
-
-  echo "<CENTER>";
-  $wizard->show_wizard($item);
-  echo "</CENTER>\n";
+/**
+* check user input, approve CV and then show CV tab again
 */
-}
-
-// TODO: Move this somewhere central
-function cv_approved($student_id, $template_id)
-{
-  $sql = "select * from cv_approval where student_id=$student_id and template_id=$template_id";
-  $result = mysql_query($sql)
-    or print_mysql_error2("Could not check CV approval", $sql);
-  $success = mysql_num_rows($result);
-  mysql_free_result($result);
-  return($success);
-}
-
 function approve_cv()
 {
   $student_id = $_REQUEST['student_id'];
   $template_id = $_REQUEST['template_id'];
-  
+
   if(empty($student_id) || empty($template_id))
     die_gracefully("student_id and template_id must not be empty");
-  
-  $datestamp = date("YmdHis");
-  $approver_id = get_id();
-  
-  $sql = "insert into cv_approval (student_id, template_id, approver_id, datestamp) " .
-    "values($student_id, $template_id, $approver_id, '$datestamp')";
-  mysql_query($sql)
-    or print_mysql_error2("Unable to approve CV", $sql);
-    
+
+  CV::approve_cv($student_id, $template_id);
+  // Show tab again
   student_CV();
 }
 
+
+/**
+* check user input, revoke CV and then show CV tab again
+*/
 function revoke_cv()
 {
   $student_id = $_REQUEST['student_id'];
   $template_id = $_REQUEST['template_id'];
-  
+
   if(empty($student_id) || empty($template_id))
     die_gracefully("student_id and template_id must not be empty");
-  
-  $sql = "delete from cv_approval where student_id=$student_id and template_id=$template_id";
-  mysql_query($sql)
-    or print_mysql_error2("Unable to revoke approval of CV", $sql);
-    
+
+  CV::revoke_cv($student_id, $template_id);
+  // Show tab again
   student_CV();
 }
-
 
 ?>

@@ -1,11 +1,15 @@
 <?php
+
 /**
-**  view_company.php
-**
-** Allows company details to be viewed by appropriate people.
-**
-** Initial coding : Colin Turner
-**
+* CV
+*
+* Allows companies and vacancies to be viewed by appropriate users,
+* and applications to be made.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files 
@@ -16,7 +20,7 @@ include('company_search.php');
 include('pdp.php');
 
 // Version 3.0+ includes
-include('CVGroups.php');
+require_once 'CV.class.php';
 
 // Connect to the database on the server
 db_connect()
@@ -25,6 +29,7 @@ db_connect()
 // Authenticate user so that the right people see the right thing
 auth_user("user");
 
+// This is used by PDSystem help
 $smarty->assign("section", "pms");
 if(is_student())
 {
@@ -92,9 +97,6 @@ switch($mode)
     company_addcompanystudent();
     break;
 }
-
-// Print out the help column on rigth hand side
-//right_column("pdetails");
 
 // Print the footer and finish the page
 $page->end();
@@ -336,13 +338,14 @@ function company_displaycompany()
 
 
 /**
-**	@function company_addcompanystudent()
-**	Attempts to add a company to a student's list
-**	@param $company_id (CGI) The company to add
-**	@param $student_id (CGI) The student to add it to
-**	@param $confirm (CGI) Whether the action is confirmed
-** @todo needs to be template driven
-** @todo needs old CV code to be removed when safe to do so
+* Attempts to add a company to a student's list
+*
+* @param $company_id (CGI) The company to add
+* @param $student_id (CGI) The student to add it to
+* @param $confirm (CGI) Whether the action is confirmed
+* @todo a horrifying function that needs broken down to smaller parts (rewritten from scratch)
+* @todo needs to be template driven
+* @todo needs old CV code to be removed when safe to do so
 */
 function company_addcompanystudent()
 {
@@ -388,6 +391,7 @@ function company_addcompanystudent()
   while($row = mysql_fetch_array($result)){
     if($row["company_id"] == $company_id)
     {
+      // Backwards compatibility. Make an add condition for 4.0.0
       if(empty($vacancy_id) || ($row["vacancy_id"] == $vacancy_id))
       {
 	die_gracefully("You have already selected this company / vacancy.\n");
@@ -411,6 +415,15 @@ function company_addcompanystudent()
                    "not apply on the system.");
   }
 
+  // Populate smarty with arrays, and get template CVs
+  $year = get_placement_year($student_id);
+  $default_template_id = get_default_cvtemplate($student_id);
+  $cvs = CV::populate_smarty_arrays($student_id);
+  $smarty->assign("default_template_id", $default_template_id);
+  $smarty->assign("year", $year);
+  $smarty->assign("company_name", get_company_name($company_id));
+  $smarty->assign("vacancy_description", $vacancy['description']);
+
   // Still with us? Check for confirmation
   if($confirm!=1){
     echo "<H2 ALIGN=\"CENTER\">Are you sure?</H2>\n";
@@ -423,104 +436,14 @@ function company_addcompanystudent()
          "not be removed.</P>\n";
 
     output_help("StudentAddCompany");
-
-    $placement_year = get_placement_year($student_id);
-    if($placement_year > 2004)
-    {
-        $completed_cvs = PDSystem::get_valid_templates($student_id);
-        $archived_cvs = PDSystem::get_archived_cvs($student_id);
-        $archived_cvs = $archived_cvs->xpath('//cv');
-        $group_id = get_student_cvgroup($student_id);
-        $group_settings = CVGroups::get_core_settings($group_id);
-        $group_settings_permissions = explode(",", $group_settings['permissions']);
-        $template_info = CVGroups::get_templates_for_group($group_id);
-        echo "You have " . count($completed_cvs) . " completed CVs and " .
-          count($archived_cvs) . " archived CVs from the PDSystem to use. You may not have access to all of these depending upon your course team's policies.";
-        $default_template_id = get_default_cvtemplate($student_id);
-    }
-
-    echo "<H3 ALIGN=\"CENTER\">Application</H3>\n";
-    echo "<FORM ACTION=\"$PHP_SELF\" METHOD=\"POST\">\n" .
-         "<INPUT TYPE=\"HIDDEN\" NAME=\"mode\" VALUE=\"COMPANY_ADDCOMPANYSTUDENT\">\n" .
-         "<INPUT TYPE=\"HIDDEN\" NAME=\"confirm\" VALUE=\"1\">\n" .
-         "<INPUT TYPE=\"HIDDEN\" NAME=\"student_id\" VALUE=\"$student_id\">\n" .
-         "<INPUT TYPE=\"HIDDEN\" NAME=\"year\" VALUE=\"$year\">\n" .
-         "<INPUT TYPE=\"HIDDEN\" NAME=\"company_id\" VALUE=\"$company_id\">\n";
-    echo "<INPUT TYPE=\"HIDDEN\" NAME=\"vacancy_id\" VALUE=\"$vacancy_id\">\n";
-
-    echo "<TABLE ALIGN=\"CENTER\">\n";
-    echo "<TR><TH>Preferred CV</TH><TD><SELECT NAME=\"prefcvt\">";
-
-    // Yet another ugly hack... The old CV code needs to be removed soon.
-    if($placement_year > 2004)
-    {
-      // Add an override for admin users
-      if(is_admin())
-      {
-        echo "<option value=\"0\">Force Application (Admin Only)</option>\n";
-      }
-      foreach($completed_cvs as $pds_cv)
-      {
-        $template_id = (int) $pds_cv->id;
-        if(!$template_info[$template_id]['allow']) continue; // Not allowed
-        $approved = TRUE;
-        if($template_info[$template_id]['requiresApproval'] && !cv_approved($student_id, $template_id)) $approved= FALSE;
-
-        echo "<option value=\"";
-        if(!$approved) echo "0"; else echo $pds_cv->id;
-        echo "\"";
-        if($pds_cv->id == $default_template_id) echo " SELECTED"; 
-        if(!$approved) echo " DISABLED";
-        echo ">" . $pds_cv->name . " (From PDSystem)";
-        if(!$approved) echo " NOT APPROVED";
-        echo"</option>\n";
-      }
-
-      // Check if there are custom CVs, and whether we are allowed them
-      if(count($archived_cvs) && (in_array('allowCustom', $group_settings_permissions)))
-      {
-        echo "<option disabled value=\"0\">Archived CVs</option>\n";
-      }
-      foreach($archived_cvs as $pds_cv)
-      {
-        echo "<option value=\"hash_" . $pds_cv->hash . "_" . $pds_cv->type. "\">" . $pds_cv->name . " (From PDSystem)</option>\n";
-      }
-
-      echo "</select></td></tr>\n";
-    }
-    else
-    {
-      // Fetch allowable CV templates;
-      $cvgroup = get_student_cvgroup($student_id);
-
-      $squery = "SELECT ocvtemplatedescription.* FROM ocvtemplatedescription " .
-	"LEFT JOIN cvgrouptemplate ON ocvtemplatedescription.templateid=" .
-	"cvgrouptemplate.template_id WHERE cvgrouptemplate.group_id = $cvgroup " .
-	"AND cvgrouptemplate.settings LIKE '%companyView%'";
-
-      $sresult = mysql_query($squery)
-	or print_mysql_error2("Unable to fetch CV template list", $squery);
-      echo "<OPTION VALUE=\"0\">--- Select a CV Format ---</OPTION>\n";
-      while($srow=mysql_fetch_array($sresult))
-      {
-	echo "<OPTION VALUE=\"" . $srow["templateid"] . "\">" .
-	  htmlspecialchars($srow["templatename"]) . "</OPTION>\n";
-      }
-      echo "</SELECT>\n</TD></TR>\n";
-    }
-    echo "<TR><TH COLSPAN=\"2\" ALIGN=\"CENTER\">Cover Letter</TH></TR>\n";
-    echo "<TR><TD COLSPAN=\"2\" ALIGN=\"CENTER\"><TEXTAREA " .
-	"ROWS=\"20\" COLS=\"60\" WRAP=\"VIRTUAL\" NAME=\"cover\"></TEXTAREA></TD></TR>\n";
-
-    echo "<TR><TD COLSPAN=\"2\" ALIGN=\"CENTER\"><INPUT TYPE=\"SUBMIT\" VALUE=\"I am sure!\">" .
-	"</TD></TR>\n";
-    echo "</TABLE></FORM>\n";
+    // Check smarty vars
+    $smarty->display("companies/add_company_student_confirm.tpl");
   }
-  else
+  else // confirm == 1
   {
     // Ok, we are going for a real insert here, admin's are allowed template 0
     if(!is_admin() && (empty($prefcvt) || ($prefcvt == 0 && is_numeric($prefcvt))))
-      die_gracefully("You must select a preferred CV layout");
+      die_gracefully("You must select a valid preferred CV layout");
 
     // Backwards compatibility with OPUS pre version 2, this needs taken out soon.
     if(!empty($vacancy_id)) $vac_insert=$vacancy_id;
@@ -562,16 +485,6 @@ function company_addcompanystudent()
     if(!empty($vacancy_id)) vacancy_view();
     else company_displayform();
   }
-}
-
-function cv_approved($student_id, $template_id)
-{
-  $sql = "select * from cv_approval where student_id=$student_id and template_id=$template_id";
-  $result = mysql_query($sql)
-    or print_mysql_error2("Could not check CV approval", $sql);
-  $success = mysql_num_rows($result);
-  mysql_free_result($result);
-  return($success);
 }
 
 ?>
