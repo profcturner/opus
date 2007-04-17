@@ -1,5 +1,18 @@
 <?php
 
+/**
+* CV
+*
+* A class to encapsulate Channel handling within OPUS
+*
+* Channels are used to direct information to specific interest groups.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
 class Channels
 {
 

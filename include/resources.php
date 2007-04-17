@@ -1,7 +1,19 @@
 <?php
 
-require_once('Channels.php');
-require_once('Languages.php');
+/**
+* resources.php
+*
+* Common resources functions for viewing and editing
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+* @todo encapsulate in a class
+*
+*/
+
+require_once('Channels.class.php');
+require_once('Languages.class.php');
 
 /**
 * Shows the currently available resource entries. With appropriate links to

@@ -1,13 +1,14 @@
 <?php
 
 /**
-**	resources.php
-**
-** This admin script allows the collection of
-** downloadable resources to be managed.
-**
-** Initial coding : Colin Turner
-**
+* resources.php
+*
+* An admin script to allow resources to be manipulated
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files
@@ -18,8 +19,8 @@ include('lookup.php');
 
 // Version 3 includes
 
-require_once('Channels.php');
-require_once('Languages.php');
+require_once('Channels.class.php');
+require_once('Languages.class.php');
 
 // Connect to the database on the server
 db_connect()

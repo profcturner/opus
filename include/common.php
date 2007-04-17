@@ -1,17 +1,24 @@
 <?php
 
-// Various other files should be included
+/**
+* Code called from all over OPUS
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+* @todo most of this needs tidied and/or encapsulated for 4.0.0
+*
+*/
 
-//session_start();
+// Various other files should be included
 
 include('config.php');
 include('html.class.php');
-//include 'html.php';
 include('log.php');
 include('xmldisplay.php');
 include('xmldisplay2.php');
 
-require_once('Channels.php');
+require_once('Channels.class.php');
 
 $log = array();
 

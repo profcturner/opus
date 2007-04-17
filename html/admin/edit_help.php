@@ -1,13 +1,12 @@
 <?php
 
 /**
-**	edit_help.php
-**
-** This admin script allows help prompts for the 
-** system to be edited.
-**
-** Initial coding : Colin Turner
-**
+* Allows help prompts to be edited
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files
@@ -17,8 +16,8 @@ include('authenticate.php');
 
 // Version 3 includes
 
-require_once('Channels.php');
-require_once('Languages.php');
+require_once('Channels.class.php');
+require_once('Languages.class.php');
 
 // Connect to the database on the server
 db_connect()
