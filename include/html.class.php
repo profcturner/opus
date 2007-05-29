@@ -1,11 +1,19 @@
 <?php
 
+/**
+* Encapsulates page management
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
 // Smarty is 3rd party
-require 'Smarty.class.php';
+require_once 'Smarty.class.php';
 
 // And now our stuff
-require 'Navigation.class.php';
-//require 'lastitems.class.php';
+require_once 'Navigation.class.php';
 
 $smarty = new Smarty;
 
@@ -41,10 +49,13 @@ class HTMLOPUS
     global $conf;
     global $smarty;
 
+    // Sadly these are not available in the $page reference
+    // when the display() is called.
     $this->title = $title;
     $this->section = $section;
     $this->subsection = $subsection;
 
+    $smarty->assign("page_title", $title);
     // This requires PHP 5 to work fully
     $this->starttime = microtime(true);
     $smarty->display('header.tpl');
