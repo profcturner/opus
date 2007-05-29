@@ -1,12 +1,12 @@
 <?php
 
 /**
-**	assessments.php
-**
-** This admin script allows the creation of new
-** assessments - specifically their structure.
-** Initial coding : Colin Turner
-**
+* This admin script allows the creation of new assessments - specifically their structure.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files

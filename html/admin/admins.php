@@ -1,12 +1,12 @@
 <?php
 
 /**
-**  admins.php
-**
-** Allows admin users and security policies to be edited
-**
-** Initial coding : Colin Turner
-**
+* Allows admin users and security policies to be edited
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files 

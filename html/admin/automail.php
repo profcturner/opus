@@ -1,13 +1,12 @@
 <?php
 
 /**
-**	automail.php
-**
-** This admin script allows help prompts for the 
-** system to be edited.
-**
-** Initial coding : Colin Turner
-**
+* Allows configuration of the automail prompts for the system
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files

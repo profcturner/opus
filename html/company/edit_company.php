@@ -1,12 +1,12 @@
 <?php
 
 /**
-**  edit_company.php
-**
-** Allows company details to be viewed by appropriate people.
-**
-** Initial coding : Colin Turner
-**
+* Functionality to edit companies and associated data
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 
 // The include files 
@@ -707,10 +707,8 @@ function company_vacancy_list()
 
 
 /**
-**	@function companystudent_status_update()
-**
-**	Updates the status field in companystudent with CGI data.
-**
+*	Updates the status field in companystudent with CGI data.
+*
 */
 function companystudent_status_update()
 {
