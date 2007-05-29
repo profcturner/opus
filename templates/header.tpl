@@ -2,6 +2,7 @@
 <!--
 
   OPUS {$opus_version}
+  http://foss.ulster.ac.uk/projects/opus/
 
   Copyright applies.
 
@@ -29,8 +30,8 @@
 {if $session.display_prefs.edit_channels}
 <link rel="stylesheet" type="text/css" href="{$conf.paths.css}placement_channel_edit.css">
 {/if}
-<link rel="stylesheet" type="text/css" href="http://pms.ulster.ac.uk/jsincludes/htmlarea/htmlarea.css">
-<title>{$conf.institution|escape:"htmlall"} | {$page.title|escape:"htmlall"}</title>
+<link rel="stylesheet" type="text/css" href="http://{$conf.webhost}/{$conf.paths.base}jsincludes/htmlarea/htmlarea.css">
+<title>{$conf.institution|escape:"htmlall"} | {$page_title|escape:"htmlall"}</title>
 <!-- <BASEFONT NAME="Arial, Helvetica, sans-serif" SIZE="2"> -->
 {* Load HTML Area if the "editor" component of page is set *}
 {if $page.editor}
@@ -38,12 +39,12 @@
   _editor_url = "/jsincludes/htmlarea/";
   _editor_lang = "en";
 </script>
-<script language="JavaScript" type="text/javascript" src="http://pms.ulster.ac.uk/jsincludes/htmlarea/htmlarea.js"></script>
-<script language="JavaScript" type="text/javascript" src="http://pms.ulster.ac.uk/jsincludes/htmlarea/dialog.js"></script>
-<script language="JavaScript" type="text/javascript" src="http://pms.ulster.ac.uk/jsincludes/htmlarea/en.js"></script>
-<script language="JavaScript" type="text/javascript" src="http://pms.ulster.ac.uk/jsincludes/htmlarea/pms_custom.js"></script>
+<script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/htmlarea/htmlarea.js"></script>
+<script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/htmlarea/dialog.js"></script>
+<script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/htmlarea/en.js"></script>
+<script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/htmlarea/pms_custom.js"></script>
 {/if}
-<script language="JavaScript" type="text/javascript" src="http://pms.ulster.ac.uk/jsincludes/popcalendar.js"></script>
+<script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/popcalendar.js"></script>
 </head>
 {* Start the real header *}
 {if !($page.nopmsheader)}
@@ -55,7 +56,7 @@
   </TR>
   <TR>
     <TD WIDTH="100%%" COLSPAN="2" BGCOLOR="#C9e1e8" ALIGN="center">
-      <B>{$page.title|escape:"htmlall"}</B>
+      <B>{$page_title|escape:"htmlall"}</B>
     </TD>
   </TR>
 </TABLE>
