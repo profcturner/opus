@@ -1,7 +1,21 @@
 <?php
 
+/**
+* Functions for handling supervisor accounts
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @version 3.0
+* @package OPUS
+* @todo this needs to become Object Oriented
+*/
+
 require_once("users.php");
 
+/**
+* creates a supervisor account in the id table
+*
+* @param integer $placement_id is the unique identifier for the placement record
+*/
 function create_supervisor($placement_id)
 {
   global $log;
@@ -39,7 +53,7 @@ function create_supervisor($placement_id)
 
   $sql = "insert into id (username, password, user, real_name) " .
     "values('supervisor_$placement_id', '" . md5($password) . 
-    "', 'supervisor', " . make_null($supervisor_real_name) . ")";
+    "', 'supervisor', " . make_null(addslashes($supervisor_real_name)) . ")";
   mysql_query($sql)
     or print_mysql_error2("Unable to add supervisor", $sql);
   $user_id = mysql_insert_id();
