@@ -19,6 +19,7 @@ require_once("users.php");
 function create_supervisor($placement_id)
 {
   global $log;
+  $placement_id = (int) $placement_id;
 
   if(empty($placement_id))
     die_gracefully("Invalid placement id");
