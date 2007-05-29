@@ -207,6 +207,9 @@ function xml_parser($input)
   $output['output'] = preg_replace(
     "/\b(?<!\")http:\/\/([-a-z0-9]+(\.[-a-z0-9]+)*(\/[-%~a-z0-9_]+)*(\.[-a-z0-9]+)*(\?[-=&\%~a-z0-9]*)?)*\b/ix",
     "<a href=\"http://$1\">$1</a>", $output['output']);
+  $output['output'] = preg_replace(
+    "/\b(?<!\")https:\/\/([-a-z0-9]+(\.[-a-z0-9]+)*(\/[-%~a-z0-9_]+)*(\.[-a-z0-9]+)*(\?[-=&\%~a-z0-9]*)?)*\b/ix",
+    "<a href=\"https://$1\">$1</a>", $output['output']);
 
 
   return($output);
