@@ -218,7 +218,7 @@ li {
    margin: 0px;
    margin-top: 20px;
    padding: 0px;
-   background: transparent url(/test/pdp/images/style_images/blue/nav/logo.png) no-repeat;
+   background: transparent url(/opus/images/logo.png) no-repeat;
    text-decoration: none;
    line-height: 66px;
 }
@@ -230,7 +230,7 @@ li {
    display: block;
    clear: none;
    text-indent: -1000em; 
-   background: transparent url(/test//pdp/images/style_images/blue/nav/logo.png) no-repeat;
+   background: transparent url(/opus/images/logo.png) no-repeat;
    text-decoration: none;
    line-height: 66px;
 }
