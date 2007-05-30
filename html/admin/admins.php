@@ -830,6 +830,9 @@ function admin_add()
   if(empty($surname) || empty($firstname) || empty($title))
     die_gracefully("The name fields must all be filled.");
 
+  if(empty($position))
+    die_gracefully("The position field must be filled.");
+
   // We need to make the user entry
   if($username=="auto"){
     $username = user_make_username($title, $firstname, $surname);
