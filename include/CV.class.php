@@ -14,7 +14,7 @@
 * @todo need to add internal, (and other?) CV mechanisms, perhaps for 4.0.0
 *
 */
-require_once "CVGroups.class.php"
+require_once "CVGroups.class.php";
 
 class CV
 {
