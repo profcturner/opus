@@ -10,10 +10,10 @@
 */
 
 // The include files
-include('common.php');
-include('authenticate.php');
-include('resources.php');
-include('lookup.php');
+require_once('common.php');
+require_once('authenticate.php');
+require_once('resources.php');
+require_once('lookup.php');
 
 // Connect to the database on the server
 db_connect()
@@ -35,8 +35,7 @@ if(empty($mode)) $mode=ResourceShowList;
 
 // Show HTML only if appropriate!
 if($mode != DownloadResource){
-  page_header("Resources");
-  print_menu("");
+  $page = new HTMLOPUS('Resources', 'information', 'resources');
 }
 
 
