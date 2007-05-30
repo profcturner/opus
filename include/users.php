@@ -8,8 +8,7 @@
 **
 */
 
-// URGENT FIX REQUIRED, this include is causing lots of bizarre problems :-(.
-//include('automail.php');
+include('automail.php');
 
 function user_make_username($title, $firstname, $surname)
 {
