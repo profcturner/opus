@@ -9,12 +9,12 @@
 */
 
 /**
-* Mail
+* OPUSMail
 *
 * This class allows lightweight multipart messaging from OPUS
 * @package OPUS
 */
-class Mail
+class OPUSMail
 {
   var $to;
   var $extra_headers;

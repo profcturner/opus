@@ -73,7 +73,7 @@ function automail($lookup, $mailfields)
   $extra .= "X-OPUS-Automail-Lookup: $lookup\r\n";
 
   // Send email
-  $mail_object = new Mail($row["toh"], $row["subject"], $row["contents"], $extra);
+  $mail_object = new OPUSMail($row["toh"], $row["subject"], $row["contents"], $extra);
   $mail_object->send();
 
   $log['admin']->LogPrint("Auto email $lookup sent from " . $row["fromh"] . 
