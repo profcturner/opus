@@ -15,7 +15,7 @@
  {$session.user.real_name}
   </div> <!-- username ends -->
     <div id="crumbtrail"> <!-- crumbtrail starts -->
-      <h3><span class="here">{$page->title}</span></h3>
+      <h3><span class="here">{$page_title}</span></h3>
     </div> <!-- crumbtrail ends -->
 </div> <!-- orientation ends -->
 
