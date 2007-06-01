@@ -11,7 +11,7 @@
 {if $smarty.section.sub_nav.first}
 <ul>
 {/if}
-  <li><a {if $subsection == $navigation->nav.$menu.section}class="active"{/if} title="{$navigation->nav.$menu.subitems[sub_nav].name|escape:"htmlall"}"
+  <li><a {if $page->subsection == $navigation->nav.$menu.section}class="active"{/if} title="{$navigation->nav.$menu.subitems[sub_nav].name|escape:"htmlall"}"
    href="{$navigation->nav.$menu.subitems[sub_nav].url}">{$navigation->nav.$menu.subitems[sub_nav].name|escape:"htmlall"}</a></li>
 {if $smarty.section.sub_nav.last}
 </ul>
@@ -29,7 +29,7 @@
 {if $smarty.section.sub_nav.first}
 <ul>
 {/if}
-  <li><a {if $subsection == $navigation->nav.$section.section}class="active"{/if} title="{$navigation->nav.$section.subitems[sub_nav].name|escape:"htmlall"}"
+  <li><a {if $page->subsection == $navigation->nav.$section.subitems[sub_nav].name}class="active"{/if} title="{$navigation->nav.$section.subitems[sub_nav].name|escape:"htmlall"}"
    href="{$navigation->nav.$section.subitems[sub_nav].url}">{$navigation->nav.$section.subitems[sub_nav].name|escape:"htmlall"}</a></li>
 {if $smarty.section.sub_nav.last}
 </ul>
