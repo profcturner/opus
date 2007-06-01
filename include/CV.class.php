@@ -39,7 +39,7 @@ class CV
   * @param int $student_id the OPUS student_id of the student
   * @return the $cvs array discussed above
   */
-  function populate_smarty_arrays($student_id);
+  function populate_smarty_arrays($student_id)
   {
     global $smarty;
 
