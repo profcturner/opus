@@ -24,5 +24,3 @@ seeking placement in {$year}.</p>
 {sectionelse}
 <p>This regime has no assessments available to list yet.</p>
 {/section}
-
-{debug}
