@@ -42,6 +42,10 @@ switch($mode){
     DisplayCourseList();
     break;
 
+  case Schools_AddSchool:
+    AddSchool();
+    break;
+
   case Courses_AddCourse:
     AddCourse();
     break;
@@ -214,6 +218,24 @@ function EditSchool()
   DisplaySchoolForm();
   echo "<HR>\n";
   DisplaySchoolAdmins();
+}
+
+function AddSchool()
+{
+  $school_name = $_REQUEST['school_name'];
+  $www = $_REQUEST['www'];
+  $archive = $_REQUEST['archive'];
+
+  if(!empty($archive))
+    $status = "archive";
+  else $status="";
+
+  $sql = "insert into schools (school_name, www, status) VALUES(" .
+    make_null($school_name) . ", " . make_null($www) . ", " . make_null($status) . ")";
+  mysql_query($sql)
+    or print_mysql_error2("Unable to add school", $sql);
+
+  Schools_DisplayList();
 }
 
 
