@@ -67,7 +67,9 @@ function die_gracefully($die_error)
   printf("<P>An error has occured : <BR>%s</P>", $die_error);
 
   // finish page
-  page_footer();
+  global $page;
+  $page->end();
+  //page_footer();
 
   // quit the script
   exit;
@@ -86,7 +88,9 @@ function die_gracefully_help($die_error)
   output_help($die_error);
 
   // finish page
-  page_footer();
+  global $page;
+  $page->end();
+  //page_footer();
 
   // quit the script
   exit;
