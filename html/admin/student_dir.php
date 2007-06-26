@@ -1404,7 +1404,7 @@ function student_CV()
     die_gracefully("You do not have permission to view this student's CV");
 
   // Get the completed CVs from the PDSystem. I have finally removed backwards compatibility here
-  CV::populate_smarty_arrays();
+  CV::populate_smarty_arrays($student_id);
 
   $smarty->display("admin/student_directory/list_student_cvs.tpl");
 
