@@ -534,6 +534,7 @@ function student_management_statistics()
 function student_assessment_details()
 {
   global $smarty;
+  global $page;
 
   $group_id = $_REQUEST['group_id'];
   $year = $_REQUEST['year'];
@@ -548,13 +549,13 @@ function student_assessment_details()
 
   if(empty($group_id))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no assessment regime selected");
   }
   if(empty($year))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no year selected");
   }
@@ -583,6 +584,7 @@ function student_assessment_details()
 function student_assessment_details_breakdown()
 {
   global $smarty;
+  global $page;
 
   $group_id = $_REQUEST['group_id'];
   $year = $_REQUEST['year'];
@@ -591,19 +593,19 @@ function student_assessment_details_breakdown()
 
   if(empty($group_id))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no assessment regime selected");
   }
   if(empty($year))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no year selected");
   }
   if(empty($cassessment_id))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no assessment selected");
   }
@@ -625,6 +627,7 @@ function student_assessment_details_breakdown()
 function student_fetch_assessment_details()
 {
   global $smarty;
+  global $page;
 
   $group_id = $_REQUEST['group_id'];
   $year = $_REQUEST['year'];
@@ -634,13 +637,13 @@ function student_fetch_assessment_details()
 
   if(empty($group_id) || empty($cassessment_id))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no assessment selected");
   }
   if(empty($year))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no year selected");
   }
@@ -648,7 +651,7 @@ function student_fetch_assessment_details()
   switch($format)
   {
   case "HTML":
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("");
     $row_start = "<tr><td>";
     $separator = "</td><td>";
@@ -692,6 +695,7 @@ function student_fetch_assessment_details()
 function student_broadsheet()
 {
   global $smarty;
+  global $page;
 
   $group_id = $_REQUEST['group_id'];
   $year = $_REQUEST['year'];
@@ -700,13 +704,13 @@ function student_broadsheet()
 
   if(empty($group_id))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no assessment regime selected");
   }
   if(empty($year))
   {
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("student");
     die_gracefully("Warning, no year selected");
   }
@@ -714,7 +718,7 @@ function student_broadsheet()
   switch($format)
   {
   case "HTML":
-    page_header("Student Directory");
+    $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
     print_menu("");
     $row_start = "<tr><td>";
     $separator = "</td><td>";

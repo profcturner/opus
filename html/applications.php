@@ -29,9 +29,7 @@ auth_user("student");
 $smarty->assign("section", "pms");
 $page['help_page']="applications";
     
-page_header("Company Applications");	// Calls the function for the header
-print_menu("student");			// Print the menu for the relevant user
-
+$page = new HTMLOPUS('Applications', 'mycareer', 'applications');  
 if(!is_admin() && !is_student()){
   die_gracefully("You do not have permission to access this page.");
 }

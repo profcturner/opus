@@ -22,8 +22,7 @@ db_connect()
 // Authenticate user so that the right people see the right thing
 auth_user("student");
     
-page_header("Student Index");	// Calls the function for the header
-print_menu("student");			// Print the menu for the relevant user
+$page = new HTMLOPUS('Home Page', 'myCareer', 'Home');
 
 if(!is_admin() && !is_student()){
   die_gracefully("You do not have permission to access this page.");

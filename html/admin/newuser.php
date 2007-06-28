@@ -33,7 +33,7 @@ if(!check_default_policy("student", "create"))
   die_gracefully("You do not have permission to create new students.");
 
 // The Page Header file
-page_header("New User Creation");
+$page = new HTMLOPUS('New Users', 'directories', 'Students');
 
 // The default mode for the global variable
 if(empty ($mode)) $mode = NEW_USER;

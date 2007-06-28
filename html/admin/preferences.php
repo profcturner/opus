@@ -25,7 +25,7 @@ auth_user("admin");
 if(!check_default_policy('status', 'user'))
   print_auth_failure("ACCESS");
 
-page_header('System Status');   // Calls the function for the header
+$page = new HTMLOPUS('Preferences', 'Configuration', 'system status');
 
 switch($mode)
 {

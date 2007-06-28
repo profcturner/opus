@@ -26,9 +26,8 @@ if(is_admin() && !empty($student_id) && !is_auth_for_student($student_id, "stude
 
 $smarty->assign("section", "pms");
 $page['help_page'] = "assessment";
-  
-page_header("Assessment Information");               // Calls the function for the header
-print_menu("student");                // Print the menu for the student user
+
+$page = new HTMLOPUS('Assessment', 'mycareer', 'assessment');  
 
 if(is_admin() && empty($student_id))
 {
