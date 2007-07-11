@@ -22,6 +22,7 @@ db_connect()
 // Authenticate user so that the right people see the right thing
 auth_user("student");
 
+$page = new HTMLOPUS('Notes', 'mycareer', 'notes');  
 page_header("notes");
 
 if(is_student())
