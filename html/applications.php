@@ -17,7 +17,7 @@ include('lookup.php');
 include('cv.php');
 
 include('pdp.php');
-include('CVGroups.php');
+include('CVGroups.class.php');
 
 // Connect to the database on the server
 db_connect()
