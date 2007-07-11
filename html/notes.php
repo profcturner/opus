@@ -23,7 +23,7 @@ db_connect()
 auth_user("student");
 
 $page = new HTMLOPUS('Notes', 'mycareer', 'notes');  
-page_header("notes");
+//page_header("notes");
 
 if(is_student())
 {
