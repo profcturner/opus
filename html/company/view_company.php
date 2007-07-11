@@ -33,15 +33,15 @@ auth_user("user");
 $smarty->assign("section", "pms");
 if(is_student())
 {
-  $page['help_page']="company_list";    
+  $legacy_page['help_page']="company_list";    
   switch($mode)
   {
   case "CompanyView":
   case "VacancyView":
-    $page['help_page']="vacancy_company_details";    
+    $legacy_page['help_page']="vacancy_company_details";    
     break;
   case COMPANY_ADDCOMPANYSTUDENT:
-    $page['help_page']="are_you_sure";    
+    $legacy_page['help_page']="are_you_sure";    
     break;
   }
 

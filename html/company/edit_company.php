@@ -40,7 +40,8 @@ switch($_REQUEST['mode'])
  case "VacancyEdit":
  case "VacancyAdd":
  case "VacancyClone":
-  $page['editor'] = TRUE;
+  // @todo the new HTML code needs augmented for things like this.
+  $legacy_page['editor'] = TRUE;
   break;
 }
 
@@ -1069,7 +1070,7 @@ function vacancy_delete()
       $company_name;
 
     $log['access']->LogPrint[$notify];
-    $page["notify"] .= $notify;
+    $legacy_page["notify"] .= $notify;
     
     company_vacancy_list();
   }
@@ -1189,7 +1190,7 @@ function vacancy_update()
 
   $log['access']->LogPrint($notify);
 
-  $page["notify"] .= $notify;
+  $legacy_page["notify"] .= $notify;
   
   // Check the parsing of the code
   $brief = xml_parser(clean_bad_xhtml(stripslashes($_REQUEST['brief'])));
@@ -1489,7 +1490,7 @@ function vacancy_insert()
 
   $log['access']->LogPrint($notify);
 
-  $page["notify"] .= $notify;
+  $legacy_page["notify"] .= $notify;
     
   // Check the parsing of the code
   $brief = xml_parser(clean_bad_xhtml(stripslashes($_REQUEST['brief'])));

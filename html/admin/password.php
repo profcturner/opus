@@ -22,7 +22,7 @@ auth_user("user");
 $smarty->assign("section", "pms");
 if(is_student())
 {
-  $page['help_page'] = "change_password";
+  $legacy_page['help_page'] = "change_password";
 }
     
 $page = new HTMLOPUS("Change Password");	// Calls the function for the header

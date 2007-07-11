@@ -218,7 +218,11 @@ li {
    margin: 0px;
    margin-top: 20px;
    padding: 0px;
+<<<<<<< .mine
+   background: transparent url(/pdp/images/style_images/blue/nav/logo.png) no-repeat;
+=======
    background: transparent url(/opus/images/logo.png) no-repeat;
+>>>>>>> .r81
    text-decoration: none;
    line-height: 66px;
 }
@@ -230,7 +234,11 @@ li {
    display: block;
    clear: none;
    text-indent: -1000em; 
+<<<<<<< .mine
+   background: transparent url(/pdp/images/style_images/blue/nav/logo.png) no-repeat;
+=======
    background: transparent url(/opus/images/logo.png) no-repeat;
+>>>>>>> .r81
    text-decoration: none;
    line-height: 66px;
 }

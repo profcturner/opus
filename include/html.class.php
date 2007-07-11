@@ -33,6 +33,8 @@ $smarty->assign_by_ref("opus_version", OPUS::get_version());
 $smarty->assign_by_ref("conf", $conf);
 $smarty->assign_by_ref("page", $page);
 $smarty->assign_by_ref("session", $_SESSION);
+// This next assignment will be removed eventually
+$smarty->assign_by_ref("legacy_page", $legacy_page);
 
 // The class that follows should be declared in a single instance, into
 // $page, if required.
@@ -48,6 +50,7 @@ class HTMLOPUS
   {
     global $conf;
     global $smarty;
+    global $student_id; // @todo handle in the session in the future.
 
     // Sadly these are not available in the $page reference
     // when the display() is called.

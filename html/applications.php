@@ -27,7 +27,7 @@ db_connect()
 auth_user("student");
 
 $smarty->assign("section", "pms");
-$page['help_page']="applications";
+$legacy_page['help_page']="applications";
     
 $page = new HTMLOPUS('Applications', 'mycareer', 'applications');  
 if(!is_admin() && !is_student()){
