@@ -53,10 +53,6 @@ switch($mode)
     break;
 }
 
-
-  // Print out the help column on rigth hand side
-  right_column("cdetails");
-
   // Print the footer and finish the page
   $page->end();			
 
