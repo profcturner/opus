@@ -34,7 +34,7 @@
 <title>{$conf.institution|escape:"htmlall"} | {$page_title|escape:"htmlall"}</title>
 <!-- <BASEFONT NAME="Arial, Helvetica, sans-serif" SIZE="2"> -->
 {* Load HTML Area if the "editor" component of page is set *}
-{if $page.editor}
+{if $legacy_page.editor}
 <script language="JavaScript" type="text/javascript">
   _editor_url = "/jsincludes/htmlarea/";
   _editor_lang = "en";
@@ -47,7 +47,7 @@
 <script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/popcalendar.js"></script>
 </head>
 {* Start the real header *}
-{if !($page.nopmsheader)}
+{if !($legacy_page.nopmsheader)}
 {*
 <TABLE BORDER="0" WIDTH="100%%" BGCOLOR="#000031" CELLSPACING="0" CELLPADDING="0">
   <TR>
@@ -63,7 +63,7 @@
 *}
 
 {/if}
-{if $page.editor}
+{if $legacy_page.editor}
 <body onload="HTMLArea.init(); HTMLArea.onload=initEditor">
 {else}
 <body>
