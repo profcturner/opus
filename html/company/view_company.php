@@ -46,7 +46,15 @@ if(is_student())
   }
 
 }
-$page = new HTMLOPUS("Company List", "directories");	// Calls the function for the header
+
+if(is_student())
+{
+  $page = new HTMLOPUS('Vacancies and Companies', 'mycareer', 'vacancies');  
+}
+else
+{
+  $page = new HTMLOPUS("Company List", "directories");	// Calls the function for the header
+}
 
 // Students are carefully anchored to themselves only!
 if(is_student()){

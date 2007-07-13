@@ -22,7 +22,7 @@ db_connect()
 // Authenticate user so that the right people see the right thing
 auth_user("student");
     
-$page = new HTMLOPUS('Home Page', 'myCareer', 'Home');
+$page = new HTMLOPUS('Home Page', 'mycareer', 'Placement Home');
 
 if(!is_admin() && !is_student()){
   die_gracefully("You do not have permission to access this page.");
