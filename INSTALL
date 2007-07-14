@@ -1,0 +1,119 @@
+OPUS INSTALLATION NOTES
+
+Here are rough installation notes for OPUS 3.3.0. Remember, one of the major
+things we are working on for version 4.0.0 is an easier installation route.
+Version 4 of both the PDSystem and OPUS are expected late in August or
+early in September.
+
+Sorry about that!
+
+1. Decide whether to install the PDSystem
+
+The PDSystem, designed to handle students' personal development, is the sister
+application for OPUS. In recent years OPUS has disabled some of its internal
+handling for things like CVs in favour of tight integration of the PDSystem.
+This will change for version 4.0.0. In the meantime, if you really want all
+the clever CV handling you are strongly advised to install the PDSystem also.
+Refer to http://foss.ulster.ac.uk/projects/pdsystem/ for more details.
+
+2. Are you running Debian?
+
+If you are running Debian GNU/Linux this installation will be MUCH more
+automatic, including making the database for you. Add the following line
+to /etc/apt/sources.list
+
+  deb http://foss.ulster.ac.uk/debian stable main
+
+and then simply run aptitude install opus (or use your favourite package
+management tool). You can then shortcut most of this (but packaging is
+a bit experimental at the moment), except the pear dependencies perhaps.
+
+3. Unpack the archive
+
+OK, so if you are reading this, you probably already followed this step.
+Unpack the files to somewhere sensible for your site architecture. For
+example, /usr/share/opus would be a good place for most flavours of Linux
+and maybe some unixes too.
+
+4. Ensure requirements are installed and working
+
+Do you have a functional web server, with PHP 5 running, as well as a
+MySQL server and so on? Have you downloaded Smarty from
+
+http://smarty.php.net and installed it somewhere?
+
+Configuring fine details on these packages is outside the scope of this
+document, but there are thousands of help documents on the internet for this.
+
+Install pear (http://pear.php.net) and
+
+  pear install DB
+  pear install Mail
+  pear install Mail_Mime
+
+5. Get the Web Server to see the pages
+
+You want your web server to see the "html" directory in the archive. Here are three
+ways to achieve this:
+
+  a) copy the directory underneath your htdocs or other directory root;
+  b) make a symbolic link to the html directory along the lines of
+     ln -s /var/www/opus /usr/share/opus/html
+     obviously your paths will vary
+  c) configure the web server directly.
+
+The third is probably the easiest. The etc directory contains a sample apache 2
+configuration file that can be dropped into your apache conf.d directory, but be
+sure to edit the file for paths. If you choose option a) or b) you will need to
+use another option, like an .htaccess file or equivalent to make your include
+path point at your smarty installation, and the include directory for opus.
+
+6. Make the OPUS database
+
+Use MySQL to create a new database. Details vary but something like:
+
+  mysql -u root -p
+  (type password for mysql root user)
+  create database opus;
+  grant all on opus.* to opus_user@localhost identified by 'password_here';
+  source /usr/share/opus/sql_patch/schema.sql
+  source /usr/share/opus/sql_patch/data.sql
+
+  amend paths as needed.
+
+7. Set up Smarty templating
+
+The templates directory are used by Smarty, you should create
+
+  templates_c
+  templates_cache
+
+directories also, which need to be writeable by your web server user.
+For example
+
+  chown root:www-data templates_*
+  chmod 770 templates_*
+
+Smarty will then be able to make files in here.
+
+8. Set up Log files
+
+Similarly, you need a directory somewhere which is writable by the web server
+to contain the OPUS log files. Create one of your choice.
+
+9. Edit the configuration file
+
+Go to the include directory and use config.php.dist as a template for
+config.php (cp config.php.dist config.php), and edit the file appropriately.
+It is reasonably well commented. Debian will do most of this automatically.
+
+10. Try to login
+
+This should create an admin account with username "admin" and password "password".
+OBVIOUSLY IF YOU CAN LOGIN YOU SHOULD CHANGE THIS PASSWORD!
+
+This is probably all for now. There should be more to do to enable certain periodic
+cleanup code, but that hasn't been released into the foss server yet and will be
+in 4.0.0 if not before.
+
+See http://foss.ulster.ac.uk/projects/opus/
