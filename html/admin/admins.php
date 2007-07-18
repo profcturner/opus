@@ -24,7 +24,7 @@ db_connect()
 auth_user("admin");
 
 //$page2 = new HTMLOPUS("Administrator Editor", "configuration", "admins");    
-$page = new HTMLOPUS("Administrator Editor", "directories");	// Calls the function for the header
+$page = new HTMLOPUS("Administrator Editor", "configuration");	// Calls the function for the header
 
 // Non root users may only edit themselves
 if(!is_root())
