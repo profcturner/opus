@@ -368,6 +368,7 @@ function company_addcompanystudent()
   global $log;         // Logging
   global $user;        // Currently authenticated user
   global $year;
+  global $smarty;
 
   // Better be an admin or a student
   if(!is_admin() && !is_student())
