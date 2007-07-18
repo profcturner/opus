@@ -30,7 +30,7 @@ class OPUS
 {
   function get_version()
   {
-    return ("3.3.0");
+    return ("3.3.1");
   }
 }
 
