@@ -39,19 +39,19 @@ Show applications
 <a name="selected">
 <!-- Start of student listing -->
 <tr><td colspan="3">
-{include file="company_student_list_section.tpl"
+{include file="companies/company_student_list_section.tpl"
 	students=$placed_students
 	subtitle="Students placed with this $companyvacancy"
 	show_link=TRUE
 }
 
-{include file="company_student_list_section.tpl"
+{include file="companies/company_student_list_section.tpl"
 	students=$available_students
 	subtitle="Students still available"
 	show_link=TRUE
 }
 
-{include file="company_student_list_section.tpl" 
+{include file="companies/company_student_list_section.tpl" 
 	students=$unavailable_students
 	subtitle="Students no longer available"
 	show_link=FALSE
