@@ -8,7 +8,7 @@
 ** exists one will be created.
 **
 */
-include("config.php");
+include("common.php");
 include("authenticate.php");
 
 

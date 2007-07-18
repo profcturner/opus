@@ -432,6 +432,8 @@ function company_addcompanystudent()
   $smarty->assign("year", $year);
   $smarty->assign("company_name", get_company_name($company_id));
   $smarty->assign("vacancy_description", $vacancy['description']);
+  $smarty->assign("company_id", $company_id);
+  $smarty->assign("vacancy_id", $vacancy_id);
 
   // Still with us? Check for confirmation
   if($confirm!=1){
