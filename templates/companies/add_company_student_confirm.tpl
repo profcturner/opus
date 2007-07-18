@@ -33,7 +33,7 @@ You have {$count_completed_cvs} completed CVs within the PDSystem, of which
 {if $smarty.section.archived_cv.first}
 <option disabled value="0">Archived CVs</option>
 {/if}
-<option value="hash_{$archived_cvs[archived_cv].hash}_{$archived_cvs[archived_cv].type}">{$archived_cvs[archived_cv].type|escape:"htmlall"} (From PDSystem)</option>
+<option value="hash_{$archived_cvs[archived_cv]->hash}_{$archived_cvs[archived_cv]->type}">{$archived_cvs[archived_cv]->type|escape:"htmlall"} (From PDSystem)</option>
 {/section}
 {* Loop through invalid CVs for information *}
 {section name=invalid_cv loop=$invalid_cvs}
