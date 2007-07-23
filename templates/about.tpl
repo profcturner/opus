@@ -67,41 +67,9 @@
     </td>
 
   <td valign="top">&nbsp;</td>
- </tr>
+ </tr> 
 
-              
- <tr bgcolor="#DAF1FC">
-  <td height="21" colspan="3"><hr align="center" width="100%" noshade="noshade" color="#FFFFFF"></td>
- </tr>
  
- <tr bgcolor="#DAF1FC">
-  <td valign="top">&nbsp;</td>
-  <td valign="top"><span class="text"><span class="titles">Login Instructions</span><br/><small style="color:red;">On-line passwords have been reset to date of birth (ddmmyyyy).</small><br/>
-      <span class="groups">Students</span><br />
-
-      username = Student Number (including 's')<br />
-      password = Your on-line password<br />
-      
-      <span class="groups">Staff</span><br />
-      username = Staff Number (including 'e')<br />
-      password = Your on-line password <br />
-
-      
-      <span class="groups">Guests</span><br />
-
-      username = PDS Username <br />
-      password = PDS Password<br /><br />
-      
-      <span class="groups"></span></span></td>
-  <td valign="top">&nbsp;</td>
- </tr>
-
- <tr>
-  <td width="20" height="20" align="left" valign="bottom" bgcolor="#DAF1FC"><img src="pdp/images/login4.jpg" width="20" height="20" align="absbottom" /></td>
-
-  <td width="260" valign="top" bgcolor="#DAF1FC">&nbsp;</td>
-  <td width="20" height="20" align="right" valign="bottom" bgcolor="#DAF1FC"><img src="pdp/images/login3.jpg" width="20" height="20" align="absbottom" /></td>
- </tr>
 </table>
   </td>
  </tr>
