@@ -21,7 +21,7 @@
   <br />
 <table width="700" height="90"  border="0" align="center" cellspacing="0">
  <tr valign="top">
-  <td width="357" height="90"><div align="left"><img src="http://wwwimages.ulster.ac.uk/online/images/uulogo.gif" width="250" height="50"></div></td>
+  <td><div align="left"><img src="http://wwwimages.ulster.ac.uk/online/images/uulogo.gif" width="250" height="50"></div></td>
 
   <td width="350"><div align="right"><img src="images/logo.png" width="115" height="66"></div></td>
  </tr>
@@ -62,11 +62,9 @@
 
 </table><br/>
                       
-    <input type="submit" name="Submit" value="login" />
-    <br><a href="https://secure.ulster.ac.uk/ldap">Reset <b style="color:red;">on-line</b> passwords here.</a>
-    <br><span class="important"></span>
+    blah
       
-    </form></td>
+    </td>
 
   <td valign="top">&nbsp;</td>
  </tr>
@@ -109,12 +107,12 @@
  </tr>
 </table>
 </td>
-  <td width="20" align="center" valign="middle" background="images/right.jpg"><div align="center"></div></td>
+  <td width="20" align="center" valign="middle" background="pdp/images/right.jpg"><div align="center"></div></td>
   </tr>
 
  <tr align="center" valign="middle">
-  <td width="20" height="20" align="right" valign="bottom" background="images/corner4.jpg"></td>
-  <td width="760" height="20" background="images/bottom.jpg"><div align="center"></div></td>  
-  <td width="20" height="20" align="left" valign="bottom" background="images/corner3.jpg"></td>
+  <td width="20" height="20" align="right" valign="bottom" background="pdp/images/corner4.jpg"></td>
+  <td width="760" height="20" background="pdp/images/bottom.jpg"><div align="center"></div></td>  
+  <td width="20" height="20" align="left" valign="bottom" background="pdp/images/corner3.jpg"></td>
  </tr>
 </table> 
