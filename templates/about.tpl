@@ -16,7 +16,7 @@
     <br />
     <table width="700" height="90"  border="0" align="center" cellspacing="0">
       <tr valign="top">
-        <td><div align="left"><img src="http://wwwimages.ulster.ac.uk/online/images/uulogo.gif" width="250" height="50"></div></td>
+        <td><div align="left"><img src="http://opus.ulster.ac.uk/pdp/images/uulogo-white.gif" width="250" height="50"></div></td>
         <td width="350"><div align="right"><img src="images/logo.png" width="115" height="66"></div></td>
       </tr>
     </table><br />
@@ -46,6 +46,8 @@
 
         <td width="300" valign="top">
           <strong>{$conf.appname}, Version {$opus_version}</strong>
+          <br />
+          Principal Developer: Dr Colin Turner
         </td>
         <td valign="top">&nbsp;</td>
       </tr> 
