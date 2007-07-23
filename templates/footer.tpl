@@ -22,11 +22,12 @@
 <div id="footer">
 <TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="0">
   <TR>
-  <TD WIDTH="100%" COLSPAN="2" class="align-centre">
-  {$conf.appname}, Version {$opus_version}<br />
+  <TD WIDTH="100%" COLSPAN="2">
+  {$conf.appname}, Version {$opus_version} |
     <a href="{$conf.scripts.user.helpdir}{if $student_id}?student_id={$student_id}{/if}">
 For help, please try the Help Directory</a>
-    </a>
+    </a> |
+    <a href="{$conf.scripts.user.about}">About OPUS</a> 
 {if $conf.support_site.reportbug}
  | <a href="{$conf.support_site.reportbug}">Report a Bug or Request a Feature</a>
 {/if}

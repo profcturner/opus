@@ -119,7 +119,7 @@ $conf['scripts']['user']['resources']    = sprintf("%sresources.php", $conf['pat
 $conf['scripts']['user']['photos']       = sprintf("%sphoto.php", $conf['paths']['base']);
 $conf['scripts']['user']['assessment']   = sprintf("%stemplate_assessment.php", $conf['paths']['assessment']);
 $conf['scripts']['user']['helpdir']      = sprintf("%shelp_directory.php", $conf['paths']['base']);
-
+$conf['scripts']['user']['about']      = sprintf("%sabout.php", $conf['paths']['base']);
 
 $conf['scripts']['admin'] = array();
 $conf['scripts']['admin']['index']       = sprintf("%sindex.php", $conf['paths']['admin']);

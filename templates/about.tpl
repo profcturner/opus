@@ -32,13 +32,7 @@
         information about the placement, through recording assessment outcomes.
         It is developed by the University of Ulster, and started life in the School
         of Electrical and Mechanical Engineering.
-        <br><br>
-
-        OPUS is released as Free and Open Source Software under the
-        <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License, version 2</a><br><br>
-    
-        To learn more, visit our <a href="http://foss.ulster.ac.uk/projects/opus">development
-        website</a>.
+        
         </td>
 
         <!-- Text area middle (put nothing inside here) -->
@@ -46,8 +40,15 @@
 
         <td width="300" valign="top">
           <strong>{$conf.appname}, Version {$opus_version}</strong>
-          <br />
+          <br /><br />
           Principal Developer: Dr Colin Turner
+          <br><br>
+
+        OPUS is released as Free and Open Source Software under the
+        <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License, version 2</a><br><br>
+    
+        To learn more, visit our <a href="http://foss.ulster.ac.uk/projects/opus">development
+        website</a>.
         </td>
         <td valign="top">&nbsp;</td>
       </tr> 
