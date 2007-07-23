@@ -231,11 +231,11 @@ function AddSchool()
   else $status="";
 
   $sql = "insert into schools (school_name, www, status) VALUES(" .
-    make_null($school_name) . ", " . make_null($www) . ", " . make_null($status) . ")";
+    make_null($school_name) . ", " . make_null($www) . ", '" . $status . "')";
   mysql_query($sql)
     or print_mysql_error2("Unable to add school", $sql);
 
-  Schools_DisplayList();
+  DisplaySchoolList();
 }
 
 
