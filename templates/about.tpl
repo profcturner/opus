@@ -62,7 +62,7 @@
 
 </table><br/>
                       
-    blah
+    <strong>{$conf.appname}, Version {$opus_version}</strong>
       
     </td>
 
@@ -97,10 +97,10 @@
  </tr>
 
  <tr>
-  <td width="20" height="20" align="left" valign="bottom" bgcolor="#DAF1FC"><img src="images/login4.jpg" width="20" height="20" align="absbottom" /></td>
+  <td width="20" height="20" align="left" valign="bottom" bgcolor="#DAF1FC"><img src="pdp/images/login4.jpg" width="20" height="20" align="absbottom" /></td>
 
   <td width="260" valign="top" bgcolor="#DAF1FC">&nbsp;</td>
-  <td width="20" height="20" align="right" valign="bottom" bgcolor="#DAF1FC"><img src="images/login3.jpg" width="20" height="20" align="absbottom" /></td>
+  <td width="20" height="20" align="right" valign="bottom" bgcolor="#DAF1FC"><img src="pdp/images/login3.jpg" width="20" height="20" align="absbottom" /></td>
  </tr>
 </table>
   </td>
