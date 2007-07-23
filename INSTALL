@@ -67,6 +67,7 @@ configuration file that can be dropped into your apache conf.d directory, but be
 sure to edit the file for paths. If you choose option a) or b) you will need to
 use another option, like an .htaccess file or equivalent to make your include
 path point at your smarty installation, and the include directory for opus.
+MAKE SURE YOUR INCLUDE_PATH DOES *NOT* INCLUDE THE CURRENT DIRECTORY (.)
 
 6. Make the OPUS database
 
