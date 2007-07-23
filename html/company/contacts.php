@@ -23,7 +23,7 @@ db_connect()
 // Authenticate user so that the right people see the right thing
 auth_user("company");
 
-$page = new HTMLOPUS("Contact Editor", "directories");	// Calls the function for the header
+$page = new HTMLOPUS("Contact Directory", "directories");	// Calls the function for the header
 
 // Ordinary users can only view themselves
 if(is_company()){

@@ -45,7 +45,7 @@ switch($_REQUEST['mode'])
   break;
 }
 
-$page = new HTMLOPUS('Company Editor', 'directories', 'companies');
+$page = new HTMLOPUS('Company Directory', 'directories', 'companies');
 
 // If we know the vacancy_id but not the company_id, deduce the latter...
 if(empty($company_id) && !empty($vacancy_id))
