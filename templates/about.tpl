@@ -3,9 +3,9 @@
  <tr align="center" valign="middle">
 
   <!-- Border Top -->
-  <td width="20" height="20" align="right" valign="bottom" background="images/corner1.jpg"></td>
-  <td width="760" height="20" background="images/top.jpg"><div align="center"></div></td>  
-  <td width="20" height="20" align="left" valign="bottom" background="images/corner2.jpg"></td>
+  <td width="20" height="20" align="right" valign="bottom" background="pdp/images/corner1.jpg"></td>
+  <td width="760" height="20" background="pdp/images/top.jpg"><div align="center"></div></td>  
+  <td width="20" height="20" align="left" valign="bottom" background="pdp/images/corner2.jpg"></td>
  </tr>
 
  
@@ -13,7 +13,7 @@
   
  
   <!-- Border Left -->
-  <td width="20" align="center" valign="middle" background="images/left.jpg"><div align="center"></div></td>
+  <td width="20" align="center" valign="middle" background="pdp/images/left.jpg"><div align="center"></div></td>
   <td width="760" align="center" valign="middle">
    
      
@@ -54,9 +54,9 @@
   <td width="75">&nbsp;</td>
   <td width="300" valign="top"><table width="300"  border="0" cellpadding="0" cellspacing="0">
  <tr>
-  <td width="20" height="20" align="left" valign="top" bgcolor="#DAF1FC"><img src="images/login1.jpg" width="20" height="20" align="top" /></td>
+  <td width="20" height="20" align="left" valign="top" bgcolor="#DAF1FC"><img src="pdp/images/login1.jpg" width="20" height="20" align="top" /></td>
   <td width="260" valign="top" bgcolor="#DAF1FC">&nbsp;</td>
-  <td width="20" height="20" align="right" valign="top" bgcolor="#DAF1FC"><div align="right"><img src="images/login2.jpg" width="20" height="20" align="top" /></div></td>
+  <td width="20" height="20" align="right" valign="top" bgcolor="#DAF1FC"><div align="right"><img src="pdp/images/login2.jpg" width="20" height="20" align="top" /></div></td>
  </tr>
         
 
