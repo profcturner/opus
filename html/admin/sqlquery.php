@@ -32,7 +32,7 @@ switch($mode)
     break;
   case "ResultsDisplay":
     if($type == "HTML")
-      $page = new HTMLOPUS('SQL Query')
+      $page = new HTMLOPUS('SQL Query');
     display_sqlresults();
     if($type == "HTML")
       $page->end();
