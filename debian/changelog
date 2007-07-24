@@ -1,3 +1,9 @@
+opus (3.3.0) unstable; urgency=low
+
+  * Initial milestone release.
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Sat, 14 Jul 2007 01:03:12 +0100
+
 opus (3.2.0-1) unstable; urgency=low
 
   * Initial release, this is for TESTING only, do NOT BUILD
