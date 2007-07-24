@@ -51,7 +51,7 @@ function display_sqlform()
   global $PHP_SELF;
   global $log;
 
-  page_header("General SQL Query");
+  $page = new HTMLOPUS('SQL Query');
   print("<H2 ALIGN=\"CENTER\">Enter Query</H2>\n");
 
   printf("<FORM METHOD=\"post\" ACTION=\"%s?mode=%s\">\n",
