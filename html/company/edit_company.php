@@ -1597,7 +1597,7 @@ function email_cv()
 
   $subject = "CV for vacancy $vacancy_description, student $student_name";
 
-  $new_mail = new OPUSMail($sender_email, $subject, $text, $extra_headers, $sender_email)
+  $new_mail = new OPUSMail($sender_email, $subject, $text, $extra_headers, $sender_email);
   $new_mail->add_direct_attachment($file, "application/pdf", "$student_reg.pdf");
   $new_mail->send();
   
