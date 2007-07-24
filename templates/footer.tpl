@@ -27,7 +27,7 @@
     <a href="{$conf.scripts.user.helpdir}{if $student_id}?student_id={$student_id}{/if}">
 For help, please try the Help Directory</a>
     </a> |
-    <a href="{$conf.scripts.user.about}">About OPUS</a> 
+    <a href="{$conf.paths.base}about.php">About OPUS</a> 
 {if $conf.support_site.reportbug}
  | <a href="{$conf.support_site.reportbug}">Report a Bug or Request a Feature</a>
 {/if}
