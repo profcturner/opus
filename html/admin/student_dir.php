@@ -1310,6 +1310,10 @@ function student_simplesearch()
   printf("<P ALIGN=\"CENTER\"><A HREF=\"$PHP_SELF?mode=StudentManagementStatistics\">" .
          "Student Management Statistics</A></P>\n");
 
+  echo "<P ALIGN=\"CENTER\"><A HREF=\"" . $conf['scripts']['admin']['newuser'] . "\">" .
+         "Add an Invidual New Student</A></P>\n");
+
+
   
   if($letter=="ALL"){
     printf("<H2 ALIGN=\"CENTER\">All Students</H2>\n");
