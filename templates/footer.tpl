@@ -32,13 +32,11 @@ For help, please try the Help Directory</a>
  | <a href="{$conf.support_site.reportbug}">Report a Bug or Request a Feature</a>
 {/if}
   </TD>
-  </TR>
-<TR>
-<TD COLSPAN="2" class="align-right">
-<!-- Begin benchmark -->
-Compile time:  {$page->endtime-$page->starttime|string_format:"%.2f"}  seconds.
-<!-- End benchmark -->
-</TD>
+  <TD COLSPAN="2" class="align-right">
+  <!-- Begin benchmark -->
+  <small>Compile time:  {$page->endtime-$page->starttime|string_format:"%.2f"}  seconds.</small>
+  <!-- End benchmark -->
+  </TD>
 </TR>
 </TABLE>
 </div>
