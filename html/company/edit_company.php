@@ -19,7 +19,8 @@ include('resources.php');
 include('cv.php');
 include('company_search.php');
 include('pdp.php');
-include('mail.php');
+
+require_once 'Mail.class.php';
 
 // Connect to the database on the server
 db_connect()
@@ -767,7 +768,8 @@ function companystudent_status_update()
     $extra = "From: $sender_email\r\n";
     if($_REQUEST['CC']) $extra .= "Cc: $sender_email\r\n";
     
-    mail($student_email, $_REQUEST['subject'], $message, $extra);
+    $new_mail = new OPUSMail($student_email, $_REQUEST['subject'], $message, $extra);
+    $new_mail->send();
   }
 
   company_displaystudents();
@@ -1580,11 +1582,7 @@ function email_cv()
     "Vacancy : $vacancy_description\n" .
     "Company : $company_name\n";
 
-  $files = array();
-  $file  = array();
-  $file['data'] = PDSystem::fetch_cv($student_id, $template_id);
-  $file['type'] = "application/pdf";
-  $file['name'] = "$student_reg.pdf";
+  $file = PDSystem::fetch_cv($student_id, $template_id);
 
   $student_details = get_user_details($student_id);
   $sender_details = get_user_details(get_id());
@@ -1597,15 +1595,12 @@ function email_cv()
     $sender_details['title'] . ' ' . $sender_details['firstname'] . ' ' .
     $sender_details['surname'] . " <" . $sender_details['email'] . ">";
 
+  $subject = "CV for vacancy $vacancy_description, student $student_name";
 
-  $headers = array(
-              'From'    => $sender_email,
-              'Subject' => "CV for vacancy $vacancy_description, student $student_name"
-              );
-
-  array_push($files, $file);
+  $new_mail = new OPUSMail($sender_email, $subject, $text, $extra_headers, $sender_email)
+  $new_mail->add_direct_attachment($file, "application/pdf", "$student_reg.pdf");
+  $new_mail->send();
   
-  send_email($headers, $text, $files, $sender_email);
   company_displaystudents();
 }
 

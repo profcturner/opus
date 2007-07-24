@@ -29,7 +29,7 @@ class OPUSMail
   * @param string $message_body the main text of the message
   * @param string $extra_headers any extra headers should be added here
   */
-  function __construct($to, $subject, $message_body, $extra_headers="")
+  function __construct($to, $subject, $message_body, $extra_headers="", $from="")
   {
     $this->from = $from;
     $this->subject = $subject;
@@ -129,7 +129,8 @@ class OPUSMail
   {
     $newline = "\r\n";
     // The from address goes in extra_headers
-    $this->extra_headers .= "From: " . $this->from . $newline;
+    if(!empty($this->from))
+      $this->extra_headers .= "From: " . $this->from . $newline;
 
     // Hardcode extra headers to contain a version
     //$this->extra_headers .= "X-OPUS-Version: " . OPUS::get_version() . $newline;

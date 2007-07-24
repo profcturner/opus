@@ -20,11 +20,11 @@ include('notes.php');
 include('users.php');
 include('cv.php');
 include('pdp.php');
-include('mail.php');
 include('supervisors.php');
 
 // Version 3 style includes
 require_once 'CV.class.php';
+require_once 'Mail.class.php';
 
 // Connect to the database on the server
 db_connect()
@@ -215,7 +215,8 @@ function student_mass_email()
     $bcc = substr($bcc, 0, -2) . "\r\n";
     $extra .= $bcc;
     echo "</ol>\n";
-    mail($to_email, $_REQUEST['subject'], $message, $extra);
+    $new_mail = new OPUSMail($to_email, $_REQUEST['subject'], $message, $extra);
+    $new_mail->send();
     echo "<p align=\"center\">Done</p>";
   }
   else
