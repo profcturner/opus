@@ -1233,9 +1233,9 @@ function student_advancedsearch()
   if($sort == 'status') $sortc = " ORDER BY status, surname";
 
   // Form basic query
-  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.course FROM " .
-           "id, cv_pdetails LEFT JOIN students ON id.id_number=students.user_id " .
-           "WHERE id.user='student' AND id.id_number = cv_pdetails.id";
+  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.course FROM id " .
+    "LEFT JOIN cv_pdetails ON id_number=cv_pdetails.id LEFT JOIN students " .
+    "ON id_number=students.user_id where user='student'";
 
   // Search Criteria (Refining where given)
   if(!empty($searchc)) $query .= " AND" . $searchc;
