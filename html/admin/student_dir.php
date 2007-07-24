@@ -551,13 +551,11 @@ function student_assessment_details()
   if(empty($group_id))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no assessment regime selected");
   }
   if(empty($year))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no year selected");
   }
   // Get all the assessments in the structure
@@ -595,19 +593,16 @@ function student_assessment_details_breakdown()
   if(empty($group_id))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no assessment regime selected");
   }
   if(empty($year))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no year selected");
   }
   if(empty($cassessment_id))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no assessment selected");
   }
   // Get a list of applicable students
@@ -639,13 +634,11 @@ function student_fetch_assessment_details()
   if(empty($group_id) || empty($cassessment_id))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no assessment selected");
   }
   if(empty($year))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no year selected");
   }
 
@@ -653,7 +646,6 @@ function student_fetch_assessment_details()
   {
   case "HTML":
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("");
     $row_start = "<tr><td>";
     $separator = "</td><td>";
     $row_end = "</td></tr>\n";
@@ -706,13 +698,11 @@ function student_broadsheet()
   if(empty($group_id))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no assessment regime selected");
   }
   if(empty($year))
   {
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("student");
     die_gracefully("Warning, no year selected");
   }
 
@@ -720,7 +710,6 @@ function student_broadsheet()
   {
   case "HTML":
     $page = new HTMLOPUS('Student Directory', 'directories', 'Students');
-    print_menu("");
     $row_start = "<tr><td>";
     $separator = "</td><td>";
     $row_end = "</td></tr>\n";
