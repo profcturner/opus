@@ -464,11 +464,11 @@ function report_courses_fetch_data($course, $year)
 
   $course_id = $course['course_id'];
 
-  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.* FROM " .
-    "id, cv_pdetails LEFT JOIN students ON " .
-    "id.id_number=students.user_id " .
-    "WHERE id.user='student' AND id.id_number = cv_pdetails.id" .
+  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.course FROM id " .
+    "LEFT JOIN cv_pdetails ON id_number=cv_pdetails.id LEFT JOIN students " .
+    "ON id_number=students.user_id where user='student' " .
     " AND students.year=$year AND cv_pdetails.course=$course_id";
+
 
   $result = mysql_query($query)
     or print_mysql_error2("Unable to fetch student list.", $query);
@@ -788,11 +788,12 @@ function student_broadsheet_data($group_id, $year, $extras)
   array_push($rows, $header);
 
   // First get a student list, seeking placement in a certain year
-  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.* FROM " .
-           "id, cv_pdetails LEFT JOIN students ON id.id_number=students.user_id " .
-           "WHERE id.user='student' AND id.id_number = cv_pdetails.id" .
-           " AND students.year=$year " . 
-           "ORDER BY students.status, cv_pdetails.surname";
+  
+  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.course FROM id " .
+    "LEFT JOIN cv_pdetails ON id_number=cv_pdetails.id LEFT JOIN students " .
+    "ON id_number=students.user_id where user='student' " .
+    " AND students.year=$year " . 
+    "ORDER BY students.status, cv_pdetails.surname";
 
   $result = mysql_query($query)
     or print_mysql_error2("Unable to fetch student list.");
