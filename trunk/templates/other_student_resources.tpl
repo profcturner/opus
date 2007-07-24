@@ -1,0 +1,8 @@
+<h2>Other Resources for Students</h2>
+<p>
+<b>Click <a href='http://workexperience.ulster.ac.uk/index.phtml' target="_blank">here</a> to access the Work Experience Portal developed by the University of Ulster's Careers Service</b> - This web portal aims to inform, advise and guide you through the world of work experience.  Many of your placement questions will be answered in this portal, from 'how do I find a placement?' to 'I am a student with a disability - what specific issues may affect me?'  The Careers Service is notified of placement opportunities on a weekly basis and these are posted on the online <a href=' http://careers.ulst.ac.uk/vacancy/searchplacevac.phtml ' target="_blank">Vacancy Board</a>.
+           <br><br>
+           <b>Click <a href='http://odl.ulst.ac.uk/webct/public/home.pl' target="_blank">here</a> to access the WebCT Placement Preparation Unit (Industrial Placement)</b> - This unit is <u>only</u> available to second year students and will be listed on your WebCT area.  The Placement Preparation Unit is designed to prepare you from the start to the finish of the placement process.   You will discover how to make effective job applications, excel in interviews and how to find a suitable placement.
+           <br><br>
+           <b>Click <a href='http://odl.ulst.ac.uk/webct/public/home.pl' target="_blank">here</a> to access the WebCT Professional Practice Placement Unit</b> - This unit is available to all year groups of the following programmes, Dietetics, Occupational Therapy, Physiotherapy and Radiography.  The resources and materials provided throughout this unit will assist you in successfully preparing for your various placements and will also provide continued support throughout all your placements.
+           <br><br>
