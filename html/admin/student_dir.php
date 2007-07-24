@@ -1311,7 +1311,7 @@ function student_simplesearch()
          "Student Management Statistics</A></P>\n");
 
   echo "<P ALIGN=\"CENTER\"><A HREF=\"" . $conf['scripts']['admin']['newuser'] . "\">" .
-         "Add an Invidual New Student</A></P>\n");
+         "Add an Invidual New Student</A></P>\n";
 
 
   
