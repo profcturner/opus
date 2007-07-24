@@ -1,3 +1,9 @@
+opus (3.3.1) unstable; urgency=low
+
+  * Several serious bugs fixed from 3.3.0
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Tue, 24 Jul 2007 13:03:02 +0100
+
 opus (3.3.0) unstable; urgency=low
 
   * Initial milestone release.
