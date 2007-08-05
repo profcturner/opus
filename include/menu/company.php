@@ -13,11 +13,16 @@ $navigation->add_menu_item('Contact Details', 'home',
 $navigation->add_menu_item('Change Password', 'home',
    $conf['scripts']['admin']['password']);
 
-
 // Directory menu and its sub items
 $navigation->add_menu('Directories', 'directories', 
   $conf['scripts']['company']['directory'], 'mn0200');
 $navigation->add_menu_item('Companies & Vacancies', 'directories',
   $conf['scripts']['company']['directory']);
+
+// Information menu and its sub items
+$navigation->add_menu('Information', 'information', 
+  $conf['scripts']['user']['resources'], 'mn0300');
+$navigation->add_menu_item('Resources', 'information', 
+  $conf['scripts']['user']['resources']);
 
 ?>

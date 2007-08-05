@@ -24,7 +24,8 @@ $navigation->add_menu_item('Companies & Vacancies', 'directories',
   $conf['scripts']['company']['directory']);
 
 // Information menu and its sub items
-$navigation->add_menu('Information', 'information', '', 'mn0300');
+$navigation->add_menu('Information', 'information', 
+  $conf['scripts']['user']['resources'], 'mn0300');
 $navigation->add_menu_item('Resources', 'information', 
   $conf['scripts']['user']['resources']);
 ?>
