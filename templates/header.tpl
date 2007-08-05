@@ -32,7 +32,7 @@
 {/if}
 <link rel="stylesheet" type="text/css" href="http://{$conf.webhost}/{$conf.paths.base}jsincludes/htmlarea/htmlarea.css">
 <title>{$conf.institution|escape:"htmlall"} | {$page_title|escape:"htmlall"}</title>
-<!-- <BASEFONT NAME="Arial, Helvetica, sans-serif" SIZE="2"> -->
+<script language="JavaScript" type="text/javascript" src="http://{$conf.webhost}/{$conf.paths.base}jsincludes/menu_jb.js"></script>
 {* Load HTML Area if the "editor" component of page is set *}
 {if $legacy_page.editor}
 <script language="JavaScript" type="text/javascript">
