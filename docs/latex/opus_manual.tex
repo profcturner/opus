@@ -262,6 +262,13 @@ since OPUS is specifically \emph{packaged} for Debian.
 Indeed, using the Debian packages will allow you to greatly circumvent many of the other issues in this, and the following chapter, since
 much of the installation and packaging will be handled automatically.
 
+To ensure automatic installation and upgrades, add the following line to your configuration for \lstinline!apt! usually found in
+\lstinline!/etc/apt/sources.list!.
+
+\begin{lstlisting}
+deb http://foss.ulster.ac.uk/debian stable main
+\end{lstlisting}
+
 \subsection{Unix}
 
 As Unix and GNU/Linux are very closely related, most versions of Unix will also run OPUS with ease. Again, most modern Unix versions
@@ -297,9 +304,51 @@ If you plan to install OPUS manually, here is some guidance on the important dir
   \item[sql\_patch] contains SQL files for importing the intial schema and data into MySQL.
 \end{description}
 
+In addition, you should create two more directories, in the same directory as the \lstinline!templates! directory.
+
+\begin{description}
+  \item[templates\_c] used by smarty to compile templates, note it \emph{must} be writable by the web server process.
+  \item[templates\_cache] used by smarty for various caching, again, must be writable by the web server.
+\end{description}
+
+To set the correct permissions you could use commands like:
+
+\begin{lstlisting}{language=bash}
+chown root:www-data templates_*
+chmod 770 templates_*
+\end{lstlisting}
+
+where \lstinline!www-data! is the username for the web server process.
+
 One easy way to deal with this is to copy the whole set into a location \emph{not} under the web server tree, and configuring the web server to have
 acess to the html directory only. For Apache, this is more or less done with the file in the etc directory. You will note it also changes the PHP include
 path to use the include path, as well as a Smarty path. You might need to change paths accordingly.
+
+\subsection{Configuring your Web Server}
+
+You will now need to ensure that your web server can ``see'' the directories it will need access to. There are several ways to achieve this.
+
+\subsubsection{Directly copy under the web server root}
+
+Perhaps the simplest approach is to copy the \lstinline!html! directory under the web server root. It is \emph{not} recommended that any other
+paths are copied in this way for security reasons. This is probably simple, but tedious in the long run since it will make upgrades more difficult.
+
+\subsubsection{Use a symbolic link}
+
+If you are using an operating system that supports symbolic links, you could link the \lstinline!html! directory to a path under the main web server
+document root.
+
+\subsubsection{Using a configuration file}
+
+Probably the most flexible and elegant way it to use a configuration file. If you are using Apache 2 you will find a suitable configuration file in the
+\lstinline!etc! directory of the OPUS package. Simply copy it to your appropriate configuration directory for apache (probably something like
+\lstinline!/etc/apache2/conf.d/! and edit to requirements. Then restart the web server.
+
+\opustip{You will need to ensure that PHP includes the appropriate directories from OPUS and Smarty in its local include path. Although you can do this
+by editing the global \lstinline!php.ini! file, it is easier to do this as a local override. The configuration file does this for you. If you use an alternative
+method you will almost certainly need to include a file (like \lstinline!.htaccess! for Apache) that overrides this path.
+\emph{make sure your \lstinline!include_path! does not include the current directory (.)}, or if
+it does, ensure that this is included last on the include paths.}
 
 \subsection{Database Creation}
 
@@ -322,10 +371,15 @@ source sql_patch/schema.sql
 source sql_patch/data.sql
 \end{lstlisting}
 
+\subsection{Logging}
+
+OPUS uses substantial logging throughout, and maintains several log files. You should ensure that you have a directory created to which
+the web server has write access. See the discussion for the templates directory above. This can be anywhere, such as \lstinline!/var/log/opus/!.
+
 \chapter{Initial Configuration}
 
-After installation, it is usually necessary to copy the file config.php.dist to
-config.php and customize its values.\footnote{Debian installation will take care of this aspect.}
+After installation, it is usually necessary to copy the file \lstinline!config.php.dist! to
+\lstinline!config.php! (in the \lstinline!include! directory) and customize its values.\footnote{Debian installation will take care of this aspect.}
 
 \chapter{Administrators \& Policies}
 \index{security}
@@ -337,6 +391,10 @@ You should login with the newly installed ``Super-Admin'' user account. This
 user has no security restrictions imposed on it, and it is unwise to use it
 for day to day purposes. Therefore you will want to make one or more administrator
 accounts.
+
+\opustip{The initial login credentials will be \lstline!admin! and \lstline!password! so it
+is obviously absolutely essential that you change the password as soon as possible,
+and certainly before importing other data}.
 
 Normal administrator accounts are bound by \emph{security policies}. These define
 the range of actions that may be undertaken by the user. In addition, it is usually
