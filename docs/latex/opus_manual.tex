@@ -405,7 +405,7 @@ or schools.
 \index{policies}
 
 You should begin by considering your security policies. By clicking on
-\opusacademicmenu{Edit Admins} and then the \opusacademicmenu{Policies} tab,
+\opusacademicmenu{Configuration -> Admins} and then the \opusacademicmenu{Policies} tab,
 you will have the opportunity to define a new policy.
 
 Choose a name that reflects your policy and submit it. You are now able to
@@ -439,7 +439,7 @@ Now you have created suitable policies, you are ready to create administrator
 users and allocate them to policies. A policy provides a ceiling on the powers
 of a user - it is possible to curtail them further as needed (see~\ref{}).
 
-Clicking on the \opusacademicmenu{Admins} tab will allow you to list and
+Clicking on the \opusacademicmenu{Configuration -> Admins} tab will allow you to list and
 create new administrator users. This is a two step process.
 
 \subsection{Creating Administrators}
@@ -589,6 +589,38 @@ specify both a start and end year.
 
 \chapter{Importing Students}
 
+Importing students is a vital step in populating OPUS with the data you need. There are several
+approaches to this.
+
+\section{Import from SRS}
+\index{web services}
+
+It is possible, with an appropriate web services layer for your student records system to import
+students on mass. The form from \opusacademicmenu{Configuration -> Import Data} will allow
+you to specify which year group you plan to import, and what academic year they will be seeking
+placement. If it is during the 2007-2008 year for example, you should specify 2007 here. Generally
+you should leave other information such as passwords blank, and normally you will wish to
+import students with a status of ``Required'' indicating that they are seeking placement.
+
+You will note a checkbox indicating that the import is a test. Try the import with the checkbox
+ticked first of all and carefully ensure that everything went well, before removing the tick
+to do the import for real.
+
+You can repeatedly import the same students over and over again and OPUS will only import
+any new students it has not seen before.
+
+\section{From CSV files}
+
+The University of Ulster uses CSV files to store student lists that can also be used for this
+purpose, by browsing to the file first.
+
+TODO: Specify the file format here.
+
+\section{Individual Students}
+
+It is also possible to add students individually using an option available from the Student
+Directory.
+
 \chapter{Student Directory}
 
 The student directory is perhaps the most important administrative feature of OPUS. It provides
@@ -647,6 +679,11 @@ This is the most important tab, allowing most of the information that is of day-
 \section{Searching for companies}
 
 \section{Adding and updating company records}
+
+The company directory has an option to create a new company.
+
+\opustip{It is vitally important you check if a company already exists in the database
+before you create what might be a duplicate record.}
 
 \section{Contacts}
 
