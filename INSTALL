@@ -70,6 +70,8 @@ path point at your smarty installation, and the include directory for opus.
 MAKE SURE YOUR INCLUDE_PATH DOES *NOT* INCLUDE THE CURRENT DIRECTORY (.), or if
 it does, ensure that this is included last on the include paths.
 
+Also, ensure that register_globals is ON. This will not be needed in version 4.
+
 6. Make the OPUS database
 
 Use MySQL to create a new database. Details vary but something like:
