@@ -1,29 +1,16 @@
 <?php 
 
 /**
-**	view.php
-**
-** This script allows the log files to be viewed by
-** admin users.
-**
-** Initial coding : Colin Turner
-**
+* @todo policy code needs reimplemented
 */
+class Log_Viewer
+{
 
-// The include files
-include('common.php');
-include('authenticate.php');
+  function __construct(&$waf, $logname, $search, $lines)
+  {
+  }
+}
 
-// Connect to the database on the server
-db_connect()
-  or die("Unable to connect to server");
-
-// Authenticate user so that the right people see the right thing
-auth_user("admin");
-
-$page = new HTMLOPUS("Log Viewer", "information");
-
-echo "<H2 ALIGN=\"CENTER\">Log Viewer</H2>\n";
 
 if(empty($lines)) $lines = 100;
 

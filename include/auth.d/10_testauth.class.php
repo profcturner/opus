@@ -16,6 +16,16 @@ class testauth
         $stub_user['user'] = array('firstname'=>'Colin', 'lastname'=>'Turner', 'email'=>'c.turner@ulster.ac.uk');
         $stub_user['groups'] = array('academic');
         break;
+      case "company" :
+        $stub_user['valid'] = True;
+        $stub_user['user'] = array('firstname'=>'Colin', 'lastname'=>'Turner', 'email'=>'c.turner@ulster.ac.uk');
+        $stub_user['groups'] = array('company');
+        break;
+      case "workplace" :
+        $stub_user['valid'] = True;
+        $stub_user['user'] = array('firstname'=>'Colin', 'lastname'=>'Turner', 'email'=>'c.turner@ulster.ac.uk');
+        $stub_user['groups'] = array('workplace');
+        break;
       case "student" :
         $stub_user['valid'] = True;
         $stub_user['user'] = array('firstname'=>'Colin', 'lastname'=>'Turner', 'email'=>'c.turner@ulster.ac.uk');
