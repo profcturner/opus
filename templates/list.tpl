@@ -42,7 +42,7 @@ pages
 
 {section loop=$actions name=action}
     <td class="action">
-      <a href="?section=profile&function={$actions[action][1]}&id={$objects[object]->id}">{$actions[action][0]}</a>&nbsp;
+      <a href="?section={$section}&function={$actions[action][1]}&id={$objects[object]->id}">{$actions[action][0]}</a>&nbsp;
     </td>
 {/section}
   </tr>
