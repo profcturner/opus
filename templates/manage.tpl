@@ -2,12 +2,12 @@
 
 {* javascript for calendar, counter and bb code *} 
 
-  <script src="{$config.pds.url}/javascript/bb_code.js" type="text/javascript"></script>
-  <script src="{$config.pds.url}/javascript/textcounter.js" type="text/javascript"></script>
-  <script src='{$config.pds.url}/javascript/popcalendar.js' type='text/javascript'></script>
-  <link href="{$config.pds.url}/css/CalendarControl.css"
+  <script src="{$config.opus.url}/javascript/bb_code.js" type="text/javascript"></script>
+  <script src="{$config.opus.url}/javascript/textcounter.js" type="text/javascript"></script>
+  <script src='{$config.opus.url}/javascript/popcalendar.js' type='text/javascript'></script>
+  <link href="{$config.opus.url}/css/CalendarControl.css"
       rel="stylesheet" type="text/css">
-  <script src="{$config.pds.url}/javascript/CalendarControl.js"
+  <script src="{$config.opus.url}/javascript/CalendarControl.js"
         language="javascript"></script>
 
 {* javascript to do the ajax object validation calls, this is used in the add and edit mode *}
