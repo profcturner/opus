@@ -1,18 +1,17 @@
 <?php
 /**
- * @package PDSystem
+ * @package OPUS
  *
  *
  */
-require_once("uuwaf/dto/DTO.class.php");
+require_once("dto/DTO.class.php");
 
-class DTO_Qualification extends DTO {
+class DTO_Language extends DTO {
 
   function __construct($handle) 
   {
     parent::__construct($handle);
   }
-
 }
 
 ?>

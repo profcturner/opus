@@ -25,9 +25,9 @@ function nav_admin()
     (
       array("admin details", "configuration", "list_admins", "list_admins"),
       array("edit resources", "configuration", "manage_resources", "manage_resources"),
-      array("courses & groups", "configuration", "list_schools", "list_schools"),
-      array("help prompts", "configuration", "list_help", "list_help"),
-      array("mail templates", "configuration", "list_templates", "list_templates"),
+      array("courses & groups", "configuration", "manage_channels", "manage_channels"),
+      array("help prompts", "configuration", "manage_help", "manage_help"),
+      array("mail templates", "configuration", "manage_automail", "manage_automail"),
       array("assessments", "configuration", "list_assessments", "list_assessments"),
       array("import data", "configuration", "import_data", "import_data")
     )

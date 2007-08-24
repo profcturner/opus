@@ -535,7 +535,8 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
         $lookup_name = str_replace(" ", "_", ucwords($field_def['object']));
         require_once("model/".$lookup_name.".class.php");
         $lookup_array = call_user_func(array($lookup_name, "get_id_and_field"), $field_def['value']);
-        $waf->assign("$field_def[var]", $lookup_array); 
+        $waf->assign("$field_def[var]", $lookup_array);
+        $waf->assign("debugx111", $lookup_array);
       }
     }
   }

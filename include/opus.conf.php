@@ -25,9 +25,8 @@ $config['waf']['log_level']       = 7;
 $config['waf']['auth_dir']        = '/usr/share/opus/include/auth.d';
 $config['waf']['compile_check']   = True; 
 $config['waf']['caching']         = False; 
-$config['waf']['debugging']       = False;    
+$config['waf']['debugging']       = True;    
 $config['waf']['language']        = "en";
-$config['waf']['user']            = "OPUS_USER";
 $config['waf']['waf_debug']       = True;
 
 // opus related settings
