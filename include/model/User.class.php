@@ -11,16 +11,18 @@ require_once("pds/dto/DTO_User.class.php");
 
 Class User extends DTO_User 
 {
-	var $username = ''; 
-	var $password="";
-	var $firstname = '';
-	var $lastname = '';
-	var $last_login_time = '';
-	var $login_time = '';
-	var $online = 'no';
-	var $email = '';
-	var $session = '';
-	var $type = "";
+  var $username = ''; 
+  var $password="";
+  var $salutation="";
+  var $firstname = '';
+  var $lastname = '';
+  var $reg_number = "";
+  var $login_time = '';
+  var $last_time = "";
+  var $last_index = "";
+  var $online = 'offline';
+  var $email = '';
+  var $user_type = "";
 
   var $_field_defs = array
   (

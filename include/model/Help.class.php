@@ -72,7 +72,7 @@ class Help extends DTO_Help
     return $help->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY channel_id, lookup", $page=0)
   {
     $help = new Help;
     

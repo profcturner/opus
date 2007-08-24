@@ -85,7 +85,7 @@ class Resource extends DTO_Resource
     return $resource->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY channel_id, description", $page=0)
   {
     $resource = new Resource;
     
