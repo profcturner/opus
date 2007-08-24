@@ -48,6 +48,8 @@ class testauth
         $stub_user['user'] = array('firstname'=>'Colin', 'lastname'=>'Turner', 'email'=>'c.turner@ulster.ac.uk');
         $stub_user['groups'] = array('super', 'academic');
         break;
+      default:
+        return false;
     }
     return $stub_user;
   }
