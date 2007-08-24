@@ -398,10 +398,8 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
   function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl') {
 
-    $object = str_replace(" ", "_", ucwords($object_name));
-  
+    $object = str_replace(" ", "_", ucwords($object_name));  
     require_once("model/".$object.".class.php");
-
     $instance = new $object;
 
     $id = WA::request("id");
@@ -536,7 +534,6 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
         require_once("model/".$lookup_name.".class.php");
         $lookup_array = call_user_func(array($lookup_name, "get_id_and_field"), $field_def['value']);
         $waf->assign("$field_def[var]", $lookup_array);
-        $waf->assign("debugx111", $lookup_array);
       }
     }
   }

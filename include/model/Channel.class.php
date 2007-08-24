@@ -88,7 +88,9 @@ class Channel extends DTO_Channel
   function get_id_and_field($fieldname) 
   {
     $channel = new Channel;
-    return  $channel->_get_id_and_field($fieldname);
+    $channel_array = $channel->_get_id_and_field($fieldname);
+    $channel_array[0] = 'Global';
+    return $channel_array;
   }
 
 

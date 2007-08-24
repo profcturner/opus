@@ -5,7 +5,7 @@
 {math assign=start_obj equation="(p-1)*n" n=#TABLE_ROW_MAX# p=$page|default:1}
 pages
 {section name="myLoop" start=1 loop=$pages}
-{if $page==$smarty.section.myLoop.index}<strong>{$smarty.section.myLoop.index}</strong>&nbsp;{else}<a href="{$SCRIPT_NAME}?function={$smarty.request.function}&page={$smarty.section.myLoop.index}">{$smarty.section.myLoop.index}</a>&nbsp;{/if}
+{if $page==$smarty.section.myLoop.index}<strong>{$smarty.section.myLoop.index}</strong>&nbsp;{else}<a href="{$SCRIPT_NAME}?section={$section}&function={$smarty.request.function}&page={$smarty.section.myLoop.index}">{$smarty.section.myLoop.index}</a>&nbsp;{/if}
 {/section}
 {/if}
 <table cellpadding="0" cellspacing="0" border="0">

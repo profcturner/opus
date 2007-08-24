@@ -5,8 +5,27 @@
 */
 class Log_Viewer
 {
+  var $available_logs;
 
   function __construct(&$waf, $logname, $search, $lines)
+  {
+    $this->available_logs = array('general', 'admin', 'debug', 'security', 'panic', 'waf_debug');
+  }
+
+  /**
+  * display search form showing available logs
+  *
+  * @todo need to filter allowable list by using policy
+  */
+  function show_form()
+  {
+    global $waf;
+
+    $waf->assign("available_logs", $this->available_logs);
+    $waf->display();
+  }
+
+  function get_log_content($logname, $search, $lines)
   {
   }
 }
