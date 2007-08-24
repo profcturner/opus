@@ -6,9 +6,26 @@ ALTER TABLE channel CHANGE COLUMN channel_id id INT UNSIGNED AUTO_INCREMENT;
 
 ALTER TABLE automail ADD COLUMN id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY;
 
+-- automail templates --
+
  alter table automail change column language language_id int unsigned;
  alter table help change column language language_id int unsigned;
+
+-- languages --
 
 rename table languages to language;
 alter table language change column language_id id int unsigned auto_increment;
 alter table language change column language name tinytext not null;
+
+-- users --
+
+rename table id to user;
+alter table user change column real_name real_name tinytext;
+alter table user change column id_number id int unsigned not null;
+alter table user add column online enum('online', 'idle', 'offline') after last_index;
+alter table user add column reg_number tinytext after user;
+alter table user change column user user_type enum('student','root','company','staff','admin','supervisor') not null;
+alter table user add column lastname tinytext after user_type;
+alter table user add column firstname tinytext after user_type;
+alter table user add column salutation tinytext after user_type;
+alter table user add column email tinytext after lastname;
