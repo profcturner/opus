@@ -1,0 +1,14 @@
+RENAME TABLE resources TO resource;
+ALTER TABLE resource CHANGE COLUMN resource_id id INT UNISGNED AUTO_INCREMENT;
+
+RENAME TABLE channels TO channel;
+ALTER TABLE channel CHANGE COLUMN channel_id id INT UNSIGNED AUTO_INCREMENT;
+
+ALTER TABLE automail ADD COLUMN id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY;
+
+ alter table automail change column language language_id int unsigned;
+ alter table help change column language language_id int unsigned;
+
+rename table languages to language;
+alter table language change column language_id id int unsigned auto_increment;
+alter table language change column language name tinytext not null;
