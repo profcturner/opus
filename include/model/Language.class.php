@@ -77,7 +77,9 @@ class Language extends DTO_Language
   function get_id_and_field($fieldname) 
   {
     $language = new Language;
-    return  $language->_get_id_and_field($fieldname);
+    $language_array = $language->_get_id_and_field($fieldname);
+    unset($language_array[0]);
+    return $language_array;
   }
 
 

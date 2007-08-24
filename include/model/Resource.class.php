@@ -31,10 +31,14 @@ class Resource extends DTO_Resource
 
   var $_field_defs = array(
     'file_upload'=>array('type'=>'file'),
+    'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
+    'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup'),
     'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages'),
     'channel_id'=>array('type'=>'lookup', 'object'=>'channel', 'value'=>'name', 'title'=>'Channel', 'size'=>20, 'var'=>'channels', 'header'=>true),
-    'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup'),
-    'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
+    'auth'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Authorisation'),
+    'filename'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Filename'),
+    'author'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Author'),
+    'copyright'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Copyright')
     );
 
   function __construct() 
