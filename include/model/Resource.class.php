@@ -54,14 +54,46 @@ class Resource extends DTO_Resource
     return $resource;
   }
 
+  /**
+  * Inserts a new resource
+  *
+  * @todo URGENT: $config is not working here ... ?!
+  */
   function insert($fields) 
   {
+    global $waf;
+    global $config;
+
+    require_once("model/File_Upload.class.php");
     $resource = new Resource;
-    $resource->_insert($fields);
+
+    // We must check the file first
+    $file_var_name = 'file_upload';
+    $upload_error = File_Upload::upload_error($file_var_name);
+    if($upload_error) $waf->halt($upload_error);
+
+    $resource_id = $resource->_insert($fields);
+    // It went Ok, we need to do the copy
+    //File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $resource_id);
+    File_Upload::move_file($file_var_name, "/usr/share/opus/resources/" . $resource_id);
   }
   
   function update($fields) 
   {
+    //print_r($_REQUEST);
+    //print_r($_FILES);
+    // Is there a new inbound file?
+    if($_FILES['file_upload']['size'])
+    {
+      require_once("model/File_Upload.class.php");
+      //echo "hello world";
+      // We must check the file first
+      $file_var_name = 'file_upload';
+      $upload_error = File_Upload::upload_error($file_var_name);
+      if($upload_error) $waf->halt($upload_error);
+
+      File_Upload::move_file($file_var_name, "/usr/share/opus/resources/" . $fields[id]);
+    }
     $resource = Resource::load_by_id($fields[id]);
     $resource->_update($fields);
   }
@@ -106,9 +138,20 @@ class Resource extends DTO_Resource
   }
 
 
+  /**
+  * @todo URGENT, same hardcoding as insert for now
+  */ 
   function remove($id=0) 
-  {  
-    $resource = new Resource;
+  {
+    global $waf;
+    global $config;
+
+    // Get details for logging
+    $resource=Resource::load_by_id($id);
+    $waf->log("removing resource [" . $resource->description . "] Lookup [" . $resource->lookup . "] Channel [" . $resource->_channel_id . "]");
+    // DANGER!!!! HARD CODING!!!
+    @unlink('/usr/share/opus/resources/' . $id);
+
     $resource->_remove_where("WHERE id=$id");
   }
 

@@ -1,13 +1,20 @@
-RENAME TABLE resources TO resource;
-ALTER TABLE resource CHANGE COLUMN resource_id id INT UNISGNED AUTO_INCREMENT;
 
-RENAME TABLE channels TO channel;
-ALTER TABLE channel CHANGE COLUMN channel_id id INT UNSIGNED AUTO_INCREMENT;
 
-ALTER TABLE automail ADD COLUMN id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY;
 
--- automail templates --
 
+-- resources --
+
+rename table resources to resource;
+alter table resource change column resource_id id int unisgned auto_increment;
+
+-- channels --
+
+rename table channels to channel;
+alter table channel change column channel_id id int unsigned auto_increment;
+
+-- automail --
+
+alter table automail add column id int unsigned auto_increment primary key;
  alter table automail change column language language_id int unsigned;
  alter table help change column language language_id int unsigned;
 
@@ -16,6 +23,11 @@ ALTER TABLE automail ADD COLUMN id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY;
 rename table languages to language;
 alter table language change column language_id id int unsigned auto_increment;
 alter table language change column language name tinytext not null;
+
+-- mime types --
+
+rename table mime_types to mimetype;
+alter table mimetype change column mime_id id int unsigned not null auto_increment;
 
 -- users --
 
@@ -29,3 +41,5 @@ alter table user add column lastname tinytext after user_type;
 alter table user add column firstname tinytext after user_type;
 alter table user add column salutation tinytext after user_type;
 alter table user add column email tinytext after lastname;
+
+-- this will need php conversion :-( --

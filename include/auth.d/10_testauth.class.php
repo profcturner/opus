@@ -8,6 +8,7 @@ class testauth
     {
       case "admin" : 
         $stub_user['valid'] = True;
+        $stub_user['username'] = 'admin';
         $stub_user['user'] = array('firstname'=>'Colin', 'lastname'=>'Turner', 'email'=>'c.turner@ulster.ac.uk');
         $stub_user['groups'] = array('admin');
         break;

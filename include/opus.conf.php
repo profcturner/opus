@@ -2,7 +2,7 @@
 /**
  * @package Configuration
  *
- * The system wide configuration file for the OPUS
+ * The system wide configuration file for OPUS
  */
 
 // waf settings
@@ -10,6 +10,8 @@
 $config['waf']['title']           = 'OPUS';
 $config['waf']['log_dir']         = '/var/log/opus/';
 $config['waf']['log_level']       = 7;
+
+
 
 // log_level settings
 
@@ -47,6 +49,7 @@ $config['opus']['validation_image_ok'] = "images/ok-small.png";
 $config['opus']['validation_image_fail'] = "images/fail-small.png";
 $config['opus']['logo'] = "logo.png";
 
+$config['opus']['paths']['resources'] = '/usr/share/opus/resources/';
 // names of objects held in session
 
 $config['opus']['session']['navigation'] = 'PDS_Navigation';

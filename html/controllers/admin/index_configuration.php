@@ -72,6 +72,8 @@
   }
 
 
+
+
   function manage_automail(&$opus, $user, $title)
   {
     manage_objects($opus, $user, "Automail", array(array("add","section=configuration&function=add_automail")), array(array('edit', 'edit_automail'), array('remove','remove_automail')), "get_all", "", "admin:configuration:automail:manage_automail");
@@ -143,6 +145,44 @@
   {
     remove_object_do($opus, $user, "Help", "section=configuration&function=manage_help");
   }
+
+
+
+  function manage_mimetypes(&$opus, $user, $title)
+  {
+    manage_objects($opus, $user, "Mimetype", array(array("add","section=configuration&function=add_mimetype")), array(array('edit', 'edit_mimetype'), array('remove','remove_mimetype')), "get_all", "", "admin:configuration:mimetypes:manage_mimetypes");
+  }
+
+  function add_mimetype(&$opus, &$user) 
+  {
+    add_object($opus, $user, "Mimetype", array("add", "configuration", "add_mimetype_do"), array(array("cancel","section=configuration&function=manage_mimetypes")), array(array("user_id",$user["user_id"])), "admin:configuration:mimetypes:add_mimetype");
+  }
+
+  function add_mimetype_do(&$opus, &$user) 
+  {
+    add_object_do($opus, $user, "Mimetype", "section=configuration&function=manage_mimetypes", "add_mimetype");
+  }
+
+  function edit_mimetype(&$opus, &$user) 
+  {
+    edit_object($opus, $user, "Mimetype", array("confirm", "configuration", "edit_mimetype_do"), array(array("cancel","section=configuration&function=manage_mimetypes")), array(array("user_id",$user["user_id"])), "admin:configuration:mimetypes:edit_mimetype");
+  }
+
+  function edit_mimetype_do(&$opus, &$user) 
+  {
+    edit_object_do($opus, $user, "Mimetype", "section=configuration&function=manage_mimetypes", "edit_mimetype");
+  }
+
+  function remove_mimetype(&$opus, &$user) 
+  {
+    remove_object($opus, $user, "Mimetype", array("remove", "configuration", "remove_mimetype_do"), array(array("cancel","section=configuration&function=manage_mimetypes")), "", "admin:configuration:mimetypes:remove_mimetype");
+  }
+
+  function remove_mimetype_do(&$opus, &$user) 
+  {
+    remove_object_do($opus, $user, "Mimetype", "section=configuration&function=manage_mimetypes");
+  }
+
 
 
 

@@ -18,12 +18,10 @@
 main();
 
 /**
- * This is the main function that control the PDS application, it implements a simple front controller
- * pattern.
+ * This is the main function that controls OPUS
  *
  * @uses WA.class.php
  * @uses $config
- * @uses $logger
  * @uses WA::request()
  *
  */
@@ -54,6 +52,7 @@ function main()
 
   if ($user[valid]) 
   {
+    $waf->set_log_ident($user['username']);
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
   

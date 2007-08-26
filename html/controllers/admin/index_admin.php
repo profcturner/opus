@@ -24,7 +24,8 @@ function nav_admin()
     "configuration"=>array
     (
       array("admin details", "configuration", "list_admins", "list_admins"),
-      array("edit resources", "configuration", "manage_resources", "manage_resources"),
+      array("manage resources", "configuration", "resources", "manage_resources"),
+      array("manage mime types", "configuration", "manage_mimetypes", "manage_mimetypes"),
       array("courses & groups", "configuration", "manage_channels", "manage_channels"),
       array("help prompts", "configuration", "manage_help", "manage_help"),
       array("mail templates", "configuration", "manage_automail", "manage_automail"),
