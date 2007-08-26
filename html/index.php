@@ -28,6 +28,7 @@ main();
 
 function main() 
 {
+  global $config;
 
   require_once('opus.conf.php');
   require_once("WA.class.php");
@@ -55,7 +56,10 @@ function main()
     $waf->set_log_ident($user['username']);
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
-  
+
+    // Make sure we take them somewhere!
+    if(empty($section)) $section="home";
+    if(empty($function)) $function="home";  
     // load controllers based on groups and capture the navigational structure
     $nav = $waf->load_group_controller($currentgroup);
     // load controller based on the object being managed

@@ -74,14 +74,14 @@ class Resource extends DTO_Resource
 
     $resource_id = $resource->_insert($fields);
     // It went Ok, we need to do the copy
-    //File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $resource_id);
-    File_Upload::move_file($file_var_name, "/usr/share/opus/resources/" . $resource_id);
+    File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $resource_id);
   }
   
   function update($fields) 
   {
-    //print_r($_REQUEST);
-    //print_r($_FILES);
+    global $waf;
+    global $config;
+
     // Is there a new inbound file?
     if($_FILES['file_upload']['size'])
     {
@@ -92,7 +92,7 @@ class Resource extends DTO_Resource
       $upload_error = File_Upload::upload_error($file_var_name);
       if($upload_error) $waf->halt($upload_error);
 
-      File_Upload::move_file($file_var_name, "/usr/share/opus/resources/" . $fields[id]);
+      File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $fields[id]);
     }
     $resource = Resource::load_by_id($fields[id]);
     $resource->_update($fields);
@@ -139,7 +139,7 @@ class Resource extends DTO_Resource
 
 
   /**
-  * @todo URGENT, same hardcoding as insert for now
+  * Removes a resource from file storage as well as the database
   */ 
   function remove($id=0) 
   {
@@ -149,8 +149,7 @@ class Resource extends DTO_Resource
     // Get details for logging
     $resource=Resource::load_by_id($id);
     $waf->log("removing resource [" . $resource->description . "] Lookup [" . $resource->lookup . "] Channel [" . $resource->_channel_id . "]");
-    // DANGER!!!! HARD CODING!!!
-    @unlink('/usr/share/opus/resources/' . $id);
+    @unlink($config['opus']['paths']['resources'] . $id);
 
     $resource->_remove_where("WHERE id=$id");
   }
