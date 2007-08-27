@@ -25,5 +25,16 @@
     $opus->display("main.tpl", "admin:information:resources:info_resource", "general/information/info_resource.tpl");
   }
 
+  function view_logs(&$opus, $user, $title)
+  {
+    require_once("model/Log_Viewer.class.php");
+
+    $logfile = $_REQUEST['logfile'];
+    $search  = $_REQUEST['search'];
+    $lines   = $_REQUEST['lines'];
+
+    $log_viewer = new Log_Viewer($logfile, $search, $lines);
+    $opus->display("main.tpl", "admin:information:log_viewer:log_viewer", "admin/information/log_viewer.tpl");
+  }
   
 ?>
