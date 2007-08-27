@@ -29,7 +29,6 @@ class Log_Viewer
     if($lines == 0) $lines = 100;
     if($logname == "") $logname = 'general';
 
-    // need a preg on logname!
     $waf->assign("selected_log", $logname);
     $waf->assign("search", $search);
     $waf->assign("lines", $lines);
@@ -44,6 +43,10 @@ class Log_Viewer
     global $waf;
     global $config;
 
+    if(!in_array($logname, $this->available_logs))
+    {
+      $waf->security_log("Illegal log name $logname attempted");
+    }
     $logfile = $waf->log_dir . $logname . ".log";
     // Start to form the command line
     // We will use cat to list the file if no search criterion
@@ -78,6 +81,8 @@ class Log_Viewer
       }
     }
     pclose($handle);
+    // Remove the empty line if no entries where found
+    if($log_lines[0] == false) unset($log_lines[0]);
     return($log_lines);
   }
 }

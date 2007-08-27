@@ -6,7 +6,7 @@
 {if $refresh}
   <meta http-equiv="Refresh" content="{$refresh}">
 {/if}
-  <title>{$config.opus.title_short}</title>
+  <title>{$config.opus.title_short}{if $section} | {$section|capitalize}{/if}{if #page_title#} | {#page_title#|capitalize}{/if}</title>
   <link REL="stylesheet" href="{$config.opus.url}/css/default.css" type="text/css">
   <link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css">
   <style type="text/css"> @import url("{$config.opus.url}/css/local.css");</style>
