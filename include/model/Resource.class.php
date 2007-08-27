@@ -46,6 +46,60 @@ class Resource extends DTO_Resource
     parent::__construct('default');
   }
 
+  /**
+  * Views (downloads) a given resource filename
+  *
+  * @param int id the id from the resource table
+  * @todo URGENT needs security
+  */
+  function view($id)
+  {
+    global $config;
+    global $waf;
+
+    $resource = new Resource;
+    $resource->id = $id;
+    $resource->_load_by_id();
+
+    // Get Mime Information
+    require_once("model/Mimetype.class.php");
+    $mime = new Mimetype;
+    $mime->id = $resource->mime;
+    $mime->_load_by_id();
+
+    // Download is permitted, check file system data
+    $absolute_name = $config['opus']['paths']['resources'] . $id;
+
+    if(!file_exists($absolute_name))
+      $waf->halt("error:resources:missing_file");
+
+    if(!is_readable($absolute_name))
+      $waf->halt("error:resources:cannot_access_file");
+
+    $filesize = filesize($absolute_name);
+    $mime_type = $mime->type;
+
+    header("Content-type: $mime_type");
+    header("Content-Length: $filesize");
+    header("Content-Disposition: inline; filename=" . $resource->filename);
+
+    // Note fpassthru has a bug in early versions of PHP 5,
+    // I patched this for OPUS 3.x but let's hope people upgrade sensibly here...
+    if(!$file = fopen($absolute_name, "rb"))
+      $waf->halt("error:resources:cannot_access_file");
+    else
+      fpassthru($file);
+
+    // Update the download counter
+    $resource->dcounter++;
+    $resource->downloaded = date("YmdHis");
+    $resource->_update();
+
+    $waf->log("Resource [" . $resource->description . "] from channel [" . $resource->_channel_id . "] viewed");
+
+  }
+
+
   function load_by_id($id) 
   {
     $resource = new Resource;
@@ -56,6 +110,8 @@ class Resource extends DTO_Resource
 
   /**
   * Inserts a new resource
+  *
+  * @param array $fields the fields to be added
   *
   * @todo URGENT: $config is not working here ... ?!
   */
@@ -69,14 +125,21 @@ class Resource extends DTO_Resource
 
     // We must check the file first
     $file_var_name = 'file_upload';
-    $upload_error = File_Upload::upload_error($file_var_name);
-    if($upload_error) $waf->halt($upload_error);
+    $upload_result = File_Upload::test_file($file_var_name);
+    if($upload_result['error']) $waf->halt($upload_result['config_error']);
 
+    $fields['uploader'] = $waf->user->id;
+    $fields['mime'] = $upload_result['mime_id'];
+    $fields['created'] = date("YmdHis");
     $resource_id = $resource->_insert($fields);
+
     // It went Ok, we need to do the copy
     File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $resource_id);
   }
   
+  /**
+  * updates a given resource, either by the file, or information
+  */
   function update($fields) 
   {
     global $waf;
@@ -86,15 +149,19 @@ class Resource extends DTO_Resource
     if($_FILES['file_upload']['size'])
     {
       require_once("model/File_Upload.class.php");
-      //echo "hello world";
       // We must check the file first
       $file_var_name = 'file_upload';
-      $upload_error = File_Upload::upload_error($file_var_name);
-      if($upload_error) $waf->halt($upload_error);
+      $upload_result = File_Upload::test_file($file_var_name);
+      if($upload_result['error']) $waf->halt($upload_result['config_error']);
+
+      $fields['uploader'] = $waf->user->id;
+      $fields['mime'] = $upload_result['mime_id'];
+      $fields['modified'] = date("YmdHis");
 
       File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $fields[id]);
     }
     $resource = Resource::load_by_id($fields[id]);
+    $resource->modified = date("YmdHis");
     $resource->_update($fields);
   }
   

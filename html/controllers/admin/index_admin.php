@@ -17,7 +17,7 @@ function nav_admin()
     ), 
     "information"=>array
     (
-      array("resources", "information", "list_resources", "list_resources"), 
+      array("resources", "information", "resources", "list_resources"), 
       array("system status", "information", "system_status", "system_status"), 
       array("view logs", "information", "view_logs", "view_logs") 
     ),

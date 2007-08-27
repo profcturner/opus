@@ -17,9 +17,15 @@ class File_Upload
   * @return false on upload success, a config file lookup to an error on failure
   * @todo check proposed_name
   */
-  function upload_error($file_var_name, $proposed_name="", $space_allowed = 0)
+  function test_file($file_var_name, $proposed_name="", $space_allowed = 0)
   {
     global $waf;
+
+    $result = array();
+    // failsafe condition
+    $result['error'] = true;
+    $result['filesize'] = filesize($_FILES[$file_var_name]['tmp_name']);
+    $result['mimetype'] = $_FILES[$file_var_name]['type'];
 
     // Check for various basic failures...
     switch($_FILES[$file_var_name]['error'])
@@ -27,44 +33,61 @@ class File_Upload
       case UPLOAD_ERR_INI_SIZE:
       case UPLOAD_ERR_FORM_SIZE:
         $waf->log("uploaded file exceeds PHP or form limits");
-        return("error:file_upload:too_big");
+        $result['config_error'] = "error:file_upload:too_big";
+        return($result);
         break;
       case UPLOAD_ERR_PARTIAL:
         // We need to delete the partial upload (security)
         $waf->log("only partial file received from upload");
         unlink($_FILES['userfile']['tmp_name']);   
-        return("error:file_upload:partial_file");
+        $result['config_error'] = "error:file_upload:partial_file";
+        return($result);
         break;
       case UPLOAD_ERR_NO_FILE:
         $waf->log("no file was received");
-        return("error:file_upload:no_file");
+        $result['config_error'] = "error:file_upload:no_file";
+        return($result);
         break;
     }
 
     // Check for mime type violations
     $mimetypes = Mimetype::get_all("where type='" . $_FILES[$file_var_name]['type'] . "'");
-    if(!count($mimetypes)) return("error:file_upload:unknown_mimetype");
+    if(!count($mimetypes))
+    {
+      $result['config_error'] = "error:file_upload:unknown_mimetype";
+      return($result);
+    }
+
     $mime_allowable = false;
     foreach($mimetypes as $mimetype)
     {
-      if(strpos($mimetype->flags, "uploadable") !== FALSE) $mime_allowable = true;
+      if(strpos($mimetype->flags, "uploadable") !== FALSE)
+      {
+        $mime_allowable = true;
+        $result['mime_id'] = $mimetype->id;
+      }
     }
     if(!$mime_allowable)
     {
       $waf->log("file is not of an allowed type [" . $_FILES[$file_var_name]['type'] . "]", PEAR_LOG_ERR, 'general');
-      return("error:file_upload:disallowed_mimetype");
+      $result['config_error'] = "error:file_upload:disallowed_mimetype";
+      return($result);
     }
 
     // Finally check for size
     if($space_allowed)
     {
       if(filesize($_FILES[$file_var_name]['tmp_name']) > $space_allowed)
-        return("error:file_upload:insufficient_space");
-      $waf->log("insufficient space for uploaded file");
+      {
+        $waf->log("insufficient space for uploaded file");
+        $result['config_error'] = "error:file_upload:insufficient_space";
+        return($result);
+      }
     }
 
     // Must be OK! ;-)
-    return false;
+    $result['error'] = false;
+    return $result;
   }
 
   function move_file($file_var_name, $new_name)
