@@ -135,6 +135,8 @@ class Resource extends DTO_Resource
 
     // It went Ok, we need to do the copy
     File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $resource_id);
+    $waf->log("Resource [" . $fields['description'] . "] added");
+
   }
   
   /**

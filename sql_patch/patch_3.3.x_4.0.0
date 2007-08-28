@@ -1,6 +1,9 @@
 
 
+-- companies --
 
+rename table companies to company;
+alter table company change column company_id id int unsigned not null auto_increment;
 
 -- resources --
 

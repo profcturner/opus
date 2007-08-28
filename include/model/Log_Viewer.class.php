@@ -77,12 +77,12 @@ class Log_Viewer
       $log_lines = array();
       // Keep reading lines while we have stuff to read
       while(!feof($handle)){
-        array_push($log_lines, fgets($handle));
+        array_push($log_lines, str_replace(array('\r', '\n'), "", fgets($handle)));
       }
     }
     pclose($handle);
     // Remove the empty line if no entries where found
-    if($log_lines[0] == false) unset($log_lines[0]);
+    unset($log_lines[count($log_lines)-1]);
     return($log_lines);
   }
 }

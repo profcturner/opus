@@ -2,7 +2,7 @@
 
   function list_resources(&$opus, $user, $title)
   {
-    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", "", "admin:information:resources:list_resources");
+    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", "", "admin:information:list_resources:list_resources");
   }
 
   function view_resource(&$opus, $user, $title)
@@ -34,7 +34,7 @@
     $lines   = $_REQUEST['lines'];
 
     $log_viewer = new Log_Viewer($logfile, $search, $lines);
-    $opus->display("main.tpl", "admin:information:log_viewer:log_viewer", "admin/information/log_viewer.tpl");
+    $opus->display("main.tpl", "admin:information:view_logs:view_logs", "admin/information/log_viewer.tpl");
   }
   
 ?>

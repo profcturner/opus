@@ -23,6 +23,7 @@ Lines
 <table class="table_list">
 {/if}
 <tr class="{cycle values="light_row,dark_row"}">
+  <td>{$smarty.foreach.lines.index+1}</td>
   <td>{$line}</td>
 </tr>
 {if $smarty.foreach.lines.last}

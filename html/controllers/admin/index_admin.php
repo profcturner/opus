@@ -11,13 +11,14 @@ function nav_admin()
     "directories"=>array
     (
       array("students","directories", "student_directory", "student_directory"), 
+      array("companies", "directories", "manage_companies", "manage_companies"),
       array("companies & vacancies", "directories", "vacancy_directory", "vacancy_directory"),
       array("academic staff","directories","staff_directory","staff_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
     ), 
     "information"=>array
     (
-      array("resources", "information", "resources", "list_resources"), 
+      array("resources", "information", "list_resources", "list_resources"), 
       array("system status", "information", "system_status", "system_status"), 
       array("view logs", "information", "view_logs", "view_logs") 
     ),
