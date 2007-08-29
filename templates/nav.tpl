@@ -22,7 +22,7 @@
 {* Another experiment, stack another menu if a student is picked up *}
 
 {if $student_navigation}
-{include file="main_header.tpl" navigation=$student_navigation section="mycareer"}
+{include file="main_header.tpl" navigation=$student_navigation section="myplacement"}
 {/if}
 
 
