@@ -49,7 +49,7 @@ if(is_student())
 
 if(is_student() || !empty($student_id))
 {
-  $page = new HTMLOPUS('Vacancies and Companies', 'mycareer', 'vacancies');  
+  $page = new HTMLOPUS('Vacancies and Companies', 'myplacement', 'vacancies');  
 }
 else
 {

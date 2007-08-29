@@ -29,7 +29,7 @@ auth_user("student");
 $smarty->assign("section", "pms");
 $legacy_page['help_page']="applications";
     
-$page = new HTMLOPUS('Applications', 'mycareer', 'applications');  
+$page = new HTMLOPUS('Applications', 'myplacement', 'applications');  
 if(!is_admin() && !is_student()){
   die_gracefully("You do not have permission to access this page.");
 }

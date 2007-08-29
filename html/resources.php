@@ -37,7 +37,7 @@ if(empty($mode)) $mode=ResourceShowList;
 if($mode != DownloadResource){
   if(is_student() || !empty($student_id))
   {
-    $page = new HTMLOPUS('Resources', 'mycareer', 'resources');
+    $page = new HTMLOPUS('Resources', 'myplacement', 'resources');
   }
   else
   {

@@ -27,7 +27,7 @@ if(is_admin() && !empty($student_id) && !is_auth_for_student($student_id, "stude
 $smarty->assign("section", "pms");
 $legacy_page['help_page'] = "assessment";
 
-$page = new HTMLOPUS('Assessment', 'mycareer', 'assessment');  
+$page = new HTMLOPUS('Assessment', 'myplacement', 'assessment');  
 
 if(is_admin() && empty($student_id))
 {
