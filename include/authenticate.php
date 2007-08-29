@@ -239,7 +239,7 @@ function get_user($username)
   $_SESSION['user'] = $user;
 
   // Get a lastitem thing going...
-  $lastitems = new LastitemQueue(10);
+  $lastitems = new LastitemQueue(6);
   $_SESSION['lastitems'] = $lastitems;
   return($user);
 }
