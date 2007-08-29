@@ -778,7 +778,7 @@ function student_broadsheet_data($group_id, $year, $extras)
 
   // First get a student list, seeking placement in a certain year
   
-  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.course FROM id " .
+  $query = "SELECT DISTINCT id.*, students.*, cv_pdetails.course, cv_pdetails.surname, cv_pdetails.firstname, cv_pdetails.title, cv_pdetails.email FROM id " .
     "LEFT JOIN cv_pdetails ON id_number=cv_pdetails.id LEFT JOIN students " .
     "ON id_number=students.user_id where user='student' " .
     " AND students.year=$year " . 
