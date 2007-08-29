@@ -73,35 +73,35 @@ $navigation->add_menu_item('Learning Style', 'myreflection',
   $pds_url . "?function=view_learning_style");
 
 
-$navigation->add_menu('myCV', 'mycv',
+$navigation->add_menu('myCareer', 'mycareer',
   $pds_url . "?function=view_cv_builder", 'mn0500');
-$navigation->add_menu_item('CV Builder', 'mycv',
+$navigation->add_menu_item('CV Builder', 'mycareer',
   $pds_url . "?function=view_cv_builder");
-$navigation->add_menu_item('CV Archive', 'mycv',
+$navigation->add_menu_item('CV Archive', 'mycareer',
   $pds_url . "?function=list_archived_cvs");
-$navigation->add_menu_item('Covering Letters', 'mycv',
+$navigation->add_menu_item('Covering Letters', 'mycareer',
   $pds_url . "?function=view_cover_letters");
-$navigation->add_menu_item('Application Forms', 'mycv',
+$navigation->add_menu_item('Application Forms', 'mycareer',
   $pds_url . "?function=view_application_forms");
-$navigation->add_menu_item('Interviews', 'mycv',
+$navigation->add_menu_item('Interviews', 'mycareer',
   $pds_url . "?function=view_interviews");
-$navigation->add_menu_item('Personal Statements', 'mycv',
+$navigation->add_menu_item('Personal Statements', 'mycareer',
   $pds_url . "?function=list_other_statements");
 
 
-$navigation->add_menu('myCareer', 'mycareer',
+$navigation->add_menu('myPlacement', 'myplacement',
   $conf['scripts']['student']['index'] . "?student_id=$student_id", 'mn0600');
-$navigation->add_menu_item('Placement Home', 'mycareer',
+$navigation->add_menu_item('Placement Home', 'myplacement',
   $conf['scripts']['student']['index'] . "?student_id=$student_id");
-$navigation->add_menu_item('Vacancies', 'mycareer',
+$navigation->add_menu_item('Vacancies', 'myplacement',
   $conf['scripts']['company']['directory'] . "?student_id=$student_id");
-$navigation->add_menu_item('Applications', 'mycareer',
+$navigation->add_menu_item('Applications', 'myplacement',
   $conf['scripts']['student']['applications'] . "?student_id=$student_id");
-$navigation->add_menu_item('Assessment', 'mycareer',
+$navigation->add_menu_item('Assessment', 'myplacement',
   $conf['scripts']['student']['assessment'] . "?student_id=$student_id");
-$navigation->add_menu_item('Resources', 'mycareer',
+$navigation->add_menu_item('Resources', 'myplacement',
   $conf['scripts']['user']['resources'] . "?student_id=$student_id");
-$navigation->add_menu_item('Notes', 'mycareer',
+$navigation->add_menu_item('Notes', 'myplacement',
   $conf['scripts']['student']['notes'] . "?student_id=$student_id");
 
 
