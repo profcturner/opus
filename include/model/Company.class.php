@@ -40,7 +40,7 @@ class Company extends DTO_Company
     'voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Phone'),
     'fax'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Fax'),
     'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
-    'brief'=>array('type'=>'textarea', 'rows'=>20, 'cols'=>40, 'title'=>'Brief'),
+    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>60, 'maxsize'=>60000,  'title'=>'Brief')
      );
 
   function __construct() 
