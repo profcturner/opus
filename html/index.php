@@ -257,7 +257,7 @@ function view_object(&$waf, $user, $object_name, $page_title, $tag_line, $action
     $waf->assign("tag_line", $tag_line);
     $waf->assign("mode", "remove");
     $waf->assign("object", $object);
-    $waf->assign("headings", $instance->_field_defs);
+    $waf->assign("headings", $instance->get_field_defs());
     $waf->assign("hidden_values", $hidden_values);
     $content = $waf->fetch($manage_tpl);
     $waf->assign("content", $content);
@@ -297,7 +297,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $instance = new $object;
     
     $waf->assign("action_links", $action_links);
-    $waf->assign("headings", $instance->_field_defs);
+    $waf->assign("headings", $instance->get_field_defs());
     $waf->assign("actions", $actions);
 
     if (is_array($get_all_parameter)) {
@@ -337,7 +337,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $waf->assign("action_links", $action_links);
     $waf->assign("mode", "add");
     $waf->assign("object", $instance);
-    $waf->assign("headings", $instance->_field_defs);
+    $waf->assign("headings", $instance->get_field_defs());
     assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
     $waf->assign("hidden_values", $hidden_values);
     $content = $waf->fetch($manage_tpl);
@@ -411,7 +411,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $waf->assign("action_links", $action_links);
     $waf->assign("mode", "edit");
     $waf->assign("object", $object);
-    $waf->assign("headings", $instance->_field_defs);
+    $waf->assign("headings", $instance->get_field_defs());
     assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
     $waf->assign("hidden_values", $hidden_values);
     $content = $waf->fetch($manage_tpl);
@@ -487,7 +487,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $waf->assign("action_links", $action_links);
     $waf->assign("mode", "remove");
     $waf->assign("object", $object);
-    $waf->assign("headings", $instance->_field_defs);
+    $waf->assign("headings", $instance->get_field_defs());
     $waf->assign("hidden_values", $hidden_values);
     $content = $waf->fetch($manage_tpl);
     $waf->assign("content", $content);
@@ -529,7 +529,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
   function assign_lookups(&$waf, $instance) 
   {
-    foreach ($instance->_field_defs as $field_def) 
+    foreach ($instance->get_field_defs() as $field_def) 
     {
       if ($field_def['type'] == "lookup") 
       {

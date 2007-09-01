@@ -18,7 +18,7 @@ class Help extends DTO_Help
   var $description = ""; // Brief description of description
   var $contents = "";    // The message body
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages'),
     'channel_id'=>array('type'=>'lookup', 'object'=>'channel', 'value'=>'name', 'title'=>'channel', 'var'=>'channels'),
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
@@ -31,6 +31,14 @@ class Help extends DTO_Help
   function __construct() 
   {
     parent::__construct('default');
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
   function load_by_id($id) 

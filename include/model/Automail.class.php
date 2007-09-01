@@ -21,7 +21,7 @@ class Automail extends DTO_Automail
   var $description = ""; // Brief description of description
   var $contents = "";    // The message body
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
     'fromh'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'From Header'),
@@ -36,6 +36,14 @@ class Automail extends DTO_Automail
   function __construct() 
   {
     parent::__construct('default');
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
   function load_by_id($id) 

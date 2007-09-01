@@ -13,13 +13,22 @@ class Language extends DTO_Language
 {
   var $name = "";      // Language name
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup')     );
 
   function __construct() 
   {
     parent::__construct('default');
   }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
+  }
+
 
   function load_by_id($id) 
   {

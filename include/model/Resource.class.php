@@ -29,7 +29,7 @@ class Resource extends DTO_Resource
   var $status = "";      // Various status fields
 
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'file_upload'=>array('type'=>'file'),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup'),
@@ -44,6 +44,14 @@ class Resource extends DTO_Resource
   function __construct() 
   {
     parent::__construct('default');
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
   /**

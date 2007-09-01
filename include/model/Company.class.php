@@ -27,7 +27,7 @@ class Company extends DTO_Company
   var $modified = "";
   var $allocation = "";
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name','header'=>true),
     'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1'),
     'address2'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 2'),
@@ -46,6 +46,14 @@ class Company extends DTO_Company
   function __construct() 
   {
     parent::__construct('default');
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
   function load_by_id($id) 

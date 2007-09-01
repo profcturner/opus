@@ -16,7 +16,7 @@ class Mimetype extends DTO_Mimetype
   var $extensions = ""; // Allowable filename extensions
   var $flags = ""; // Various flags
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'type'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Type', 'header'=>true, 'listclass'=>'mimetype_type'),
     'extensions'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Extensions', 'listclass'=>'mimetype_extensions'),
     'comment'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Comment', 'header'=>true, 'listclass'=>'comment'),
@@ -26,6 +26,14 @@ class Mimetype extends DTO_Mimetype
   function __construct() 
   {
     parent::__construct('default');
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
   function load_by_id($id) 

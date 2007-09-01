@@ -14,7 +14,7 @@ class Channel extends DTO_Channel
   var $name = "";        // Very brief channel name
   var $description = ""; // Brief description of channel
 
-  var $_field_defs = array(
+  static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>30, 'title'=>'Name', 'header'=>true, 'listclass'=>'channel_name'),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'channel_description')
     );
@@ -22,6 +22,14 @@ class Channel extends DTO_Channel
   function __construct() 
   {
     parent::__construct('default');
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
   function load_by_id($id) 

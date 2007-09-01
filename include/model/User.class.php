@@ -24,7 +24,7 @@ Class User extends DTO_User
   var $email = '';
   var $user_type = "";
 
-  var $_field_defs = array
+  static $_field_defs = array
   (
     'username'=>array('type'=>'text','size'=>15, 'header'=>true),
     'password'=>array('type'=>'password','size'=>20, 'header'=>false),
@@ -45,6 +45,14 @@ Class User extends DTO_User
     global $logger;
     $logger->log("User construct called");
     $logger->log($this);
+  }
+
+  /**
+  * returns the statically defined field definitions
+  */
+  function get_field_defs()
+  {
+    return(self::$_field_defs);
   }
 
    static function load_by_id($id) 
