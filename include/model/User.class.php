@@ -7,7 +7,7 @@
  * last few fields have gone
  */
 
-require_once("pds/dto/DTO_User.class.php");
+require_once("dto/DTO_User.class.php");
 
 Class User extends DTO_User 
 {
@@ -38,30 +38,23 @@ Class User extends DTO_User
     'type'=>array('type'=>'list','values'=>array('student','staff','guest'), 'header'=>true)
   );
 
-  function __construct($handle = 'default') 
+function __construct() 
   {
-    parent::__construct($handle);
-
-    global $logger;
-    $logger->log("User construct called");
-    $logger->log($this);
+    parent::__construct();
   }
 
-  /**
-  * returns the statically defined field definitions
-  */
   function get_field_defs()
   {
-    return(self::$_field_defs);
+    return self::$_field_defs;
   }
 
-   static function load_by_id($id) 
-   {
-      $user = new User;
-      $user->id = $id;
-      $user->_load_by_id();
-      return $user;
-   }
+  function load_by_id($id) 
+  {
+     $user = new User;
+     $user->id = $id;
+     $user->_load_by_id();
+     return $user;
+  }
    
 /**
  * @package PDSystem
@@ -140,9 +133,12 @@ Class User extends DTO_User
       $user->_remove_where("WHERE id=$id");
    }
 
-  function load_by_reg_num($reg_num) 
+  function load_by_username($username) 
   {
-    	
+    $user = new User;
+    $user->username = $username;
+    $user->_load_by_field('username');
+    return $user;
   }
 
   function load_by_email($email) 
@@ -208,10 +204,10 @@ Class User extends DTO_User
 		return array($students,$academics,$demo_students,$guests,$others,$total_online, $total);
 	}
 	
-	function set_online($reg_num, $status) {
+	function set_online($reg_number, $status) {
 	
 		$con = new DB_Connection_PDP();
-		$sql = "UPDATE user SET online='".$status."', session='".session_id()."' WHERE reg_number='".$reg_num."';";
+		$sql = "UPDATE user SET online='".$status."', session='".session_id()."' WHERE reg_number='".$reg_number."';";
 		$con->query($sql);
 		unset($con);
 	
@@ -275,7 +271,7 @@ Class User extends DTO_User
 				
 		$params = array('staff_code'=>$staff_code);
 	
-		$serverpath = WEB_SERVICE_URL.'/controller_soap.php?username='.WS_USERNAME.'&password='.WS_PASSWORD.'&Debug=1';
+		$serverpath = WEB_SERVICE_URL.'/controller_soap.php?reg_number='.WS_USERNAME.'&password='.WS_PASSWORD.'&Debug=1';
 	
 		$client = new soapclient($serverpath);
 	
@@ -288,7 +284,7 @@ Class User extends DTO_User
 				
 		$params = array('staff_code'=>$staff_code);
 	
-		$serverpath = WEB_SERVICE_URL.'/controller_soap.php?username='.WS_USERNAME.'&password='.WS_PASSWORD.'&Debug=1';
+		$serverpath = WEB_SERVICE_URL.'/controller_soap.php?reg_number='.WS_USERNAME.'&password='.WS_PASSWORD.'&Debug=1';
 	
 		$client = new soapclient($serverpath);
 	
