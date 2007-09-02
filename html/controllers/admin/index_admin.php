@@ -6,7 +6,8 @@ function nav_admin()
   (
     "home"=>array
     (
-      array("home", "home", "home", "home"), 
+      array("home", "home", "home", "home"),
+      array("company activity", "home", "company_activity", "company_activity"), 
     ), 
     "directories"=>array
     (

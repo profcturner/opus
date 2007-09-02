@@ -11,24 +11,31 @@ require_once("dto/DTO_Vacancy.class.php");
 */
 class Vacancy extends DTO_Vacancy 
 {
-  var $name = "";      // Vacancy name
-  var $address1 = "";
-  var $address2 = "";
-  var $address3 = "";
-  var $town = "";
-  var $locality = "";
-  var $country = "";
-  var $postcode = "";
-  var $www = "";
-  var $voice = "";
-  var $fax = "";
-  var $brief = "";
-  var $created = "";
-  var $modified = "";
-  var $allocation = "";
+  var $company_id = "";   // The company offering the vacancy
+  var $description = "";  // Job Description
+  var $created = "";      // Item creation date
+  var $modified = "";     // Item modification date
+  var $closedate = "";    // Closing date for applications (if any)
+  var $jobstart = "";     // The approximate start date
+  var $jobend = "";       // The approximate end date
+  var $address1 = "";     // Address field 1
+  var $address2 = "";     // Address field 2
+  var $address3 = "";     // Address field 3
+  var $town = "";         // Town
+  var $locality = "";     // Locality
+  var $country = "";      // Country
+  var $postcode = "";     // Postcode
+  var $www = "";          // Web address
+  var $salary = "";       // Salary details
+  var $brief = "";        // Brief details
+  var $status = "";       // Open, Closed etc?
+  var $contact_id = "";   // Who's looking after this in a company?
+
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name','header'=>true),
+    'description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
+    'jobstart'=>array('type'=>'date', 'inputstyle'=>'popup', 'required'=>'true'),
+    'jobend'=>array('type'=>'date', 'inputstyle'=>'popup'),
     'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1'),
     'address2'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 2'),
     'address3'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 3'),
@@ -37,9 +44,7 @@ class Vacancy extends DTO_Vacancy
     'country'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Country'),
     'postcode'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20, 'title'=>'Postcode'),
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
-    'voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Phone'),
-    'fax'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Fax'),
-    'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
+    'closedate'=>array('type'=>'date', 'inputstyle'=>'popup'),
     'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>60, 'maxsize'=>60000,  'title'=>'Brief')
      );
 
@@ -67,12 +72,14 @@ class Vacancy extends DTO_Vacancy
   function insert($fields) 
   {
     $vacancy = new Vacancy;
+    $fields['created'] = date("YmdHis");
     $vacancy->_insert($fields);
   }
   
   function update($fields) 
   {
     $vacancy = Vacancy::load_by_id($fields[id]);
+    $fields['modified'] = date("YmdHis");
     $vacancy->_update($fields);
   }
   
@@ -95,7 +102,7 @@ class Vacancy extends DTO_Vacancy
     return $vacancy->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY name, locality", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY description, locality", $page=0)
   {
     $vacancy = new Vacancy;
     

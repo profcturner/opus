@@ -110,6 +110,7 @@ function load_user($username)
     $opus_user['opus']['lastname']    = $user->lastname;
     $opus_user['opus']['email']       = $user->email;
     $opus_user['opus']['user_type']   = $user->user_type;
+    $opus_user['opus']['last_login']  = $user->last_login;
 
     $waf->user = array_merge($waf->user, $opus_user);
   }

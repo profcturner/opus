@@ -67,12 +67,14 @@ class Company extends DTO_Company
   function insert($fields) 
   {
     $company = new Company;
+    $fields['created'] = date("YmdHis");
     $company->_insert($fields);
   }
   
   function update($fields) 
   {
     $company = Company::load_by_id($fields[id]);
+    $fields['modified'] = date("YmdHis");
     $company->_update($fields);
   }
   
