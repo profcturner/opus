@@ -40,20 +40,28 @@ function main()
   $waf->register_data_connection('default', 'mysql:host=localhost;dbname=opus4', 'root', 'test');
 
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 
-  $currentgroup = WA::request("currentgroup", True);
-  
-  if (strlen($currentgroup) == 0) $currentgroup = $user[groups][0];
-  
+
   //assign configuration to smarty
   $waf->assign_by_ref("config", $config);
-  
-  //assignment of user
-  $waf->assign("user", $user);
-  $waf->assign("currentgroup", $currentgroup);
 
-  if ($user[valid]) 
+  if ($user['valid']) 
   {
     $waf->set_log_ident($user['username']);
+
+    // Authentication works, now get all the details, use the username returned
+    // by authentication, which might be different
+    load_user($user['username']);
+
+    $currentgroup = $waf->user['opus']['user_type'];
+    if($currentgroup == "root") $currentgroup="admin";
+    //if (strlen($currentgroup) == 0) $currentgroup = $user[groups][0];
+
+    //assignment of user
+    $waf->assign_by_ref("user", $waf->user);
+    $waf->assign_by_ref("currentgroup", $currentgroup);
+
+
+    // Ok, on with the show
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
 
@@ -74,6 +82,39 @@ function main()
     // Show the login screen
     login($waf);
   }
+}
+
+function load_user($username)
+{
+  global $waf;
+  $now = date("YmdHis");
+
+  require_once("model/User.class.php");
+
+  // Load the user from the table, these next actions are done each access
+  $user = User::load_by_username($username);
+
+  $fields['id'] = $user->id;
+  $fields['last_time'] = $now;
+
+  // These actions are done only on initial login
+  if(!$waf->user['opus']['user_id'])
+  {
+    $fields['login_time'] = $now;
+    $fields['online'] = "online";
+
+    $opus_user = array();
+    $opus_user['opus']['user_id']     = $user->id;
+    $opus_user['opus']['salutation']  = $user->salutation;
+    $opus_user['opus']['firstname']   = $user->firstname;
+    $opus_user['opus']['lastname']    = $user->lastname;
+    $opus_user['opus']['email']       = $user->email;
+    $opus_user['opus']['user_type']   = $user->user_type;
+
+    $waf->user = array_merge($waf->user, $opus_user);
+  }
+  $_SESSION['waf']['user'] = $waf->user;
+  User::update($fields);
 }
 
 /**
@@ -114,9 +155,20 @@ function login(&$waf)
  */
 
 function logout(&$waf) 
-{      
+{
+  global $waf;
+
+  $id = $waf->user['opus']['user_id'];
+  if($id)
+  {
+    $fields = array();
+    $fields['id'] = $id;
+    $fields['online'] = 'offline';
+    User::update($fields);
+  }
+
   $_SESSION["currentgroup"] = "";
-  $waf->logout_user($waf->title."_user");
+  $waf->logout_user();
   unset($_SESSION);
   session_destroy();
   $waf->display("login.tpl", "login");  

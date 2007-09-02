@@ -12,7 +12,7 @@ function nav_admin()
     (
       array("students","directories", "student_directory", "student_directory"), 
       array("companies", "directories", "manage_companies", "manage_companies"),
-      array("companies & vacancies", "directories", "vacancy_directory", "vacancy_directory"),
+      array("vacancies", "directories", "manage_vacancies", "manage_vacancies"),
       array("academic staff","directories","staff_directory","staff_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
     ), 

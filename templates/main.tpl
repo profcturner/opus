@@ -24,7 +24,7 @@
       <div id="mini_menu_item"><a href="">print version</a></div> 
       <div id="mini_menu_item"><a href="">help</a></div>
     </div>
-    <div id="username">{$user.user.firstname} {$user.user.lastname}</div>
+    <div id="username">{$user.opus.salutation} {$user.opus.firstname} {$user.opus.lastname}</div>
     <div id="groups">
       Groups :
 {foreach from=$user.groups key="key" item="group" name="group_loop"}
