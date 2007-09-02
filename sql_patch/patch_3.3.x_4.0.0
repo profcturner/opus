@@ -1,4 +1,7 @@
+-- vacancies --
 
+rename table vacancies to vacancy;
+alter table vacancy change column vacancy_id id int unsigned auto_increment not null;
 
 -- companies --
 
