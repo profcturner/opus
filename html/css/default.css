@@ -97,6 +97,11 @@ em.validation_message {
   color:#ffffff;
 }
 
+#sql_error {
+  padding:1em;
+  border: 1px red solid;
+}
+
 /* div id=menu style */
 
 #menu {
