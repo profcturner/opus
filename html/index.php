@@ -101,6 +101,7 @@ function load_user($username)
   if(!$waf->user['opus']['user_id'])
   {
     $fields['login_time'] = $now;
+    $fields['last_login'] = $now; // we remember the old value below in the session
     $fields['online'] = "online";
 
     $opus_user = array();

@@ -81,10 +81,10 @@ function __construct()
       return $user->_exists();
    }
    
-   function count() 
+   function count($where="") 
    {
       $user = new User;
-      return $user->_count();
+      return $user->_count($where);
    }
 
    function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0) 
