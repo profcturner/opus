@@ -54,6 +54,13 @@ $config['opus']['paths']['resources'] = '/usr/share/opus/resources/';
 
 $config['opus']['session']['navigation'] = 'PDS_Navigation';
 
+// pdsystem configuration options
+
+$config['opus']['pds']['url'] = "http://localhost/ws";
+$config['opus']['pds']['username'] = "ws";
+$config['opus']['pds']['password'] = "password";
+
+
 // web service configuration settings
 
 $config['opus']['ws']['url'] = "http://localhost/ws";

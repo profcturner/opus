@@ -1,3 +1,18 @@
+
+
+
+
+-- companystudent -> applications --
+
+rename table companystudent to application;
+alter table application add column cv_source enum('none', 'internal', 'pds_template', 'pds_custom') after modified;
+alter table application change column prefcvt cv_id int unsigned null;
+alter table application add column portfolio_source enum('none', 'pds') after archive_mime_type;
+alter table application add column portfolio_hash tinytext after portfolio_source;
+alter table application add column status_modified datetime after status;
+alter table application add column id int unsigned not null auto_increment primary key;
+
+
 -- vacancies --
 
 rename table vacancies to vacancy;

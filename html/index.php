@@ -100,10 +100,6 @@ function load_user($username)
   // These actions are done only on initial login
   if(!$waf->user['opus']['user_id'])
   {
-    $fields['login_time'] = $now;
-    $fields['last_login'] = $now; // we remember the old value below in the session
-    $fields['online'] = "online";
-
     $opus_user = array();
     $opus_user['opus']['user_id']     = $user->id;
     $opus_user['opus']['salutation']  = $user->salutation;
@@ -111,7 +107,10 @@ function load_user($username)
     $opus_user['opus']['lastname']    = $user->lastname;
     $opus_user['opus']['email']       = $user->email;
     $opus_user['opus']['user_type']   = $user->user_type;
-    $opus_user['opus']['last_login']  = $user->last_login;
+    $opus_user['opus']['last_login']  = $user->login_time;
+
+    $fields['login_time'] = $now;
+    $fields['online'] = "online";
 
     $waf->user = array_merge($waf->user, $opus_user);
   }
