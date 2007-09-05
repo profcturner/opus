@@ -13,16 +13,24 @@
   <th>Downloads</th>
   <td>{$resource->dcounter}</td>
 </tr>
-{if $resource->author}
 <tr>
   <th>Author</th>
-  <td>{$resource->author|escape:"htmlall"}</td>
+  <td>{$resource->author|escape:"htmlall"|default:"Unknown"}</td>
 </tr>
-{/if}
-{if $resource->copyright}
 <tr>
   <th>Copyright</th>
-  <td>{$resource->copyright|escape:"htmlall"}</td>
+  <td>{$resource->copyright|escape:"htmlall"|default:"Unknown"}</td>
 </tr>
-{/if}
+<tr>
+  <th>Initially Uploaded</th>
+  <td>{$resource->created}</td>
+</tr>
+<tr>
+  <th>Last modified</th>
+  <td>{$resource->modified|default:"unmodified"}</td>
+</tr>
+<tr>
+  <th>Last downloaded</th>
+  <td>{$resource->downloaded|default:"never"}</td>
+</tr>
 </table>

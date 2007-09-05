@@ -215,8 +215,8 @@ function set_navigation_history(&$waf, $title)
 {
   global $config;
 
-  $_SESSION[$config['pds']['session']['navigation']] = array(array($title, $_SERVER['REQUEST_URI']));
-  $waf->assign("navigation_history", $_SESSION[$config['pds']['session']['navigation']]);
+  $_SESSION[$config['opus']['navigation']] = array(array($title, $_SERVER['REQUEST_URI']));
+  $waf->assign("navigation_history", $_SESSION[$config['opus']['navigation']]);
 }
 
 /**
@@ -233,7 +233,7 @@ function add_navigation_history(&$waf, $title)
   global $config;
 
   $nav_history = array();
-  $nav_history = $_SESSION[$config[pds][session][navigation]];
+  $nav_history = $_SESSION[$config['opus']['navigation']];
   $new_nav_history = array();
   $nav_number = count($nav_history);
   $index = 0;
@@ -244,7 +244,7 @@ function add_navigation_history(&$waf, $title)
 
   array_push($new_nav_history, array($title, $_SERVER['REQUEST_URI']));
 
-  $_SESSION[$config[pds][session][navigation]] = $new_nav_history;
+  $_SESSION[$config['opus']['navigation']] = $new_nav_history;
 
   $waf->assign("navigation_history", $_SESSION[$config[pds][session][navigation]]);
 }
@@ -382,7 +382,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
     $object = str_replace(" ", "_", ucwords($object_name));
 
-    require_once("model/".$object.".class.php");
+    require_once("model/".$object_name.".class.php");
 
     $instance = new $object;
 

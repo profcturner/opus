@@ -1,5 +1,44 @@
 
+-- assessment --
 
+alter table assessment drop column submission_url;
+alter table assessment drop column results_url;
+alter table assessment change column assessment_id id int unsigned not null auto_increment;
+
+-- vacancytype to activitytype --
+
+rename table vacancytype to activitytype;
+alter table activitytype change column vacancy_id id int unsigned not null auto_increment;
+
+-- faculty --
+
+create table faculty
+(
+  name tinytext not null,
+  www tinytext,
+  srs_ident tinytext,
+  status enum('active', 'archive'),
+  id int unsigned not null auto_increment primary key
+);
+
+-- courses -> programmes --
+
+rename table courses to programme;
+alter table programme change column course_code srs_ident varchar(30) not null;
+alter table programme change column course_name name tinytext not null;
+alter table programme change column status status enum('active', 'archive') not null;
+alter table programme change column course_id id int unsigned auto_increment not null;
+
+-- schools --
+
+rename table schools to school;
+alter table school change column school_id id int unsigned not null auto_increment;
+alter table school change column school_name name tinytext not null;
+alter table school add column srs_ident tinytext null after www;
+alter table school add column faculty_id int unsigned not null after status;
+
+--WARNING! CHECK THIS
+alter table school change column status status enum('active', 'archive') not null;
 
 
 -- companystudent -> applications --
@@ -49,12 +88,15 @@ alter table language change column language name tinytext not null;
 
 rename table mime_types to mimetype;
 alter table mimetype change column mime_id id int unsigned not null auto_increment;
+alter table mimetype change column flags uploadable enum('yes', 'no') not null;
+
+-- WARNING NEED PHP TO FIX THIS LAST ONE --
 
 -- users --
 
 rename table id to user;
 alter table user change column real_name real_name tinytext;
-alter table user change column id_number id int unsigned not null;
+alter table user change column id_number id int unsigned not null auto_increment;
 alter table user add column online enum('online', 'idle', 'offline') after last_index;
 alter table user add column reg_number tinytext after user;
 alter table user change column user user_type enum('student','root','company','staff','admin','supervisor') not null;

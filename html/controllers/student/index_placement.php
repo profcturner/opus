@@ -69,7 +69,7 @@
     $resource = Resource::load_by_id($id);
 
     $opus->assign("resource", $resource);
-    $opus->display("main.tpl", "student:information:resources:info_resource", "general/information/info_resource.tpl");
+    $opus->display("main.tpl", "student:placement:info_resource:info_resource", "general/information/info_resource.tpl");
   }
 
 

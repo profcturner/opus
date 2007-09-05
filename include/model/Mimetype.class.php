@@ -14,13 +14,13 @@ class Mimetype extends DTO_Mimetype
   var $type = "";        // Very brief mimetype name
   var $comment = ""; // Brief description of mimetype
   var $extensions = ""; // Allowable filename extensions
-  var $flags = ""; // Various flags
+  var $uploadable = ""; // Various flags
 
   static $_field_defs = array(
     'type'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Type', 'header'=>true, 'listclass'=>'mimetype_type'),
     'extensions'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Extensions', 'listclass'=>'mimetype_extensions'),
     'comment'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Comment', 'header'=>true, 'listclass'=>'comment'),
-    'flags'=>array('type'=>'list'),
+    'uploadable'=>array('type'=>'list', 'list'=>array('yes', 'no')),
     );
 
   function __construct() 

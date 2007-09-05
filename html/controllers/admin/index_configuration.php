@@ -1,5 +1,7 @@
 <?php
 
+  // Resources
+
   function manage_resources(&$opus, $user, $title)
   {
     manage_objects($opus, $user, "Resource", array(array("add","section=configuration&function=add_resource")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", "", "admin:configuration:resources:manage_resources");
@@ -36,80 +38,148 @@
   }
 
 
-  function manage_channels(&$opus, $user, $title)
+  // Organisation
+
+  function organisation_details(&$opus, &$user, $title) 
   {
-    manage_objects($opus, $user, "Channel", array(array("add","section=configuration&function=add_channel")), array(array('edit', 'edit_channel'), array('remove','remove_channel')), "get_all", "", "admin:configuration:channels:manage_channels");
+    manage_faculties(&$opus, &$user, $title);
   }
 
-  function add_channel(&$opus, &$user) 
+  // Faculties
+
+  function manage_faculties(&$opus, $user, $title)
   {
-    add_object($opus, $user, "Channel", array("add", "configuration", "add_channel_do"), array(array("cancel","section=configuration&function=manage_channels")), array(array("user_id",$user["user_id"])), "admin:configuration:channels:add_channel");
+    set_navigation_history($opus, "Faculties");
+
+    manage_objects($opus, $user, "Faculty", array(array("add","section=configuration&function=add_faculty")), array(array('schools', 'manage_schools'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", "", "admin:configuration:faculties:manage_faculties");
   }
 
-  function add_channel_do(&$opus, &$user) 
+  function add_faculty(&$opus, &$user) 
   {
-    add_object_do($opus, $user, "Channel", "section=configuration&function=manage_channels", "add_channel");
+    add_object($opus, $user, "Faculty", array("add", "configuration", "add_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), array(array("user_id",$user["user_id"])), "admin:configuration:faculties:add_faculty");
   }
 
-  function edit_channel(&$opus, &$user) 
+  function add_faculty_do(&$opus, &$user) 
   {
-    edit_object($opus, $user, "Channel", array("confirm", "configuration", "edit_channel_do"), array(array("cancel","section=configuration&function=manage_channels")), array(array("user_id",$user["user_id"])), "admin:configuration:channels:edit_channel");
+    add_object_do($opus, $user, "Faculty", "section=configuration&function=manage_faculties", "add_faculty");
   }
 
-  function edit_channel_do(&$opus, &$user) 
+  function edit_faculty(&$opus, &$user) 
   {
-    edit_object_do($opus, $user, "Channel", "section=configuration&function=manage_channels", "edit_channel");
+    edit_object($opus, $user, "Faculty", array("confirm", "configuration", "edit_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), array(array("user_id",$user["user_id"])), "admin:configuration:faculties:edit_faculty");
   }
 
-  function remove_channel(&$opus, &$user) 
+  function edit_faculty_do(&$opus, &$user) 
   {
-    remove_object($opus, $user, "Channel", array("remove", "configuration", "remove_channel_do"), array(array("cancel","section=configuration&function=manage_channels")), "", "admin:configuration:channels:remove_channel");
+    edit_object_do($opus, $user, "Faculty", "section=configuration&function=manage_faculties", "edit_faculty");
   }
 
-  function remove_channel_do(&$opus, &$user) 
+  function remove_faculty(&$opus, &$user) 
   {
-    remove_object_do($opus, $user, "Channel", "section=configuration&function=manage_channels");
+    remove_object($opus, $user, "Faculty", array("remove", "configuration", "remove_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), "", "admin:configuration:faculties:remove_faculty");
   }
 
-
-
-
-  function manage_automail(&$opus, $user, $title)
+  function remove_faculty_do(&$opus, &$user) 
   {
-    manage_objects($opus, $user, "Automail", array(array("add","section=configuration&function=add_automail")), array(array('edit', 'edit_automail'), array('remove','remove_automail')), "get_all", "", "admin:configuration:automail:manage_automail");
+    remove_object_do($opus, $user, "Faculty", "section=configuration&function=manage_faculties");
   }
 
-  function add_automail(&$opus, &$user) 
+  // Schools
+
+  function manage_schools(&$opus, $user, $title)
   {
-    add_object($opus, $user, "Automail", array("add", "configuration", "add_automail_do"), array(array("cancel","section=configuration&function=manage_automail")), array(array("user_id",$user["user_id"])), "admin:configuration:automails:add_automail");
+    add_navigation_history($opus, "Schools");
+
+    $faculty_id = (int) WA::request("id", true);
+
+    manage_objects($opus, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('programmes', 'list_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:schools:manage_schools");
   }
 
-  function add_automail_do(&$opus, &$user) 
+  function add_school(&$opus, &$user) 
   {
-    add_object_do($opus, $user, "Automail", "section=configuration&function=manage_automail", "add_automail");
+    $faculty_id = (int) WA::request("id", true);
+
+    add_object($opus, $user, "School", array("add", "configuration", "add_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:schools:add_school");
   }
 
-  function edit_automail(&$opus, &$user) 
+  function add_school_do(&$opus, &$user) 
   {
-    edit_object($opus, $user, "Automail", array("confirm", "configuration", "edit_automail_do"), array(array("cancel","section=configuration&function=manage_automail")), array(array("user_id",$user["user_id"])), "admin:configuration:automails:edit_automail");
+    add_object_do($opus, $user, "School", "section=configuration&function=manage_schools", "add_school");
   }
 
-  function edit_automail_do(&$opus, &$user) 
+  function edit_school(&$opus, &$user) 
   {
-    edit_object_do($opus, $user, "Automail", "section=configuration&function=manage_automail", "edit_automail");
+    $faculty_id = (int) WA::request("id", true);
+
+    edit_object($opus, $user, "School", array("confirm", "configuration", "edit_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:schools:edit_school");
   }
 
-  function remove_automail(&$opus, &$user) 
+  function edit_school_do(&$opus, &$user) 
   {
-    remove_object($opus, $user, "Automail", array("remove", "configuration", "remove_automail_do"), array(array("cancel","section=configuration&function=manage_automail")), "", "admin:configuration:automail:remove_automail");
+    edit_object_do($opus, $user, "School", "section=configuration&function=manage_schools", "edit_school");
   }
 
-  function remove_automail_do(&$opus, &$user) 
+  function remove_school(&$opus, &$user) 
   {
-    remove_object_do($opus, $user, "Automail", "section=configuration&function=manage_automail");
+    remove_object($opus, $user, "School", array("remove", "configuration", "remove_school_do"), array(array("cancel","section=configuration&function=manage_schools")), "", "admin:configuration:schools:remove_school");
   }
 
+  function remove_school_do(&$opus, &$user) 
+  {
+    remove_object_do($opus, $user, "School", "section=configuration&function=manage_schools");
+  }
 
+  // Programmes
+
+  function list_programmes(&$opus, $user, $title)
+  {
+    $school_id = (int) WA::request("id", true);
+
+    manage_programmes(&$opus, $user, $title);
+  }
+
+  function manage_programmes(&$opus, $user, $title)
+  {
+    $school_id = (int) WA::request("id", true);
+
+    manage_objects($opus, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", "where school_id=$school_id", "admin:configuration:programmes:manage_programmes");
+  }
+
+  function add_programme(&$opus, &$user) 
+  {
+    $school_id = (int) WA::request("id", true);
+
+    add_object($opus, $user, "Programme", array("add", "configuration", "add_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:programmes:add_programme");
+  }
+
+  function add_programme_do(&$opus, &$user) 
+  {
+    add_object_do($opus, $user, "Programme", "section=configuration&function=manage_programmes", "add_programme");
+  }
+
+  function edit_programme(&$opus, &$user) 
+  {
+    $school_id = (int) WA::request("id", true);
+
+    edit_object($opus, $user, "Programme", array("confirm", "configuration", "edit_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:programmes:edit_programme");
+  }
+
+  function edit_programme_do(&$opus, &$user) 
+  {
+    edit_object_do($opus, $user, "Programme", "section=configuration&function=manage_programmes", "edit_programme");
+  }
+
+  function remove_programme(&$opus, &$user) 
+  {
+    remove_object($opus, $user, "Programme", array("remove", "configuration", "remove_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), "", "admin:configuration:programmes:remove_programme");
+  }
+
+  function remove_programme_do(&$opus, &$user) 
+  {
+    remove_object_do($opus, $user, "Programme", "section=configuration&function=manage_programmes");
+  }
+
+  // Help
 
   function manage_help(&$opus, $user, $title)
   {
@@ -145,46 +215,6 @@
   {
     remove_object_do($opus, $user, "Help", "section=configuration&function=manage_help");
   }
-
-
-
-  function manage_mimetypes(&$opus, $user, $title)
-  {
-    manage_objects($opus, $user, "Mimetype", array(array("add","section=configuration&function=add_mimetype")), array(array('edit', 'edit_mimetype'), array('remove','remove_mimetype')), "get_all", "", "admin:configuration:mimetypes:manage_mimetypes");
-  }
-
-  function add_mimetype(&$opus, &$user) 
-  {
-    add_object($opus, $user, "Mimetype", array("add", "configuration", "add_mimetype_do"), array(array("cancel","section=configuration&function=manage_mimetypes")), array(array("user_id",$user["user_id"])), "admin:configuration:mimetypes:add_mimetype");
-  }
-
-  function add_mimetype_do(&$opus, &$user) 
-  {
-    add_object_do($opus, $user, "Mimetype", "section=configuration&function=manage_mimetypes", "add_mimetype");
-  }
-
-  function edit_mimetype(&$opus, &$user) 
-  {
-    edit_object($opus, $user, "Mimetype", array("confirm", "configuration", "edit_mimetype_do"), array(array("cancel","section=configuration&function=manage_mimetypes")), array(array("user_id",$user["user_id"])), "admin:configuration:mimetypes:edit_mimetype");
-  }
-
-  function edit_mimetype_do(&$opus, &$user) 
-  {
-    edit_object_do($opus, $user, "Mimetype", "section=configuration&function=manage_mimetypes", "edit_mimetype");
-  }
-
-  function remove_mimetype(&$opus, &$user) 
-  {
-    remove_object($opus, $user, "Mimetype", array("remove", "configuration", "remove_mimetype_do"), array(array("cancel","section=configuration&function=manage_mimetypes")), "", "admin:configuration:mimetypes:remove_mimetype");
-  }
-
-  function remove_mimetype_do(&$opus, &$user) 
-  {
-    remove_object_do($opus, $user, "Mimetype", "section=configuration&function=manage_mimetypes");
-  }
-
-
-
 
 
 ?>

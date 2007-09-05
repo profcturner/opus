@@ -16,6 +16,7 @@ function nav_admin()
       array("vacancies", "directories", "manage_vacancies", "manage_vacancies"),
       array("academic staff","directories","staff_directory","staff_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
+      array("admin details", "configuration", "manage_admins", "manage_admins")
     ), 
     "information"=>array
     (
@@ -25,14 +26,20 @@ function nav_admin()
     ),
     "configuration"=>array
     (
-      array("admin details", "configuration", "list_admins", "list_admins"),
       array("manage resources", "configuration", "resources", "manage_resources"),
-      array("manage mime types", "configuration", "manage_mimetypes", "manage_mimetypes"),
-      array("courses & groups", "configuration", "manage_channels", "manage_channels"),
-      array("help prompts", "configuration", "manage_help", "manage_help"),
-      array("mail templates", "configuration", "manage_automail", "manage_automail"),
-      array("assessments", "configuration", "list_assessments", "list_assessments"),
-      array("import data", "configuration", "import_data", "import_data")
+      array("organisation details", "configuration", "organisation_details", "organisation_details"),
+      array("manage help", "configuration", "manage_help", "manage_help"),
+      array("import data", "configuration", "import_data", "import_data"),
+
+    ),
+    "advanced"=>array
+    (
+      array("activity types", "advanced", "manage_activitytypes", "manage_activitytypes"),
+      array("channels", "advanced", "manage_channels", "manage_channels"),
+      array("mime types", "advanced", "manage_mimetypes", "manage_mimetypes"),
+      array("mail templates", "advanced", "manage_automail", "manage_automail"),
+      array("assessments", "advanced", "list_assessments", "manage_assessments"),
+
     )
   );
 }

@@ -29,9 +29,9 @@
   {
     require_once("model/Log_Viewer.class.php");
 
-    $logfile = $_REQUEST['logfile'];
-    $search  = $_REQUEST['search'];
-    $lines   = $_REQUEST['lines'];
+    $logfile = WA::request('logfile');
+    $search  = WA::request('search');
+    $lines   = WA::request('lines');
 
     $log_viewer = new Log_Viewer($logfile, $search, $lines);
     $opus->display("main.tpl", "admin:information:view_logs:view_logs", "admin/information/log_viewer.tpl");
