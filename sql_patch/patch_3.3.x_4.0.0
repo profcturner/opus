@@ -1,9 +1,23 @@
 
+
+
+
+-- CV groups --
+
+rename table cvgroups to cvgroup;
+alter table cvgroup change column group_id id int unsigned not null auto_increment;
+
 -- assessment --
 
 alter table assessment drop column submission_url;
 alter table assessment drop column results_url;
 alter table assessment change column assessment_id id int unsigned not null auto_increment;
+
+-- assessmentstructure --
+
+alter table assessmentstructure add column id int unsigned not null auto_increment primary key;
+alter table assessmentstructure change column options options enum('compulsory', 'optional') not null;
+-- WARNINGS AFTER THIS ONE! --
 
 -- vacancytype to activitytype --
 
@@ -72,6 +86,7 @@ alter table resource change column resource_id id int unisgned auto_increment;
 rename table channels to channel;
 alter table channel change column channel_id id int unsigned auto_increment;
 
+rename table channelassociations to channelassociation;
 -- automail --
 
 alter table automail add column id int unsigned auto_increment primary key;
@@ -83,6 +98,7 @@ alter table automail add column id int unsigned auto_increment primary key;
 rename table languages to language;
 alter table language change column language_id id int unsigned auto_increment;
 alter table language change column language name tinytext not null;
+alter table language add column ident varchar(10) not null after name;
 
 -- mime types --
 

@@ -29,7 +29,7 @@ class Automail extends DTO_Automail
     'cch'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'CC Header'),
     'bcch'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'BCC Header'),
     'subject'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Subject'),
-    'contents'=>array('type'=>'textarea', 'rows'=>10, 'cols'=>40, 'maxsize=>32000')
+    'contents'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>32000)
 
     );
 

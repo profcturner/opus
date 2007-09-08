@@ -12,9 +12,12 @@ require_once("dto/DTO_Language.class.php");
 class Language extends DTO_Language 
 {
   var $name = "";      // Language name
+  var $ident = "";     // Standard identifier (e.g. en for english)
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup')     );
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Language', 'header'=>true),
+    'ident'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'title'=>'Identifier', 'header'=>true),
+  );
 
   function __construct() 
   {
@@ -69,7 +72,7 @@ class Language extends DTO_Language
     return $language->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
   {
     $language = new Language;
     

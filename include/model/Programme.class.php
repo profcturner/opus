@@ -20,7 +20,7 @@ class Programme extends DTO_Programme
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'programme_name'),
     'www'=>array('type'=>'url', 'size'=>60, 'maxsize'=>200, 'title'=>'Web Address'),
-    'srs_ident'=>array('type'=>'text', 'size'=>40, 'maxsize'=>60),
+    'srs_ident'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'header'=>true, 'title'=>'Code'),
     'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
   );
 

@@ -130,7 +130,13 @@
       {elseif $def.type == "image" || $def.type == "file"}
         <input type="file" name="{$header}" size="{$def.size}"/>
       {elseif $def.type == "list"}
-        {html_options values=$def.list output=$def.list name=$header}
+        {if $def.multiple}
+          <select multiple name="{$header}[]">
+          {html_options values=$def.list output=$def.list name=$header}
+          </select>
+        {else}
+          {html_options values=$def.list output=$def.list name=$header}
+        {/if}
       {elseif $def.type == "lookup"}
         {html_options name="$header"}
         {php} 
@@ -182,7 +188,12 @@
       <input type="file" name="{$header}" size="{$def.size}"/>
       {/if}
       {elseif $def.type == "list"}
-      {html_options values=$def.list output=$def.list selected=$object->$header name=$header}
+        {if $def.multiple}
+          {html_options multiple='multiple' values=$def.list output=$def.list name=$header|cat:"[]" selected=$object->$header}
+          
+        {else}
+        {html_options values=$def.list output=$def.list selected=$object->$header name=$header}
+        {/if}
       {elseif $def.type == "lookup"}
       {html_options name="$header"}
 {php} 
