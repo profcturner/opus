@@ -11,15 +11,16 @@ require_once("dto/DTO_Policy.class.php");
 */
 class Policy extends DTO_Policy 
 {
-  var $descript = "";      // Policy name
+  var $name = "";      // Policy name
   var $help = "";
   var $automail = "";
   var $resource = "";
   var $import = "";
   var $status = "";
   var $log = "";
+  var $faculty = "";
   var $school = "";
-  var $course = "";
+  var $programme = "";
   var $company = "";
   var $vacancy = "";
   var $contact = "";
@@ -31,7 +32,9 @@ class Policy extends DTO_Policy
   var $assessmentgroup = "";
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup')     );
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name', 'header'=>true),
+    'priority'=>array('type'=>'text', 'size'=>7, 'title'=>'Priority', 'header'=>true)
+  );
 
   function __construct() 
   {
@@ -327,7 +330,7 @@ class Policy extends DTO_Policy
     return $policy->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY priority DESC, name", $page=0)
   {
     $policy = new Policy;
     
