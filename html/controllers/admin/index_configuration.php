@@ -51,12 +51,12 @@
   {
     set_navigation_history($opus, "Faculties");
 
-    manage_objects($opus, $user, "Faculty", array(array("add","section=configuration&function=add_faculty")), array(array('admins', 'manage_facultyadmins'), array('schools', 'manage_schools'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", "", "admin:configuration:manage_faculties:manage_faculties");
+    manage_objects($opus, $user, "Faculty", array(array("add","section=configuration&function=add_faculty")), array(array('admins', 'manage_facultyadmins'), array('schools', 'manage_schools'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", "", "admin:configuration:organisation_details:manage_faculties");
   }
 
   function add_faculty(&$opus, &$user) 
   {
-    add_object($opus, $user, "Faculty", array("add", "configuration", "add_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_faculties:add_faculty");
+    add_object($opus, $user, "Faculty", array("add", "configuration", "add_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:add_faculty");
   }
 
   function add_faculty_do(&$opus, &$user) 
@@ -66,7 +66,7 @@
 
   function edit_faculty(&$opus, &$user) 
   {
-    edit_object($opus, $user, "Faculty", array("confirm", "configuration", "edit_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_faculties:edit_faculty");
+    edit_object($opus, $user, "Faculty", array("confirm", "configuration", "edit_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:edit_faculty");
   }
 
   function edit_faculty_do(&$opus, &$user) 
@@ -76,7 +76,7 @@
 
   function remove_faculty(&$opus, &$user) 
   {
-    remove_object($opus, $user, "Faculty", array("remove", "configuration", "remove_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), "", "admin:configuration:manage_faculties:remove_faculty");
+    remove_object($opus, $user, "Faculty", array("remove", "configuration", "remove_faculty_do"), array(array("cancel","section=configuration&function=manage_faculties")), "", "admin:configuration:organisation_details:remove_faculty");
   }
 
   function remove_faculty_do(&$opus, &$user) 
@@ -96,14 +96,14 @@
 
     add_navigation_history($opus, $faculty->name);
 
-    manage_objects($opus, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:manage_schools:manage_schools");
+    manage_objects($opus, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:organisation_details:manage_schools");
   }
 
   function add_school(&$opus, &$user) 
   {
     $faculty_id = (int) WA::request("id", true);
 
-    add_object($opus, $user, "School", array("add", "configuration", "add_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:manage_schools:add_school");
+    add_object($opus, $user, "School", array("add", "configuration", "add_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:organisation_details:add_school");
   }
 
   function add_school_do(&$opus, &$user) 
@@ -115,7 +115,7 @@
   {
     $faculty_id = (int) WA::request("id", true);
 
-    edit_object($opus, $user, "School", array("confirm", "configuration", "edit_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:manage_schools:edit_school");
+    edit_object($opus, $user, "School", array("confirm", "configuration", "edit_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:organisation_details:edit_school");
   }
 
   function edit_school_do(&$opus, &$user) 
@@ -125,7 +125,7 @@
 
   function remove_school(&$opus, &$user) 
   {
-    remove_object($opus, $user, "School", array("remove", "configuration", "remove_school_do"), array(array("cancel","section=configuration&function=manage_schools")), "", "admin:configuration:manage_schools:remove_school");
+    remove_object($opus, $user, "School", array("remove", "configuration", "remove_school_do"), array(array("cancel","section=configuration&function=manage_schools")), "", "admin:configuration:organisation_details:remove_school");
   }
 
   function remove_school_do(&$opus, &$user) 
@@ -147,7 +147,7 @@
     add_navigation_history($opus, $school->name);
 
 
-    manage_objects($opus, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('groups', 'manage_programmegroups'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", "where school_id=$school_id", "admin:configuration:manage_programmes:manage_programmes");
+    manage_objects($opus, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('groups', 'manage_programmegroups'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", "where school_id=$school_id", "admin:configuration:organisation_details:manage_programmes");
   }
 
   function add_programme(&$opus, &$user) 
@@ -156,7 +156,7 @@
 
     add_navigation_history($opus, "Add Programme");
 
-    add_object($opus, $user, "Programme", array("add", "configuration", "add_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:manage_programmes:add_programme");
+    add_object($opus, $user, "Programme", array("add", "configuration", "add_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:organisation_details:add_programme");
   }
 
   function add_programme_do(&$opus, &$user) 
@@ -168,7 +168,7 @@
   {
     $school_id = (int) WA::request("id", true);
 
-    edit_object($opus, $user, "Programme", array("confirm", "configuration", "edit_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:manage_programmes:edit_programme");
+    edit_object($opus, $user, "Programme", array("confirm", "configuration", "edit_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:organisation_details:edit_programme");
   }
 
   function edit_programme_do(&$opus, &$user) 
@@ -178,7 +178,7 @@
 
   function remove_programme(&$opus, &$user) 
   {
-    remove_object($opus, $user, "Programme", array("remove", "configuration", "remove_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), "", "admin:configuration:manage_programmes:remove_programme");
+    remove_object($opus, $user, "Programme", array("remove", "configuration", "remove_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), "", "admin:configuration:organisation_details:remove_programme");
   }
 
   function remove_programme_do(&$opus, &$user) 
@@ -229,14 +229,14 @@
   {
     $group_id = (int) WA::request('id', true);
 
-    manage_objects($opus, $user, "Assessmentregime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", "where group_id=$group_id", "admin:configuration:manage_assessmentregimes:manage_assessmentregimes");
+    manage_objects($opus, $user, "Assessmentregime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", "where group_id=$group_id", "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
   }
 
   function add_assessmentregime(&$opus, &$user) 
   {
     $group_id = (int) WA::request('id', true);
 
-    add_object($opus, $user, "Assessmentregime", array("add", "configuration", "add_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentregimes:add_assessmentregime");
+    add_object($opus, $user, "Assessmentregime", array("add", "configuration", "add_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:add_assessmentregime");
   }
 
   function add_assessmentregime_do(&$opus, &$user) 
@@ -248,7 +248,7 @@
   {
     $group_id = (int) WA::request('id', true);
 
-    edit_object($opus, $user, "Assessmentregime", array("confirm", "configuration", "edit_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentregimes:edit_assessmentregime");
+    edit_object($opus, $user, "Assessmentregime", array("confirm", "configuration", "edit_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:edit_assessmentregime");
   }
 
   function edit_assessmentregime_do(&$opus, &$user) 
@@ -260,7 +260,7 @@
   {
     $group_id = (int) WA::request('id', true);
 
-    remove_object($opus, $user, "Assessmentregime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), "", "admin:configuration:manage_assessmentregimes:remove_assessmentregime");
+    remove_object($opus, $user, "Assessmentregime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentregime");
   }
 
   function remove_assessmentregime_do(&$opus, &$user) 
@@ -272,12 +272,12 @@
 
   function manage_cvgroups(&$opus, $user, $title)
   {
-    manage_objects($opus, $user, "CVgroup", array(array("add","section=configuration&function=add_cvgroup")), array(array('edit', 'edit_cvgroup'), array('remove','remove_cvgroup')), "get_all", "", "admin:configuration:cvgroups:manage_cvgroups");
+    manage_objects($opus, $user, "CVgroup", array(array("add","section=configuration&function=add_cvgroup")), array(array('edit', 'edit_cvgroup'), array('remove','remove_cvgroup')), "get_all", "", "admin:configuration:manage_cvgroups:manage_cvgroups");
   }
 
   function add_cvgroup(&$opus, &$user) 
   {
-    add_object($opus, $user, "CVgroup", array("add", "configuration", "add_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:cvgroups:add_cvgroup");
+    add_object($opus, $user, "CVgroup", array("add", "configuration", "add_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:add_cvgroup");
   }
 
   function add_cvgroup_do(&$opus, &$user) 
@@ -287,7 +287,7 @@
 
   function edit_cvgroup(&$opus, &$user) 
   {
-    edit_object($opus, $user, "CVgroup", array("confirm", "configuration", "edit_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:cvgroups:edit_cvgroup");
+    edit_object($opus, $user, "CVgroup", array("confirm", "configuration", "edit_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:edit_cvgroup");
   }
 
   function edit_cvgroup_do(&$opus, &$user) 
@@ -297,7 +297,7 @@
 
   function remove_cvgroup(&$opus, &$user) 
   {
-    remove_object($opus, $user, "CVgroup", array("remove", "configuration", "remove_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), "", "admin:configuration:cvgroups:remove_cvgroup");
+    remove_object($opus, $user, "CVgroup", array("remove", "configuration", "remove_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), "", "admin:configuration:manage_cvgroups:remove_cvgroup");
   }
 
   function remove_cvgroup_do(&$opus, &$user) 
@@ -311,12 +311,12 @@
 
   function manage_help(&$opus, $user, $title)
   {
-    manage_objects($opus, $user, "Help", array(array("add","section=configuration&function=add_help")), array(array('edit', 'edit_help'), array('remove','remove_help')), "get_all", "", "admin:configuration:help:manage_help");
+    manage_objects($opus, $user, "Help", array(array("add","section=configuration&function=add_help")), array(array('edit', 'edit_help'), array('remove','remove_help')), "get_all", "", "admin:configuration:manage_help:manage_help");
   }
 
   function add_help(&$opus, &$user) 
   {
-    add_object($opus, $user, "Help", array("add", "configuration", "add_help_do"), array(array("cancel","section=configuration&function=manage_help")), array(array("user_id",$user["user_id"])), "admin:configuration:helps:add_help");
+    add_object($opus, $user, "Help", array("add", "configuration", "add_help_do"), array(array("cancel","section=configuration&function=manage_help")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_help:add_help");
   }
 
   function add_help_do(&$opus, &$user) 
@@ -326,7 +326,7 @@
 
   function edit_help(&$opus, &$user) 
   {
-    edit_object($opus, $user, "Help", array("confirm", "configuration", "edit_help_do"), array(array("cancel","section=configuration&function=manage_help")), array(array("user_id",$user["user_id"])), "admin:configuration:helps:edit_help");
+    edit_object($opus, $user, "Help", array("confirm", "configuration", "edit_help_do"), array(array("cancel","section=configuration&function=manage_help")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_help:edit_help", "admin/configuration/edit_help.tpl");
   }
 
   function edit_help_do(&$opus, &$user) 
@@ -336,7 +336,7 @@
 
   function remove_help(&$opus, &$user) 
   {
-    remove_object($opus, $user, "Help", array("remove", "configuration", "remove_help_do"), array(array("cancel","section=configuration&function=manage_help")), "", "admin:configuration:help:remove_help");
+    remove_object($opus, $user, "Help", array("remove", "configuration", "remove_help_do"), array(array("cancel","section=configuration&function=manage_help")), "", "admin:configuration:manage_help:remove_help");
   }
 
   function remove_help_do(&$opus, &$user) 

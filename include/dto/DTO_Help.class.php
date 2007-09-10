@@ -12,6 +12,18 @@ class DTO_Help extends DTO {
   {
     parent::__construct($handle);
   }
+
+  function _load_by_id() 
+  {
+    parent::_load_by_id();
+
+    require_once("model/Channel.class.php");
+    $channel = Channel::load_by_id($this->channel_id);
+    $this->_channel_id = $channel->name;
+
+  }
+
+
 }
 
 ?>

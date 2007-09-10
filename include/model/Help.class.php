@@ -20,7 +20,7 @@ class Help extends DTO_Help
 
   static $_field_defs = array(
     'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages'),
-    'channel_id'=>array('type'=>'lookup', 'object'=>'channel', 'value'=>'name', 'title'=>'channel', 'var'=>'channels'),
+    'channel_id'=>array('type'=>'lookup', 'object'=>'channel', 'value'=>'name', 'title'=>'Channel', 'var'=>'channels', 'header'=>'true'),
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorisation'),
@@ -80,7 +80,7 @@ class Help extends DTO_Help
     return $help->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY channel_id, lookup", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY lookup, channel_id", $page=0)
   {
     $help = new Help;
     
