@@ -75,7 +75,7 @@ class Faculty extends DTO_Faculty
     return $faculty->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
   {
     $faculty = new Faculty;
     

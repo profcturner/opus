@@ -12,6 +12,18 @@ alter table policy add column faculty set('create','edit','archive','list') afte
 rename table cvgroups to cvgroup;
 alter table cvgroup change column group_id id int unsigned not null auto_increment;
 
+-- assessmentgroup --
+
+rename table assessmentgroups to assessmentgroup;
+alter table assessmentgroup change column group_id id int unsigned not null auto_increment;
+
+
+-- assessmentregime --
+
+
+alter table assessmentregime change column cassessment_id id int unsigned not null auto_increment;
+alter table assessmentregime drop column options;
+
 -- assessment --
 
 alter table assessment drop column submission_url;

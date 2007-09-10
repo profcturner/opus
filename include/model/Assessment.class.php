@@ -91,7 +91,7 @@ class Assessment extends DTO_Assessment
   {
     $assessment = new Assessment;
     $assessment_array = $assessment->_get_id_and_field($fieldname);
-    $assessment_array[0] = 'Global';
+    unset($assessment_array[0]);
     return $assessment_array;
   }
 

@@ -186,6 +186,88 @@
     remove_object_do($opus, $user, "Programme", "section=configuration&function=manage_programmes");
   }
 
+  // Assessmentgroups
+
+  function manage_assessmentgroups(&$opus, $user, $title)
+  {
+    manage_objects($opus, $user, "Assessmentgroup", array(array("add","section=configuration&function=add_assessmentgroup")), array(array('regime', 'manage_assessmentregimes'), array('edit', 'edit_assessmentgroup'), array('remove','remove_assessmentgroup')), "get_all", "", "admin:configuration:manage_assessmentgroups:manage_assessmentgroups");
+  }
+
+  function add_assessmentgroup(&$opus, &$user) 
+  {
+    add_object($opus, $user, "Assessmentgroup", array("add", "configuration", "add_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_assessmentgroups:add_assessmentgroup");
+  }
+
+  function add_assessmentgroup_do(&$opus, &$user) 
+  {
+    add_object_do($opus, $user, "Assessmentgroup", "section=configuration&function=manage_assessmentgroups", "add_assessmentgroup");
+  }
+
+  function edit_assessmentgroup(&$opus, &$user) 
+  {
+    edit_object($opus, $user, "Assessmentgroup", array("confirm", "configuration", "edit_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_assessmentgroups:edit_assessmentgroup");
+  }
+
+  function edit_assessmentgroup_do(&$opus, &$user) 
+  {
+    edit_object_do($opus, $user, "Assessmentgroup", "section=configuration&function=manage_assessmentgroups", "edit_assessmentgroup");
+  }
+
+  function remove_assessmentgroup(&$opus, &$user) 
+  {
+    remove_object($opus, $user, "Assessmentgroup", array("remove", "configuration", "remove_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentgroup");
+  }
+
+  function remove_assessmentgroup_do(&$opus, &$user) 
+  {
+    remove_object_do($opus, $user, "Assessmentgroup", "section=configuration&function=manage_assessmentgroups");
+  }
+
+  // Assessmentregimes
+
+  function manage_assessmentregimes(&$opus, $user, $title)
+  {
+    $group_id = (int) WA::request('id', true);
+
+    manage_objects($opus, $user, "Assessmentregime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", "where group_id=$group_id", "admin:configuration:manage_assessmentregimes:manage_assessmentregimes");
+  }
+
+  function add_assessmentregime(&$opus, &$user) 
+  {
+    $group_id = (int) WA::request('id', true);
+
+    add_object($opus, $user, "Assessmentregime", array("add", "configuration", "add_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentregimes:add_assessmentregime");
+  }
+
+  function add_assessmentregime_do(&$opus, &$user) 
+  {
+    add_object_do($opus, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes", "add_assessmentregime");
+  }
+
+  function edit_assessmentregime(&$opus, &$user) 
+  {
+    $group_id = (int) WA::request('id', true);
+
+    edit_object($opus, $user, "Assessmentregime", array("confirm", "configuration", "edit_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentregimes:edit_assessmentregime");
+  }
+
+  function edit_assessmentregime_do(&$opus, &$user) 
+  {
+    edit_object_do($opus, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes", "edit_assessmentregime");
+  }
+
+  function remove_assessmentregime(&$opus, &$user) 
+  {
+    $group_id = (int) WA::request('id', true);
+
+    remove_object($opus, $user, "Assessmentregime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), "", "admin:configuration:manage_assessmentregimes:remove_assessmentregime");
+  }
+
+  function remove_assessmentregime_do(&$opus, &$user) 
+  {
+    remove_object_do($opus, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes");
+  }
+
   // CVgroups
 
   function manage_cvgroups(&$opus, $user, $title)

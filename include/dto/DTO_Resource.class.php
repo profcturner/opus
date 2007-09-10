@@ -18,7 +18,7 @@ class DTO_Resource extends DTO {
   {
     parent::_load_by_id();
 
-    $channel = Channel::load_by_id($resource->channel_id);
+    $channel = Channel::load_by_id($this->channel_id);
     $this->_channel_id = $channel->name;
 
   }
