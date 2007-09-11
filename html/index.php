@@ -37,6 +37,10 @@ function main()
   global $waf;
   $waf = new WA($config);
 
+  require_once("model/HelpPrompter.class.php");
+  $help_prompter = new HelpPrompter;
+  $waf->assign_by_ref("help_prompter", $help_prompter);
+
   $waf->register_data_connection('default', 'mysql:host=localhost;dbname=opus4', 'root', 'test');
 
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 

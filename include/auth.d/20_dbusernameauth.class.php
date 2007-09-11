@@ -9,6 +9,7 @@ class dbusernameauth
 {
   function waf_authenticate_user($username, $password)
   {
+    if(empty($password)) return false; // sometimes passwords are blank which disables login
     require_once("model/User.class.php");
 
     $user_object = new User;

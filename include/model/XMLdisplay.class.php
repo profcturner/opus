@@ -2,10 +2,10 @@
 
 class XMLdisplay
 {
-  var xml_output = "";
-  var xml_warning = "";
-  var xml_percentage = "";
-  var xml_error = "";
+  var $xml_output = "";
+  var $xml_warning = "";
+  var $xml_percentage = "";
+  var $xml_error = "";
 
   static $xml_allowed = 
   array(
@@ -40,7 +40,7 @@ class XMLdisplay
     $this->xml_parser($input);
   }
 
-  private function startElement($parser, $name, $attrs)
+  function startElement($parser, $name, $attrs)
   {
     if (isset(XMLdisplay::$xml_allowed[$name]))
     {
@@ -63,7 +63,7 @@ class XMLdisplay
     }
   }
 
-  private function endElement($parser, $name)
+  function endElement($parser, $name)
   {
     if (isset(XMLdisplay::$xml_allowed[$name]))
     {
@@ -79,7 +79,7 @@ class XMLdisplay
     }
   }
 
-  private function characterData($parser, $data)
+  function characterData($parser, $data)
   {
     global $xml_output;
 
@@ -114,6 +114,7 @@ class XMLdisplay
 
     // use case-folding so we are sure to find the tag in $map_array
     xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
+    xml_set_object($xml_parser, $this);
     xml_set_element_handler($xml_parser, "startElement", "endElement");
     xml_set_character_data_handler($xml_parser, "characterData");
 

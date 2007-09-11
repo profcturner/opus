@@ -24,7 +24,7 @@ class Help extends DTO_Help
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorisation'),
-    'contents'=>array('type'=>'textarea', 'rows'=>10, 'cols'=>40, 'maxsize=>32000')
+    'contents'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>32000)
 
     );
 
@@ -125,6 +125,14 @@ class Help extends DTO_Help
 
     return $nvp_array;
 
+  }
+
+
+  function display($show_error = true, $user_id = 0)
+  {
+    require_once("model/XMLdisplay.class.php");
+    $xml_parser = new XMLdisplay($this->contents);
+    echo $xml_parser->xml_output;
   }
 }
 ?>

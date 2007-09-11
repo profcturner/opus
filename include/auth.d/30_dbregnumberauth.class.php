@@ -9,6 +9,7 @@ class dbregnumberauth
 {
   function waf_authenticate_user($username, $password)
   {
+    if(empty($password)) return false; //empty password denotes no login
     require_once("model/User.class.php");
 
     $user_object = new User;
