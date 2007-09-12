@@ -97,6 +97,7 @@ class DTO_Assessmentstructure extends DTO {
       if($found && $previous)
       {
         // safe to proceed
+        $sql->fetchAll();
         $this->_swaprows($assessment_id, $varorder, $previous);
       }
       else
