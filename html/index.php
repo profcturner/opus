@@ -35,7 +35,11 @@ function main()
 
   // Initialise the Web Application Framework
   global $waf;
-  $waf = new WA($config);
+  $waf = new WA($config['waf']);
+
+  // Are there any errors carried in the session?
+  if(isset($_SESSION['waf']['SQL_error'])) $waf->assign("SQL_error", $_SESSION['waf']['SQL_error']);
+  unset($_SESSION['waf']['SQL_error']);
 
   require_once("model/HelpPrompter.class.php");
   $help_prompter = new HelpPrompter;
@@ -112,6 +116,9 @@ function load_user($username)
     $opus_user['opus']['email']       = $user->email;
     $opus_user['opus']['user_type']   = $user->user_type;
     $opus_user['opus']['last_login']  = $user->login_time;
+
+    // Get, and cache, the complete list of channels
+    $opus_user['opus']['channels'] = User::get_channels($user->id);
 
     $fields['login_time'] = $now;
     $fields['online'] = "online";

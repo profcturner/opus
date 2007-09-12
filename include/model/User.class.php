@@ -38,7 +38,7 @@ Class User extends DTO_User
     'type'=>array('type'=>'list','values'=>array('student','staff','guest'), 'header'=>true)
   );
 
-function __construct() 
+  function __construct() 
   {
     parent::__construct();
   }
@@ -55,12 +55,57 @@ function __construct()
      $user->_load_by_id();
      return $user;
   }
-   
-/**
- * @package PDSystem
- * @class User
- * @param array $fields
- */
+
+  function is_root($user_id = 0)
+  {
+    return(User::is_type("root", $user_id));
+  }
+
+  function is_admin($user_id = 0)
+  {
+    // root users also qualify as admins
+    if(User::is_root($user_id)) return true;
+    return(User::is_type("admin", $user_id));
+  }
+
+  function is_company($user_id = 0)
+  {
+    return(User::is_type("company", $user_id));
+  }
+
+  function is_supervisor($user_id = 0)
+  {
+    return(User::is_type("supervisor", $user_id));
+  }
+
+  function is_student($user_id = 0)
+  {
+    return(User::is_type("student", $user_id));
+  }
+
+  function is_staff($user_id = 0)
+  {
+    return(User::is_type("staff", $user_id));
+  }
+
+
+
+  function is_type($type, $user_id = 0)
+  {
+    if($user_id == 0)
+    {
+      // Currently logged in user
+      if($_SESSION['waf']['user']['user_type'] == $type) return true;
+      else return false;
+    }
+    else
+    {
+      // Another user
+      $user = User::load_by_id($user_id);
+      if($user->usertype == $type) return true;
+      else return false;
+    }
+  }
 
    function insert($fields) 
    {

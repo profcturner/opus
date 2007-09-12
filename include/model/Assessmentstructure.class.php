@@ -14,6 +14,7 @@ class Assessmentstructure extends DTO_Assessmentstructure
   var $assessment_id = 0;        // The assessment this variable belongs to
   var $human = "";               // A human readable description of the variable
   var $name = "";                // The variable name
+  var $type = "";                // The type of field
   var $min = 0;                  // Minimum value (if any)
   var $max = 0;                  // Maximum value (if any)
   var $weighting = 0;            // Weighting of score of this variable in assessment

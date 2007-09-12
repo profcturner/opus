@@ -40,7 +40,7 @@ class XMLdisplay
     $this->xml_parser($input);
   }
 
-  function startElement($parser, $name, $attrs)
+  private function startElement($parser, $name, $attrs)
   {
     if (isset(XMLdisplay::$xml_allowed[$name]))
     {
@@ -63,7 +63,7 @@ class XMLdisplay
     }
   }
 
-  function endElement($parser, $name)
+  private function endElement($parser, $name)
   {
     if (isset(XMLdisplay::$xml_allowed[$name]))
     {
@@ -79,7 +79,7 @@ class XMLdisplay
     }
   }
 
-  function characterData($parser, $data)
+  private function characterData($parser, $data)
   {
     global $xml_output;
 

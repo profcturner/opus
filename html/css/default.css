@@ -590,7 +590,6 @@ textarea {
 
 #header {
   background-color: transparent;
-/*  background-image: url(/pds/images/style_images/student/drops/headerbanner.jpg); */
   background-repeat: no-repeat;
   background-position: top right;
 }
@@ -600,7 +599,6 @@ textarea {
   padding-left: 10px;
   line-height: 2em;
   background-color: transparent;
-/*  background-image: url(/pds/images/style_images/student/drops/crumbanner.jpg); */
   background-repeat: no-repeat;
   background-position: top left;
   min-height: 2em;
@@ -608,7 +606,6 @@ textarea {
 }
 #footer {
   background-color: transparent;
-/*  background-image: url(/pds/images/style_images/student/drops/footerdrop.gif); */
   background-repeat: repeat-x;
   width: auto;
   border-bottom-width: 0px;
@@ -758,7 +755,7 @@ textarea {
 }
 
 #table_manage input.calendar_button {
-  background-image: URL("/pds/images/calendar_small.jpg");
+  background-image: URL("/opus/images/calendar_small.jpg");
   width:34px;
   cursor:pointer;
 }

@@ -127,5 +127,41 @@ class Channel extends DTO_Channel
     return $nvp_array;
 
   }
+
+
+  /**
+  * Checks to see if a user is "in" a channel
+  *
+  * @param integer $channel_id the channel to check against
+  * @param integer $user_id optionally a user_id to check, otherwise the logged in user is checked
+  * @return boolean answer
+  */
+  function user_in_channel($channel_id, $user_id = 0)
+  {
+    // Limit even internal injection possibilities
+    $channel_id = (int) $channel_id;
+    // Assume no...
+    $in_channel = false;
+
+    require_once("model/Channelassociation.class.php");
+    $associations = Channelassociation::get_all("where channel_id=$channel_id");
+
+    foreach($associations as $association)
+    {
+      // Does this association include this person
+      if($association->user_in_channel_association($user_id))
+      {
+        if($association->permission == 'enable') $in_channel = true;
+        else
+        {
+          // Admin users almost certainly don't want to be removed for this...
+          if(!User::is_admin($user_id)) $in_channel = false;
+        }
+      }
+    }
+    return($in_channel);
+  }
+  
+
 }
 ?>
