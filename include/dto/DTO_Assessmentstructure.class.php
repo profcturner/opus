@@ -30,10 +30,8 @@ class DTO_Assessmentstructure extends DTO {
 
     try
     {
-      // We have to lock tables before we do this kind of thing...
-      $sql = $con->prepare("LOCK TABLES assessmentstructure WRITE");
-      $sql->execute();
-  
+      $con->beginTransaction();
+
       $sql = $con->prepare("SELECT varorder FROM assessmentstructure WHERE assessment_id=? ORDER BY varorder");
       $sql->execute(array($assessment_id));
   
@@ -57,8 +55,7 @@ class DTO_Assessmentstructure extends DTO {
       {
         $waf->log("Unable to reorder assessment structure item down", PEAR_LOG_DEBUG, 'debug');
       }
-      $sql = $con->prepare("UNLOCK TABLES");
-      $sql->execute();
+      $con->commit();
     }
     catch (PDOException $e)
     {
