@@ -17,7 +17,7 @@
   <div id="header">  {* start of the header div *}
     <div id="app_title">{if $config.opus.logo}<img src="images/{$config.opus.logo}" title="{$config.opus.title}"/>{else}{$config.opus.title}{/if}
     </div>
-    <div id="app_tagline">{$config.opus.tagline} {#version#} {$config.opus.version}.{$config.opus.minor_version}
+    <div id="app_tagline">{$config.opus.tagline} {#version#} {$config.opus.version}.{$config.opus.minor_version}.{$config.opus.patch_version}
     </div>
     <div id="mini_menu">
       <div id="mini_menu_item"><a href="">preferences</a></div>
@@ -113,6 +113,7 @@ Actions
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#terms_conditions#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#get_support#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#report_a_bug#}</a>
+    {if $config.opus.benchmarking}| <small>Compile Time:{$benchmark->elapsed()|string_format:"%.2f"} seconds</small>{/if}
   </div>
 </div>
 

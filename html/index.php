@@ -14,7 +14,6 @@
  *
  */
 
-
 main();
 
 /**
@@ -30,9 +29,14 @@ function main()
 {
   global $config;
 
-  require_once('opus.conf.php');
+  require_once("opus.conf.php");
   require_once("WA.class.php");
 
+  if($config['opus']['benchmarking'])
+  {
+    require_once("model/Benchmark.class.php");
+    $benchmark = new Benchmark;
+  }
   // Initialise the Web Application Framework
   global $waf;
   $waf = new WA($config['waf']);
@@ -41,11 +45,13 @@ function main()
   if(isset($_SESSION['waf']['SQL_error'])) $waf->assign("SQL_error", $_SESSION['waf']['SQL_error']);
   unset($_SESSION['waf']['SQL_error']);
 
+  // Make a help prompter object to access XHTML help objects
   require_once("model/HelpPrompter.class.php");
   $help_prompter = new HelpPrompter;
   $waf->assign_by_ref("help_prompter", $help_prompter);
+  $waf->assign_by_ref("benchmark", $benchmark);
 
-  $waf->register_data_connection('default', 'mysql:host=localhost;dbname=opus4', 'root', 'test');
+  $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
 
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 
 
