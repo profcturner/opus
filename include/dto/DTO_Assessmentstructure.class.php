@@ -51,12 +51,14 @@ class DTO_Assessmentstructure extends DTO {
         // safe to proceed
         $sql->fetchAll();
         $this->_swaprows($assessment_id, $varorder, $next);
+        $con->commit();
       }
       else
       {
+        $sql->fetchAll();
+        $con->rollBack();
         $waf->log("Unable to reorder assessment structure item down", PEAR_LOG_DEBUG, 'debug');
       }
-      $con->commit();
     }
     catch (PDOException $e)
     {
@@ -98,12 +100,14 @@ class DTO_Assessmentstructure extends DTO {
         // safe to proceed
         $sql->fetchAll();
         $this->_swaprows($assessment_id, $varorder, $previous);
+        $con->commit();
       }
       else
       {
+        $sql->fetchAll();
+        $con->rollBack();
         $waf->log("Unable to reorder assessment structure item up", PEAR_LOG_DEBUG, 'debug');
       }
-      $con->commit();
     }
     catch (PDOException $e)
     {
