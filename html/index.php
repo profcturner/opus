@@ -124,7 +124,7 @@ function load_user($username)
     $opus_user['opus']['last_login']  = $user->login_time;
 
     // Get, and cache, the complete list of channels
-    $opus_user['opus']['channels'] = User::get_channels($user->id);
+    //$opus_user['opus']['channels'] = User::get_channels($user->id);
 
     $fields['login_time'] = $now;
     $fields['online'] = "online";
