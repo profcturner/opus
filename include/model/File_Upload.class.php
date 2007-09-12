@@ -61,7 +61,7 @@ class File_Upload
     $mime_allowable = false;
     foreach($mimetypes as $mimetype)
     {
-      if(strpos($mimetype->flags, "uploadable") !== FALSE)
+      if($mimetype->uploadable == 'yes')
       {
         $mime_allowable = true;
         $result['mime_id'] = $mimetype->id;
