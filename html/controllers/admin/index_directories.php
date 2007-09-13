@@ -11,15 +11,25 @@
     $activity_types = Activitytype::get_id_and_field("name");
     $waf->assign("activity_types", $activity_types);
 
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("vacancy_directory_form");
+    $waf->assign("form_options", $form_options);
+
     $waf->display("main.tpl", "admin:directories:vacancy_directory:vacancy_directory", "admin/directories/vacancy_directory.tpl");
   }
-
 
   function search_vacancies(&$waf, $user, $title)
   {
     $search = WA::request("search");
     $year = WA::request("year");
     $activities = WA::request("activities");
+
+    $form_options['search'] = $search;
+    $form_options['year'] = $year;
+    $form_options['activities'] = $activities;
+
+    require_once("model/Preference.class.php");
+    Preference::set_preference("vacancy_directory_form", $form_options);
 
     require_once("model/Vacancy.class.php");
     $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities));

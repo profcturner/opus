@@ -48,6 +48,12 @@ $config_sensitive['opus']['database']['dsn'] = "mysql:host=localhost;dbname=opus
 $config_sensitive['opus']['database']['username'] = "root";
 $config_sensitive['opus']['database']['password'] = "test";
 
+$config['opus']['pref_ident'] = 'preferences';
+$config_sensitive['opus']['preference']['dsn'] = "mysql:host=localhost;dbname=preference";
+$config_sensitive['opus']['preference']['username'] = "root";
+$config_sensitive['opus']['preference']['password'] = "test";
+
+
 // PDSystem configuration options, use this to define the linked PDSystem (if any)
 // Make the URL blank if the PDSystem is not installed
 $config['opus']['pds']['url'] = "http://localhost/ws";

@@ -44,8 +44,9 @@ class Vacancy extends DTO_Vacancy
     'country'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Country'),
     'postcode'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20, 'title'=>'Postcode'),
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
+    'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special")),
     'closedate'=>array('type'=>'date', 'inputstyle'=>'popup'),
-    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>60, 'maxsize'=>60000,  'title'=>'Brief')
+    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>60, 'maxsize'=>60000,  'title'=>'Brief', 'content'=>'xhtml')
      );
 
   function __construct() 

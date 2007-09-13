@@ -593,6 +593,18 @@ textarea {
 
 }
 
+.status_open {
+  color: green
+}
+
+.status_closed {
+  color: grey
+}
+
+.status_special {
+  color: red
+}
+
 #header {
   background-color: transparent;
   background-repeat: no-repeat;

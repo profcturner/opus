@@ -52,6 +52,9 @@ function main()
   $waf->assign_by_ref("benchmark", $benchmark);
 
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
+  $waf->register_data_connection('preferences', $config_sensitive['opus']['preference']['dsn'], $config_sensitive['opus']['preference']['username'], $config_sensitive['opus']['preference']['password']);
+
+
 
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 
 
@@ -122,6 +125,7 @@ function load_user($username)
     $opus_user['opus']['email']       = $user->email;
     $opus_user['opus']['user_type']   = $user->user_type;
     $opus_user['opus']['last_login']  = $user->login_time;
+    $opus_user['opus']['reg_number']  = $user->reg_number;
 
     // Get, and cache, the complete list of channels
     //$opus_user['opus']['channels'] = User::get_channels($user->id);
@@ -130,6 +134,10 @@ function load_user($username)
     $fields['online'] = "online";
 
     $waf->user = array_merge($waf->user, $opus_user);
+
+    require_once("model/Preference.class.php");
+    Preference::load_all($user->reg_number);
+
   }
   $_SESSION['waf']['user'] = $waf->user;
   User::update($fields);
@@ -177,6 +185,10 @@ function logout(&$waf)
   global $waf;
 
   $id = $waf->user['opus']['user_id'];
+
+  require_once("model/Preference.class.php");
+  Preference::save_all($waf->user['opus']['reg_number']);
+
   if($id)
   {
     $fields = array();
