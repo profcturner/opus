@@ -1,3 +1,8 @@
+
+-- vacancyactivity
+
+alter table vacancyactivity add column id int unsigned not null auto_increment primary key;
+
 -- Policy
 
 alter table policy change column descript name tinytext not null;

@@ -18,6 +18,8 @@ class DTO_Vacancy extends DTO {
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    require_once("model/Vacancyactivity.class.php");
+
     // Form Search criteria string
     if(!empty($search))
     {
@@ -56,6 +58,7 @@ class DTO_Vacancy extends DTO {
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
+        $these_activities = Vacancyactivity::get_all("where vacancy_id=" . $results_row['id']);
         array_push($object_array, $results_row);
       }
     }
