@@ -148,10 +148,10 @@ class Vacancy extends DTO_Vacancy
     return $nvp_array;
   }
 
-  function get_all_extended($search, $year, $activities)
+  function get_all_extended($search, $year, $activities, $sort, $other_options)
   {
     $vacancy = new Vacancy;
-    return($vacancy->_get_all_extended($search, $year, $activities));
+    return($vacancy->_get_all_extended($search, $year, $activities, $sort, $other_options));
   }
 
   function display($show_error = true, $user_id = 0)

@@ -13,7 +13,7 @@ class DTO_Vacancy extends DTO {
     parent::__construct($handle);
   }
 
-  function _get_all_extended($search, $year, $activities)
+  function _get_all_extended($search, $year, $activities, $sort, $other_options)
   {
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
@@ -38,7 +38,7 @@ class DTO_Vacancy extends DTO {
       $searchc .= " YEAR(jobstart) = ?";
       array_push($parameters, $year);
     }
-    if(!$showclosed)
+    if(!in_array("ShowClosed", $other_options))
     {
       if(!empty($searchc)) $searchc .= " AND";
       $searchc .= " vacancy.status != 'closed'";

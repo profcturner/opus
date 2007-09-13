@@ -30,14 +30,14 @@
       <tr>
         <td class="property">Other Options</td>
         <td>
-          <input type="checkbox" name="show_closed" /> Show Closed Vacancies <br />
-          <input type="checkbox" name="search_companies" /> Search Companies <br />
-          <input type="checkbox" name="search_vacancies" /> Search Vacancies
+        {html_checkboxes name="other_options" options=$other_options selected=$form_options.other_options separator="<br />"}
         </td>
       </tr>
       <tr>
         <td class="property">Sort Criterion</td>
-        <td></td>
+        <td>
+          {html_radios name="sort" output=$sort_types|capitalize values=$sort_types selected=$form_options.sort|default:"name"}
+        </td>
       </tr>
       <tr>
         <td colspan="2" class="button"><input type="submit" class="submit" value="search" /></td>
