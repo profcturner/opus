@@ -140,15 +140,26 @@ class Vacancy extends DTO_Vacancy
   {
     $fieldnames = Vacancy::get_fields($include_id);
     $nvp_array = array();
- 
+
     foreach ($fieldnames as $fn) {
- 
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
-
   }
+
+  function get_all_extended($search, $year, $activities)
+  {
+    $vacancy = new Vacancy;
+    return($vacancy->_get_all_extended($search, $year, $activities));
+  }
+
+  function display($show_error = true, $user_id = 0)
+  {
+    require_once("model/XMLdisplay.class.php");
+    $xml_parser = new XMLdisplay($this->brief);
+    echo $xml_parser->xml_output;
+  }
+
+
 }
 ?>

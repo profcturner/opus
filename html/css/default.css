@@ -102,6 +102,11 @@ em.validation_message {
   border: 1px red solid;
 }
 
+#brief {
+  padding: 1em;
+  border: 1px black dashed;
+}
+
 /* div id=menu style */
 
 #menu {

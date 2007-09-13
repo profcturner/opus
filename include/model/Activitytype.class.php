@@ -86,8 +86,8 @@ class Activitytype extends DTO_Activitytype
   function get_id_and_field($fieldname) 
   {
     $activitytype = new Activitytype;
-    $activitytype_array = $activitytype->_get_id_and_field($fieldname);
-    $activitytype_array[0] = 'Global';
+    $activitytype_array = $activitytype->_get_id_and_field($fieldname, "", "order by name");
+    unset($activitytype_array[0]);
     return $activitytype_array;
   }
 

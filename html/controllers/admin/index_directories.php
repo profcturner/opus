@@ -5,6 +5,28 @@
     $waf->display("main.tpl", "admin:directories:student_directory:student_directory", "admin/directories/student_directory.tpl");
   }
 
+  function vacancy_directory(&$waf, $user, $title)
+  {
+    require_once("model/Activitytype.class.php");
+    $activity_types = Activitytype::get_id_and_field("name");
+    $waf->assign("activity_types", $activity_types);
+
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:vacancy_directory", "admin/directories/vacancy_directory.tpl");
+  }
+
+
+  function search_vacancies(&$waf, $user, $title)
+  {
+    $search = WA::request("search");
+    $year = WA::request("year");
+    $activities = WA::request("activities");
+
+    require_once("model/Vacancy.class.php");
+    $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities));
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "admin/directories/search_vacancies.tpl");
+  }
+
+
   function manage_companies(&$waf, $user, $title)
   {
     manage_objects($waf, $user, "Company", array(array("add","section=directories&function=add_company")), array(array('edit', 'edit_company'), array('remove','remove_company')), "get_all", "", "admin:directories:companies:manage_companies");
@@ -59,7 +81,7 @@
 
   function edit_vacancy(&$waf, &$user) 
   {
-    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("user_id",$user["user_id"])), "admin:directories:vacancies:edit_vacancy");
+    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
   function edit_vacancy_do(&$waf, &$user) 
