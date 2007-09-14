@@ -18,12 +18,11 @@ $config['waf']['waf_debug']             = True;
 $config['waf']['validation_image_ok']   = "images/ok-small.png";
 $config['waf']['validation_image_fail'] = "images/fail-small.png";
 $config['waf']['auth_dir']              = '/usr/share/opus/include/auth.d';
-$config['waf']['log_dir']               = '/var/log/opus/';
-$config['waf']['templates_dir']         = "/usr/share/opus/templates/"; 
-$config['waf']['templates_c_dir']       = "/usr/share/opus/templates_c/";
-$config['waf']['config_dir']            = "/usr/share/opus/configs/";
-$config['waf']['cache_dir']             = "/usr/share/opus/templates_cache/";
-$config['waf']['session_dir']           = "";
+
+// Uncomment this to have opus somewhere other than the default
+//$config['waf']['base_dir'] = '/usr/local/share/opus'; // for example
+// many other paths can be customized, but you probably have no need to
+// See UUWAF documentation for more details
 
 // OPUS related settings
 

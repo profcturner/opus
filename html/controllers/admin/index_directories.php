@@ -11,7 +11,7 @@
     $activity_types = Activitytype::get_id_and_field("name");
     $sort_types = array("name", "locality");
     $other_options = array("ShowClosed" => "Show Closed", "ShowCompanies" => "Show Companies", "ShowVacancies" => "Show Vacancies");
-    
+
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("vacancy_directory_form");
 

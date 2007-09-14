@@ -135,6 +135,7 @@ function load_user($username)
 
     $waf->user = array_merge($waf->user, $opus_user);
 
+    $waf->log("logging in");
     require_once("model/Preference.class.php");
     Preference::load_all($user->reg_number);
 
@@ -188,6 +189,7 @@ function logout(&$waf)
 
   require_once("model/Preference.class.php");
   Preference::save_all($waf->user['opus']['reg_number']);
+  $waf->log("logging out");
 
   if($id)
   {
