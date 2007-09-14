@@ -18,6 +18,8 @@ class DTO_Vacancy extends DTO {
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    if(empty($other_options)) $other_options = array();
+
     require_once("model/Vacancyactivity.class.php");
 
     // Form Search criteria string

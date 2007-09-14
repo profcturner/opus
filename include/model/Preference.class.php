@@ -21,6 +21,11 @@ class Preference extends DTO_Preference
   {
     global $waf;
     $application = $waf->title;
+    if(empty($reg_number))
+    {
+      $waf->log("preferences cannot be loaded for this user without a reg_number", PEAR_LOG_DEBUG, 'debug');
+      return;
+    }
 
     $pref = new Preference;
 
@@ -29,10 +34,9 @@ class Preference extends DTO_Preference
     // Unwind into the session
     foreach($preferences as $preference)
     {
-      //print_r($preference);
       Preference::set_preference($preference->name, unserialize($preference->value));
     }
-    //print_r($_SESSION); exit;
+    $waf->log(count($preferences) . " preference values loaded", PEAR_LOG_DEBUG, 'debug');
   }
 
   function save_all($reg_number)
@@ -40,12 +44,18 @@ class Preference extends DTO_Preference
     global $waf;
     $application = $waf->title;
 
+    if(empty($reg_number))
+    {
+      $waf->log("preferences cannot be saved for this user without a reg_number", PEAR_LOG_DEBUG, 'debug');
+      return;
+    }
     // Nothing to save?
     if(!isset($_SESSION['waf'][$application]['preferences'])) return;
 
     // Remove what's there
     $pref = new Preference;
     $pref->_remove_where("where application='$application' and reg_number='$reg_number'");
+    $count = 0;
 
     foreach($_SESSION['waf'][$application]['preferences'] as $name => $value)
     {
@@ -56,7 +66,9 @@ class Preference extends DTO_Preference
       $fields['value'] = serialize($value);
 
       $pref->_insert($fields);
+      $count++;
     }
+    $waf->log("$count preference values saved", PEAR_LOG_DEBUG, 'debug');
   }
 
   function set_preference($name, $value)
@@ -82,7 +94,6 @@ class Preference extends DTO_Preference
     $preference->_load_by_id();
     return $preference;
   }
-
 }
 
 ?>

@@ -101,7 +101,7 @@ alter table company change column company_id id int unsigned not null auto_incre
 -- resources --
 
 rename table resources to resource;
-alter table resource change column resource_id id int unisgned auto_increment;
+alter table resource change column resource_id id int unsigned auto_increment;
 
 -- channels --
 
@@ -142,5 +142,7 @@ alter table user add column lastname tinytext after user_type;
 alter table user add column firstname tinytext after user_type;
 alter table user add column salutation tinytext after user_type;
 alter table user add column email tinytext after lastname;
+alter table user add column login_time datetime;
+
 
 -- this will need php conversion :-( --
