@@ -25,7 +25,19 @@ class DTO_Programme extends DTO {
 
   }
 
+  function _get_id_and_description()
+  {
+    $programme = new Programme;
 
+    $programmes = $programme->_get_all();
+
+    $programme_array = array();
+    foreach($programmes as $prog)
+    {
+      $programme_array[$prog->id] = $prog->srs_ident . " : " . $prog->name;
+    }
+    return($programme_array);
+  }
 }
 
 ?>

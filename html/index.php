@@ -28,6 +28,7 @@ main();
 function main() 
 {
   global $config;
+  global $config_sensitive;
 
   require_once("opus.conf.php");
   require_once("WA.class.php");
@@ -681,5 +682,17 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     echo $obj->_validation_response($field, $value);
   }
 
- 
+  function get_academic_year()
+  {
+    global $config;
+    $yearstart = $config['opus']['yearstart'];
+    if(empty($yearstart)) $yearstart="0930";
+
+    if(empty($year)){
+      if(date("md") < $yearstart) $year = date("Y") - 1;
+      else $year = date("Y");
+    }
+    return($year);
+  }
+
 ?>

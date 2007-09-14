@@ -102,6 +102,12 @@ em.validation_message {
   border: 1px red solid;
 }
 
+#warning {
+  padding:1em;
+  border: 2px red dotted;
+  color: red;
+}
+
 #brief {
   padding: 1em;
   border: 1px black dashed;

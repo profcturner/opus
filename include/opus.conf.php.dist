@@ -1,23 +1,25 @@
 <?php
 /**
- * @package Configuration
+ * @package OPUS
  *
  * The system wide configuration file for OPUS
  */
 
-// WAF settings
+// UUWAF settings
+// These settings are passed to the UUWAF constructor, so you should see its documentation
+// if you need more details.
 
-$config['waf']['title']                 = 'OPUS';
+$config['waf']['title']                 = 'OPUS';  // Used internally, don't change this
 $config['waf']['log_level']             = 7; // From 0 - emergency, to 7 - debug
-$config['waf']['compile_check']         = True;
-$config['waf']['caching']               = False;
-$config['waf']['debugging']             = True;
-$config['waf']['debug_only_on_IP']      = array("127.0.0.1", "193.61.142.92");
-$config['waf']['language']              = "en";
-$config['waf']['waf_debug']             = True;
+$config['waf']['compile_check']         = True; // Smarty compile checking
+$config['waf']['caching']               = False; // Smarty template caching
+$config['waf']['debugging']             = True; // Smarty debugging
+$config['waf']['debug_only_on_IP']      = array("127.0.0.1", "193.61.142.92"); // If defined, debugging will be turned on automatically, only for these IPs
+$config['waf']['language']              = "en"; // default language identified, used for the config files, you'll need to write others before changing this
+$config['waf']['waf_debug']             = True; // Only enable this for extreme level debugging, normally you will not need this
 $config['waf']['validation_image_ok']   = "images/ok-small.png";
 $config['waf']['validation_image_fail'] = "images/fail-small.png";
-$config['waf']['auth_dir']              = '/usr/share/opus/include/auth.d';
+$config['waf']['auth_dir']              = '/usr/share/opus/include/auth.d'; // Used to load authentication objects, you may want to customize the contents of this dir
 
 // Uncomment this to have opus somewhere other than the default
 //$config['waf']['base_dir'] = '/usr/local/share/opus'; // for example
@@ -55,14 +57,14 @@ $config_sensitive['opus']['preference']['password'] = "test";
 
 // PDSystem configuration options, use this to define the linked PDSystem (if any)
 // Make the URL blank if the PDSystem is not installed
-$config['opus']['pds']['url'] = "http://localhost/ws";
-$config['opus']['pds']['username'] = "opus";
-$config['opus']['pds']['password'] = "password";
+$config_sensitive['pds']['url'] = "http://localhost/ws";
+$config_sensitive['pds']['username'] = "opus";
+$config_sensitive['pds']['password'] = "password";
 
 // web service configuration settings, again, make the URL if nothing is defined
-$config['opus']['ws']['url'] = "http://localhost/ws";
-$config['opus']['ws']['username'] = "opus";
-$config['opus']['ws']['password'] = "password";
+$config_sensitive['ws']['url'] = "http://localhost/ws";
+$config_sensitive['ws']['username'] = "opus";
+$config_sensitive['ws']['password'] = "password";
 
 // now include the local configuration file
 // create this file locally and add any variation to the above configuration

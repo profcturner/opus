@@ -90,26 +90,33 @@ class Programme extends DTO_Programme
     return $programmes;
   }
 
+  function get_id_and_description()
+  {
+    $programme = new Programme;
+    $programme_array = $programme->_get_id_and_description();
+    return $programme_array;
+  }
+
   function get_id_and_field($fieldname) 
   {
     $programme = new Programme;
     $programme_array = $programme->_get_id_and_field($fieldname);
-    $programme_array[0] = 'Global';
+    unset($programme_array[0]);
     return $programme_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $programme = new Programme;
     $programme->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $programme = new Programme;
     return  $programme->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Programme::get_fields($include_id);
