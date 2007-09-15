@@ -98,6 +98,10 @@ alter table vacancy change column vacancy_id id int unsigned auto_increment not 
 rename table companies to company;
 alter table company change column company_id id int unsigned not null auto_increment;
 
+-- companycontact --
+
+alter table companycontact add column id int unsigned not null auto_increment primary key;
+alter table companycontact change column status status enum('normal','restricted','primary', 'archived') not null;
 -- resources --
 
 rename table resources to resource;
@@ -143,6 +147,24 @@ alter table user add column firstname tinytext after user_type;
 alter table user add column salutation tinytext after user_type;
 alter table user add column email tinytext after lastname;
 alter table user add column login_time datetime;
+
+-- students --
+
+rename table students to student;
+alter table student change column year placement_year year not null;
+alter table student change column status placement_status enum('Required','Placed','Exempt Applied','Exempt Given','No Info','Left Course','Suspended','To final year','Not Eligible');
+alter table student add column programme_id int unsigned;
+alter table student add column id int unsigned not null auto_increment primary key;
+
+
+create table contact 
+(
+  position tinytext,
+  voice tinytext,
+  fax tinytext,
+  user_id int unsigned not null,
+  id int unsigned not null auto_increment primary key
+);
 
 
 -- this will need php conversion :-( --

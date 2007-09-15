@@ -81,6 +81,8 @@ class WebServices
 
   function get_course($course_code, $calendar_occurence, $course_year)
   {
+    global $waf;
+    $waf->log("webservice get_course called for programme $course_code, calendar_occurence $calendar_occurence, programme year $course_year", PEAR_LOG_DEBUG, 'debug');
     return(WebServices::get_data("soap_course", "course_code=$course_code&calendar_occurrence=$calendar_occurence&course_year=$course_year"));  
   }
 }

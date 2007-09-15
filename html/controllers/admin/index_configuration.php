@@ -356,8 +356,13 @@
     if(!empty($config_sensitive['ws']['url'])) $waf->assign("ws_enabled", true);
     else $waf->assign("ws_enabled", false);
 
+    // Normally, we are doing this for students on placement next year
+    $year = get_academic_year()+1;
+
     require_once("model/Programme.class.php");
     $programmes = Programme::get_id_and_description();
+
+    $waf->assign("year", $year);
     $waf->assign("programmes", $programmes);
 
     $waf->display("main.tpl", "admin:configuration:import_data:import_students", "admin/configuration/import_students_form.tpl");
@@ -365,10 +370,17 @@
 
   function import_students_do(&$waf, &$user) 
   {
-    require_once("model/StudentImport.class.php");
-    StudentImport::import_via_SRS();
+    $password     = $_REQUEST['password'];
+    $programme_id = (int) $_REQUEST['programme_id'];
+    $year         = (int) $_REQUEST['year'];
+    $status       = $_REQUEST['status'];
+    $test         = $_REQUEST['test'];
+    $onlyyear     = (int) $_REQUEST['onlyyear'];
 
-    //$waf->display("main.tpl", "admin:configuration:import_data:import_students", "admin/configuration/import_students_form.tpl");
+    require_once("model/StudentImport.class.php");
+    StudentImport::import_programme_via_SRS($programme_id, $year, $status, $onlyyear, $password, $test);
+
+    $waf->display("main.tpl", "admin:configuration:import_data:import_students_srs", "admin/configuration/import_students_srs.tpl");
   }
 
 ?>

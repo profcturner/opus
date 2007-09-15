@@ -90,8 +90,7 @@
     <div id="tag_line">{#tag_line#|default:$tag_line|default:"No \$tag_line"}
     </div>
 {if $SQL_error}
-    <div id="sql_error">Warning: there has been a database error trying to process your request. This is not normal, and please report it if it is not transient.
-  {if $config.waf.debugging}[{$SQL_error}]{/if} </div>
+    <div id="sql_error">{#sql_error#}{if $config.waf.debugging}<br />[{$SQL_error}]{/if} </div>
 {/if}
 {if $action_links}
     <div id="action_area">

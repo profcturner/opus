@@ -132,10 +132,11 @@ Class User extends DTO_User
       return $user->_count($where);
    }
 
-   function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0) 
+   function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0, $end=0) 
    {
       $user = new User;
-      
+
+      if($end != 0) return($user->_get_all($where_clause, $order_by, $page, $end));
       if ($page <> 0) 
       {
          $start = ($page-1)*ROWS_PER_PAGE;

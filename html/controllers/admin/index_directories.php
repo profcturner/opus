@@ -23,7 +23,6 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:vacancy_directory", "admin/directories/vacancy_directory.tpl");
   }
 
-
   function search_vacancies(&$waf, $user, $title)
   {
     $search = WA::request("search");
@@ -44,6 +43,42 @@
     require_once("model/Vacancy.class.php");
     $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities, $sort, $other_options));
     $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "admin/directories/search_vacancies.tpl");
+  }
+
+  function company_directory(&$waf, $user, $title)
+  {
+    require_once("model/Activitytype.class.php");
+    $activity_types = Activitytype::get_id_and_field("name");
+    $sort_types = array("name", "locality");
+
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("company_directory_form");
+
+    $waf->assign("sort_types", $sort_types);
+    $waf->assign("activity_types", $activity_types);
+    $waf->assign("form_options", $form_options);
+
+    $waf->display("main.tpl", "admin:directories:company_directory:company_directory", "admin/directories/company_directory.tpl");
+  }
+
+  function search_companies(&$waf, $user, $title)
+  {
+    $search = WA::request("search");
+    $activities = WA::request("activities");
+    $sort = WA::request("sort");
+
+    $form_options['search'] = $search;
+    $form_options['activities'] = $activities;
+    $form_options['sort'] = $sort;
+
+    require_once("model/Preference.class.php");
+    Preference::set_preference("company_directory_form", $form_options);
+
+    require_once("model/Company.class.php");
+    // A simplification, doesn't honour switches yet...
+    $waf->assign("companies", Company::get_all());
+    $waf->assign("action_links", array(array("add","section=directories&function=add_company")));
+    $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "admin/directories/search_companies.tpl");
   }
 
 
@@ -118,6 +153,51 @@
   {
     remove_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies");
   }
+
+
+  function manage_contacts(&$waf, $user, $title)
+  {
+    $company_id = (int) WA::request("company_id", true);
+    if($company_id)
+    {
+      $where_clause="where company_id='$company_id'";
+    }
+    else $where_clause="";
+
+    manage_objects($waf, $user, "Contact", array(array("add","section=directories&function=add_contact")), array(array('edit', 'edit_contact'), array('remove','remove_contact')), "get_all", $where_clause, "admin:directories:contacts:manage_contacts");
+  }
+
+  function add_contact(&$waf, &$user) 
+  {
+    add_object($waf, $user, "Contact", array("add", "directories", "add_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"])), "admin:directories:contacts:add_contact");
+  }
+
+  function add_contact_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "add_contact");
+  }
+
+  function edit_contact(&$waf, &$user) 
+  {
+    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"])), "admin:directories:contacts:edit_contact");
+  }
+
+  function edit_contact_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "edit_contact");
+  }
+
+  function remove_contact(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "Contact", array("remove", "directories", "remove_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), "", "admin:directories:contacts:remove_contact");
+  }
+
+  function remove_contact_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts");
+  }
+
+
 
 
 

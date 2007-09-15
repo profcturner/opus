@@ -3,18 +3,10 @@
 class StudentImport
 {
 
-  function import_via_SRS()
+  function import_programme_via_SRS($programme_id, $year, $status, $onlyyear, $password, $test)
   {
     global $config_sensitive;
     global $waf;
-
-    echo "hello";
-    $password     = $_REQUEST['password'];
-    $programme_id = (int) $_REQUEST['programme_id'];
-    $year         = (int) $_REQUEST['year'];
-    $status       = $_REQUEST['status'];
-    $test         = $_REQUEST['test'];
-    $onlyyear     = (int) $_REQUEST['onlyyear'];
 
     require_once("model/Programme.class.php");
     $programme = Programme::load_by_id($programme_id);
@@ -33,34 +25,84 @@ class StudentImport
 
     require_once("model/WebServices.php");
     // Oddly, for 06/07 the webservice uses 07, not 06!
-    $course_xml = WebServices::get_course($programme->srs_ident, substr(get_academic_year()+1, 2), $onlyyear);
-
-    print_r($course_xml);
-    exit;
+    $programme_xml = WebServices::get_course($programme->srs_ident, substr($year+1, 2), $onlyyear);
     $students = array();
-    foreach($course_xml->students->student as $student)
+    require_once("model/User.class.php");
+    foreach($programme_xml->students->student as $student)
     {
-      $student_array = Student_Import_SRS($student->reg_number);
+      $student_array = StudentImport::import_student_via_SRS($student->reg_number);
+
       // Are they already present?
-      if(backend_lookup("id", "id_number", "username", make_null($student->reg_number)))
+      if(User::count("where reg_number='" . $student->reg_number . "'"))
       {
         // Already exists
         $student_array['result'] = "Exists";
       }
       else
       {
-        if(!$test) Student_Insert($student_array, $course_id, $status, $year);
+        if(!$test) StudentImport::add_student($student_array, $programme_id, $status, $year);
         $student_array['result'] = "Added";
       }
-      
-      
+
       array_push($students, $student_array);
     }
-    $smarty->assign("test", $test);
-    $smarty->assign("course_name", $course_name);
-    $smarty->assign("students", $students);
-    $smarty->display("admin/import/students_import_srs.tpl");
+
+    $waf->assign("programme", $programme);
+    $waf->assign("students", $students);
+    $waf->assign("test", $test);
+    $waf->assign("year", $year);
+    $waf->assign("onlyyear", $onlyyear);
+    $waf->assign("status", $status);
+    if($test) $waf->assign("action_links", array(array('cancel', 'section=configuration&function=import_data')));
   }
+
+  /**
+  * @todo should be able to simplify this due to new evolutions in the WS layer
+  */
+  function import_student_via_SRS($reg_number)
+  {
+    $student_xml = WebServices::get_student($reg_number);
+
+    $student = array();
+    $student['reg_number'] = $reg_number;
+    $student['person_title'] = $student_xml->person_title;
+    $student['first_name'] = $student_xml->first_name;
+    $student['last_name'] =  $student_xml->last_name;
+    $student['email_address'] = $student_xml->email_address;
+    $student['disability_code'] = $student_xml->disability_code;
+    $student['year_on_course'] = $student_xml->year_on_course;
+    return($student);
+  }
+
+  function add_student($student_array, $programme_id, $status, $year)
+  {
+    global $waf;
+    // Make their entry in the user table
+    require_once("model/User.class.php");
+
+    $fields = array();
+    $fields['user_type'] = 'student';
+    $fields['reg_number'] = $student_array['reg_number'];
+    $fields['username'] = "s" . $student_array['reg_number'];
+    $fields['salutation'] = $student_array['person_title'];
+    $fields['firstname'] = $student_array['first_name'];
+    $fields['lastname'] = $student_array['last_name'];
+    $fields['email'] = $student_array['email_address'];
+    $fields['real_name'] = $fields['firstname'] . " " . $fields['lastname'];
+    $user_id = User::insert($fields);
+    $waf->log("added student " . $fields['real_name']);
+
+    // And in the student table
+    require_once("model/Student.class.php");
+    $fields = array();
+    $fields['placement_year']   = $year;
+    $fields['placement_status'] = $status;
+    $fields['programme_id']     = $programme_id;
+    $fields['disability_code']  = $student_array['disability_code'];
+    $fields['user_id']          = $user_id;
+    Student::insert($fields);
+  }
+
 }
 
 ?>
