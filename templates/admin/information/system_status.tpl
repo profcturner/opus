@@ -26,6 +26,7 @@
 <br />
 {/section}
 
+{include file="list.tpl"}
 
 <h3>User Totals</h3>
 

@@ -157,18 +157,26 @@
 
   function manage_contacts(&$waf, $user, $title)
   {
+    require_once("model/Contact.class.php");
+
     $company_id = (int) WA::request("company_id", true);
+
     if($company_id)
     {
-      $where_clause="where company_id='$company_id'";
+      $objects = Contact::get_all_by_company($company_id);
+      $waf->assign("object_array", $objects);
+      $waf->assign("action_links", array(array("Add", "section=directories&function=add_contact")));
     }
-    else $where_clause="";
+    //else $where_clause="";
 
-    manage_objects($waf, $user, "Contact", array(array("add","section=directories&function=add_contact")), array(array('edit', 'edit_contact'), array('remove','remove_contact')), "get_all", $where_clause, "admin:directories:contacts:manage_contacts");
+  //    manage_objects($waf, $user, "Contact", array(array("add","section=directories&function=add_contact")), array(array('edit', 'edit_contact'), array('remove','remove_contact')), "get_all", $where_clause, "admin:directories:contacts:manage_contacts");
+    $waf->display("main.tpl", "admin:directories:contact_directory:search_contacts", "admin/directories/search_contacts.tpl");
   }
 
   function add_contact(&$waf, &$user) 
   {
+    $company_id = (int) WA::request("company_id", true);
+
     add_object($waf, $user, "Contact", array("add", "directories", "add_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"])), "admin:directories:contacts:add_contact");
   }
 

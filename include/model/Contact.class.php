@@ -11,34 +11,25 @@ require_once("dto/DTO_Contact.class.php");
 
 class Contact extends DTO_Contact 
 {
-/*
-  var $contactname = ''; 
-  var $password="";
-  var $salutation="";
-  var $firstname = '';
-  var $lastname = '';
-  var $reg_number = "";
-  var $login_time = '';
-  var $last_time = "";
-  var $last_index = "";
-  var $online = 'offline';
-  var $email = '';
-  var $contact_type = "";
-*/
   var $position;          // position in company
   var $voice;             // Phone number
   var $fax;               // Fax number
-  var $contact_id;           // Matches id from contact table
+  var $user_id;           // Matches id from user table
 
   static $_field_defs = array
   (
-    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'title'),
+    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
     'email'=>array('type'=>'email','size'=>40, 'header'=>true),
     'voice'=>array('type'=>'text','size'=>40, 'header'=>true),
     'fax'=>array('type'=>'text','size'=>40, 'header'=>true)
+  );
+
+  static $_extended_fields = array
+  (
+    'salutation','firstname','lastname','email'
   );
 
   function __construct() 
@@ -51,6 +42,11 @@ class Contact extends DTO_Contact
     return self::$_field_defs;
   }
 
+  function get_extended_fields()
+  {
+    return self::$_extended_fields;
+  }
+
   function load_by_id($id) 
   {
      $contact = new Contact;
@@ -61,7 +57,32 @@ class Contact extends DTO_Contact
 
   function insert($fields) 
   {
+    require_once("model/User.class.php");
+
+    print_r($fields);
     $contact = new Contact;
+    $extended_fields = Contact::get_extended_fields();
+    $user_fields = array();
+
+    foreach($fields as $key => $value)
+    {
+      if(in_array($field, $extended_fields))
+      {
+        echo "Debug $key, $value <br/>";
+        // Set these in the other array
+        $user_fields[$key] = $value;
+        unset($fields[$key]);
+      }
+    }
+    // Insert user data first, adding anything else we need
+    $user_fields['user_type'] = 'contact';
+    $user_fields['username'] = 'test1';
+    $user_fields['reg_number'] = 'test2';
+    print_r($user_fields); exit;
+
+    $user_id = User::insert($user_fields);
+
+    $fields['user_id'] = $user_id;
     return $contact->_insert($fields);
   }
 
@@ -82,6 +103,12 @@ class Contact extends DTO_Contact
   {
     $contact = new Contact;
     return $contact->_count($where);
+  }
+
+  function get_all_by_company($company_id)
+  {
+    $contact = new Contact;
+    return $contact->_get_all_by_company($company_id);
   }
 
   function get_all($where_clause="", $order_by="", $page=0, $end=0) 
@@ -111,7 +138,7 @@ class Contact extends DTO_Contact
   function get_fields($include_id = false) 
   {
     $contact = new Contact;
-    return  $contact->get_fieldnames($include_id);
+    return  $contact->_get_fieldnames($include_id);
   }
 
   function request_field_values($include_id = false) 

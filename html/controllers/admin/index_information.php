@@ -55,6 +55,12 @@
     $staff_users = User::get_all("where user_type='staff'", "order by last_index", 0, $max_users);
     $student_users = User::get_all("where user_type='student'", "order by last_index", 0, $max_users);
 
+    $headings = array(
+      'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
+      'online'=>array('type'=>'list','values'=>array('no','yes'), 'header'=>true),
+      'lastname'=>array('type'=>'text','size'=>30, 'header'=>true)
+    );
+
     // Get user counts
     $root_count       = User::count("where user_type='root'");
     $admin_count      = User::count("where user_type='admin'");
@@ -63,6 +69,9 @@
     $staff_count      = User::count("where user_type='staff'");
     $student_count    = User::count("where user_type='student'");
     $total_count = $root_count + $admin_count + $company_count + $supervisor_count + $staff_count + $student_count;
+
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $student_users);
 
     $waf->assign("root_users", $root_users);
     $waf->assign("admin_users", $admin_users);

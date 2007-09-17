@@ -15,9 +15,8 @@ class CompanyContact extends DTO_CompanyContact
   var $contact_id = "";  // The id column from the user table for the contact
   var $status = "";      // The status of this contact
 
+  // Is this needed?
   static $_field_defs = array(
-    'permission'=>array('type'=>'list', 'list'=>array('enable', 'disable'), 'header'=>true),
-    'type'=>array('type'=>'list', 'list'=>array('course','school','assessmentgroup','activity'), 'header'=>'true')
   );
 
   function __construct() 
