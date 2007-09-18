@@ -59,26 +59,23 @@ class Contact extends DTO_Contact
   {
     require_once("model/User.class.php");
 
-    print_r($fields);
     $contact = new Contact;
     $extended_fields = Contact::get_extended_fields();
     $user_fields = array();
 
     foreach($fields as $key => $value)
     {
-      if(in_array($field, $extended_fields))
+      if(in_array($key, $extended_fields))
       {
-        echo "Debug $key, $value <br/>";
         // Set these in the other array
         $user_fields[$key] = $value;
         unset($fields[$key]);
       }
     }
     // Insert user data first, adding anything else we need
-    $user_fields['user_type'] = 'contact';
+    $user_fields['user_type'] = 'company';
     $user_fields['username'] = 'test1';
     $user_fields['reg_number'] = 'test2';
-    print_r($user_fields); exit;
 
     $user_id = User::insert($user_fields);
 
@@ -144,6 +141,9 @@ class Contact extends DTO_Contact
   function request_field_values($include_id = false) 
   {
     $fieldnames = Contact::get_fields($include_id);
+    $fieldnames = array_merge($fieldnames, Contact::get_extended_fields());
+
+    //echo "fieldnames: "; print_r($fieldnames);
     $nvp_array = array();
     foreach ($fieldnames as $fn) 
     {
