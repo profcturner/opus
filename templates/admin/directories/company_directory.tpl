@@ -28,7 +28,7 @@ function toggleAll(checked)
       <tr>
         <td class="property">Search For</td>
         <td>
-          <input type="text" name="search" size="20" value="{$form_options.search} "/>
+          <input type="text" name="search" size="20" value="{$form_options.search}"/>
         </td>
       </tr>
       <tr>

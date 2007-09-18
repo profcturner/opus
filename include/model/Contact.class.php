@@ -16,6 +16,7 @@ class Contact extends DTO_Contact
   var $fax;               // Fax number
   var $user_id;           // Matches id from user table
 
+  // Several of these fields actually reside in the User table
   static $_field_defs = array
   (
     'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
@@ -27,6 +28,7 @@ class Contact extends DTO_Contact
     'fax'=>array('type'=>'text','size'=>40, 'header'=>true)
   );
 
+  // This defines which ones
   static $_extended_fields = array
   (
     'salutation','firstname','lastname','email'
@@ -55,11 +57,17 @@ class Contact extends DTO_Contact
      return $contact;
   }
 
+  /**
+  * inserts data about a new contact to the User and Contact tables
+  *
+  * this is more sophisticated that usual because there are two tables.
+  */
   function insert($fields) 
   {
     require_once("model/User.class.php");
 
     $contact = new Contact;
+    $company_id = WA::request("company_id");
     $extended_fields = Contact::get_extended_fields();
     $user_fields = array();
 
@@ -74,12 +82,20 @@ class Contact extends DTO_Contact
     }
     // Insert user data first, adding anything else we need
     $user_fields['user_type'] = 'company';
-    $user_fields['username'] = 'test1';
-    $user_fields['reg_number'] = 'test2';
-
     $user_id = User::insert($user_fields);
 
+    // Now we know the user_id, to populate the other tables
     $fields['user_id'] = $user_id;
+    if($company_id)
+    {
+      // populate the company contact table
+      require_once("model/CompanyContact.class.php");
+      $company_contact = array();
+      $company_contact['company_id'] = $company_id;
+      $company_contact['contact_id'] = $user_id;
+      CompanyContact::insert($company_contact);
+    }
+
     return $contact->_insert($fields);
   }
 

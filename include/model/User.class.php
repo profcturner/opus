@@ -11,7 +11,8 @@ require_once("dto/DTO_User.class.php");
 
 Class User extends DTO_User 
 {
-  var $username = ''; 
+  var $real_name = "";
+  var $username = ""; 
   var $password="";
   var $salutation="";
   var $firstname = '';
@@ -90,6 +91,8 @@ Class User extends DTO_User
 
 
 
+
+
   function is_type($type, $user_id = 0)
   {
     if($user_id == 0)
@@ -107,77 +110,94 @@ Class User extends DTO_User
     }
   }
 
-   function insert($fields) 
-   {
-      $user = new User;     
-      return $user->_insert($fields);
-   }
-   
-   function update($fields) 
-   {
-      $user = User::load_by_id($fields[id]);
-      $user->_update($fields);
-   }
-   
-   function exists($id) 
-   {
-      $user = new User;
-      $user->id = $id;
-      return $user->_exists();
-   }
-   
-   function count($where="") 
-   {
-      $user = new User;
-      return $user->_count($where);
-   }
+  function form_real_name($fields)
+  {
+    $real_name = $fields['salutation'] . " " . $fields['firstname'] . " " . $fields['lastname'];
+    return(trim($real_name));
+  }
 
-   function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0, $end=0) 
-   {
-      $user = new User;
+  function insert($fields)
+  {
+    $user = new User;
+    if(empty($fields['username']))
+    {
+      // No username? Generate one...
+      $fields['username'] = User::make_username($fields);
+    }
+    if(empty($fields['password']))
+    {
+      $fields['password'] = md5(User::make_password());
+    }
+    $fields['real_name'] = $user->form_real_name($fields);
+    return $user->_insert($fields);
+  }
 
-      if($end != 0) return($user->_get_all($where_clause, $order_by, $page, $end));
-      if ($page <> 0) 
-      {
-         $start = ($page-1)*ROWS_PER_PAGE;
-         $limit = ROWS_PER_PAGE;
-         $users = $user->_get_all($where_clause, $order_by, $start, $limit);
-      } 
-      else 
-      {
-         $users = $user->_get_all($where_clause, $order_by, 0, 1000);
-      }
-      return $users;
-   }
+  function update($fields) 
+  {
+    $user = User::load_by_id($fields[id]);
+    $fields['real_name'] = $user->form_real_name($fields);
+    $user->_update($fields);
+  }
 
-   function get_id_and_field($fieldname) 
-   {
-      $users = new User;
-      return  $users->_get_id_and_field($fieldname);
-   }
+  function exists($id) 
+  {
+    $user = new User;
+    $user->id = $id;
+    return $user->_exists();
+  }
 
-   function get_fields($include_id = false) 
-   {   
-      $user = new User;
-      return  $user->get_fieldnames($include_id);
-   }
+  function count($where="") 
+  {
+    $user = new User;
+    return $user->_count($where);
+  }
 
-   function request_field_values($include_id = false) 
-   {
-      $fieldnames = User::get_fields($include_id);
-      $nvp_array = array();
-      foreach ($fieldnames as $fn) 
-      {
-         $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
-      }
-      return $nvp_array;
-   }
+  function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0, $end=0) 
+  {
+    $user = new User;
 
-   function remove($id=0) 
-   {   
-      $user = new User;
-      $user->_remove_where("WHERE id=$id");
-   }
+    if($end != 0) return($user->_get_all($where_clause, $order_by, $page, $end));
+    if ($page <> 0) 
+    {
+        $start = ($page-1)*ROWS_PER_PAGE;
+        $limit = ROWS_PER_PAGE;
+        $users = $user->_get_all($where_clause, $order_by, $start, $limit);
+    }
+    else 
+    {
+        $users = $user->_get_all($where_clause, $order_by, 0, 1000);
+    }
+    return $users;
+  }
+
+  function get_id_and_field($fieldname) 
+  {
+    $users = new User;
+    return  $users->_get_id_and_field($fieldname);
+  }
+
+  function get_fields($include_id = false) 
+  {   
+    $user = new User;
+    return  $user->get_fieldnames($include_id);
+  }
+
+  function request_field_values($include_id = false) 
+  {
+    $fieldnames = User::get_fields($include_id);
+    $nvp_array = array();
+    foreach ($fieldnames as $fn) 
+    {
+        $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
+    }
+    return $nvp_array;
+  }
+
+  function remove($id=0) 
+  {
+    $user = new User;
+    $user->_remove_where("WHERE id=$id");
+  }
 
   function load_by_username($username) 
   {
@@ -186,6 +206,87 @@ Class User extends DTO_User
     $user->_load_by_field('username');
     return $user;
   }
+
+  function make_username($fields)
+  {
+    // $title is not used - at least for now...
+    // Strip all characters that aren't alphabetical
+    // and make everything lower case.
+    $firstname = strtolower(ereg_replace("[^[:alpha:]]", "", $fields['firstname']));
+    $lastname   = strtolower(ereg_replace("[^[:alpha:]]", "", $fields['lastname']));
+
+    // Make an initial guess...
+    $attempt = substr($firstname, 0, 1) . substr($lastname, 0, 20);
+
+    for($loop = 0; $loop < 99; $loop++)
+    {
+      // Add a number if required;
+      if($loop == 0) $full_attempt = $attempt;
+      else $full_attempt = $attempt . $loop;
+
+      if(User::count("where username='$full_attempt'") == 0)
+      {
+        return($full_attempt);
+      }
+    }
+    // No guess worked, we can improve this later, but it's improbable
+    // we will end up here.
+    return(FALSE);
+  }
+
+  function make_password()
+  {
+    // Removed l and 1 to prevent font confusion.
+    // Removed O and 0 to prevent font confusion
+    // Create an array of valid password characters. 
+    $the_char = array( 
+      "a","A","b","B","c","C","d","D","e","E","f","F","g","G","h","H","i","I","j","J",
+      "k","K","L","m","M","n","N","o","p","P","q","Q","r","R","s","S","t","T",
+      "u","U","v","V","w","W","x","X","y","Y","z","Z","2","3","4","5","6","7","8",
+      "9"
+    );
+
+    // Set var to number of elements in the array minus 1, since arrays begin at 0 
+    // and the count() function returns beginning the count at 1. 
+    $max_elements = count($the_char) - 1; 
+
+    // Now we set our random vars using the rand() function with 0 and the  
+    // array count number as our arguments. Thus returning $the_char[randnum]. 
+    srand((double)microtime()*1000000);
+    for($loop = 0; $loop < 8; $loop++)
+    {
+      $password[$loop] = $the_char[rand(0,$max_elements)];
+    }
+
+    return(implode("", $password));
+  }
+
+  function user_notify_password($fields);
+  {
+    require_once("model/Automail.class.php");
+
+    $mailfields = array();
+    $mailfields["atitle"] = "Dr.";
+    $mailfields["afirstname"] = "Colin";
+    $mailfields["asurname"] = "Turner";  
+    $mailfields["aposition"] = "Webmaster";
+    $mailfields["aemail"] = "c.turner@ulster.ac.uk";
+    $mailfields["rtitle"]     = $fields['salutation'];
+    $mailfields["rfirstname"] = $fields['firstname'];
+    $mailfields["rsurname"]   = $fields['surname'];
+    $mailfields["username"]   = $fields['username'];
+    $mailfields["password"]   = $fields['password'];
+    $mailfields["remail"]     = $fields['email'];
+
+    automail($template, $mailfields);
+  }
+
+
+
+
+
+
+
 
   function load_by_email($email) 
   {
