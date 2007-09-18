@@ -54,6 +54,12 @@ class Automail extends DTO_Automail
     return $automail;
   }
 
+  function load_by_lookup($lookup, $language_id = 1)
+  {
+    $automail = new Automail;
+    return($automail->_load_by_lookup($lookup, $language_id));
+  }
+
   function insert($fields) 
   {
     $automail = new Automail;
@@ -88,7 +94,7 @@ class Automail extends DTO_Automail
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
     $automail = new Automail;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -105,31 +111,120 @@ class Automail extends DTO_Automail
     return  $automail->_get_id_and_field($fieldname);
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $automail = new Automail;
     $automail->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $automail = new Automail;
     return  $automail->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Automail::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
+    }
+    return $nvp_array;
+  }
+
+  /**
+  * substitutes template values in an email and sends it appropriately
+  *
+  * @param string $lookup the unique lookup for the template in a language
+  * @param string $mailfields associative array of fields to substitute
+  */
+  function sendmail($lookup, $mailfields)
+  {
+    global $config;
+    global $waf;
+
+    $automail = Automail::load_by_lookup($lookup);
+
+    // Defaults from config
+    $mailfields["conf_institution"]  =  $config['opus']['institution'];
+    $mailfields["conf_website"]      =  $config['opus']['url'];
+    $mailfields["conf_appname"]      =  $config['opus']['title'];
+
+    // Substitute the currently logged in admin details if possible
+    if(User::is_admin())
+    {
+      $mailfields['atitle']     = $waf->user['opus']['salutation'];
+      $mailfields['afirstname'] = $waf->user['opus']['firstname'];
+      $mailfields['asurname']   = $waf->user['opus']['lastname'];
+      $mailfields['aposition']  = $waf->user['opus']['position'];
+      $mailfields['aemail']     = $waf->user['opus']['email'];
     }
 
-    return $nvp_array;
+    // If all else fails
+    if(isset($mailfields["asurname"]))
+    {
+      // We need a primary admin, get the first root user in the database
+      require_once("model/User.class.php");
+      $admins = User::get_all("where user_type='root'", "order by id");
 
+      $mailfields["atitle"]     = $admins[0]->salutation;
+      $mailfields["afirstname"] = $admins[0]->firstname;
+      $mailfields["alastname"]  = $admins[0]->lastname;
+      // @todo Ack, position would be broken, need more clever stuff here
+      $mailfields["aposition"]  = $admins[0]->position;
+      $mailfields["aemail"]     = $admins[0]->email;
+    }
+
+    // Process substitutions
+    $parts = process_automail_subs($automail, $mailfields);
+
+    // Form necessary variables
+    $extra="";
+    if(!empty($parts["fromh"])) $extra .= "From: " . $parts["fromh"] . "\r\n";
+    if(!empty($parts["cch"]))   $extra .= "Cc: " . $parts["cch"] . "\r\n";
+    if(!empty($parts["bcch"]))  $extra .= "Bcc: " . $parts["bcch"] . "\r\n";
+
+    // Add OPUS information to allow easy automatic handling
+    $extra .= "X-OPUS-Automail-Lookup: $lookup\r\n";
+
+    require_once("model/OPUSMail.class.php");
+
+    // Send email
+    $mail_object = new OPUSMail($parts["toh"], $parts["subject"], $parts["contents"], $extra);
+    $mail_object->send();
+
+    $waf->log("Auto email $lookup sent from " . $parts["fromh"] . 
+                            " to " . $parts["toh"], PEAR_LOG_NOTICE, 'admin');
+  }
+
+
+  /**
+  * perfoms the substitution of fields in all parts of a message
+  *
+  * @param string $row the element to substitute, could be to, from, message body etc.
+  * @param array $mailfields an associative array of key value substitutions
+  * @return the processed input in $row is returned
+  */
+  private function process_automail_subs($automail, $mailfields)
+  {
+    $parts = array();
+
+    // A list of database fields to substitute
+    $subfields = array("toh", "fromh", "subject", "cch", "bcch", "contents");
+
+    // Look through each element of the email - from, to, body etc
+    foreach($subfields as $subfield)
+    {
+      // Look at the list to substitute
+      foreach($mailfields as $key => $value)
+      {
+        $parts[$subfield] = preg_replace("/%$key%/", $value, $automail->$subfield);
+      }
+    }
+    return($parts);
   }
 }
 ?>
