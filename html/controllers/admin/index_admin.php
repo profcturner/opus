@@ -7,8 +7,9 @@ function nav_admin()
     "home"=>array
     (
       array("home", "home", "home", "home"),
-      array("company activity", "home", "company_activity", "company_activity"), 
-    ), 
+      array("company activity", "home", "company_activity", "company_activity"),
+      array("change password", "home", "change_password", "change_password")
+    ),
     "directories"=>array
     (
       array("students","directories", "student_directory", "student_directory"), 

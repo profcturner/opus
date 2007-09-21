@@ -141,12 +141,12 @@ class Automail extends DTO_Automail
   * @param string $lookup the unique lookup for the template in a language
   * @param string $mailfields associative array of fields to substitute
   */
-  function sendmail($lookup, $mailfields)
+  function sendmail($lookup, $mailfields, $language_id=1)
   {
     global $config;
     global $waf;
 
-    $automail = Automail::load_by_lookup($lookup);
+    $automail = Automail::load_by_lookup($lookup, $language_id);
 
     // Defaults from config
     $mailfields["conf_institution"]  =  $config['opus']['institution'];
@@ -164,7 +164,7 @@ class Automail extends DTO_Automail
     }
 
     // If all else fails
-    if(isset($mailfields["asurname"]))
+    if(!isset($mailfields["asurname"]))
     {
       // We need a primary admin, get the first root user in the database
       require_once("model/User.class.php");
@@ -172,20 +172,20 @@ class Automail extends DTO_Automail
 
       $mailfields["atitle"]     = $admins[0]->salutation;
       $mailfields["afirstname"] = $admins[0]->firstname;
-      $mailfields["alastname"]  = $admins[0]->lastname;
+      $mailfields["asurname"]  = $admins[0]->lastname;
       // @todo Ack, position would be broken, need more clever stuff here
       $mailfields["aposition"]  = $admins[0]->position;
       $mailfields["aemail"]     = $admins[0]->email;
     }
 
     // Process substitutions
-    $parts = process_automail_subs($automail, $mailfields);
+    $automail = Automail::process_automail_subs($automail, $mailfields);
 
     // Form necessary variables
     $extra="";
-    if(!empty($parts["fromh"])) $extra .= "From: " . $parts["fromh"] . "\r\n";
-    if(!empty($parts["cch"]))   $extra .= "Cc: " . $parts["cch"] . "\r\n";
-    if(!empty($parts["bcch"]))  $extra .= "Bcc: " . $parts["bcch"] . "\r\n";
+    if(!empty($automail->fromh)) $extra .= "From: " . $automail->fromh . "\r\n";
+    if(!empty($automail->cch))   $extra .= "Cc: " . $automail->cch . "\r\n";
+    if(!empty($automail->bcch))  $extra .= "Bcc: " . $automail->bcch . "\r\n";
 
     // Add OPUS information to allow easy automatic handling
     $extra .= "X-OPUS-Automail-Lookup: $lookup\r\n";
@@ -193,11 +193,11 @@ class Automail extends DTO_Automail
     require_once("model/OPUSMail.class.php");
 
     // Send email
-    $mail_object = new OPUSMail($parts["toh"], $parts["subject"], $parts["contents"], $extra);
+    $mail_object = new OPUSMail($automail->toh, $automail->subject, $automail->contents, $automail->extra);
     $mail_object->send();
 
-    $waf->log("Auto email $lookup sent from " . $parts["fromh"] . 
-                            " to " . $parts["toh"], PEAR_LOG_NOTICE, 'admin');
+    $waf->log("Auto email $lookup sent from " . $automail->fromh . 
+                            " to " . $automail->toh, PEAR_LOG_NOTICE, 'general');
   }
 
 
@@ -210,8 +210,6 @@ class Automail extends DTO_Automail
   */
   private function process_automail_subs($automail, $mailfields)
   {
-    $parts = array();
-
     // A list of database fields to substitute
     $subfields = array("toh", "fromh", "subject", "cch", "bcch", "contents");
 
@@ -221,10 +219,10 @@ class Automail extends DTO_Automail
       // Look at the list to substitute
       foreach($mailfields as $key => $value)
       {
-        $parts[$subfield] = preg_replace("/%$key%/", $value, $automail->$subfield);
+        $automail->$subfield = preg_replace("/%$key%/", $value, $automail->$subfield);
       }
     }
-    return($parts);
+    return($automail);
   }
 }
 ?>

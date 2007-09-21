@@ -110,6 +110,12 @@ Class User extends DTO_User
     }
   }
 
+  function get_id()
+  {
+    global $waf;
+    return($waf->user['opus']['user_id']);
+  }
+
   function form_real_name($fields)
   {
     $real_name = $fields['salutation'] . " " . $fields['firstname'] . " " . $fields['lastname'];
@@ -126,11 +132,17 @@ Class User extends DTO_User
     }
     if(empty($fields['password']))
     {
-      $fields['password'] = md5(User::make_password());
+      $password = User::make_password();
+      $fields['password'] = md5($password);
     }
     $fields['real_name'] = $user->form_real_name($fields);
-    return $user->_insert($fields);
+    $user_id = $user->_insert($fields);
+
+    User::email_password($fields, $password);
+    return($user_id);
   }
+
+
 
   function update($fields) 
   {
@@ -151,6 +163,38 @@ Class User extends DTO_User
     $user = new User;
     return $user->_count($where);
   }
+
+  function email_password($fields, $password)
+  {
+    require_once("model/Automail.class.php");
+
+    $mailfields = array();
+    $mailfields["rtitle"]     = $fields['salutation'];
+    $mailfields["rfirstname"] = $fields['firstname'];
+    $mailfields["rsurname"]   = $fields['lastname'];
+    $mailfields["username"]   = $fields['username'];
+    $mailfields["password"]   = $password;
+    $mailfields["remail"]     = $fields['email'];
+
+    switch($fields['user_type'])
+    {
+      case "company" :
+        Automail::sendmail("NewPassword_Contact", $mailfields);
+        break;
+      case "staff" :
+        Automail::sendmail("NewPassword_Staff", $mailfields);
+        break;
+      case "supervisor" :
+        Automail::sendmail("NewPassword_Supervisor", $mailfields);
+        break;
+      case "student" :
+        // Nothing, for now...
+        break;
+      default:
+        Automail::sendmail("NewPassword", $mailfields);
+    }
+  }
+
 
   function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0, $end=0) 
   {
@@ -261,25 +305,6 @@ Class User extends DTO_User
     return(implode("", $password));
   }
 
-  function user_notify_password($fields);
-  {
-    require_once("model/Automail.class.php");
-
-    $mailfields = array();
-    $mailfields["atitle"] = "Dr.";
-    $mailfields["afirstname"] = "Colin";
-    $mailfields["asurname"] = "Turner";  
-    $mailfields["aposition"] = "Webmaster";
-    $mailfields["aemail"] = "c.turner@ulster.ac.uk";
-    $mailfields["rtitle"]     = $fields['salutation'];
-    $mailfields["rfirstname"] = $fields['firstname'];
-    $mailfields["rsurname"]   = $fields['surname'];
-    $mailfields["username"]   = $fields['username'];
-    $mailfields["password"]   = $fields['password'];
-    $mailfields["remail"]     = $fields['email'];
-
-    automail($template, $mailfields);
-  }
 
 
 

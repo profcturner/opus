@@ -27,7 +27,7 @@ class DTO_Automail extends DTO {
       $results_row = $sql->fetch(PDO::FETCH_ASSOC);
       if($results_row['id'])
       {
-        return $this->load_by_id($id);
+        return $this->load_by_id($results_row['id']);
       }
       else
       {

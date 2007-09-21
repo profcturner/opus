@@ -28,11 +28,12 @@ $config['waf']['auth_dir']              = '/usr/share/opus/include/auth.d'; // U
 
 // OPUS related settings
 
-$config['opus']['url']                  = 'http://localhost/opus';
-$config['opus']['cleanurls']            = False;
 $config['opus']['title']                = 'OPUS';
 $config['opus']['title_short']          = 'OPUS';
 $config['opus']['tagline']              = 'Online Placement University System';
+$config['opus']['institution']          = 'University of Ulster';
+$config['opus']['url']                  = 'http://localhost/opus';
+$config['opus']['cleanurls']            = False;
 $config['opus']['version']              = 4;
 $config['opus']['minor_version']        = 0;
 $config['opus']['patch_version']        = 0;

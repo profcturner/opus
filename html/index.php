@@ -160,9 +160,9 @@ function nav_default()
  * @param string $function
  */
 
-function goto($function) 
+function goto($section, $function) 
 {  
-  header("location:?function=".$function);
+  header("location:?section=$section&function=$function");
 }
 
 /**

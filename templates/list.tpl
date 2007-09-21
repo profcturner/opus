@@ -42,10 +42,13 @@ pages
 
 {section loop=$actions name=action}
     <td class="action">
-      <a href="?section={$section}&function={$actions[action][1]}&id={$objects[object]->id}">{$actions[action][0]}</a>&nbsp;
+      <a href="?section={$actions[action][2]|default:$section}&function={$actions[action][1]}&id={$objects[object]->id}">{$actions[action][0]}</a>&nbsp;
     </td>
 {/section}
   </tr>
 {/section}
 </table>
+{if $object_num == 0}
+{$no_list|default:#no_list#}
+{/if}
 </div>

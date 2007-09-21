@@ -21,7 +21,7 @@ class Contact extends DTO_Contact
   (
     'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
-    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
+    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true, 'source'=>'_lastname'),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
     'email'=>array('type'=>'email','size'=>40, 'header'=>true),
     'voice'=>array('type'=>'text','size'=>40, 'header'=>true),
@@ -54,6 +54,14 @@ class Contact extends DTO_Contact
      $contact = new Contact;
      $contact->id = $id;
      $contact->_load_by_id();
+     return $contact;
+  }
+
+  function load_by_user_id($user_id) 
+  {
+     $contact = new Contact;
+     $contact->user_id = $user_id;
+     $contact->_load_by_user_id($user_id);
      return $contact;
   }
 
@@ -96,8 +104,31 @@ class Contact extends DTO_Contact
       CompanyContact::insert($company_contact);
     }
 
+    // We want to email them, if possible
+    if($user_fields['email'])
+    {
+      require_once("model/Automail.class.php");
+
+    }
+
     return $contact->_insert($fields);
   }
+
+  function user_notify_password($fields)
+  {
+    require_once("model/Automail.class.php");
+
+    $mailfields = array();
+    $mailfields["rtitle"]     = $fields['salutation'];
+    $mailfields["rfirstname"] = $fields['firstname'];
+    $mailfields["rsurname"]   = $fields['surname'];
+    $mailfields["username"]   = $fields['username'];
+    $mailfields["password"]   = $fields['password'];
+    $mailfields["remail"]     = $fields['email'];
+
+    automail($template, $mailfields);
+  }
+
 
   function update($fields) 
   {
