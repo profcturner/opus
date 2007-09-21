@@ -166,7 +166,7 @@
       $objects = Contact::get_all_by_company($company_id);
 
       $headings = array(
-        '_real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+        'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
         'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position')
       );
       $actions = array(array('edit', 'edit_contact'));

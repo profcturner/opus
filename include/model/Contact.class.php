@@ -132,6 +132,22 @@ class Contact extends DTO_Contact
 
   function update($fields) 
   {
+    $extended_fields = Contact::get_extended_fields();
+    $user_fields = array();
+
+    foreach($fields as $key => $value)
+    {
+      if(in_array($key, $extended_fields))
+      {
+        // Set these in the other array
+        $user_fields[$key] = $value;
+        unset($fields[$key]);
+      }
+    }
+    // Insert user data first, adding anything else we need
+    $user_fields['id'] = $fields['user_id'];
+    User::update($user_fields);
+
     $contact = Contact::load_by_id($fields[id]);
     $contact->_update($fields);
   }

@@ -23,7 +23,7 @@ class DTO_Contact extends DTO {
 
     foreach($fields as $field)
     {
-      $new_key = "_$field";
+      $new_key = "$field";
       $this->$new_key = $user->$field;
     }
   }
@@ -39,7 +39,7 @@ class DTO_Contact extends DTO {
 
     foreach($fields as $field)
     {
-      $new_key = "_$field";
+      $new_key = "$field";
       $this->$new_key = $user->$field;
     }
   }
