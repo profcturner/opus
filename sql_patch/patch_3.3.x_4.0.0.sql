@@ -73,6 +73,11 @@ alter table school change column school_name name tinytext not null;
 alter table school add column srs_ident tinytext null after www;
 alter table school add column faculty_id int unsigned not null after status;
 
+-- admin link tables --
+
+rename table adminschool to schooladmin;
+alter table schooladmin add column id int unsigned not null auto_increment primary key;
+
 --WARNING! CHECK THIS
 alter table school change column status status enum('active', 'archive') not null;
 

@@ -174,6 +174,24 @@ class Admin extends DTO_Admin
     return $admins;
   }
 
+  function get_all_by_faculty($faculty_id)
+  {
+    $admin = new Admin;
+    return $admin->_get_all_by_faculty($faculty_id);
+  }
+
+  function get_all_by_school($school_id)
+  {
+    $admin = new Admin;
+    return $admin->_get_all_by_school($school_id);
+  }
+
+  function get_all_by_programme($programme_id)
+  {
+    $admin = new Admin;
+    return $admin->_get_all_by_programme($programme_id);
+  }
+
   function get_id_and_field($fieldname) 
   {
     $admins = new Admin;

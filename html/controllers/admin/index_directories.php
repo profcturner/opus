@@ -2,6 +2,20 @@
 
   function student_directory(&$waf, $user, $title)
   {
+    $letters = array();
+    for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
+    $waf->assign("letters", $letters);
+
+    $sort_types = array("Last name", "Student Number", "Last Access", "Placement Status");
+    $other_options = array("ShowTimelines" => "Show Timelines");
+
+    $waf->assign("sort_types", $sort_types);
+    $waf->assign("other_options", $other_options);
+    $waf->assign("form_options", $form_options);
+
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("student_directory_form");
+
     $waf->display("main.tpl", "admin:directories:student_directory:student_directory", "admin/directories/student_directory.tpl");
   }
 

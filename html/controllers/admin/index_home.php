@@ -1,11 +1,10 @@
 <?php
 
-function home(&$waf) 
+function home(&$waf)
 {
-  $waf->assign("subsection", "home");
-  $waf->assign("page_title", "Admin Home Page");
+  $waf->assign("user", $waf->user['opus']);
 
-  $waf->display("main.tpl");
+  $waf->display("main.tpl", "admin:home:home:home", "admin/home/home.tpl");
 }
 
 function change_password(&$waf)

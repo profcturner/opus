@@ -96,7 +96,7 @@
 
     add_navigation_history($waf, $faculty->name);
 
-    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:organisation_details:manage_schools");
+    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_school_admins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:organisation_details:manage_schools");
   }
 
   function add_school(&$waf, &$user) 
@@ -131,6 +131,37 @@
   function remove_school_do(&$waf, &$user) 
   {
     remove_object_do($waf, $user, "School", "section=configuration&function=manage_schools");
+  }
+
+
+  function manage_school_admins(&$waf, $user, $title)
+  {
+    $school_id = (int) WA::request("id", true);
+
+    require_once("model/Admin.class.php");
+    $objects = Admin::get_all_by_school($school_id);
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $action_links = array(array('add', "section=configuration&function=add_school_admin&school_id=$school_id"));
+    $actions = array(array('edit', 'edit_school_admin'), array('remove', 'remove_school_admin'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("action_links", $action_links);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    //add_navigation_history($waf, $faculty->name);
+    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_school_admins", "list.tpl");
+  }
+
+  function add_school_admin(&$waf)
+  {
+    require_once("model/Admin.class.php");
   }
 
   // Programmes
