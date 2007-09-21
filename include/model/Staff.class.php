@@ -17,6 +17,7 @@ class Staff extends DTO_Staff
   var $postcode;          // Post code to use in mapping
   var $address;           // Full address
   var $status;            // Archive, or not?
+  var $school_id;         // School the member of staff belongs to
   var $user_id;           // Matches id from user table
 
   // Several of these fields actually reside in the User table
@@ -25,6 +26,7 @@ class Staff extends DTO_Staff
     'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
+    'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'size'=>20, 'var'=>'schools'),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
     'email'=>array('type'=>'email','size'=>40, 'header'=>true),
     'voice'=>array('type'=>'text','size'=>40),

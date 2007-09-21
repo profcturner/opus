@@ -1,6 +1,11 @@
 {* Smarty *}
 
+<h3>{#simple_search#}</h3>
+{foreach from=$letters item=letter}
+<a href="?section=directories&function=simple_search_contact&initial={$letter}">{$letter}</a>
+{/foreach}
 
+<h3>{#advanced_search#}</h3>
 <div id="table_manage">
   <form method="post" name="search" action="">
     <input type="hidden" name="section" value="directories">

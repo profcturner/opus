@@ -161,6 +161,10 @@
 
     $waf->assign("form_options", $form_options);
 
+    $letters = array();
+    for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
+    $waf->assign("letters", $letters);
+
     $waf->display("main.tpl", "admin:directories:contact_directory:contact_directory", "admin/directories/contact_directory.tpl");
   }
 
@@ -170,7 +174,7 @@
     $search = WA::request("search");
     $sort = WA::request("sort");
 
-    if(!preg_match('/[A-Za-z0-9 ]*/', $search)) $waf->halt("error:contacts:invalid_search");
+    if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:contacts:invalid_search");
 
     $form_options['search'] = $search;
     $form_options['sort'] = $sort;
@@ -202,6 +206,33 @@
     $waf->assign("objects", $objects);
 
     $waf->display("main.tpl", "admin:directories:contact_directory:search_contacts", "list.tpl");
+  }
+
+  function simple_search_contact(&$waf)
+  {
+    require_once("model/Contact.class.php");
+    $initial = WA::request("initial");
+
+    if(!preg_match('/^[A-Za-z0-9]$/', $initial)) $waf->halt("error:contacts:invalid_search");
+
+    $where_clause = "where lastname like '$initial%'";
+
+    $objects = Contact::get_all($where_clause);
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $actions = array(array('edit', 'edit_contact'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:contact_directory:simple_search_contacts", "list.tpl");
+
   }
 
   function manage_contacts(&$waf, $user, $title)
@@ -268,6 +299,101 @@
 
   // Staff
 
+  function staff_directory(&$waf)
+  {
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("staff_directory_form");
+
+    require_once("model/School.class.php");
+    $schools = School::get_id_and_field("name");
+
+    $waf->assign("form_options", $form_options);
+
+    $letters = array();
+    for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
+    $waf->assign("letters", $letters);
+    $waf->assign("schools", $schools);
+
+    $waf->display("main.tpl", "admin:directories:staff_directory:staff_directory", "admin/directories/staff_directory.tpl");
+  }
+
+  function search_staff(&$waf)
+  {
+    require_once("model/Staff.class.php");
+    $search = WA::request("search");
+    $sort = WA::request("sort");
+    $schools = WA::request("schools");
+
+    if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:staffs:invalid_search");
+
+    $form_options['search'] = $search;
+    $form_options['sort'] = $sort;
+    $form_options['schools'] = $schools;
+
+    require_once("model/Preference.class.php");
+    Preference::set_preference("staff_directory_form", $form_options);
+
+    if(empty($search))
+    {
+      $where_clause = "";
+    }
+    else
+    {
+      $where_clause = "where lastname like '%$search%' OR firstname like '%$search%'";
+    }
+
+    $provisional_objects = Staff::get_all($where_clause);
+    // Check schools
+    $objects = array();
+    foreach($provisional_objects as $object)
+    {
+      if(in_array($object->school_id, $schools)) array_push($objects, $object);
+    }
+    //$objects = $provisional_objects;
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $actions = array(array('edit', 'edit_staff'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:staff_directory:search_staff", "list.tpl");
+  }
+
+  function simple_search_staff(&$waf)
+  {
+    require_once("model/Staff.class.php");
+    $initial = WA::request("initial");
+
+    if(!preg_match('/^[A-Za-z0-9]$/', $initial)) $waf->halt("error:staffs:invalid_search");
+
+    $where_clause = "where lastname like '$initial%'";
+
+    $objects = Staff::get_all($where_clause);
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $actions = array(array('edit', 'edit_staff'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:staff_directory:simple_search_staff", "list.tpl");
+
+  }
+
+
   function manage_staff(&$waf, $user, $title)
   {
     manage_objects($waf, $user, "Staff", array(array("add","section=directories&function=add_staff")), array(array('edit', 'edit_staff'), array('remove','remove_staff')), "get_all", "", "staff:directories:staff_directory:manage_staff");
@@ -289,7 +415,7 @@
     $id = WA::request("id");
     $staff = Staff::load_by_id($id);
 
-    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff")), array(array("user_id",$user["user_id"])), "staff:directories:staff_directory:edit_staff");
+    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff")), array(array("user_id", $staff->user_id)), "staff:directories:staff_directory:edit_staff");
   }
 
   function edit_staff_do(&$waf, &$user) 

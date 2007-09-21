@@ -73,6 +73,84 @@ class DTO_Admin extends DTO {
     return $object_array; 
   }
 
+  function _get_all_by_faculty($faculty_id = 0)
+  {
+    global $waf;
+
+    //require_once("model/FacultyAdmin.class.php");
+
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare("select admin_id from admin left join facultyadmin on admin.user_id = facultyadmin.admin_id where faculty_id=?");
+      $sql->execute(array($faculty_id));
+
+      while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
+      {
+        $admin_id = $results_row["admin_id"];
+        $object_array[] = $this->load_by_user_id($admin_id);
+      }
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, "Admin", "_get_all_by_faculty()");
+    }
+    return $object_array; 
+  }
+
+  function _get_all_by_school($school_id = 0)
+  {
+    global $waf;
+
+    //require_once("model/FacultyAdmin.class.php");
+
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare("select admin_id from admin left join schooladmin on admin.user_id = schooladmin.admin_id where school_id=?");
+      $sql->execute(array($school_id));
+
+      while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
+      {
+        $admin_id = $results_row["admin_id"];
+        $object_array[] = $this->load_by_user_id($admin_id);
+      }
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, "Admin", "_get_all_by_school()");
+    }
+    return $object_array; 
+  }
+
+  function _get_all_by_programme($programme_id = 0)
+  {
+    global $waf;
+
+    //require_once("model/FacultyAdmin.class.php");
+
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare("select admin_id from admin left join programmeadmin on admin.user_id = programmeadmin.admin_id where programme_id=?");
+      $sql->execute(array($programme_id));
+
+      while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
+      {
+        $admin_id = $results_row["admin_id"];
+        $object_array[] = $this->load_by_user_id($admin_id);
+      }
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, "Admin", "_get_all_by_programme()");
+    }
+    return $object_array; 
+  }
+
 }
 
 ?>

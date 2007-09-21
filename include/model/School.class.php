@@ -94,7 +94,7 @@ class School extends DTO_School
   {
     $school = new School;
     $school_array = $school->_get_id_and_field($fieldname);
-    $school_array[0] = 'Global';
+    unset($school_array[0]);
     return $school_array;
   }
 
