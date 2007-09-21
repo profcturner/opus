@@ -196,7 +196,11 @@
 
   function edit_contact(&$waf, &$user) 
   {
-    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"])), "admin:directories:contacts:edit_contact");
+    require_once("model/Contact.class.php");
+    $id = WA::request("id");
+    $contact = Contact::load_by_id($id);
+
+    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact");
   }
 
   function edit_contact_do(&$waf, &$user) 

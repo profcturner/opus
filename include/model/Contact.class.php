@@ -132,6 +132,15 @@ class Contact extends DTO_Contact
 
   function update($fields) 
   {
+    global $waf;
+    // We have a potential security problem here, we should check id and user_id are really linked.
+    $contact = Contact::load_by_id($fields['id']);
+    if($contact->user_id != $fields['user_id'])
+    {
+      $waf->security_log("attempt to update contact with mismatching user_id fields");
+      $waf->halt("error:contact:user_id_mismatch");
+    }
+
     $extended_fields = Contact::get_extended_fields();
     $user_fields = array();
 
