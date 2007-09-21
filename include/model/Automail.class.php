@@ -168,12 +168,11 @@ class Automail extends DTO_Automail
     {
       // We need a primary admin, get the first root user in the database
       require_once("model/User.class.php");
-      $admins = User::get_all("where user_type='root'", "order by id");
+      $admins = Admin::get_all("where user_type='root'", "order by id");
 
       $mailfields["atitle"]     = $admins[0]->salutation;
       $mailfields["afirstname"] = $admins[0]->firstname;
       $mailfields["asurname"]  = $admins[0]->lastname;
-      // @todo Ack, position would be broken, need more clever stuff here
       $mailfields["aposition"]  = $admins[0]->position;
       $mailfields["aemail"]     = $admins[0]->email;
     }

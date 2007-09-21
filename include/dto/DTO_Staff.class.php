@@ -6,7 +6,7 @@
  */
 require_once("dto/DTO.class.php");
 
-class DTO_Contact extends DTO {
+class DTO_Staff extends DTO {
 
   function __construct($handle='default') 
   {
@@ -57,7 +57,7 @@ class DTO_Contact extends DTO {
 
     try
     {
-      $sql = $con->prepare("SELECT contact.id FROM `contact` left join user on contact.user_id = user.id $where_clause $order_by LIMIT $start, $limit;");
+      $sql = $con->prepare("SELECT staff.id FROM `staff` left join user on staff.user_id = user.id $where_clause $order_by LIMIT $start, $limit;");
       $sql->execute();
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
@@ -68,36 +68,11 @@ class DTO_Contact extends DTO {
     }
     catch (PDOException $e)
     {
-      $this->_log_sql_error($e, $class, "_get_all()");
+      $this->_log_sql_error($e, "staff", "_get_all()");
     }
     return $object_array; 
   }
 
-  function _get_all_by_company($company_id = 0)
-  {
-    global $waf;
-
-    require_once("model/CompanyContact.class.php");
-
-    $con = $waf->connections[$this->_handle]->con;
-
-    try
-    {
-      $sql = $con->prepare("select contact_id from contact left join companycontact on contact.user_id = companycontact.contact_id where company_id=?");
-      $sql->execute(array($company_id));
-
-      while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
-      {
-        $contact_id = $results_row["contact_id"];
-        $object_array[] = $this->load_by_user_id($contact_id);
-      }
-    }
-    catch (PDOException $e)
-    {
-      $this->_log_sql_error($e, $class, "_get_all()");
-    }
-    return $object_array; 
-  }
 }
 
 ?>

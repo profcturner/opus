@@ -17,7 +17,7 @@ function nav_admin()
       array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
       array("academic staff","directories","staff_directory","staff_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
-      array("admin details", "configuration", "manage_admins", "manage_admins")
+      array("administrators", "directories", "manage_admins", "manage_admins")
     ), 
     "information"=>array
     (

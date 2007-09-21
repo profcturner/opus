@@ -7,13 +7,16 @@
  * last few fields have gone
  */
 
-require_once("dto/DTO_Contact.class.php");
+require_once("dto/DTO_Staff.class.php");
 
-class Contact extends DTO_Contact 
+class Staff extends DTO_Staff 
 {
   var $position;          // position in company
   var $voice;             // Phone number
-  var $fax;               // Fax number
+  var $room;              // Room number
+  var $postcode;          // Post code to use in mapping
+  var $address;           // Full address
+  var $status;            // Archive, or not?
   var $user_id;           // Matches id from user table
 
   // Several of these fields actually reside in the User table
@@ -24,8 +27,11 @@ class Contact extends DTO_Contact
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
     'email'=>array('type'=>'email','size'=>40, 'header'=>true),
-    'voice'=>array('type'=>'text','size'=>40, 'header'=>true),
-    'fax'=>array('type'=>'text','size'=>40, 'header'=>true)
+    'voice'=>array('type'=>'text','size'=>40),
+    'room'=>array('type'=>'text', 'size'=>10, 'header'=>true),
+    'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
+    'postcode'=>array('type'=>'text', 'size'=>10),
+    'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
   );
 
   // This defines which ones
@@ -51,22 +57,22 @@ class Contact extends DTO_Contact
 
   function load_by_id($id) 
   {
-     $contact = new Contact;
-     $contact->id = $id;
-     $contact->_load_by_id();
-     return $contact;
+     $staff = new Staff;
+     $staff->id = $id;
+     $staff->_load_by_id();
+     return $staff;
   }
 
   function load_by_user_id($user_id) 
   {
-     $contact = new Contact;
-     $contact->user_id = $user_id;
-     $contact->_load_by_user_id($user_id);
-     return $contact;
+     $staff = new Staff;
+     $staff->user_id = $user_id;
+     $staff->_load_by_user_id($user_id);
+     return $staff;
   }
 
   /**
-  * inserts data about a new contact to the User and Contact tables
+  * inserts data about a new staff to the User and Staff tables
   *
   * this is more sophisticated that usual because there are two tables.
   */
@@ -74,9 +80,8 @@ class Contact extends DTO_Contact
   {
     require_once("model/User.class.php");
 
-    $contact = new Contact;
-    $company_id = WA::request("company_id");
-    $extended_fields = Contact::get_extended_fields();
+    $staff = new Staff;
+    $extended_fields = Staff::get_extended_fields();
     $user_fields = array();
 
     foreach($fields as $key => $value)
@@ -89,20 +94,11 @@ class Contact extends DTO_Contact
       }
     }
     // Insert user data first, adding anything else we need
-    $user_fields['user_type'] = 'company';
+    $user_fields['user_type'] = 'staff';
     $user_id = User::insert($user_fields);
 
     // Now we know the user_id, to populate the other tables
     $fields['user_id'] = $user_id;
-    if($company_id)
-    {
-      // populate the company contact table
-      require_once("model/CompanyContact.class.php");
-      $company_contact = array();
-      $company_contact['company_id'] = $company_id;
-      $company_contact['contact_id'] = $user_id;
-      CompanyContact::insert($company_contact);
-    }
 
     // We want to email them, if possible
     if($user_fields['email'])
@@ -111,37 +107,21 @@ class Contact extends DTO_Contact
 
     }
 
-    return $contact->_insert($fields);
+    return $staff->_insert($fields);
   }
-
-  function user_notify_password($fields)
-  {
-    require_once("model/Automail.class.php");
-
-    $mailfields = array();
-    $mailfields["rtitle"]     = $fields['salutation'];
-    $mailfields["rfirstname"] = $fields['firstname'];
-    $mailfields["rsurname"]   = $fields['surname'];
-    $mailfields["username"]   = $fields['username'];
-    $mailfields["password"]   = $fields['password'];
-    $mailfields["remail"]     = $fields['email'];
-
-    automail($template, $mailfields);
-  }
-
 
   function update($fields) 
   {
     global $waf;
     // We have a potential security problem here, we should check id and user_id are really linked.
-    $contact = Contact::load_by_id($fields['id']);
-    if($contact->user_id != $fields['user_id'])
+    $staff = Staff::load_by_id($fields['id']);
+    if($staff->user_id != $fields['user_id'])
     {
-      $waf->security_log("attempt to update contact with mismatching user_id fields");
-      $waf->halt("error:contact:user_id_mismatch");
+      $waf->security_log("attempt to update staff with mismatching user_id fields");
+      $waf->halt("error:staff:user_id_mismatch");
     }
 
-    $extended_fields = Contact::get_extended_fields();
+    $extended_fields = Staff::get_extended_fields();
     $user_fields = array();
 
     foreach($fields as $key => $value)
@@ -157,63 +137,57 @@ class Contact extends DTO_Contact
     $user_fields['id'] = $fields['user_id'];
     User::update($user_fields);
 
-    $contact = Contact::load_by_id($fields[id]);
-    $contact->_update($fields);
+    $staff = Staff::load_by_id($fields[id]);
+    $staff->_update($fields);
   }
 
   function exists($id) 
   {
-    $contact = new Contact;
-    $contact->id = $id;
-    return $contact->_exists();
+    $staff = new Staff;
+    $staff->id = $id;
+    return $staff->_exists();
   }
 
   function count($where="") 
   {
-    $contact = new Contact;
-    return $contact->_count($where);
-  }
-
-  function get_all_by_company($company_id)
-  {
-    $contact = new Contact;
-    return $contact->_get_all_by_company($company_id);
+    $staff = new Staff;
+    return $staff->_count($where);
   }
 
   function get_all($where_clause="", $order_by="", $page=0, $end=0) 
   {
-    $contact = new Contact;
+    $staff = new Staff;
 
-    if($end != 0) return($contact->_get_all($where_clause, $order_by, $page, $end));
+    if($end != 0) return($staff->_get_all($where_clause, $order_by, $page, $end));
     if ($page <> 0) 
     {
         $start = ($page-1)*ROWS_PER_PAGE;
         $limit = ROWS_PER_PAGE;
-        $contacts = $contact->_get_all($where_clause, $order_by, $start, $limit);
+        $staffs = $staff->_get_all($where_clause, $order_by, $start, $limit);
     }
     else 
     {
-        $contacts = $contact->_get_all($where_clause, $order_by, 0, 1000);
+        $staffs = $staff->_get_all($where_clause, $order_by, 0, 1000);
     }
-    return $contacts;
+    return $staffs;
   }
 
   function get_id_and_field($fieldname) 
   {
-    $contacts = new Contact;
-    return  $contacts->_get_id_and_field($fieldname);
+    $staffs = new Staff;
+    return  $staffs->_get_id_and_field($fieldname);
   }
 
   function get_fields($include_id = false) 
   {
-    $contact = new Contact;
-    return  $contact->_get_fieldnames($include_id);
+    $staff = new Staff;
+    return  $staff->_get_fieldnames($include_id);
   }
 
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Contact::get_fields($include_id);
-    $fieldnames = array_merge($fieldnames, Contact::get_extended_fields());
+    $fieldnames = Staff::get_fields($include_id);
+    $fieldnames = array_merge($fieldnames, Staff::get_extended_fields());
 
     $nvp_array = array();
     foreach ($fieldnames as $fn) 
@@ -227,11 +201,11 @@ class Contact extends DTO_Contact
   {
     require_once("model/User.class.php");
 
-    $contact = new Contact;
-    $contact->load_by_id($id);
+    $staff = new Staff;
+    $staff->load_by_id($id);
     // Remove the user object also
-    User::remove($contact->user_id);
-    $contact->_remove_where("WHERE id=$id");
+    User::remove($staff->user_id);
+    $staff->_remove_where("WHERE id=$id");
   }
 
 }

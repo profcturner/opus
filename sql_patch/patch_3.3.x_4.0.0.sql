@@ -166,5 +166,32 @@ create table contact
   id int unsigned not null auto_increment primary key
 );
 
-
+create table admin
+(
+  position tinytext,
+  voice tinytext,
+  fax tinytext,
+  signature text,
+  address text,
+  help_directory enum('yes', 'no'),
+  status enum('active', 'archive'),
+  policy_id int unsigned not null,
+  user_id int unsigned not null,
+  id int unsigned not null auto_increment primary key
+);
 -- this will need php conversion :-( --
+
+alter table staff drop column initials;
+alter table staff drop column title;   
+alter table staff drop column firstname;
+alter table staff drop column surname;  
+alter table staff drop column department;
+alter table staff drop column staffno;
+alter table staff drop column email;
+alter table staff drop column department;
+alter table staff add column postcode tinytext not null after address;
+alter table staff add column id int unsigned not null auto_increment primary key;
+
+
+alter table staff change column status status enum('active', 'archive');
+

@@ -154,6 +154,55 @@
     remove_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies");
   }
 
+  function contact_directory(&$waf)
+  {
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("contact_directory_form");
+
+    $waf->assign("form_options", $form_options);
+
+    $waf->display("main.tpl", "admin:directories:contact_directory:contact_directory", "admin/directories/contact_directory.tpl");
+  }
+
+  function search_contacts(&$waf)
+  {
+    require_once("model/Contact.class.php");
+    $search = WA::request("search");
+    $sort = WA::request("sort");
+
+    if(!preg_match('/[A-Za-z0-9 ]*/', $search)) $waf->halt("error:contacts:invalid_search");
+
+    $form_options['search'] = $search;
+    $form_options['sort'] = $sort;
+
+    require_once("model/Preference.class.php");
+    Preference::set_preference("contact_directory_form", $form_options);
+
+    if(empty($search))
+    {
+      $where_clause = "";
+    }
+    else
+    {
+      $where_clause = "where lastname like '%$search%' OR firstname like '%$search%'";
+    }
+
+    $objects = Contact::get_all($where_clause);
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $actions = array(array('edit', 'edit_contact'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:contact_directory:search_contacts", "list.tpl");
+  }
 
   function manage_contacts(&$waf, $user, $title)
   {
@@ -167,7 +216,9 @@
 
       $headings = array(
         'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
-        'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position')
+        'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+        'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+        'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
       );
       $actions = array(array('edit', 'edit_contact'));
 
@@ -176,9 +227,6 @@
       $waf->assign("actions", $actions);
       $waf->assign("action_links", array(array("Add", "section=directories&function=add_contact")));
     }
-    //else $where_clause="";
-
-  //    manage_objects($waf, $user, "Contact", array(array("add","section=directories&function=add_contact")), array(array('edit', 'edit_contact'), array('remove','remove_contact')), "get_all", $where_clause, "admin:directories:contacts:manage_contacts");
     $waf->display("main.tpl", "admin:directories:contact_directory:search_contacts", "list.tpl");
   }
 
@@ -218,6 +266,87 @@
     remove_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts");
   }
 
+  // Staff
+
+  function manage_staff(&$waf, $user, $title)
+  {
+    manage_objects($waf, $user, "Staff", array(array("add","section=directories&function=add_staff")), array(array('edit', 'edit_staff'), array('remove','remove_staff')), "get_all", "", "staff:directories:staff_directory:manage_staff");
+  }
+
+  function add_staff(&$waf, &$user) 
+  {
+    add_object($waf, $user, "Staff", array("add", "directories", "add_staff_do"), array(array("cancel","section=directories&function=manage_staff")), array(array("user_id",$user["user_id"])), "staff:directories:staff_directory:add_staff");
+  }
+
+  function add_staff_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "Staff", "section=directories&function=manage_staff", "add_staff");
+  }
+
+  function edit_staff(&$waf, &$user) 
+  {
+    require_once("model/Staff.class.php");
+    $id = WA::request("id");
+    $staff = Staff::load_by_id($id);
+
+    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff")), array(array("user_id",$user["user_id"])), "staff:directories:staff_directory:edit_staff");
+  }
+
+  function edit_staff_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "Staff", "section=directories&function=manage_staff", "edit_staff");
+  }
+
+  function remove_staff(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "Staff", array("remove", "directories", "remove_staff_do"), array(array("cancel","section=directories&function=manage_staff")), "", "staff:directories:staff_directory:remove_staff");
+  }
+
+  function remove_staff_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "Staff", "section=directories&function=manage_staff");
+  }
+
+  // Admin
+
+  function manage_admins(&$waf, $user, $title)
+  {
+    manage_objects($waf, $user, "Admin", array(array("add","section=directories&function=add_admin")), array(array('edit', 'edit_admin'), array('remove','remove_admin')), "get_all", "", "admin:directories:admin_directory:manage_admins");
+  }
+
+  function add_admin(&$waf, &$user) 
+  {
+    add_object($waf, $user, "Admin", array("add", "directories", "add_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:admin_directory:add_admin");
+  }
+
+  function add_admin_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "add_admin");
+  }
+
+  function edit_admin(&$waf, &$user) 
+  {
+    require_once("model/Admin.class.php");
+    $id = WA::request("id");
+    $admin = Admin::load_by_id($id);
+
+    edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin");
+  }
+
+  function edit_admin_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "edit_admin");
+  }
+
+  function remove_admin(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "Admin", array("remove", "directories", "remove_admin_do"), array(array("cancel","section=directories&function=manage_admins")), "", "admin:directories:admin_directory:remove_admin");
+  }
+
+  function remove_admin_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "Admin", "section=directories&function=manage_admins");
+  }
 
 
 
