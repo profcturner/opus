@@ -71,7 +71,9 @@
     Preference::set_preference("student_directory_form", $form_options);
 
     require_once("model/Student.class.php");
-    $waf->assign("students", Student::get_all_extended($search, $year, $programmes, $sort, $other_options));
+    $objects = Student::get_all_extended($search, $year, $programmes, $sort, $other_options);
+
+    $waf->assign("students", $objects);
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
 

@@ -39,11 +39,9 @@ class DTO_Student extends DTO {
       array_push($parameters, $year);
     }
 
-    $full_query = "SELECT user.salutation, user.firstname, user.lastname, user.reg_number, user.last_time, student.* FROM student LEFT JOIN user ON student.user_id = user.id";
+    $full_query = "SELECT user.real_name as real_name, user.email, user.salutation, user.firstname, user.lastname, user.reg_number, user.last_time, student.* FROM student LEFT JOIN user ON student.user_id = user.id";
     if(!empty($searchc)) $full_query .= " WHERE $searchc";
 
-    //echo $full_query;
-    //print_r($parameters);
     $object_array = array();
 
     try

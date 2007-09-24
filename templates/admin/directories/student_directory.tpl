@@ -23,6 +23,10 @@ function toggleAll(faculty, checked)
 function toggleFaculty(faculty, checked)
 {
   var faculty_div = document.getElementById(faculty);
+  alert(faculty);
+  alert(checked);
+  alert("deployed");
+  alert(faculty_div.elements.length);
   for(i = 0; i < faculty_div.elements.length; i++)
   {
     if(faculty_div.elements[i].name.indexOf("programme") >= 0)
@@ -70,8 +74,8 @@ function toggleFaculty(faculty, checked)
         <a href="" onclick="toggleAll(0, false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
         {foreach from=$structure item=faculty}
         <div id="faculty_{$faculty.id}" name="faculty_{$faculty.id}">
-        <strong>{$faculty.name}</strong><small> (<a href="" onclick="toggleFaculty(faculty_{$faculty.id}, true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleFaculty(faculty_{$faculty.id}, false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a>)</small><br />
+        <strong>{$faculty.name}</strong><small> (<a href="" onclick="toggleFaculty(this, true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
+        <a href="" onclick="toggleFaculty('faculty_{$faculty.id}', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a>)</small><br />
           {foreach from=$faculty.schools item=school}
             <em>&nbsp;&nbsp;{$school.name}</em><br />
               {html_checkboxes name="programmes" options=$school.programmes selected=$form_options.programmes separator="<br />"}

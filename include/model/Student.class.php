@@ -19,10 +19,17 @@ Class Student extends DTO_Student
   var $progress         = ""; // whether the student has signed off on the disclaimer and other issues
   var $disability_code  = "";
 
-  // Not much here yet...
+  // Several of these fields actually reside in the User table
   static $_field_defs = array
   (
-    'placementyear'=>array('type'=>'text','size'=>15, 'header'=>true)
+    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
+    'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
+    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
+    'email'=>array('type'=>'email','size'=>40),
+    'progress'=>array('type'=>'list', 'list'=>array()),
+    'placementyear'=>array('type'=>'text','size'=>15),
+    'placement_status'=>array('type'=>'list', 'list'=>array()),
+    'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'programme', 'var'=>'programmes')
   );
 
   function __construct() 
