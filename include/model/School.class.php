@@ -90,10 +90,10 @@ class School extends DTO_School
     return $schools;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="", $order_clause="order by name") 
   {
     $school = new School;
-    $school_array = $school->_get_id_and_field($fieldname);
+    $school_array = $school->_get_id_and_field($fieldname, $where_clause, $order_clause);
     unset($school_array[0]);
     return $school_array;
   }

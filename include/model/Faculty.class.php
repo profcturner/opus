@@ -93,7 +93,7 @@ class Faculty extends DTO_Faculty
   {
     $faculty = new Faculty;
     $faculty_array = $faculty->_get_id_and_field($fieldname);
-    $faculty_array[0] = 'Global';
+    unset($faculty_array[0]);
     return $faculty_array;
   }
 

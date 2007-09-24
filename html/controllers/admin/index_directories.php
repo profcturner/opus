@@ -9,15 +9,72 @@
     $sort_types = array("Last name", "Student Number", "Last Access", "Placement Status");
     $other_options = array("ShowTimelines" => "Show Timelines");
 
-    $waf->assign("sort_types", $sort_types);
-    $waf->assign("other_options", $other_options);
-    $waf->assign("form_options", $form_options);
-
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("student_directory_form");
 
+    $waf->assign("sort_types", $sort_types);
+    $waf->assign("other_options", $other_options);
+    $waf->assign("form_options", $form_options);
+    $waf->assign("structure", get_all_programes($waf));
+
     $waf->display("main.tpl", "admin:directories:student_directory:student_directory", "admin/directories/student_directory.tpl");
   }
+
+  function get_all_programes(&$waf)
+  {
+    require_once("model/Faculty.class.php");
+    require_once("model/School.class.php");
+    require_once("model/Programme.class.php");
+
+    $final_array = array();
+    // First we need an array of faculties
+    $faculties = Faculty::get_id_and_field("name");
+    // Which we will augment with an array of schools
+    foreach($faculties as $faculty_id => $faculty_name)
+    {
+      // Get the school information
+      $schools = School::get_id_and_field("name", "where faculty_id=" . $faculty_id);
+      $school_array = array();
+      foreach($schools as $school_id => $school_name)
+      {
+        // Augment information with programmes
+        $school['programmes'] = Programme::get_id_and_description("where school_id=" . $school_id);
+        $school['id'] = $school_id;
+        $school['name'] = $school_name;
+        // Only add the school if some programmes are present
+        if(count($school['programmes'])) array_push($school_array, $school);
+      }
+      $faculty['id'] = $faculty_id;
+      $faculty['name'] = $faculty_name;
+      $faculty['schools'] = $school_array;
+      // Only add the faculty if there are schools present
+      if(count($faculty['schools'])) array_push($final_array, $faculty);
+    }
+    return($final_array);
+  }
+
+  function search_students(&$waf)
+  {
+    $search = WA::request("search");
+    $year = WA::request("year");
+    $programmes = WA::request("programmes");
+    $sort = WA::request("sort");
+    $other_options = WA::request("other_options");
+
+    $form_options['search'] = $search;
+    $form_options['year'] = $year;
+    $form_options['programmes'] = $programmes;
+    $form_options['sort'] = $sort;
+    $form_options['other_options'] = $other_options;
+
+    require_once("model/Preference.class.php");
+    Preference::set_preference("student_directory_form", $form_options);
+
+    require_once("model/Student.class.php");
+    $waf->assign("students", Student::get_all_extended($search, $year, $programmes, $sort, $other_options));
+    $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
+  }
+
 
   function vacancy_directory(&$waf, $user, $title)
   {

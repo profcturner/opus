@@ -114,6 +114,12 @@ Class Student extends DTO_Student
     $student = new Student;
     $student->_remove_where("WHERE id=$id");
   }
+
+  function get_all_extended($search, $year, $programmes, $sort, $other_options)
+  {
+    $student = new Student;
+    return($student->_get_all_extended($search, $year, $programmes, $sort, $other_options));
+  }
 }
 
 ?>

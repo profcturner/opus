@@ -25,11 +25,11 @@ class DTO_Programme extends DTO {
 
   }
 
-  function _get_id_and_description()
+  function _get_id_and_description($where_clause="", $order_clause="")
   {
     $programme = new Programme;
 
-    $programmes = $programme->_get_all();
+    $programmes = $programme->_get_all($where_clause, $order_clause);
 
     $programme_array = array();
     foreach($programmes as $prog)

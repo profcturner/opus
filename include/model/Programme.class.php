@@ -90,10 +90,10 @@ class Programme extends DTO_Programme
     return $programmes;
   }
 
-  function get_id_and_description()
+  function get_id_and_description($where_clause="", $order_clause="order by name")
   {
     $programme = new Programme;
-    $programme_array = $programme->_get_id_and_description();
+    $programme_array = $programme->_get_id_and_description($where_clause, $order_clause);
     return $programme_array;
   }
 
