@@ -55,14 +55,17 @@ function nav_admin()
     )
   );
 
+  $last_item_nav = $_SESSION['lastitems']->get_nav();
+
   if(User::is_root())
   {
-    return(array_merge_recursive($basic_nav, $root_nav));
+    $nav = array_merge_recursive($basic_nav, $root_nav);
   }
   else
   {
-    return $basic_nav;
+    $nav = $basic_nav;
   }
+  return(array_merge_recursive($nav, $last_item_nav));
 }
 
 

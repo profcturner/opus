@@ -38,6 +38,10 @@ function main()
     require_once("model/Benchmark.class.php");
     $benchmark = new Benchmark;
   }
+
+  // We need requires for any session contained objects before the session starts
+  require_once("model/Lastitems.class.php");
+
   // Initialise the Web Application Framework
   global $waf;
   $waf = new WA($config['waf']);
@@ -140,7 +144,10 @@ function load_user($username)
     require_once("model/Preference.class.php");
     Preference::load_all($user->reg_number);
 
+    $_SESSION['lastitems'] = new Lastitems(10);
   }
+
+  $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
   $_SESSION['waf']['user'] = $waf->user;
   User::update($fields);
 }
