@@ -162,6 +162,15 @@
   function add_school_admin(&$waf)
   {
     require_once("model/Admin.class.php");
+    require_once("model/Policy.class.php");
+
+    $admins = Admin::get_id_and_field("real_name");
+    $policies = Policy::get_id_and_field("name");
+
+    $waf->assign("admins", $admins);
+    $waf->assign("policies", $policies);
+
+    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_school_admins", "admin/configuration/add_level_admin.tpl");
   }
 
   // Programmes

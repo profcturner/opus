@@ -13,6 +13,10 @@ class Lastitems
     $this->maxindex = -1;
   }
 
+  function add_here($human)
+  {
+  }
+
   function add($lastitem)
   {
     $index = $this->get_index($lastitem);
