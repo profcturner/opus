@@ -2,7 +2,7 @@
 
 function nav_admin() 
 {
-  return array
+  $basic_nav = array
   (
     "home"=>array
     (
@@ -46,6 +46,24 @@ function nav_admin()
       array("policies", "advanced", "manage_policies", "manage_policies")
     )
   );
+
+  $root_nav = array
+  (
+    "superuser"=>array
+    (
+      array("PHPinfo", "superuser", "view_phpinfo", "view_phpinfo")
+    )
+  );
+
+  if(User::is_root())
+  {
+    return(array_merge_recursive($basic_nav, $root_nav));
+  }
+  else
+  {
+    return $basic_nav;
+  }
 }
+
 
 ?>

@@ -823,3 +823,23 @@ textarea {
   font-size: 0.8em;
   color: #444444;
 }
+
+#php_info .h{
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+#php_info .e{
+background: #ffffff;
+  color: #443333;
+  text-align:right;
+  padding-right:1em;
+  padding-left: 0.3em;
+  border-right:1px #cccccc solid;
+  font-size:0.9em;
+}
+
+#php_info .v{
+  font-size: 0.8em;
+  font-weight: normal;
+}

@@ -24,7 +24,7 @@ class Log_Viewer
   {
     global $waf;
 
-    $this->available_logs = array('general', 'admin', 'debug', 'security', 'panic', 'waf_debug');
+    $this->available_logs = array('general', 'admin', 'debug', 'security', 'panic', 'cron', 'waf_debug');
 
     if($lines == 0) $lines = 100;
     if($logname == "") $logname = 'general';
@@ -46,6 +46,7 @@ class Log_Viewer
     if(!in_array($logname, $this->available_logs))
     {
       $waf->security_log("Illegal log name $logname attempted");
+      $waf->halt("error:admin:illegal_log");
     }
     $logfile = $waf->log_dir . $logname . ".log";
     // Start to form the command line

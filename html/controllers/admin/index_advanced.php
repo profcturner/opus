@@ -645,5 +645,4 @@
     remove_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures");
   }
 
-
 ?>

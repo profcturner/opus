@@ -89,16 +89,12 @@ Class User extends DTO_User
     return(User::is_type("staff", $user_id));
   }
 
-
-
-
-
   function is_type($type, $user_id = 0)
   {
     if($user_id == 0)
     {
       // Currently logged in user
-      if($_SESSION['waf']['user']['user_type'] == $type) return true;
+      if($_SESSION['waf']['user']['opus']['user_type'] == $type) return true;
       else return false;
     }
     else
