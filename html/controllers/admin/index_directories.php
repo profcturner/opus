@@ -6,7 +6,7 @@
     for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
     $waf->assign("letters", $letters);
 
-    $sort_types = array("Last name", "Student Number", "Last Access", "Placement Status");
+    $sort_types = array("lastname" => "Last name", "reg_number" => "Student Number", "last_time" => "Last Access", "placement_status" => "Placement Status");
     $other_options = array("ShowTimelines" => "Show Timelines");
 
     require_once("model/Preference.class.php");
@@ -76,7 +76,6 @@
     $waf->assign("students", $objects);
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
-
 
   function vacancy_directory(&$waf, $user, $title)
   {

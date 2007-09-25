@@ -4,12 +4,12 @@
 * The model object for Schools
 * @package OPUS
 */
-require_once("dto/DTO_Channelassociation.class.php");
+require_once("dto/DTO_ChannelAssociation.class.php");
 
 /**
-* The Channelassociation model class
+* The ChannelAssociation model class
 */
-class Channelassociation extends DTO_Channelassociation 
+class ChannelAssociation extends DTO_ChannelAssociation 
 {
   var $permission = "";  // Either enable or disable
   var $type = "";        // Type of association
@@ -38,7 +38,7 @@ class Channelassociation extends DTO_Channelassociation
 
   function load_by_id($id) 
   {
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     $channelassociation->id = $id;
     $channelassociation->_load_by_id();
     return $channelassociation;
@@ -46,13 +46,13 @@ class Channelassociation extends DTO_Channelassociation
 
   function insert($fields) 
   {
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     $channelassociation->_insert($fields);
   }
   
   function update($fields) 
   {
-    $channelassociation = Channelassociation::load_by_id($fields[id]);
+    $channelassociation = ChannelAssociation::load_by_id($fields[id]);
     $channelassociation->_update($fields);
   }
   
@@ -61,7 +61,7 @@ class Channelassociation extends DTO_Channelassociation
   */
   function exists($id) 
   {
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     $channelassociation->id = $id;
     return $channelassociation->_exists();
   }
@@ -71,13 +71,13 @@ class Channelassociation extends DTO_Channelassociation
   */
   function count() 
   {
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     return $channelassociation->_count();
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
   {
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
@@ -91,7 +91,7 @@ class Channelassociation extends DTO_Channelassociation
 
   function get_id_and_field($fieldname) 
   {
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     $channelassociation_array = $channelassociation->_get_id_and_field($fieldname);
     $channelassociation_array[0] = 'Global';
     return $channelassociation_array;
@@ -100,18 +100,18 @@ class Channelassociation extends DTO_Channelassociation
 
   function remove($id=0) 
   {  
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     $channelassociation->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $channelassociation = new Channelassociation;
+    $channelassociation = new ChannelAssociation;
     return  $channelassociation->_get_fieldnames($include_id); 
   }
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Channelassociation::get_fields($include_id);
+    $fieldnames = ChannelAssociation::get_fields($include_id);
     $nvp_array = array();
  
     foreach ($fieldnames as $fn) {
@@ -123,5 +123,27 @@ class Channelassociation extends DTO_Channelassociation
     return $nvp_array;
 
   }
+
+  function get_all_extended($channel_id)
+  {
+    $channelassociation = new ChannelAssociation;
+    return($channelassociation->_get_all_extended($channel_id));
+  }
+
+  function move_up($channel_id, $id)
+  {
+    $channelassociation = ChannelAssociation::load_by_id($id);
+    $priority = $channelassociation->priority;
+    $channelassociation->_move_up($channel_id, $priority);
+  }
+
+  function move_down($channel_id, $id)
+  {
+    $channelassociation = ChannelAssociation::load_by_id($id);
+    $priority = $channelassociation->priority;
+    $channelassociation->_move_down($channel_id, $priority);
+  }
+
+
 }
 ?>

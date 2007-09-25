@@ -4,18 +4,18 @@
 * The model object for help prompts
 * @package OPUS
 */
-require_once("dto/DTO_Assessmentgroup.class.php");
+require_once("dto/DTO_AssessmentGroup.class.php");
 
 /**
-* The Assessmentgroup model class
+* The AssessmentGroup model class
 */
-class Assessmentgroup extends DTO_Assessmentgroup 
+class AssessmentGroup extends DTO_AssessmentGroup 
 {
-  var $name = "";         // Assessmentgroup name
+  var $name = "";         // AssessmentGroup name
   var $comments = "";     // Information about the assessment
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Assessmentgroup', 'header'=>true),
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'AssessmentGroup', 'header'=>true),
     'comments'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>50)
   );
 
@@ -35,7 +35,7 @@ class Assessmentgroup extends DTO_Assessmentgroup
 
   function load_by_id($id) 
   {
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     $assessmentgroup->id = $id;
     $assessmentgroup->_load_by_id();
     return $assessmentgroup;
@@ -43,13 +43,13 @@ class Assessmentgroup extends DTO_Assessmentgroup
 
   function insert($fields) 
   {
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     $assessmentgroup->_insert($fields);
   }
   
   function update($fields) 
   {
-    $assessmentgroup = Assessmentgroup::load_by_id($fields[id]);
+    $assessmentgroup = AssessmentGroup::load_by_id($fields[id]);
     $assessmentgroup->_update($fields);
   }
   
@@ -58,7 +58,7 @@ class Assessmentgroup extends DTO_Assessmentgroup
   */
   function exists($id) 
   {
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     $assessmentgroup->id = $id;
     return $assessmentgroup->_exists();
   }
@@ -68,13 +68,13 @@ class Assessmentgroup extends DTO_Assessmentgroup
   */
   function count() 
   {
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     return $assessmentgroup->_count();
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
   {
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
@@ -88,7 +88,7 @@ class Assessmentgroup extends DTO_Assessmentgroup
 
   function get_id_and_field($fieldname) 
   {
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     $assessmentgroup_array = $assessmentgroup->_get_id_and_field($fieldname);
     unset($assessmentgroup_array[0]);
     return $assessmentgroup_array;
@@ -97,28 +97,32 @@ class Assessmentgroup extends DTO_Assessmentgroup
 
   function remove($id=0) 
   {  
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     $assessmentgroup->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $assessmentgroup = new Assessmentgroup;
+    $assessmentgroup = new AssessmentGroup;
     return  $assessmentgroup->_get_fieldnames($include_id); 
   }
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Assessmentgroup::get_fields($include_id);
+    $fieldnames = AssessmentGroup::get_fields($include_id);
     $nvp_array = array();
- 
+
     foreach ($fieldnames as $fn) {
- 
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
+  }
 
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = AssessmentGroup::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
   }
 }
 ?>

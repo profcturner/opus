@@ -37,6 +37,15 @@ class Programme extends DTO_Programme
     return(self::$_field_defs);
   }
 
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $programme = new Programme;
+    $data = $programme->_get_id_and_description("where id='$id'");
+    return($data[$id]);
+  }
+
   function load_by_id($id) 
   {
     $programme = new Programme;

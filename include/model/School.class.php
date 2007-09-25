@@ -124,5 +124,14 @@ class School extends DTO_School
     return $nvp_array;
 
   }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = School::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
+  }
+
 }
 ?>

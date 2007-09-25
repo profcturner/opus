@@ -4,12 +4,12 @@
 * The model object for help prompts
 * @package OPUS
 */
-require_once("dto/DTO_Assessmentregime.class.php");
+require_once("dto/DTO_AssessmentRegime.class.php");
 
 /**
-* The Assessmentregime model class
+* The AssessmentRegime model class
 */
-class Assessmentregime extends DTO_Assessmentregime 
+class AssessmentRegime extends DTO_AssessmentRegime 
 {
   var $group_id;                  // The assessment group this belongs to
   var $assessment_id;             // The assessment id from the assessment table
@@ -48,7 +48,7 @@ class Assessmentregime extends DTO_Assessmentregime
 
   function load_by_id($id) 
   {
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     $assessmentregime->id = $id;
     $assessmentregime->_load_by_id();
     return $assessmentregime;
@@ -56,13 +56,13 @@ class Assessmentregime extends DTO_Assessmentregime
 
   function insert($fields) 
   {
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     $assessmentregime->_insert($fields);
   }
   
   function update($fields) 
   {
-    $assessmentregime = Assessmentregime::load_by_id($fields[id]);
+    $assessmentregime = AssessmentRegime::load_by_id($fields[id]);
     $assessmentregime->_update($fields);
   }
   
@@ -71,7 +71,7 @@ class Assessmentregime extends DTO_Assessmentregime
   */
   function exists($id) 
   {
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     $assessmentregime->id = $id;
     return $assessmentregime->_exists();
   }
@@ -81,13 +81,13 @@ class Assessmentregime extends DTO_Assessmentregime
   */
   function count() 
   {
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     return $assessmentregime->_count();
   }
 
   function get_all($where_clause="", $order_by="ORDER BY student_description", $page=0)
   {
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
@@ -101,7 +101,7 @@ class Assessmentregime extends DTO_Assessmentregime
 
   function get_id_and_field($fieldname) 
   {
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     $assessmentregime_array = $assessmentregime->_get_id_and_field($fieldname);
     unset($assessmentregime_array[0]);
     return $assessmentregime_array;
@@ -110,18 +110,18 @@ class Assessmentregime extends DTO_Assessmentregime
 
   function remove($id=0) 
   {  
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     $assessmentregime->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $assessmentregime = new Assessmentregime;
+    $assessmentregime = new AssessmentRegime;
     return  $assessmentregime->_get_fieldnames($include_id); 
   }
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Assessmentregime::get_fields($include_id);
+    $fieldnames = AssessmentRegime::get_fields($include_id);
     $nvp_array = array();
  
     foreach ($fieldnames as $fn) {

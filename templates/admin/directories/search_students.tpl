@@ -26,6 +26,7 @@ function toggleAll(checked)
     <th>Name</th>
     <th>Student Number</th>
     <th>Last Access</th>
+    <th>Year</th>
     <th>Status</th>
     <th class="action">CV</th>
     <th class="action">Help</th>
@@ -37,6 +38,7 @@ function toggleAll(checked)
     <td>{$students[students].real_name|escape:"htmlall"}</td>
     <td>{$students[students].reg_number|escape:"htmlall"}</td>
     <td>{$students[students].last_time|default:#never#|escape:"htmlall"}</td>
+    <td>{$students[students].placement_year|default:#unknown#|escape:"htmlall"}</td>
     <td>{$students[students].placement_status|escape:"htmlall"}</td>
     <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="">CV</a></td>
     <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="">help</a></td>

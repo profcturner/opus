@@ -95,7 +95,7 @@ function toggleFaculty(faculty, checked)
       <tr>
         <td class="property">Sort Criterion</td>
         <td>
-          {html_radios name="sort" output=$sort_types|capitalize values=$sort_types selected=$form_options.sort|default:"name"}
+          {html_radios name="sort" options=$sort_types selected=$form_options.sort|default:"name"}
         </td>
       </tr>
       <tr>

@@ -4,12 +4,12 @@
 * The model object for vacancies
 * @package OPUS
 */
-require_once("dto/DTO_Vacancyactivity.class.php");
+require_once("dto/DTO_VacancyActivity.class.php");
 
 /**
-* The Vacancyactivity model class
+* The VacancyActivity model class
 */
-class Vacancyactivity extends DTO_Vacancyactivity 
+class VacancyActivity extends DTO_VacancyActivity 
 {
   var $vacancy_id = "";   // The vacancy
   var $activity_id = "";  // The linked activity
@@ -32,7 +32,7 @@ class Vacancyactivity extends DTO_Vacancyactivity
 
   function load_by_id($id) 
   {
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     $vacancyactivity->id = $id;
     $vacancyactivity->_load_by_id();
     return $vacancyactivity;
@@ -40,13 +40,13 @@ class Vacancyactivity extends DTO_Vacancyactivity
 
   function insert($fields) 
   {
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     $vacancyactivity->_insert($fields);
   }
 
   function update($fields) 
   {
-    $vacancyactivity = Vacancyactivity::load_by_id($fields[id]);
+    $vacancyactivity = VacancyActivity::load_by_id($fields[id]);
     $vacancyactivity->_update($fields);
   }
 
@@ -55,7 +55,7 @@ class Vacancyactivity extends DTO_Vacancyactivity
   */
   function exists($id) 
   {
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     $vacancyactivity->id = $id;
     return $vacancyactivity->_exists();
   }
@@ -65,13 +65,13 @@ class Vacancyactivity extends DTO_Vacancyactivity
   */
   function count() 
   {
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     return $vacancyactivity->_count();
   }
 
   function get_all($where_clause="", $order_by="", $page=0)
   {
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
@@ -85,7 +85,7 @@ class Vacancyactivity extends DTO_Vacancyactivity
 
   function get_id_and_field($fieldname) 
   {
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     $vacancyactivity_array = $vacancyactivity->_get_id_and_field($fieldname);
     unset($vacancyactivity_array[0]);
     return $vacancyactivity_array;
@@ -94,18 +94,18 @@ class Vacancyactivity extends DTO_Vacancyactivity
 
   function remove($id=0) 
   {  
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     $vacancyactivity->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $vacancyactivity = new Vacancyactivity;
+    $vacancyactivity = new VacancyActivity;
     return  $vacancyactivity->_get_fieldnames($include_id); 
   }
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Vacancyactivity::get_fields($include_id);
+    $fieldnames = VacancyActivity::get_fields($include_id);
     $nvp_array = array();
 
     foreach ($fieldnames as $fn) {

@@ -107,6 +107,7 @@ Actions
 {config_load file=lang_en.conf section=footer}
   </div>
   <div id="footer">
+    <a href="?section=information&function=help_directory">{#help_directory#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#copyright#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#privacy#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#terms_conditions#}</a> |

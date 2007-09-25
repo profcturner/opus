@@ -20,6 +20,9 @@ class DTO_Student extends DTO {
 
     if(empty($other_options)) $other_options = array();
 
+    if(!in_array($sort, array('lastname', 'reg_number', 'placement_status', 'last_time')))
+      $sort = 'lastname';
+
     // Form Search criteria string
     if(!empty($search))
     {
@@ -41,7 +44,10 @@ class DTO_Student extends DTO {
 
     $full_query = "SELECT user.real_name as real_name, user.email, user.salutation, user.firstname, user.lastname, user.reg_number, user.last_time, student.* FROM student LEFT JOIN user ON student.user_id = user.id";
     if(!empty($searchc)) $full_query .= " WHERE $searchc";
+    $full_query .= " ORDER BY `$sort`";
+    if($sort != 'lastname') $full_query .= ", `lastname`";
 
+    echo $full_query;
     $object_array = array();
 
     try

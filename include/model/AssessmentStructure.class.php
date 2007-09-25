@@ -1,15 +1,15 @@
 <?php
 
 /**
-* The model object for Assessmentstructures
+* The model object for AssessmentStructures
 * @package OPUS
 */
-require_once("dto/DTO_Assessmentstructure.class.php");
+require_once("dto/DTO_AssessmentStructure.class.php");
 
 /**
-* The Assessmentstructure model class
+* The AssessmentStructure model class
 */
-class Assessmentstructure extends DTO_Assessmentstructure 
+class AssessmentStructure extends DTO_AssessmentStructure 
 {
   var $assessment_id = 0;        // The assessment this variable belongs to
   var $human = "";               // A human readable description of the variable
@@ -46,14 +46,14 @@ class Assessmentstructure extends DTO_Assessmentstructure
 
   function move_up($assessment_id, $id)
   {
-    $assessmentstructure = Assessmentstructure::load_by_id($id);
+    $assessmentstructure = AssessmentStructure::load_by_id($id);
     $varorder = $assessmentstructure->varorder;
     $assessmentstructure->_move_up($assessment_id, $varorder);
   }
 
   function move_down($assessment_id, $id)
   {
-    $assessmentstructure = Assessmentstructure::load_by_id($id);
+    $assessmentstructure = AssessmentStructure::load_by_id($id);
     $varorder = $assessmentstructure->varorder;
     $assessmentstructure->_move_down($assessment_id, $varorder);
   }
@@ -61,7 +61,7 @@ class Assessmentstructure extends DTO_Assessmentstructure
 
   function load_by_id($id) 
   {
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     $assessmentstructure->id = $id;
     $assessmentstructure->_load_by_id();
     return $assessmentstructure;
@@ -69,13 +69,13 @@ class Assessmentstructure extends DTO_Assessmentstructure
 
   function insert($fields) 
   {
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     $assessmentstructure->_insert($fields);
   }
   
   function update($fields) 
   {
-    $assessmentstructure = Assessmentstructure::load_by_id($fields[id]);
+    $assessmentstructure = AssessmentStructure::load_by_id($fields[id]);
     $assessmentstructure->_update($fields);
   }
   
@@ -84,7 +84,7 @@ class Assessmentstructure extends DTO_Assessmentstructure
   */
   function exists($id) 
   {
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     $assessmentstructure->id = $id;
     return $assessmentstructure->_exists();
   }
@@ -94,13 +94,13 @@ class Assessmentstructure extends DTO_Assessmentstructure
   */
   function count() 
   {
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     return $assessmentstructure->_count();
   }
 
   function get_all($where_clause="", $order_by="ORDER BY varorder", $page=0)
   {
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
@@ -114,7 +114,7 @@ class Assessmentstructure extends DTO_Assessmentstructure
 
   function get_id_and_field($fieldname) 
   {
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     $assessmentstructure_array = $assessmentstructure->_get_id_and_field($fieldname);
     return $assessmentstructure_array;
   }
@@ -122,18 +122,18 @@ class Assessmentstructure extends DTO_Assessmentstructure
 
   function remove($id=0) 
   {  
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     $assessmentstructure->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $assessmentstructure = new Assessmentstructure;
+    $assessmentstructure = new AssessmentStructure;
     return  $assessmentstructure->_get_fieldnames($include_id); 
   }
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Assessmentstructure::get_fields($include_id);
+    $fieldnames = AssessmentStructure::get_fields($include_id);
     $nvp_array = array();
  
     foreach ($fieldnames as $fn) {

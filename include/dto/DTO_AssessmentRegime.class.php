@@ -6,7 +6,7 @@
  */
 require_once("dto/DTO.class.php");
 
-class DTO_Assessmentregime extends DTO {
+class DTO_AssessmentRegime extends DTO {
 
   function __construct($handle) 
   {

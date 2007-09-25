@@ -117,5 +117,14 @@ class Activitytype extends DTO_Activitytype
     return $nvp_array;
 
   }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Activitytype::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
+  }
+
 }
 ?>
