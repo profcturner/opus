@@ -692,6 +692,14 @@ Class User extends DTO_User
       return $counter[0];
 
    }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = User::get_id_and_field("real_name","where id='$id'");
+    return($data[$id]);
+  }
 }
 
 ?>

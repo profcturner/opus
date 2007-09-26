@@ -130,15 +130,12 @@ class Programme extends DTO_Programme
   {
     $fieldnames = Programme::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
-
   }
 }
 ?>

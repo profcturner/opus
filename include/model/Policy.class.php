@@ -348,7 +348,7 @@ class Policy extends DTO_Policy
   {
     $policy = new Policy;
     $policy_array = $policy->_get_id_and_field($fieldname);
-    unset($policy_array[0]);
+    $policy_array[0] = "None defined";
     return $policy_array;
   }
 
@@ -377,6 +377,15 @@ class Policy extends DTO_Policy
 
     return $nvp_array;
 
+  }
+
+  function get_name($id)
+  {
+    if(!$id) return("None defined");
+    $id = (int) $id; // Security
+
+    $data = Policy::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
   }
 }
 ?>

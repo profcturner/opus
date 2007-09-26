@@ -6,7 +6,7 @@
  */
 require_once("dto/DTO.class.php");
 
-class DTO_SchoolAdmin extends DTO
+class DTO_ProgrammeAdmin extends DTO
 {
   function __construct($handle) 
   {
@@ -18,11 +18,11 @@ class DTO_SchoolAdmin extends DTO
     // Base class
     parent::_load_by_id($id);
 
-    require_once("model/School.class.php");
+    require_once("model/Programme.class.php");
     require_once("model/Policy.class.php");
     require_once("model/User.class.php");
 
-    $this->_school_id = School::get_name($this->school_id);
+    $this->_programme_id = Programme::get_name($this->programme_id);
     $this->_admin_id = User::get_name($this->admin_id);
 
     if($this->policy_id)

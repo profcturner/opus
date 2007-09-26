@@ -113,15 +113,20 @@ class Faculty extends DTO_Faculty
   {
     $fieldnames = Faculty::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
+  }
 
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Faculty::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
   }
 }
 ?>

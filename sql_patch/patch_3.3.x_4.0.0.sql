@@ -78,6 +78,18 @@ alter table school add column faculty_id int unsigned not null after status;
 rename table adminschool to schooladmin;
 alter table schooladmin add column id int unsigned not null auto_increment primary key;
 
+rename table admincourse to programmeadmin;
+alter table programmeadmin change column course_id programme_id int unsigned not null;
+alter table programmeadmin add column id int unsigned not null auto_increment primary key;
+
+create table facultyadmin
+(
+  admin_id int unsigned not null,
+  faculty_id int unsigned not null,
+  policy_id int unsigned,
+  id int unsigned not null auto_increment primary key
+);
+
 --WARNING! CHECK THIS
 alter table school change column status status enum('active', 'archive') not null;
 

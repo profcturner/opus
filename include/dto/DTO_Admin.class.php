@@ -25,6 +25,9 @@ class DTO_Admin extends DTO {
     {
       $this->$field = $user->$field;
     }
+
+    require_once("model/Policy.class.php");
+    $this->_policy_id = Policy::get_name($this->policy_id);
   }
 
   function _load_by_user_id($user_id=0)
@@ -40,6 +43,9 @@ class DTO_Admin extends DTO {
     {
       $this->$field = $user->$field;
     }
+
+    require_once("model/Policy.class.php");
+    $this->_policy_id = Policy::get_name($this->policy_id);
   }
 
   function _get_all($where_clause="", $order_by="order by user.lastname", $start=0, $limit=MAX_ROWS_RETURNED, $parse = False) 
@@ -73,84 +79,81 @@ class DTO_Admin extends DTO {
     return $object_array; 
   }
 
-  function _get_all_by_faculty($faculty_id = 0)
+  function _get_all_by_faculty($faculty_id)
+  {
+    return($this->_get_all_by_level("faculty", $faculty_id));
+  }
+
+  function _get_all_by_school($school_id)
+  {
+    return($this->_get_all_by_level("school", $school_id));
+  }
+
+  function _get_all_by_programme($programme_id)
+  {
+    return($this->_get_all_by_level("programme", $programme_id));
+  }
+
+  function _get_all_by_level($level, $level_id = 0)
   {
     global $waf;
 
-    //require_once("model/FacultyAdmin.class.php");
+    require_once("model/Policy.class.php");
 
     $con = $waf->connections[$this->_handle]->con;
 
+    $tablename = $level . "admin";
     try
     {
-      $sql = $con->prepare("select admin_id from admin left join facultyadmin on admin.user_id = facultyadmin.admin_id where faculty_id=?");
-      $sql->execute(array($faculty_id));
+      $sql = $con->prepare("select admin_id, $tablename.policy_id as level_policy_id from admin left join $tablename on admin.user_id = $tablename.admin_id where $level" . "_id=?");
+      $sql->execute(array($level_id));
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
         $admin_id = $results_row["admin_id"];
-        $object_array[] = $this->load_by_user_id($admin_id);
+        $user = $this->load_by_user_id($admin_id);
+        if($results_row["level_policy_id"])
+        {
+          // Is there an override policy for this level?
+          $user->_level_policy_name = Policy::get_name($results_row["level_policy_id"]);
+        }
+        else
+        {
+          $user->_level_policy_name = $user->_policy_id;
+        }
+        $object_array[] = $user;
       }
     }
     catch (PDOException $e)
     {
-      $this->_log_sql_error($e, "Admin", "_get_all_by_faculty()");
+      $this->_log_sql_error($e, "Admin", "_get_all_by_level($level, $level_id)");
     }
     return $object_array; 
   }
 
-  function _get_all_by_school($school_id = 0)
+
+  function _get_user_id_and_name($where_clause)
   {
     global $waf;
-
-    //require_once("model/FacultyAdmin.class.php");
-
     $con = $waf->connections[$this->_handle]->con;
 
+    $final_array = array();
     try
     {
-      $sql = $con->prepare("select admin_id from admin left join schooladmin on admin.user_id = schooladmin.admin_id where school_id=?");
-      $sql->execute(array($school_id));
+      $sql = $con->prepare("select user.* from admin left join user on admin.user_id = user.id $where_clause");
+      $sql->execute();
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
-        $admin_id = $results_row["admin_id"];
-        $object_array[] = $this->load_by_user_id($admin_id);
+        $final_array[$results_row['id']] = $results_row['lastname'] . ", " . $results_row['salutation'] . " " . $results_row['firstname'];
       }
     }
     catch (PDOException $e)
     {
-      $this->_log_sql_error($e, "Admin", "_get_all_by_school()");
+      $this->_log_sql_error($e, "Admin", "_get_user_id_and_name()");
     }
-    return $object_array; 
+    return $final_array;
   }
-
-  function _get_all_by_programme($programme_id = 0)
-  {
-    global $waf;
-
-    //require_once("model/FacultyAdmin.class.php");
-
-    $con = $waf->connections[$this->_handle]->con;
-
-    try
-    {
-      $sql = $con->prepare("select admin_id from admin left join programmeadmin on admin.user_id = programmeadmin.admin_id where programme_id=?");
-      $sql->execute(array($programme_id));
-
-      while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
-      {
-        $admin_id = $results_row["admin_id"];
-        $object_array[] = $this->load_by_user_id($admin_id);
-      }
-    }
-    catch (PDOException $e)
-    {
-      $this->_log_sql_error($e, "Admin", "_get_all_by_programme()");
-    }
-    return $object_array; 
-  }
-
 }
 
 ?>

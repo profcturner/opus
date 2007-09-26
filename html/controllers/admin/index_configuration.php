@@ -96,7 +96,7 @@
 
     add_navigation_history($waf, $faculty->name);
 
-    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_school_admins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:organisation_details:manage_schools");
+    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:organisation_details:manage_schools");
   }
 
   function add_school(&$waf, &$user) 
@@ -133,8 +133,73 @@
     remove_object_do($waf, $user, "School", "section=configuration&function=manage_schools");
   }
 
+  // Faculty Admins
 
-  function manage_school_admins(&$waf, $user, $title)
+  function manage_facultyadmins(&$waf, $user, $title)
+  {
+    $faculty_id = (int) WA::request("id", true);
+
+    require_once("model/Admin.class.php");
+    $objects = Admin::get_all_by_faculty($faculty_id);
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      '_level_policy_name'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Policy'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $action_links = array(array('add', "section=configuration&function=add_facultyadmin&faculty_id=$faculty_id"));
+    $actions = array(array('edit', 'edit_facultyadmin'), array('remove', 'remove_facultyadmin'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("action_links", $action_links);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    //add_navigation_history($waf, $faculty->name);
+    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_facultyadmins", "list.tpl");
+  }
+
+  function add_facultyadmin(&$waf)
+  {
+    $faculty_id = (int) WA::request("faculty_id", true);
+
+    require_once("model/Admin.class.php");
+    require_once("model/Policy.class.php");
+
+    // Don't pick up root users, they are irrelevant here.
+    $admins = Admin::get_user_id_and_name("where user_type = 'admin'");
+    $policies = Policy::get_id_and_field("name");
+    $policies[0] = "Default for this Administrator";
+    $function = "add_facultyadmin_do";
+
+    $waf->assign("type", "faculty_id");
+    $waf->assign("object_id", $faculty_id);
+    $waf->assign("function", $function);
+    $waf->assign("admins", $admins);
+    $waf->assign("policies", $policies);
+
+    $waf->display("main.tpl", "admin:configuration:organisation_details:add_facultyadmin", "admin/configuration/add_level_admin.tpl");
+  }
+
+  function add_facultyadmin_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "FacultyAdmin", "section=configuration&function=manage_facultyadmins", "add_facultyadmin");
+  }
+
+  function remove_facultyadmin(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "FacultyAdmin", array("remove", "configuration", "remove_facultyadmin_do"), array(array("cancel","section=configuration&function=manage_facultyadmins")), "", "admin:configuration:organisation_details:remove_facultyadmin");
+  }
+
+  function remove_facultyadmin_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "FacultyAdmin", "section=configuration&function=manage_facultyadmins");
+  }
+
+  // School Admins
+
+  function manage_schooladmins(&$waf, $user, $title)
   {
     $school_id = (int) WA::request("id", true);
 
@@ -143,12 +208,12 @@
 
     $headings = array(
       'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
-      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      '_level_policy_name'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Policy'),
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
-    $action_links = array(array('add', "section=configuration&function=add_school_admin&school_id=$school_id"));
-    $actions = array(array('edit', 'edit_school_admin'), array('remove', 'remove_school_admin'));
+    $action_links = array(array('add', "section=configuration&function=add_schooladmin&school_id=$school_id"));
+    $actions = array(array('edit', 'edit_schooladmin'), array('remove', 'remove_schooladmin'));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -156,21 +221,108 @@
     $waf->assign("objects", $objects);
 
     //add_navigation_history($waf, $faculty->name);
-    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_school_admins", "list.tpl");
+    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_schooladmins", "list.tpl");
   }
 
-  function add_school_admin(&$waf)
+  function add_schooladmin(&$waf)
   {
+    $school_id = (int) WA::request("school_id", true);
+
     require_once("model/Admin.class.php");
     require_once("model/Policy.class.php");
 
-    $admins = Admin::get_id_and_field("real_name");
+    // Don't pick up root users, they are irrelevant here.
+    $admins = Admin::get_user_id_and_name("where user_type = 'admin'");
     $policies = Policy::get_id_and_field("name");
+    $policies[0] = "Default for this Administrator";
+    $function = "add_schooladmin_do";
 
+    $waf->assign("type", "school_id");
+    $waf->assign("object_id", $school_id);
+    $waf->assign("function", $function);
     $waf->assign("admins", $admins);
     $waf->assign("policies", $policies);
 
-    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_school_admins", "admin/configuration/add_level_admin.tpl");
+    $waf->display("main.tpl", "admin:configuration:organisation_details:add_schooladmin", "admin/configuration/add_level_admin.tpl");
+  }
+
+  function add_schooladmin_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "SchoolAdmin", "section=configuration&function=manage_schooladmins", "add_schooladmin");
+  }
+
+  function remove_schooladmin(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "SchoolAdmin", array("remove", "configuration", "remove_schooladmin_do"), array(array("cancel","section=configuration&function=manage_schooladmins")), "", "admin:configuration:organisation_details:remove_schooladmin");
+  }
+
+  function remove_schooladmin_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "SchoolAdmin", "section=configuration&function=manage_schooladmins");
+  }
+
+  // Programme Admins
+
+  function manage_programmeadmins(&$waf, $user, $title)
+  {
+    $programme_id = (int) WA::request("id", true);
+
+    require_once("model/Admin.class.php");
+    $objects = Admin::get_all_by_programme($programme_id);
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      '_level_policy_name'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Policy'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $action_links = array(array('add', "section=configuration&function=add_programmeadmin&programme_id=$programme_id"));
+    $actions = array(array('edit', 'edit_programmeadmin'), array('remove', 'remove_programmeadmin'));
+
+    $waf->assign("actions", $actions);
+    $waf->assign("action_links", $action_links);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    //add_navigation_history($waf, $faculty->name);
+    $waf->display("main.tpl", "admin:configuration:organisation_details:manage_programmeadmins", "list.tpl");
+  }
+
+  function add_programmeadmin(&$waf)
+  {
+    $programme_id = (int) WA::request("programme_id", true);
+
+    require_once("model/Admin.class.php");
+    require_once("model/Policy.class.php");
+
+    // Don't pick up root users, they are irrelevant here.
+    $admins = Admin::get_user_id_and_name("where user_type = 'admin'");
+    $policies = Policy::get_id_and_field("name");
+    $policies[0] = "Default for this Administrator";
+    $function = "add_programmeadmin_do";
+
+    $waf->assign("type", "programme_id");
+    $waf->assign("object_id", $programme_id);
+    $waf->assign("function", $function);
+    $waf->assign("admins", $admins);
+    $waf->assign("policies", $policies);
+
+    $waf->display("main.tpl", "admin:configuration:organisation_details:add_programmeadmin", "admin/configuration/add_level_admin.tpl");
+  }
+
+  function add_programmeadmin_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "ProgrammeAdmin", "section=configuration&function=manage_programmeadmins", "add_programmeadmin");
+  }
+
+  function remove_programmeadmin(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "ProgrammeAdmin", array("remove", "configuration", "remove_programmeadmin_do"), array(array("cancel","section=configuration&function=manage_programmeadmins")), "", "admin:configuration:organisation_details:remove_programmeadmin");
+  }
+
+  function remove_programmeadmin_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "ProgrammeAdmin", "section=configuration&function=manage_programmeadmins");
   }
 
   // Programmes

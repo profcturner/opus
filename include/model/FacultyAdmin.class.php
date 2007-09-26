@@ -1,23 +1,23 @@
 <?php
 
 /**
-* The model object for linking Schools to Admins
+* The model object for linking Facultys to Admins
 * @package OPUS
 */
-require_once("dto/DTO_SchoolAdmin.class.php");
+require_once("dto/DTO_FacultyAdmin.class.php");
 
 /**
-* The SchoolAdmin model class
+* The FacultyAdmin model class
 */
-class SchoolAdmin extends DTO_SchoolAdmin 
+class FacultyAdmin extends DTO_FacultyAdmin 
 {
-  var $school_id = 0;    // The id from the school table
+  var $faculty_id = 0;    // The id from the faculty table
   var $admin_id = 0;     // The id from the user table for the admin
   var $policy_id = 0;    // An override policy id, normally NULL
 
   static $_field_defs = array(
     'admin_id'=>array('type'=>'lookup', 'object'=>'user', 'value'=>'real_name', 'title'=>'Name', 'var'=>'names'),
-    'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'var'=>'schools', 'header'=>true),
+    'faculty_id'=>array('type'=>'lookup', 'object'=>'faculty', 'value'=>'name', 'title'=>'Faculty', 'var'=>'facultys', 'header'=>true),
     'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
   );
 
@@ -36,22 +36,22 @@ class SchoolAdmin extends DTO_SchoolAdmin
 
   function load_by_id($id) 
   {
-    $schooladmin = new SchoolAdmin;
-    $schooladmin->id = $id;
-    $schooladmin->_load_by_id();
-    return $schooladmin;
+    $facultyadmin = new FacultyAdmin;
+    $facultyadmin->id = $id;
+    $facultyadmin->_load_by_id();
+    return $facultyadmin;
   }
 
   function insert($fields) 
   {
-    $schooladmin = new SchoolAdmin;
-    $schooladmin->_insert($fields);
+    $facultyadmin = new FacultyAdmin;
+    $facultyadmin->_insert($fields);
   }
   
   function update($fields) 
   {
-    $schooladmin = SchoolAdmin::load_by_id($fields[id]);
-    $schooladmin->_update($fields);
+    $facultyadmin = FacultyAdmin::load_by_id($fields[id]);
+    $facultyadmin->_update($fields);
   }
   
   /**
@@ -59,9 +59,9 @@ class SchoolAdmin extends DTO_SchoolAdmin
   */
   function exists($id) 
   {
-    $schooladmin = new SchoolAdmin;
-    $schooladmin->id = $id;
-    return $schooladmin->_exists();
+    $facultyadmin = new FacultyAdmin;
+    $facultyadmin->id = $id;
+    return $facultyadmin->_exists();
   }
   
   /**
@@ -69,47 +69,47 @@ class SchoolAdmin extends DTO_SchoolAdmin
   */
   function count() 
   {
-    $schooladmin = new SchoolAdmin;
-    return $schooladmin->_count();
+    $facultyadmin = new FacultyAdmin;
+    return $facultyadmin->_count();
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
   {
-    $schooladmin = new SchoolAdmin;
+    $facultyadmin = new FacultyAdmin;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
-      $schooladmins = $schooladmin->_get_all($where_clause, $order_by, $start, $limit);
+      $facultyadmins = $facultyadmin->_get_all($where_clause, $order_by, $start, $limit);
     } else {
-      $schooladmins = $schooladmin->_get_all($where_clause, $order_by, 0, 1000);
+      $facultyadmins = $facultyadmin->_get_all($where_clause, $order_by, 0, 1000);
     }
-    return $schooladmins;
+    return $facultyadmins;
   }
 
   function get_id_and_field($fieldname) 
   {
-    $schooladmin = new SchoolAdmin;
-    $schooladmin_array = $schooladmin->_get_id_and_field($fieldname);
-    return $schooladmin_array;
+    $facultyadmin = new FacultyAdmin;
+    $facultyadmin_array = $facultyadmin->_get_id_and_field($fieldname);
+    return $facultyadmin_array;
   }
 
 
   function remove($id=0) 
   {  
-    $schooladmin = new SchoolAdmin;
-    $schooladmin->_remove_where("WHERE id=$id");
+    $facultyadmin = new FacultyAdmin;
+    $facultyadmin->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $schooladmin = new SchoolAdmin;
-    return  $schooladmin->_get_fieldnames($include_id); 
+    $facultyadmin = new FacultyAdmin;
+    return  $facultyadmin->_get_fieldnames($include_id); 
   }
 
   function request_field_values($include_id = false) 
   {
-    $fieldnames = SchoolAdmin::get_fields($include_id);
+    $fieldnames = FacultyAdmin::get_fields($include_id);
     $nvp_array = array();
 
     foreach ($fieldnames as $fn)

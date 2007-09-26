@@ -18,6 +18,7 @@ class Admin extends DTO_Admin
   var $signature;         // Signature to use in emails (not supported yet)
   var $help_directory;    // Show in help directory?
   var $status;            // Archive or not?
+  var $policy_id;         // The default policy for this user
   var $user_id;           // Matches id from user table
 
   // Several of these fields actually reside in the User table
@@ -27,6 +28,7 @@ class Admin extends DTO_Admin
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
+    'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
     'email'=>array('type'=>'email','size'=>40, 'header'=>true),
     'voice'=>array('type'=>'text','size'=>40),
     'fax'=>array('type'=>'text','size'=>40),
@@ -228,6 +230,11 @@ class Admin extends DTO_Admin
     $admin->_remove_where("WHERE id=$id");
   }
 
+  function get_user_id_and_name($where_clause="")
+  {
+    $admin = new Admin;
+    return($admin->_get_user_id_and_name($where_clause));
+  }
 }
 
 ?>
