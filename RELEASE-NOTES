@@ -1,0 +1,39 @@
+OPUS 4.0.0 - Release Notes
+
+This release of OPUS is one of the most significant in several years, partly
+since the application has been completely rewritten. Therefore it is more
+important that usual to read these notes carefully to understand any
+ramifications to your installed application.
+
+Notes for Users
+
+For most users of the system, the changes will appear to be mainly visual.
+User interfaces should be more consistent and simple, and more visually
+attractive. Nevertheless, there are some minor changes to note.
+
+* OPUS now has a system of preferences for each user. Most of these are
+  accessible from the "preferences" option in the top right of the screen.
+  Some, however, are automatically used and saved. For example, now OPUS
+  remembers all your settings in the main, and complex, search forms, and
+  will continue to use those settings when you return to the form in the
+  same session. If you correctly logout (using the option in the top right
+  of the screen), OPUS will save these preferences for use in your next
+  session.
+
+* The menus have been completely reimplemented, and we are aware that they
+  do not perform as well as we would like under some especially non CSS
+  compliant browsers (e.g. Internet Explorer before version 7).
+  
+Notes for System Administrators
+
+This version of OPUS should be, by far, the simplest to install and maintain
+yet. However there are some points to note.
+
+* OPUS now runs on a common framework with the PDSystem, and other planned
+  applications for the future. This framework UUWAF, is required to be
+  installed before OPUS can work.
+
+  UUWAF requires PHP with a version beyond 5.1, this is because it uses the
+  PDO functionality within PHP which was bundled in the core from that version on.
+  Therefore OPUS will no longer run on PHP 4, but please note PHP 4 is no longer
+  a supported product by PHP itself.
