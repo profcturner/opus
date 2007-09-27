@@ -18,11 +18,62 @@
 */
 class PDSystem
 {
+  /**
+  * runs a webservice and obtains the results
+  *
+  * @param string $service_name the service provided by the WS layer
+  * @param string $input a standard URL style string encoding variable to pass in
+  * @param string $format is the format return that is expected
+  *
+  * @return a SimpleXML object containing all the templates
+  */
+  function get_data($service_name, $input, $format = 'PHP')
+  {
+    global $config_sensitive;
+    global $waf;
+
+    // Perform a preg security check on $service_name
+    if(!preg_match("/^[A-Za-x_?&]+$/", $service_name))
+    {
+      $waf->security_log("attempt to use invalid PDS service [$service_name]");
+      $waf->log("invalid PDS service [$service_name]");
+    }
+
+    $empty_result = array();
+    if($format == 'XML') $empty_result = simplexml_load_string($empty_result);
+
+    $waf->log("requesting service $service_name from PDSystem", PEAR_LOG_DEBUG, 'debug');
+    if(empty($config_sensitive['pds']['url']))
+    {
+      $waf->log("links to the pdsystem are not enabled, check your configuration", PEAR_LOG_DEBUG, 'debug');
+      return($empty_result);
+    }
+
+    $input .= "username=" . $config_sensitive['pds']['username'] .
+      "&password=" . $config_sensitive['pds']['password'];
+
+    $url = $config_sensitive['pds']['url'] . "/pdp/controller.php?function=$service_name.php&$input";
+
+    echo $url; exit;  
+
+    $data = @file_get_contents($url);
+  print_r($data); exit;  
+  if(substr($data, 0, 5) == "<xmp>")
+    {
+      // Seems to be invalid XML, strip the xmp containers
+      $data = substr($data, 5);
+      // and the end
+      $data =substr($data, 0, strlen($data)-6);
+    }
+    //echo htmlspecialchars($data);
+    return(simplexml_load_string($data));
+  }
+
   function exists()
   {
-    global $config;
+    global $config_sensitive;
 
-    if(empty($config['opus']['pds']['url'])) return False;
+    if(empty($config['pds']['url'])) return False;
     else return True;
   }
 
@@ -33,25 +84,7 @@ class PDSystem
   */
   function get_cv_templates()
   {
-    global $conf;
-    global $log;
-    global $page; // We might need to create a page
-  
-    $url = $conf['pdp']['host'] . "/pdp/controller.php?function=get_cv_template_list" .
-      "&username=" . $conf['pdp']['user'] . "&password=" . $conf['pdp']['pass'];
-  
-    //$log['security']->LogPrint("Fetching file $url");
-    $file = @file_get_contents($url);
-  
-    if($file == FALSE)
-    {
-      $page = new HTMLOPUS("Error");
-      $log['debug']->LogPrint("Warning! PDP_get_cv_templates failed to access the PDSystem");
-      die_gracefully("The PMS was unable to acquire the CV templates from the PDP system.");
-    }
-  
-    $xml_object = simplexml_load_string($file);
-    return($xml_object);
+    return(PDSystem::get_data("get_cv_template_list", ""));
   }
   
   
@@ -74,7 +107,7 @@ class PDSystem
       "function=get_cv_status" .
       "&reg_number=$student_reg" .
       "&username=" . $conf['pdp']['user'] . "&password=" . $conf['pdp']['pass'];
-  
+
     //$log['security']->LogPrint("Fetching file $url");
     $file = @file_get_contents($url);
   

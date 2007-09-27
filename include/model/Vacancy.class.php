@@ -46,7 +46,7 @@ class Vacancy extends DTO_Vacancy
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
     'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special")),
     'closedate'=>array('type'=>'date', 'inputstyle'=>'popup'),
-    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>60, 'maxsize'=>60000,  'title'=>'Brief', 'content'=>'xhtml')
+    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml')
      );
 
   function __construct() 

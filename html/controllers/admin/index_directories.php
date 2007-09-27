@@ -15,42 +15,11 @@
     $waf->assign("sort_types", $sort_types);
     $waf->assign("other_options", $other_options);
     $waf->assign("form_options", $form_options);
-    $waf->assign("structure", get_all_programes($waf));
+
+    require_once("model/Programme.class.php");
+    $waf->assign("structure", Programme::get_all_organisation());
 
     $waf->display("main.tpl", "admin:directories:student_directory:student_directory", "admin/directories/student_directory.tpl");
-  }
-
-  function get_all_programes(&$waf)
-  {
-    require_once("model/Faculty.class.php");
-    require_once("model/School.class.php");
-    require_once("model/Programme.class.php");
-
-    $final_array = array();
-    // First we need an array of faculties
-    $faculties = Faculty::get_id_and_field("name");
-    // Which we will augment with an array of schools
-    foreach($faculties as $faculty_id => $faculty_name)
-    {
-      // Get the school information
-      $schools = School::get_id_and_field("name", "where faculty_id=" . $faculty_id);
-      $school_array = array();
-      foreach($schools as $school_id => $school_name)
-      {
-        // Augment information with programmes
-        $school['programmes'] = Programme::get_id_and_description("where school_id=" . $school_id);
-        $school['id'] = $school_id;
-        $school['name'] = $school_name;
-        // Only add the school if some programmes are present
-        if(count($school['programmes'])) array_push($school_array, $school);
-      }
-      $faculty['id'] = $faculty_id;
-      $faculty['name'] = $faculty_name;
-      $faculty['schools'] = $school_array;
-      // Only add the faculty if there are schools present
-      if(count($faculty['schools'])) array_push($final_array, $faculty);
-    }
-    return($final_array);
   }
 
   function search_students(&$waf)
@@ -76,6 +45,51 @@
     $waf->assign("students", $objects);
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
+
+  function simple_search_student(&$waf)
+  {
+    require_once("model/Student.class.php");
+    $initial = WA::request("initial");
+
+    require_once("model/Student.class.php");
+    $objects = Student::get_all_by_initial($initial);
+
+    $waf->assign("students", $objects);
+    $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
+  }
+
+
+  function add_student(&$waf, &$user) 
+  {
+    add_object($waf, $user, "Student", array("add", "configuration", "add_student_do"), array(array("cancel","section=configuration&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:configuration:students:add_student");
+  }
+
+  function add_student_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "Student", "section=configuration&function=manage_students", "add_student");
+  }
+
+  function edit_student(&$waf, &$user) 
+  {
+    edit_object($waf, $user, "Student", array("confirm", "configuration", "edit_student_do"), array(array("cancel","section=configuration&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:configuration:students:edit_student");
+  }
+
+  function edit_student_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "Student", "section=configuration&function=manage_students", "edit_student");
+  }
+
+  function remove_student(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "Student", array("remove", "configuration", "remove_student_do"), array(array("cancel","section=configuration&function=manage_students")), "", "admin:configuration:students:remove_student");
+  }
+
+  function remove_student_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "Student", "section=configuration&function=manage_students");
+  }
+
+  // Vacanies
 
   function vacancy_directory(&$waf, $user, $title)
   {
@@ -208,6 +222,7 @@
 
   function edit_vacancy(&$waf, &$user) 
   {
+    $waf->assign("xinha_editor", true);
     edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 

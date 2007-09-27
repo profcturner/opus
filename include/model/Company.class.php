@@ -41,7 +41,7 @@ class Company extends DTO_Company
     'fax'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Fax'),
     'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
     'activities'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'var'=>'activities', 'multiple'=>true),
-    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>60, 'maxsize'=>60000,  'title'=>'Brief')
+    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml')
      );
 
   function __construct() 

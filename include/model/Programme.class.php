@@ -99,7 +99,7 @@ class Programme extends DTO_Programme
     return $programmes;
   }
 
-  function get_id_and_description($where_clause="", $order_clause="order by name")
+  function get_id_and_description($where_clause="", $order_clause="order by srs_ident, name")
   {
     $programme = new Programme;
     $programme_array = $programme->_get_id_and_description($where_clause, $order_clause);
@@ -136,6 +136,38 @@ class Programme extends DTO_Programme
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
     }
     return $nvp_array;
+  }
+
+  function get_all_organisation()
+  {
+    require_once("model/Faculty.class.php");
+    require_once("model/School.class.php");
+
+    $final_array = array();
+    // First we need an array of faculties
+    $faculties = Faculty::get_id_and_field("name");
+    // Which we will augment with an array of schools
+    foreach($faculties as $faculty_id => $faculty_name)
+    {
+      // Get the school information
+      $schools = School::get_id_and_field("name", "where faculty_id=" . $faculty_id);
+      $school_array = array();
+      foreach($schools as $school_id => $school_name)
+      {
+        // Augment information with programmes
+        $school['programmes'] = Programme::get_id_and_description("where school_id=" . $school_id);
+        $school['id'] = $school_id;
+        $school['name'] = $school_name;
+        // Only add the school if some programmes are present
+        if(count($school['programmes'])) array_push($school_array, $school);
+      }
+      $faculty['id'] = $faculty_id;
+      $faculty['name'] = $faculty_name;
+      $faculty['schools'] = $school_array;
+      // Only add the faculty if there are schools present
+      if(count($faculty['schools'])) array_push($final_array, $faculty);
+    }
+    return($final_array);
   }
 }
 ?>

@@ -479,6 +479,10 @@
 
   function edit_cvgroup(&$waf, &$user) 
   {
+    require_once("model/PDSystem.class.php");
+
+    $cvdata = PDSystem::get_cv_templates();
+    $waf->assign("cvdata", $cvdata);
     edit_object($waf, $user, "CVgroup", array("confirm", "configuration", "edit_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:edit_cvgroup");
   }
 

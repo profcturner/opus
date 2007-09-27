@@ -42,7 +42,7 @@ function toggleAll(checked)
     <td>{$students[students].placement_status|escape:"htmlall"}</td>
     <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="">CV</a></td>
     <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="">help</a></td>
-    <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="?section=directories&function=edit_vacancy&id={$students[students].id}">edit</a></td>
+    <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="?section=directories&function=edit_student&id={$students[students].id}">edit</a></td>
   </tr>
   {if $show_timelines}
   <tr class="{cycle name="cycle2" values="dark_row,light_row"}">

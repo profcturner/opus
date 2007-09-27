@@ -11,6 +11,16 @@
   <link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css">
   <style type="text/css"> @import url("{$config.opus.url}/css/local.css");</style>
   <style type="text/css"> @import url("{$config.opus.url}/css/{$currentgroup}/local.css");</style>
+{* Load HTML Area if the "editor" component of page is set *}
+{if $xinha_editor}
+<script language="JavaScript" type="text/javascript">
+  _editor_url = "{$config.opus.url}/javascript/xinha/";
+  _editor_lang = "en";
+</script>
+<script language="JavaScript" type="text/javascript" src="{$config.opus.url}/javascript/xinha/XinhaCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="{$config.opus.url}/javascript/xinha/xinha-opus.js"></script>
+{/if}
+
 </head>
 <body>
 <div id="page_wrapper">
