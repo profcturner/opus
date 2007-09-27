@@ -6,6 +6,7 @@ important that usual to read these notes carefully to understand any
 ramifications to your installed application.
 
 Notes for Users
+---------------
 
 For most users of the system, the changes will appear to be mainly visual.
 User interfaces should be more consistent and simple, and more visually
@@ -23,8 +24,19 @@ attractive. Nevertheless, there are some minor changes to note.
 * The menus have been completely reimplemented, and we are aware that they
   do not perform as well as we would like under some especially non CSS
   compliant browsers (e.g. Internet Explorer before version 7).
-  
+
+* Students will now be able to record applications they make to special
+  vacancies, these can't be automatically verified but are still useful as
+  a recording tool hopefully.
+
+* OPUS now knows about Faculties, which should simplify administration of
+  big systems. In the past administrators could be allocated to programmes
+  or schools, but this is now extended to Faculties and the insitution at
+  large which can be useful for faculty staff and staff from central departments.
+
+
 Notes for System Administrators
+-------------------------------
 
 This version of OPUS should be, by far, the simplest to install and maintain
 yet. However there are some points to note.
@@ -37,3 +49,27 @@ yet. However there are some points to note.
   PDO functionality within PHP which was bundled in the core from that version on.
   Therefore OPUS will no longer run on PHP 4, but please note PHP 4 is no longer
   a supported product by PHP itself.
+
+  The benefit of this is that database access is now very normalised, and it is
+  in fact probably possible (but untested and unrecommended) to move OPUS to any
+  database layer supported by PDO (including Oracle and Postgresql).
+
+* The database is so radically changed that the upgrade procedure is slightly more
+  complex that usual, consisting of an initial SQL patch, a PHP script to migrate
+  data, and finishing with another upgrade patch. Read the instructions in the
+  sql_patch directory very carefully if you are upgrading from 3.x.
+
+* The configuration file for OPUS is very much more simple, but radically
+  different from previous versions. You should check the whole configuration file
+  very carefully. Note that, to make upgrades simple, you should create, and
+  modify a local copy of the config file as directed, so that global configuration
+  options are preserved on upgrade.
+
+* Authentication handling in OPUS 4 is much more flexible, being handled by the
+  framework. There is a directory, include/auth.d which holds "plugins" for
+  authentication. The README file in that directory will explain how to enable
+  various authentication sources, and how to write your own plugins.
+
+* The cron framework for version 4 is no longer standalone code, but uses the same
+  model business logic layer. It can also provide some useful command line tools for
+  OPUS. Try "./opus.php help" in the cron directory for more information.
