@@ -94,7 +94,9 @@
   function vacancy_directory(&$waf, $user, $title)
   {
     require_once("model/Activitytype.class.php");
+    require_once("model/Vacancytype.class.php");
     $activity_types = Activitytype::get_id_and_field("name");
+    $vacancy_types = Vacancytype::get_id_and_field("name");
     $sort_types = array("name", "locality");
     $other_options = array("ShowClosed" => "Show Closed", "ShowCompanies" => "Show Companies", "ShowVacancies" => "Show Vacancies");
 
@@ -103,6 +105,7 @@
 
     $waf->assign("sort_types", $sort_types);
     $waf->assign("activity_types", $activity_types);
+    $waf->assign("vacancy_types", $vacancy_types);
     $waf->assign("other_options", $other_options);
     $waf->assign("form_options", $form_options);
 
@@ -114,12 +117,14 @@
     $search = WA::request("search");
     $year = WA::request("year");
     $activities = WA::request("activities");
+    $vacancy_types = WA::request("vacancy_types");
     $sort = WA::request("sort");
     $other_options = WA::request("other_options");
 
     $form_options['search'] = $search;
     $form_options['year'] = $year;
     $form_options['activities'] = $activities;
+    $form_options['vacancy_types'] = $vacancy_types;
     $form_options['sort'] = $sort;
     $form_options['other_options'] = $other_options;
 
@@ -127,7 +132,7 @@
     Preference::set_preference("vacancy_directory_form", $form_options);
 
     require_once("model/Vacancy.class.php");
-    $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities, $sort, $other_options));
+    $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options));
     $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "admin/directories/search_vacancies.tpl");
   }
 

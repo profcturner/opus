@@ -3,10 +3,10 @@
 {literal}
 <script language="JavaScript" type="text/javascript">
 <!--
-function toggleAll(checked)
+function toggleAll(type, checked)
 {
   for (i = 0; i < document.search.elements.length; i++) {
-    if (document.search.elements[i].name.indexOf('activities') >= 0) 
+    if (document.search.elements[i].name.indexOf(type) >= 0) 
     {
       document.search.elements[i].checked = checked;
     }
@@ -40,11 +40,21 @@ function toggleAll(checked)
       <tr>
         <td class="property">Activities</td>
         <td>
-        <a href="" onclick="toggleAll(true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+        <a href="" onclick="toggleAll('activities', true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
+        <a href="" onclick="toggleAll('activities', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
         {html_checkboxes name="activities" options=$activity_types selected=$form_options.activities separator="<br />"}
-        <a href="" onclick="toggleAll(true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+        <a href="" onclick="toggleAll('activities', true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
+        <a href="" onclick="toggleAll('activities', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+        </td>
+      </tr>
+      <tr>
+        <td class="property">Types of Vacancies</td>
+        <td>
+        <a href="" onclick="toggleAll('vacancy_types', true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
+        <a href="" onclick="toggleAll('vacancy_types', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+        {html_checkboxes name="vacancy_types" options=$vacancy_types selected=$form_options.vacancy_types separator="<br />"}
+        <a href="" onclick="toggleAll('vacancy_types', true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
+        <a href="" onclick="toggleAll('vacancy_types', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
         </td>
       </tr>
       <tr>

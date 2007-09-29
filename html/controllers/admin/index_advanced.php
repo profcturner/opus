@@ -289,6 +289,43 @@
     remove_object_do($waf, $user, "Activitytype", "section=advanced&function=manage_activitytypes");
   }
 
+  // Vacancy types
+
+  function manage_vacancytypes(&$waf, $user, $title)
+  {
+    manage_objects($waf, $user, "Vacancytype", array(array("add","section=advanced&function=add_vacancytype")), array(array('edit', 'edit_vacancytype'), array('remove','remove_vacancytype')), "get_all", "", "admin:advanced:manage_vacancytypes:manage_vacancytypes");
+  }
+
+  function add_vacancytype(&$waf, &$user) 
+  {
+    add_object($waf, $user, "Vacancytype", array("add", "advanced", "add_vacancytype_do"), array(array("cancel","section=advanced&function=manage_vacancytypes")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_vacancytypes:add_vacancytype");
+  }
+
+  function add_vacancytype_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "Vacancytype", "section=advanced&function=manage_vacancytypes", "add_vacancytype");
+  }
+
+  function edit_vacancytype(&$waf, &$user) 
+  {
+    edit_object($waf, $user, "Vacancytype", array("confirm", "advanced", "edit_vacancytype_do"), array(array("cancel","section=advanced&function=manage_vacancytypes")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_vacancytypes:edit_vacancytype");
+  }
+
+  function edit_vacancytype_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "Vacancytype", "section=advanced&function=manage_vacancytypes", "edit_vacancytype");
+  }
+
+  function remove_vacancytype(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "Vacancytype", array("remove", "advanced", "remove_vacancytype_do"), array(array("cancel","section=advanced&function=manage_vacancytypes")), "", "admin:advanced:manage_vacancytypes:remove_vacancytype");
+  }
+
+  function remove_vacancytype_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "Vacancytype", "section=advanced&function=manage_vacancytypes");
+  }
+
   // Channels
 
   function manage_channels(&$waf, $user, $title)

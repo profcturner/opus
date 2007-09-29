@@ -39,6 +39,7 @@ function nav_admin()
     (
       array("assessments", "advanced", "manage_assessments", "manage_assessments"),
       array("activity types", "advanced", "manage_activitytypes", "manage_activitytypes"),
+      array("vacancy types", "advanced", "manage_vacancytypes", "manage_vacancytypes"),
       array("channels", "advanced", "manage_channels", "manage_channels"),
       array("languages", "advanced", "manage_languages", "manage_languages"),
       array("mime types", "advanced", "manage_mimetypes", "manage_mimetypes"),

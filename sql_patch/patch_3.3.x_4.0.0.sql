@@ -1,4 +1,3 @@
-
 -- vacancyactivity
 
 alter table vacancyactivity add column id int unsigned not null auto_increment primary key;
@@ -45,6 +44,23 @@ alter table assessmentstructure change column options options enum('compulsory',
 
 rename table vacancytype to activitytype;
 alter table activitytype change column vacancy_id id int unsigned not null auto_increment;
+
+-- vacancytype is now used for a new, more appropriate purpose --
+
+create table vacancytype
+(
+  name tinytext not null,
+  priority int,
+  help text,
+  id int unsigned not null auto_increment primary key
+);
+
+insert into vacancytype values("One Year, Full Time", 10, NULL, 1);
+insert into vacancytype values("Summer Job", NULL, 20, 2);
+insert into vacancytype values("Graduate Job", NULL, 30, 3);
+
+
+
 
 -- faculty --
 
@@ -109,7 +125,8 @@ alter table application add column id int unsigned not null auto_increment prima
 
 rename table vacancies to vacancy;
 alter table vacancy change column vacancy_id id int unsigned auto_increment not null;
-
+alter table vacancy add column vacancy_type int unsigned not null;
+update vacancy set vacancy_type=1;
 -- companies --
 
 rename table companies to company;

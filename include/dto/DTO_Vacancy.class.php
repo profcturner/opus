@@ -13,12 +13,13 @@ class DTO_Vacancy extends DTO {
     parent::__construct($handle);
   }
 
-  function _get_all_extended($search, $year, $activities, $sort, $other_options)
+  function _get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options)
   {
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     if(empty($other_options)) $other_options = array();
+    if(empty($vacancy_types)) $vacancy_types = array();
 
     require_once("model/Vacancyactivity.class.php");
 
@@ -61,6 +62,9 @@ class DTO_Vacancy extends DTO {
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
         $these_activities = Vacancyactivity::get_all("where vacancy_id=" . $results_row['id']);
+
+        // Check vacancy types
+        if(!in_array($results_row['vacancy_type'], $vacancy_types)) continue;
         array_push($object_array, $results_row);
       }
     }

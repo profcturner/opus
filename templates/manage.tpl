@@ -138,10 +138,17 @@
           {html_options values=$def.list output=$def.list name=$header}
         {/if}
       {elseif $def.type == "lookup"}
-        {html_options name="$header"}
-        {php} 
-        echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars[$this->_tpl_vars['header']]), $this);
-        {/php}
+        {if $def.multiple}
+          {html_options name="$header" multiple=true}
+          {php}
+          echo smarty_function_html_options(array('multiple' => true, 'name' => $this->_tpl_vars['header'] . "[]",'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars[$this->_tpl_vars['header']]), $this);
+          {/php}<br />{#multiple_select#}
+        {else}
+          {html_options name="$header"}
+          {php}
+          echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars[$this->_tpl_vars['header']]), $this);
+          {/php}
+        {/if}
       {elseif $def.type == "numeric"}
         <input type="text" name="{$header}" size="{$def.size}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_tablename()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
          {elseif $def.type == "duration"}
@@ -195,10 +202,17 @@
         {html_options values=$def.list output=$def.list selected=$object->$header name=$header}
         {/if}
       {elseif $def.type == "lookup"}
-      {html_options name="$header"}
-{php} 
-echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
-{/php}
+        {if $def.multiple}
+          {html_options name="$header" multiple=true}
+          {php}
+          echo smarty_function_html_options(array('multiple' => true, 'name' => $this->_tpl_vars['header'] . "[]",'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
+          {/php}<br />{#multiple_select#}
+        {else}
+          {html_options name="$header"}
+          {php}
+          echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
+          {/php}
+        {/if}
       {elseif $def.type == "postcode"}
       <input type="text" name="{$header}" id="{$header}_{$object->id}" size="{$def.size}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_tablename()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
          {elseif $def.type == "link"}
