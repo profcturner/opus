@@ -1,36 +1,38 @@
 {* Smarty *}
 
+<div id="table_manage">
 <table>
 <tr>
-  <th>Description</th>
+  <td class="property">Description</td>
   <td>{$resource->description|escape:"htmlall"}</td>
 </tr>
 <tr>
-  <th>Channel</th>
+  <td class="property">Channel</td>
   <td>{$resource->_channel_id|escape:"htmlall"}</td>
 </tr>
 <tr>
-  <th>Downloads</th>
+  <td class="property">Downloads</td>
   <td>{$resource->dcounter}</td>
 </tr>
 <tr>
-  <th>Author</th>
+  <td class="property">Author</td>
   <td>{$resource->author|escape:"htmlall"|default:"Unknown"}</td>
 </tr>
 <tr>
-  <th>Copyright</th>
+  <td class="property">Copyright</td>
   <td>{$resource->copyright|escape:"htmlall"|default:"Unknown"}</td>
 </tr>
 <tr>
-  <th>Initially Uploaded</th>
-  <td>{$resource->created}</td>
+  <td class="property">Initially Uploaded</td>
+  <td>{$resource->created|date_format:""}</td>
 </tr>
 <tr>
-  <th>Last modified</th>
-  <td>{$resource->modified|default:"unmodified"}</td>
+  <td class="property">Last modified</td>
+  <td>{$resource->modified|date_format:""}</td>
 </tr>
 <tr>
-  <th>Last downloaded</th>
+  <td class="property">Last downloaded</td>
   <td>{$resource->downloaded|default:"never"}</td>
 </tr>
 </table>
+</div>
