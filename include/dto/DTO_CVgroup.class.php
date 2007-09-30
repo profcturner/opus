@@ -6,7 +6,7 @@
  */
 require_once("dto/DTO.class.php");
 
-class DTO_CVgroup extends DTO {
+class DTO_CVGroup extends DTO {
 
   function __construct($handle) 
   {

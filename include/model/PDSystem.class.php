@@ -52,12 +52,9 @@ class PDSystem
     $input .= "username=" . $config_sensitive['pds']['username'] .
       "&password=" . $config_sensitive['pds']['password'];
 
-    $url = $config_sensitive['pds']['url'] . "/pdp/controller.php?function=$service_name.php&$input";
-
-    echo $url; exit;  
+    $url = $config_sensitive['pds']['url'] . "/pdp/controller.php?function=$service_name&$input";
 
     $data = @file_get_contents($url);
-  print_r($data); exit;  
   if(substr($data, 0, 5) == "<xmp>")
     {
       // Seems to be invalid XML, strip the xmp containers
@@ -73,7 +70,7 @@ class PDSystem
   {
     global $config_sensitive;
 
-    if(empty($config['pds']['url'])) return False;
+    if(empty($config_sensitive['pds']['url'])) return False;
     else return True;
   }
 

@@ -1,6 +1,6 @@
 {* Smarty *}
 
 {include file="manage.tpl"}
-<div id="xml_error">
+<div id="brief">
 {$object->display()}
 </div>

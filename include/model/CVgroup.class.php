@@ -1,15 +1,15 @@
 <?php
 
 /**
-* The model object for CVgroups
+* The model object for CVGroups
 * @package OPUS
 */
-require_once("dto/DTO_CVgroup.class.php");
+require_once("dto/DTO_CVGroup.class.php");
 
 /**
-* The CVgroup model class
+* The CVGroup model class
 */
-class CVgroup extends DTO_CVgroup 
+class CVGroup extends DTO_CVGroup 
 {
   var $name = "";            // Name of cvgroup
   var $comments = "";     // Description of group
@@ -19,8 +19,8 @@ class CVgroup extends DTO_CVgroup
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Name', 'header'=>true, 'listclass'=>'cvgroup_name'),
     'description'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>1000),
-    'permissions'=>array('type'=>'list', 'list'=>array('allowAllTemplates','allowCustom'), 'multiple'=>true),
-    'default_template'=>array('type'=>'text')
+    'permissions'=>array('type'=>'list', 'list'=>array('allowAllTemplates'=>"Allow All PDSystem Templates",'allowCustom'=>"Allow Custom CVs"), 'multiple'=>true)
+    //'default_template'=>array('type'=>'text') handled in CVGroupTemplate
   );
 
   function __construct() 
@@ -38,7 +38,7 @@ class CVgroup extends DTO_CVgroup
 
   function load_by_id($id) 
   {
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     $cvgroup->id = $id;
     $cvgroup->_load_by_id();
     $cvgroup->permissions = explode(",", $cvgroup->permissions);
@@ -47,22 +47,27 @@ class CVgroup extends DTO_CVgroup
 
   function insert($fields) 
   {
-    $cvgroup = new CVgroup;
+    $fields['permissions'] = implode(",", $fields['permissions']);
+
+    $cvgroup = new CVGroup;
     $cvgroup->_insert($fields);
   }
-  
+
   function update($fields) 
   {
-    $cvgroup = CVgroup::load_by_id($fields[id]);
+    // Special handling for multiple set field
+    $fields['permissions'] = implode(",", $fields['permissions']);
+
+    $cvgroup = CVGroup::load_by_id($fields[id]);
     $cvgroup->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
   function exists($id) 
   {
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     $cvgroup->id = $id;
     return $cvgroup->_exists();
   }
@@ -72,13 +77,13 @@ class CVgroup extends DTO_CVgroup
   */
   function count() 
   {
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     return $cvgroup->_count();
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
@@ -92,7 +97,7 @@ class CVgroup extends DTO_CVgroup
 
   function get_id_and_field($fieldname) 
   {
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     $cvgroup_array = $cvgroup->_get_id_and_field($fieldname);
     $cvgroup_array[0] = 'Global';
     return $cvgroup_array;
@@ -101,18 +106,18 @@ class CVgroup extends DTO_CVgroup
 
   function remove($id=0) 
   {  
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     $cvgroup->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
   {  
-    $cvgroup = new CVgroup;
+    $cvgroup = new CVGroup;
     return  $cvgroup->_get_fieldnames($include_id); 
   }
   function request_field_values($include_id = false) 
   {
-    $fieldnames = CVgroup::get_fields($include_id);
+    $fieldnames = CVGroup::get_fields($include_id);
     $nvp_array = array();
  
     foreach ($fieldnames as $fn) {

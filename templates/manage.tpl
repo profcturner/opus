@@ -131,9 +131,9 @@
         <input type="file" name="{$header}" size="{$def.size}"/>
       {elseif $def.type == "list"}
         {if $def.multiple}
-          <select multiple name="{$header}[]">
-          {html_options values=$def.list output=$def.list name=$header}
-          </select>
+          {*<select multiple name="{$header}[]">*}
+          {html_options name=$header|cat:"[]" multiple=true values=$def.list output=$def.list name=$header}<br />{#multiple_select#}
+          {*</select>*}
         {else}
           {html_options values=$def.list output=$def.list name=$header}
         {/if}
@@ -196,8 +196,7 @@
       {/if}
       {elseif $def.type == "list"}
         {if $def.multiple}
-          {html_options multiple='multiple' values=$def.list output=$def.list name=$header|cat:"[]" selected=$object->$header}
-          
+          {html_options multiple='multiple' options=$def.list name=$header|cat:"[]" selected=$object->$header}<br />{#multiple_select#}
         {else}
         {html_options values=$def.list output=$def.list selected=$object->$header name=$header}
         {/if}

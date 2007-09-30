@@ -480,45 +480,140 @@
     remove_object_do($waf, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes");
   }
 
-  // CVgroups
+  // CVGroups
 
   function manage_cvgroups(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "CVgroup", array(array("add","section=configuration&function=add_cvgroup")), array(array('edit', 'edit_cvgroup'), array('remove','remove_cvgroup')), "get_all", "", "admin:configuration:manage_cvgroups:manage_cvgroups");
+    require_once("model/PDSystem.class.php");
+
+    $actions = array(array('edit', 'edit_cvgroup'), array('remove','remove_cvgroup'));
+    if(PDSystem::exists())
+    {
+      array_push($actions, array('templates', 'manage_cvgroup_templates'));
+    }
+
+    manage_objects($waf, $user, "CVGroup", array(array("add","section=configuration&function=add_cvgroup")), $actions , "get_all", "", "admin:configuration:manage_cvgroups:manage_cvgroups");
   }
 
   function add_cvgroup(&$waf, &$user) 
   {
-    add_object($waf, $user, "CVgroup", array("add", "configuration", "add_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:add_cvgroup");
+    add_object($waf, $user, "CVGroup", array("add", "configuration", "add_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:add_cvgroup");
   }
 
   function add_cvgroup_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "CVgroup", "section=configuration&function=manage_cvgroups", "add_cvgroup");
+    add_object_do($waf, $user, "CVGroup", "section=configuration&function=manage_cvgroups", "add_cvgroup");
   }
 
   function edit_cvgroup(&$waf, &$user) 
   {
-    require_once("model/PDSystem.class.php");
-
-    $cvdata = PDSystem::get_cv_templates();
-    $waf->assign("cvdata", $cvdata);
-    edit_object($waf, $user, "CVgroup", array("confirm", "configuration", "edit_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:edit_cvgroup");
+    edit_object($waf, $user, "CVGroup", array("confirm", "configuration", "edit_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_cvgroups:edit_cvgroup");
   }
 
   function edit_cvgroup_do(&$waf, &$user) 
   {
-    edit_object_do($waf, $user, "CVgroup", "section=configuration&function=manage_cvgroups", "edit_cvgroup");
+    edit_object_do($waf, $user, "CVGroup", "section=configuration&function=manage_cvgroups", "edit_cvgroup");
   }
 
   function remove_cvgroup(&$waf, &$user) 
   {
-    remove_object($waf, $user, "CVgroup", array("remove", "configuration", "remove_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), "", "admin:configuration:manage_cvgroups:remove_cvgroup");
+    remove_object($waf, $user, "CVGroup", array("remove", "configuration", "remove_cvgroup_do"), array(array("cancel","section=configuration&function=manage_cvgroups")), "", "admin:configuration:manage_cvgroups:remove_cvgroup");
   }
 
   function remove_cvgroup_do(&$waf, &$user) 
   {
-    remove_object_do($waf, $user, "CVgroup", "section=configuration&function=manage_cvgroups");
+    remove_object_do($waf, $user, "CVGroup", "section=configuration&function=manage_cvgroups");
+  }
+
+  function manage_cvgroup_templates(&$waf, $user, $title)
+  {
+    $group_id = (int) WA::request("id");
+
+    require_once("model/CVGroup.class.php");
+    $group_info = CVGroup::load_by_id($group_id);
+
+    require_once("model/PDSystem.class.php");
+
+    // Get possible PDSystem templates
+    $pdp_templates_object = PDSystem::get_cv_templates();
+    $pdp_templates = $pdp_templates_object->xpath('//template');
+
+    // Get current permissions for this group
+    require_once("model/CVGroupTemplate.class.php");
+    $cvgrouptemplates = CVGroupTemplate::get_all("where group_id=$group_id");
+
+    // Assemble permissions from these
+    $opus_permissions = array();
+    foreach($cvgrouptemplates as $template)
+    {
+      $opus_permission = array();
+
+      // Check if it is allowed
+      if(strpos($template->settings, "allow") === false)
+      {
+        $opus_permission['allow'] = false;
+      }
+      else
+      {
+        $opus_permission['allow'] = true;
+      }
+
+      // Check if approval is required
+      if(strpos($template->settings, "requiresApproval") === false)
+      {
+        $opus_permission['requiresApproval'] = false;
+      }
+      else
+      {
+        $opus_permission['requiresApproval'] = true;
+      }
+      $opus_permissions[$template->template_id] = $opus_permission;
+    }
+    $waf->assign("action_links", array(array("cancel","section=configuration&function=manage_cvgroups")));
+    $waf->assign("group_info", $group_info);
+    $waf->assign("pdp_templates", $pdp_templates);
+    $waf->assign("opus_permissions", $opus_permissions);
+
+    $waf->display("main.tpl", "admin:configuration:manage_cvgroups:manage_cvgroup_templates", "admin/configuration/manage_cvgroup_templates.tpl");
+  }
+
+  function manage_cvgroup_templates_do(&$waf, $user, $title)
+  {
+    $group_id = (int) WA::request("group_id");
+    $allowed = WA::request("allowed");
+    $approval = WA::request("approval");
+    $default_template = WA::request("default_template");
+
+    // If nothing is selected, arrays don't exist
+    if(empty($allowed)) $allowed = array();
+    if(empty($approval)) $approval = array();
+
+    // Nuke current permissions
+    require_once("model/CVGroupTemplate.class.php");
+    CVGroupTemplate::remove_by_group($group_id);
+
+    // Make new adjustments
+    foreach($allowed as $template_id)
+    {
+      $fields = array();
+      $fields['group_id'] = $group_id;
+      $fields['template_id'] = $template_id;
+      if(in_array($template_id, $approval))
+      {
+        $fields['settings']='allow,requiresApproval';
+      }
+      else
+      {
+        $fields['settings']='allow';
+      }
+      CVGroupTemplate::insert($fields);
+    }
+
+    require_once("model/CVGroup.class.php");
+    $cvgroup = CVGroup::load_by_id($group_id);
+    $cvgroup->default_template = $default_template;
+    $cvgroup->_update();
+    goto("configuration", "manage_cvgroups");
   }
 
 
@@ -532,6 +627,7 @@
 
   function add_help(&$waf, &$user) 
   {
+    $waf->assign("xinha_editor", true);
     add_object($waf, $user, "Help", array("add", "configuration", "add_help_do"), array(array("cancel","section=configuration&function=manage_help")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_help:add_help");
   }
 
@@ -542,6 +638,7 @@
 
   function edit_help(&$waf, &$user) 
   {
+    $waf->assign("xinha_editor", true);
     edit_object($waf, $user, "Help", array("confirm", "configuration", "edit_help_do"), array(array("cancel","section=configuration&function=manage_help")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_help:edit_help", "admin/configuration/edit_help.tpl");
   }
 

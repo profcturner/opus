@@ -24,7 +24,7 @@ class Help extends DTO_Help
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorisation'),
-    'contents'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>32000)
+    'contents'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>80, 'maxsize'=>32000, 'markup'=>'xhtml')
 
     );
 
@@ -116,17 +116,15 @@ class Help extends DTO_Help
   {
     $fieldnames = Help::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
 
   }
-
 
   function display($show_error = true, $user_id = 0)
   {
