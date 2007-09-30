@@ -4,36 +4,56 @@
 
   function manage_resources(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("resources", "list")) $waf->halt("error:policy:permissions");
+    $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
+
     manage_objects($waf, $user, "Resource", array(array("add","section=configuration&function=add_resource")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", "", "admin:configuration:resources:manage_resources");
   }
 
   function add_resource(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("resources", "create")) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Resource", array("add", "configuration", "add_resource_do"), array(array("cancel","section=configuration&function=manage_resources")), array(array("user_id",$user["user_id"])), "admin:configuration:resources:add_resource");
   }
 
   function add_resource_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("resources", "create")) $waf->halt("error:policy:permissions");
+    $waf->log("adding new resource");
+
     add_object_do($waf, $user, "Resource", "section=configuration&function=manage_resources", "add_resource");
   }
 
   function edit_resource(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("resources", "list")) $waf->halt("error:policy:permissions");
+    $waf->log("editing a resource");
+
     edit_object($waf, $user, "Resource", array("confirm", "configuration", "edit_resource_do"), array(array("cancel","section=configuration&function=manage_resources")), array(array("user_id",$user["user_id"])), "admin:configuration:resources:edit_resource");
   }
 
   function edit_resource_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("resources", "edit")) $waf->halt("error:policy:permissions");
+    $waf->log("editing a resource");
+
     edit_object_do($waf, $user, "Resource", "section=configuration&function=manage_resources", "edit_resource");
   }
 
   function remove_resource(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("resources", "delete")) $waf->halt("error:policy:permissions");
+    $waf->log("deleting a resource");
+
     remove_object($waf, $user, "Resource", array("remove", "configuration", "remove_resource_do"), array(array("cancel","section=configuration&function=manage_resources")), "", "admin:configuration:resources:remove_resource");
   }
 
   function remove_resource_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("resources", "delete")) $waf->halt("error:policy:permissions");
+    $waf->log("deleting a resource");
+
     remove_object_do($waf, $user, "Resource", "section=configuration&function=manage_resources");
   }
 

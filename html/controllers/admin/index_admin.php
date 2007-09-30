@@ -1,5 +1,11 @@
 <?php
 
+// All admin users need to know about policy code, even root users
+require_once("model/Policy.class.php");
+
+// The admin log file should be created, and it should be the default
+$GLOBALS['waf']->set_default_log("admin");
+
 function nav_admin() 
 {
   $basic_nav = array

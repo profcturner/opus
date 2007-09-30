@@ -46,7 +46,11 @@ function main()
   global $waf;
   $waf = new WA($config['waf']);
 
-  // Are there any errors carried in the session?
+  // We want an extra log file for admin users
+  $waf->create_log_file("admin");
+
+  // Are there any errors carried in the session? This sometimes repeats the display
+  // of an error but it seems a lesser evil than not showing it at all.
   if(isset($_SESSION['waf']['SQL_error'])) $waf->assign("SQL_error", $_SESSION['waf']['SQL_error']);
   unset($_SESSION['waf']['SQL_error']);
 
@@ -56,16 +60,17 @@ function main()
   $waf->assign_by_ref("help_prompter", $help_prompter);
   $waf->assign_by_ref("benchmark", $benchmark);
 
+  // Tell UUWAF about our database connections - there are two
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
   $waf->register_data_connection('preferences', $config_sensitive['opus']['preference']['dsn'], $config_sensitive['opus']['preference']['username'], $config_sensitive['opus']['preference']['password']);
 
-
-
+  // Try to authenticate any username and password credentials
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 
 
   //assign configuration to smarty
   $waf->assign_by_ref("config", $config);
 
+  // If the authenticators worked...
   if ($user['valid']) 
   {
     $waf->set_log_ident($user['username']);
@@ -356,7 +361,10 @@ function view_object(&$waf, $user, $object_name, $page_title, $tag_line, $action
     $waf->assign("section", $section);
     $waf->assign("subsection", $subsection);
     $waf->display("main.tpl");
-    
+
+    // Log view
+    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+    $waf->log("viewing $object_name $human_name");
   }
 
 /**
@@ -509,7 +517,10 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $content = $waf->fetch($manage_tpl);
     $waf->assign("content", $content);
     $waf->display("main.tpl", $config_section, $manage_tpl);
-    
+
+    // Log view
+    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+    $waf->log("editing $object_name $human_name");
   }
 
 /**
@@ -530,7 +541,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $object = str_replace(" ", "_", ucwords($object_name));
     require_once("model/".$object.".class.php");
 
-    $obj = new $object;   
+    $obj = new $object;
     $nvp_array = call_user_func(array($object, "request_field_values"), True);  // false mean no id is requested
         $validation_messages = $obj->_validate($nvp_array);
 
@@ -542,9 +553,12 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
       $waf->assign("nvp_array", $nvp_array);
       $waf->assign("validation_messages", $validation_messages);
       $goto_error($waf, $user);
-       
     }
 
+    // Log view
+    $id = WA::request("id");
+    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+    $waf->log("changes made to $object_name $human_name");
   }
 
 /**
@@ -584,7 +598,10 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $content = $waf->fetch($manage_tpl);
     $waf->assign("content", $content);
     $waf->display("main.tpl", $config_section, $manage_tpl);
-    
+
+    // Log view
+    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+    $waf->log("possibly removing $object_name $human_name");
   }
 
 /**
@@ -604,11 +621,16 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
     $object = str_replace(" ", "_", ucwords($object_name));
     require_once("model/".$object.".class.php");
-    
+
     $nvp_array = call_user_func(array($object, "request_field_values"), True);  // false mean no id is requested
     call_user_func(array($object, "remove"), $nvp_array[id]);
-    header("location: ?$goto");
 
+    // Log view
+    $id = WA::request("id");
+    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+    $waf->log("deleting $object_name $human_name");
+
+    header("location: ?$goto");
   }
 
 /**

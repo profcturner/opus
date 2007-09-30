@@ -137,6 +137,20 @@ class Vacancy extends DTO_Vacancy
     }
   }
 
+  function expire($id)
+  {
+    $vacancy = Vacancy::load_by_id($id);
+    $vacancy->status = 'closed';
+    // @todo Need automail code in here...
+    $vacancy->_update();
+  }
+
+  function get_ids($where_clause="", $order_clause="")
+  {
+    $vacancy = new Vacancy;
+    return($vacancy->_get_ids($where_clause, $order_clause));
+  }
+
   /**
   * Wasteful
   */

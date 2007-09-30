@@ -22,7 +22,7 @@
     $resource = Resource::load_by_id($id);
 
     $opus->assign("resource", $resource);
-    $opus->display("main.tpl", "admin:information:resources:info_resource", "general/information/info_resource.tpl");
+    $opus->display("main.tpl", "admin:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
   function view_logs(&$opus, $user, $title)
