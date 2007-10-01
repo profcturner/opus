@@ -359,7 +359,7 @@
     add_navigation_history($waf, $school->name);
 
 
-    manage_objects($waf, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('groups', 'manage_programmegroups'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", "where school_id=$school_id", "admin:configuration:organisation_details:manage_programmes");
+    manage_objects($waf, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('assessment', 'manage_assessmentgroupprogrammes'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", "where school_id=$school_id", "admin:configuration:organisation_details:manage_programmes");
   }
 
   function add_programme(&$waf, &$user) 
@@ -479,6 +479,53 @@
   {
     remove_object_do($waf, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes");
   }
+
+  // AssessmentGroupProgrammes
+
+  function manage_assessmentgroupprogrammes(&$waf, $user, $title)
+  {
+
+    $programme_id = (int) WA::request("id", true);
+
+    add_navigation_history($waf, $faculty->name);
+
+    manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add","section=configuration&function=add_assessmentgroupprogramme")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", "where programme_id=$programme_id", "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
+  }
+
+  function add_assessmentgroupprogramme(&$waf, &$user) 
+  {
+    $programme_id = (int) WA::request("id", true);
+
+    add_object($waf, $user, "AssessmentGroupProgramme", array("add", "configuration", "add_assessmentgroupprogramme_do"), array(array("cancel","section=configuration&function=manage_assessmentgroupprogrammes")), array(array("user_id",$user["user_id"]), array("programme_id", $programme_id)), "admin:configuration:organisation_details:add_assessmentgroupprogramme");
+  }
+
+  function add_assessmentgroupprogramme_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "AssessmentGroupProgramme", "section=configuration&function=manage_assessmentgroupprogrammes", "add_assessmentgroupprogramme");
+  }
+
+  function edit_assessmentgroupprogramme(&$waf, &$user) 
+  {
+    $programme_id = (int) WA::request("id", true);
+
+    edit_object($waf, $user, "AssessmentGroupProgramme", array("confirm", "configuration", "edit_assessmentgroupprogramme_do"), array(array("cancel","section=configuration&function=manage_assessmentgroupprogrammes")), array(array("user_id",$user["user_id"]), array("programme_id", $programme_id)), "admin:configuration:organisation_details:edit_assessmentgroupprogramme");
+  }
+
+  function edit_assessmentgroupprogramme_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "AssessmentGroupProgramme", "section=configuration&function=manage_assessmentgroupprogrammes", "edit_assessmentgroupprogramme");
+  }
+
+  function remove_assessmentgroupprogramme(&$waf, &$user) 
+  {
+    remove_object($waf, $user, "AssessmentGroupProgramme", array("remove", "configuration", "remove_assessmentgroupprogramme_do"), array(array("cancel","section=configuration&function=manage_assessmentgroupprogrammes")), "", "admin:configuration:organisation_details:remove_assessmentgroupprogramme");
+  }
+
+  function remove_assessmentgroupprogramme_do(&$waf, &$user) 
+  {
+    remove_object_do($waf, $user, "AssessmentGroupProgramme", "section=configuration&function=manage_assessmentgroupprogrammes");
+  }
+
 
   // CVGroups
 

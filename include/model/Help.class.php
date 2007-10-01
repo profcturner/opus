@@ -126,11 +126,18 @@ class Help extends DTO_Help
 
   }
 
-  function display($show_error = true, $user_id = 0)
+  function display($show_error = false, $user_id = 0)
   {
     require_once("model/XMLdisplay.class.php");
     $xml_parser = new XMLdisplay($this->contents);
-    echo $xml_parser->xml_output;
+    if($show_error)
+    {
+      echo $xml_parser->xml_error;
+    }
+    else
+    {
+      echo $xml_parser->xml_output;
+    }
   }
 }
 ?>

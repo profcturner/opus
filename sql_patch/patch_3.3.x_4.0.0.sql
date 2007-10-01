@@ -1,3 +1,15 @@
+-- help --
+-- this is moving to the new XML framework long used for vacancies and companies --
+
+update help set contents = replace(contents,'<CENTER>','');
+update help set contents = replace(contents,'</CENTER>','');
+update help set contents = replace(contents,'<TITLE>','<h4>');
+update help set contents = replace(contents,'</TITLE>','</h4>');
+
+
+
+
+
 -- vacancyactivity
 
 alter table vacancyactivity add column id int unsigned not null auto_increment primary key;
@@ -23,6 +35,8 @@ alter table cvgrouptemplate add column id int unsigned auto_increment primary ke
 rename table assessmentgroups to assessmentgroup;
 alter table assessmentgroup change column group_id id int unsigned not null auto_increment;
 
+alter table assessmentgroupcourse change column course_id programme_id int unsigned not null;
+rename table assessmentgroupcourse to assessmentgroupprogramme;
 
 -- assessmentregime --
 
