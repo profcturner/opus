@@ -700,16 +700,16 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
   function validate_field() 
   {
-    $object = WA::request("object");
+    $object_name = WA::request("object");
     $field = WA::request("field");
     $value = WA::request("value");
-    
-    $lookup_name = str_replace("_", " ", $object);
-    $lookup_name = str_replace(" ", "_", ucwords($lookup_name));
-   
-    require_once("model/".$lookup_name.".class.php");
 
-    $obj = new $lookup_name;
+    //$lookup_name = str_replace("_", " ", $object);
+    //$lookup_name = str_replace(" ", "_", ucwords($lookup_name));
+
+    require_once("model/".$object_name.".class.php");
+
+    $obj = new $object_name;
     echo $obj->_validation_response($field, $value);
   }
 
