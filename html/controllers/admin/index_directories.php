@@ -61,32 +61,48 @@
 
   function add_student(&$waf, &$user) 
   {
-    add_object($waf, $user, "Student", array("add", "configuration", "add_student_do"), array(array("cancel","section=configuration&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:configuration:students:add_student");
+    add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student");
   }
 
   function add_student_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Student", "section=configuration&function=manage_students", "add_student");
+    add_object_do($waf, $user, "Student", "section=directories&function=manage_students", "add_student");
   }
 
   function edit_student(&$waf, &$user) 
   {
-    edit_object($waf, $user, "Student", array("confirm", "configuration", "edit_student_do"), array(array("cancel","section=configuration&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:configuration:students:edit_student");
+    // Put student in session to "pick it up"
+    $id = $_SESSION['student_id'] = WA::request("id");
+    $changes = WA::request("changes");
+
+    goto("directories", "edit_student_real&id=$id&changes=$changes");
+  }
+
+  function edit_student_real(&$waf, &$user)
+  {
+    require_once("model/Student.class.php");
+    $id = WA::request("id");
+    $student = Student::load_by_id($id);
+    $waf->assign("changes", WA::request("changes"));
+
+    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   function edit_student_do(&$waf, &$user) 
   {
-    edit_object_do($waf, $user, "Student", "section=configuration&function=manage_students", "edit_student");
+    $id = WA::request("id");
+
+    edit_object_do($waf, $user, "Student", "section=directories&function=edit_student&id=$id&changes=1", "edit_student_real");
   }
 
   function remove_student(&$waf, &$user) 
   {
-    remove_object($waf, $user, "Student", array("remove", "configuration", "remove_student_do"), array(array("cancel","section=configuration&function=manage_students")), "", "admin:configuration:students:remove_student");
+    remove_object($waf, $user, "Student", array("remove", "directories", "remove_student_do"), array(array("cancel","section=directories&function=manage_students")), "", "admin:directories:student_directory:remove_student");
   }
 
   function remove_student_do(&$waf, &$user) 
   {
-    remove_object_do($waf, $user, "Student", "section=configuration&function=manage_students");
+    remove_object_do($waf, $user, "Student", "section=directories&function=manage_students");
   }
 
   // Vacanies
@@ -227,8 +243,10 @@
 
   function edit_vacancy(&$waf, &$user) 
   {
+    $id = WA::request("id");
     $waf->assign("xinha_editor", true);
-    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
+
+    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view","section=directories&function=view_vacancy&id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
   function edit_vacancy_do(&$waf, &$user) 
@@ -245,6 +263,39 @@
   {
     remove_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies");
   }
+
+  function view_vacancy(&$waf, &$user) 
+  {
+    $id = (int) WA::request("id");
+    $student_id = $_SESSION["student_id"];
+
+    $action_links = array(array("edit", "section=directories&function=edit_vacancy&id=$id"));
+    if($student_id)
+    {
+      array_push($action_links, array("apply with student", "section=directories&function=add_application&id=$id"));
+    }
+
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id($id);
+    $waf->assign("action_links", $action_links);
+    $waf->assign("vacancy", $vacancy);
+
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
+  }
+
+  // Applications
+
+  /**
+  * tag a student as having applied for a vacancy
+  */
+  function add_application(&$waf, &$user)
+  {
+    $vacancy_id = (int) WA::request("id");
+    $student_id = $_SESSION['student_id'];
+
+  }
+
+  // Contacts
 
   function contact_directory(&$waf)
   {

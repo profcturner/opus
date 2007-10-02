@@ -28,12 +28,26 @@
   function view_logs(&$opus, $user, $title)
   {
     require_once("model/Log_Viewer.class.php");
+    require_once("model/Preference.class.php");
 
-    $logfile = WA::request('logfile');
-    $search  = WA::request('search');
-    $lines   = WA::request('lines');
+    if(!isset($_REQUEST['logfile']))
+    {
+      // being called for the first time, load any preferences
+      $form_options = Preference::get_preference("log_viewer_form");
+    }
+    else
+    {
+      // Data incoming, save it...
+      $form_options = array();
 
-    $log_viewer = new Log_Viewer($logfile, $search, $lines);
+      $form_options['logfile'] = WA::request('logfile');
+      $form_options['search']  = WA::request('search');
+      $form_options['lines']   = WA::request('lines');
+
+      Preference::set_preference("log_viewer_form", $form_options);
+    }
+
+    $log_viewer = new Log_Viewer($form_options['logfile'], $form_options['search'], $form_options['lines']);
     $opus->display("main.tpl", "admin:information:view_logs:view_logs", "admin/information/log_viewer.tpl");
   }
 

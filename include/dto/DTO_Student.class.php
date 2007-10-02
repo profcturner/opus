@@ -6,7 +6,8 @@
  */
 require_once("dto/DTO.class.php");
 
-class DTO_Student extends DTO {
+class DTO_Student extends DTO
+{
 
   function __construct($handle) 
   {

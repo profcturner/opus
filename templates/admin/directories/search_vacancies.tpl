@@ -12,7 +12,7 @@
     <td>{$vacancies[vacancies].description|escape:"htmlall"}</td>
     <td>{$vacancies[vacancies].company_name|escape:"htmlall"}</td>
     <td>{$vacancies[vacancies].locality|escape:"htmlall"}</td>
-    <td rowspan="2" class="action"><a href="">view</a></td>
+    <td rowspan="2" class="action"><a href="?section=directories&function=view_vacancy&id={$vacancies[vacancies].id}">view</a></td>
     <td rowspan="2"class="action"><a href="?section=directories&function=edit_vacancy&id={$vacancies[vacancies].id}">edit</a></td>
   </tr>
   <tr class="{cycle name="cycle2" values="dark_row,light_row"}">

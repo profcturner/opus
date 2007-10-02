@@ -34,9 +34,22 @@ class Log_Viewer
     $waf->assign("lines", $lines);
     $waf->assign("available_logs", $this->available_logs);
     $waf->assign("log_lines", $this->get_log_content($logname, $search, $lines));
+    $waf->assign("log_size", $this->get_log_size($logname));
   }
 
-//    $waf->display("admin/information/log_view.tpl");
+  function get_log_size($logname)
+  {
+    global $waf;
+    global $config;
+
+    if(!in_array($logname, $this->available_logs))
+    {
+      $waf->security_log("Illegal log name $logname attempted");
+      $waf->halt("error:admin:illegal_log");
+    }
+    $logfile = $waf->log_dir . $logname . ".log";
+    return(filesize($logfile));
+  }
 
   function get_log_content($logname, $search, $lines)
   {

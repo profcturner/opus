@@ -339,7 +339,8 @@ function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl')
  * 
  */
 
-function view_object(&$waf, $user, $object_name, $page_title, $tag_line, $action_button, $hidden_values, $manage_tpl, $section, $subsection, $id) {
+function view_object(&$waf, $user, $object_name, $page_title, $tag_line, $action_button, $hidden_values, $manage_tpl, $section, $subsection, $id)
+{
 
     $object = str_replace(" ", "_", ucwords($object_name));
 
@@ -579,7 +580,8 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  */
 
 
-  function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl') {
+  function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
+  {
 
     $object = str_replace(" ", "_", ucwords($object_name));
 

@@ -62,6 +62,20 @@ function nav_admin()
     )
   );
 
+  $student_nav = array
+  (
+    "student"=>array
+    (
+      array("edit", "student", "edit_student", "edit_student"),
+      array("home", "student", "placement_home", "placement_home"),
+      array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
+      array("applications", "student", "applications", "applications"),
+      array("assessment", "student", "assessment", "assessment"),
+      array("notes", "student", "notes", "notes"),
+      array("drop", "student", "drop_student", "drop_student")
+    )
+  );
+
   $last_item_nav = $_SESSION['lastitems']->get_nav();
 
   if(User::is_root())
@@ -71,6 +85,11 @@ function nav_admin()
   else
   {
     $nav = $basic_nav;
+  }
+
+  if(isset($_SESSION['student_id']))
+  {
+    $nav = array_merge_recursive($nav, $student_nav);
   }
   return(array_merge_recursive($nav, $last_item_nav));
 }

@@ -223,11 +223,26 @@ class Vacancy extends DTO_Vacancy
     return($vacancy->_get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options));
   }
 
-  function display($show_error = true, $user_id = 0)
+  function display($show_error = false, $user_id = 0)
   {
     require_once("model/XMLdisplay.class.php");
     $xml_parser = new XMLdisplay($this->brief);
-    echo $xml_parser->xml_output;
+    if($show_error)
+    {
+      echo $xml_parser->xml_error;
+    }
+    else
+    {
+      echo $xml_parser->xml_output;
+    }
+  }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Vacancy::get_id_and_field("description","where id='$id'");
+    return($data[$id]);
   }
 
 

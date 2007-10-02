@@ -1,4 +1,3 @@
-
 <?php
 /**
  * @package PDSystem
@@ -10,7 +9,7 @@
 
 require_once("dto/DTO_Student.class.php");
 
-Class Student extends DTO_Student 
+class Student extends DTO_Student 
 {
   var $placement_year   = ""; 
   var $placement_status = "";
@@ -26,10 +25,10 @@ Class Student extends DTO_Student
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'email'=>array('type'=>'email','size'=>40),
-    'progress'=>array('type'=>'list', 'list'=>array()),
-    'placementyear'=>array('type'=>'text','size'=>5),
+ //   'progress'=>array('type'=>'list', 'list'=>array()),
+    'placementyear'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year'),
     'placement_status'=>array('type'=>'list', 'list'=>array('Required','Placed','Exempt Applied','Exempt Given','No Info','Left Course','Suspended','To final year','Not Eligible')),
-    'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
+    'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
   );
 
   // This defines which ones
@@ -164,7 +163,7 @@ Class Student extends DTO_Student
   function get_fields($include_id = false) 
   {
     $student = new Student;
-    return  $student->get_fieldnames($include_id);
+    return  $student->_get_fieldnames($include_id);
   }
 
   function request_field_values($include_id = false) 
@@ -196,6 +195,19 @@ Class Student extends DTO_Student
   {
     $student = new Student;
     return($student->_get_all_by_initial($initial));
+  }
+
+  function get_user_id($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Student::get_id_and_field("user_id","where id='$id'");
+    return($data[$id]);
+  }
+
+  function get_name($id)
+  {
+    return(User::get_name(Student::get_user_id($id)));
   }
 }
 
