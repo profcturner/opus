@@ -206,7 +206,9 @@
 
   function edit_company(&$waf, &$user) 
   {
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
+    $id = WA::request("id");
+
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("applicants", "section=directories&function=manage_applicants&company_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
   }
 
   function edit_company_do(&$waf, &$user) 
@@ -224,61 +226,155 @@
     remove_object_do($waf, $user, "Company", "section=directories&function=manage_companies");
   }
 
+  function view_company(&$waf, &$user)
+  {
+    $id = (int) WA::request("company_id");
 
+    $action_links = array(array("edit", "section=directories&function=edit_company&id=$id"));
 
+    require_once("model/Company.class.php");
+    $company = Company::load_by_id($id);
+
+    // Some lookups
+    require_once("model/Activitytype.class.php");
+    $company_activity_names = array();
+    foreach($company->activity_types as $activity_type)
+    {
+      array_push($company_activity_names, Activitytype::get_name($activity_type));
+    }
+
+    $waf->assign("action_links", $action_links);
+    $waf->assign("company", $company);
+    $waf->assign("company_activity_names", $company_activity_names);
+
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
+  }
+
+  /**
+  * manages vacancies for a specific company
+  */
   function manage_vacancies(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Vacancy", array(array("add","section=directories&function=add_vacancy")), array(array('edit', 'edit_vacancy'), array('remove','remove_vacancy')), "get_all", "", "admin:directories:vacancies:manage_vacancies");
+    $company_id = (int) WA::request("company_id", true);
+
+    manage_objects($waf, $user, "Vacancy", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")), array(array('edit', 'edit_vacancy'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy')), "get_all", "where company_id=$company_id", "admin:directories:vacancies:manage_vacancies");
   }
 
   function add_vacancy(&$waf, &$user) 
   {
-    add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("user_id",$user["user_id"])), "admin:directories:vacancies:add_vacancy");
+    $company_id = (int) WA::request("company_id", true);
+    require_once("model/Company.class.php");
+    $company = new Company;
+    $company = $company->load_by_id($company_id);
+
+    foreach(array("address1", "address2", "address3", "postcode", "locality", "town", "country") as $field)
+    {
+      $nvp_array[$field] = $company->$field;
+    }
+    $waf->assign("nvp_array", $nvp_array);
+
+    add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:add_vacancy");
+  }
+
+  /**
+  * @todo activities don't copy across, manage.tpl needs changed.
+  */
+  function clone_vacancy(&$waf, &$user) 
+  {
+    $company_id = (int) WA::request("company_id", true);
+    $id = (int) WA::request("id");
+
+    require_once("model/Vacancy.class.php");
+    $vacancy = new Vacancy;
+    $vacancy = $vacancy->load_by_id($id);
+
+    $copy_fields = array_merge(Vacancy::get_fields(), Vacancy::get_extended_fields());
+    foreach($copy_fields as $field)
+    {
+      $nvp_array[$field] = $vacancy->$field;
+    }
+    $waf->assign("nvp_array", $nvp_array);
+
+    add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:clone_vacancy");
   }
 
   function add_vacancy_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies", "add_vacancy");
+    $company_id = (int) WA::request("company_id", true);
+
+    add_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "add_vacancy");
   }
 
   function edit_vacancy(&$waf, &$user) 
   {
-    $id = WA::request("id");
+    $id = (int) WA::request("id");
+    $company_id = (int) WA::request("company_id", true);
     $waf->assign("xinha_editor", true);
 
-    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view","section=directories&function=view_vacancy&id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
+    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
   function edit_vacancy_do(&$waf, &$user) 
   {
-    edit_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies", "edit_vacancy");
+    $company_id = (int) WA::request("company_id", true);
+
+    edit_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "edit_vacancy");
   }
 
   function remove_vacancy(&$waf, &$user) 
   {
-    remove_object($waf, $user, "Vacancy", array("remove", "directories", "remove_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), "", "admin:directories:vacancies:remove_vacancy");
+    $company_id = (int) WA::request("company_id", true);
+
+    remove_object($waf, $user, "Vacancy", array("remove", "directories", "remove_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies&company_id=$company_id")), "", "admin:directories:vacancies:remove_vacancy");
   }
 
   function remove_vacancy_do(&$waf, &$user) 
   {
-    remove_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies");
+    $company_id = (int) WA::request("company_id", true);
+
+    remove_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id");
   }
 
-  function view_vacancy(&$waf, &$user) 
+  function view_vacancy(&$waf, &$user)
   {
     $id = (int) WA::request("id");
     $student_id = $_SESSION["student_id"];
 
-    $action_links = array(array("edit", "section=directories&function=edit_vacancy&id=$id"));
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id($id);
+
+    // Some lookups
+    require_once("model/Activitytype.class.php");
+    $vacancy_activity_names = array();
+    foreach($vacancy->activity_types as $activity_type)
+    {
+      array_push($vacancy_activity_names, Activitytype::get_name($activity_type));
+    }
+
+    require_once("model/Company.class.php");
+    $company = new Company;
+    $company = Company::load_by_id($vacancy->company_id);
+
+    $company_activity_names = array();
+    foreach($company->activity_types as $activity_type)
+    {
+      array_push($company_activity_names, Activitytype::get_name($activity_type));
+    }
+
+    $company_id = $vacancy->company_id;
+    $action_links = array(array("edit", "section=directories&function=edit_vacancy&id=$id"), array("edit company", "section=directories&function=edit_company&id=$company_id"));
     if($student_id)
     {
       array_push($action_links, array("apply with student", "section=directories&function=add_application&id=$id"));
     }
 
-    require_once("model/Vacancy.class.php");
-    $vacancy = Vacancy::load_by_id($id);
+
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
+    $waf->assign("company", $company);
+    $waf->assign("vacancy_activity_names", $vacancy_activity_names);
+    $waf->assign("company_activity_names", $company_activity_names);
+    $waf->assign("show_heading", true);
 
     $waf->display("main.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
   }
@@ -293,6 +389,10 @@
     $vacancy_id = (int) WA::request("id");
     $student_id = $_SESSION['student_id'];
 
+    require_once("model/PDSystem.class.php");
+    $cv_status = PDSystem::get_cv_status($student_id);
+
+    print_r($cv_status);
   }
 
   // Contacts

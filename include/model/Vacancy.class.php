@@ -91,6 +91,7 @@ class Vacancy extends DTO_Vacancy
   function insert($fields) 
   {
     $vacancy = new Vacancy;
+    $fields = Vacancy::set_empty_to_null($fields);
 
     // Some fields reside elsewhere, grab and unset them
     $activities = $fields['activity_types'];
@@ -116,6 +117,9 @@ class Vacancy extends DTO_Vacancy
 
   function update($fields) 
   {
+    // Null some fields if empty
+    $fields = Vacancy::set_empty_to_null($fields);
+
     // Some fields reside elsewhere, grab and unset them
     $activities = $fields['activity_types'];
     unset($fields['activity_types']);
@@ -135,6 +139,19 @@ class Vacancy extends DTO_Vacancy
 
       VacancyActivity::insert($fields);
     }
+  }
+
+  /**
+  * Goes through certain fields and sets them to null if they are "empty"
+  */
+  function set_empty_to_null($fields)
+  {
+    $set_to_null = array("closedate", "jobstart", "jobend");
+    foreach($set_to_null as $field)
+    {
+      if(!strlen($fields[$field])) $fields[$field] = null;
+    }
+    return($fields);
   }
 
   function expire($id)

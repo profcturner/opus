@@ -36,13 +36,19 @@ class Company extends DTO_Company
     'locality'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Locality', 'header'=>true),
     'country'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Country'),
     'postcode'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20, 'title'=>'Postcode'),
+    'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true),
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
     'voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Phone'),
     'fax'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Fax'),
     'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
-    'activities'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'var'=>'activities', 'multiple'=>true),
     'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml')
      );
+
+  // This defines which variables are stored elsewhere
+  static $_extended_fields = array
+  (
+    'activity_types'
+  );
 
   function __construct() 
   {
@@ -57,28 +63,93 @@ class Company extends DTO_Company
     return(self::$_field_defs);
   }
 
+  function get_extended_fields()
+  {
+    return self::$_extended_fields;
+  }
+
   function load_by_id($id) 
   {
     $company = new Company;
     $company->id = $id;
     $company->_load_by_id();
+
+    require_once("model/CompanyActivity.class.php");
+    $company->activity_types = CompanyActivity::get_activity_ids_for_company($company->id);
+
     return $company;
   }
 
   function insert($fields) 
   {
     $company = new Company;
+    $fields = Company::set_empty_to_null($fields);
+
+    // Some fields reside elsewhere, grab and unset them
+    $activities = $fields['activity_types'];
+    unset($fields['activity_types']);
+
+    if(empty($activities)) $activities = array();
+
+    // Make sure there is an array... even an empty one
+    if(empty($activities)) $activities = array();
+
     $fields['created'] = date("YmdHis");
-    $company->_insert($fields);
+    $company_id = $company->_insert($fields);
+
+    require_once("model/CompanyActivity.class.php");
+    CompanyActivity::remove_by_company($company_id);
+    foreach($activities as $activity)
+    {
+      $fields = array();
+      $fields['company_id'] = $company_id;
+      $fields['activity_id'] = $activity;
+
+      CompanyActivity::insert($fields);
+    }
   }
-  
+
   function update($fields) 
   {
+    // Null some fields if empty
+    $fields = Company::set_empty_to_null($fields);
+
+    // Some fields reside elsewhere, grab and unset them
+    $activities = $fields['activity_types'];
+    unset($fields['activity_types']);
+
+    if(empty($activities)) $activities = array();
+
     $company = Company::load_by_id($fields[id]);
     $fields['modified'] = date("YmdHis");
     $company->_update($fields);
+
+    $company_id = $company->id;
+    require_once("model/CompanyActivity.class.php");
+    CompanyActivity::remove_by_company($company_id);
+    foreach($activities as $activity)
+    {
+      $fields = array();
+      $fields['company_id'] = $company_id;
+      $fields['activity_id'] = $activity;
+
+      CompanyActivity::insert($fields);
+    }
   }
-  
+
+  /**
+  * Goes through certain fields and sets them to null if they are "empty"
+  */
+  function set_empty_to_null($fields)
+  {
+    $set_to_null = array("created", "modified");
+    foreach($set_to_null as $field)
+    {
+      if(!strlen($fields[$field])) $fields[$field] = null;
+    }
+    return($fields);
+  }
+
   /**
   * Wasteful
   */
@@ -135,16 +206,37 @@ class Company extends DTO_Company
   function request_field_values($include_id = false) 
   {
     $fieldnames = Company::get_fields($include_id);
+    $fieldnames = array_merge($fieldnames, Company::get_extended_fields());
+
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
+  }
 
+  function display($show_error = false, $user_id = 0)
+  {
+    require_once("model/XMLdisplay.class.php");
+    $xml_parser = new XMLdisplay($this->brief);
+    if($show_error)
+    {
+      echo $xml_parser->xml_error;
+    }
+    else
+    {
+      echo $xml_parser->xml_output;
+    }
+  }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Company::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
   }
 }
 ?>

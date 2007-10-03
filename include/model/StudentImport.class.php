@@ -78,31 +78,23 @@ class StudentImport
   {
     global $waf;
     // Make their entry in the user table
-    require_once("model/User.class.php");
+    require_once("model/Student.class.php");
 
     $fields = array();
-    $fields['user_type'] = 'student';
     $fields['reg_number'] = $student_array['reg_number'];
     $fields['username'] = "s" . $student_array['reg_number'];
     $fields['salutation'] = $student_array['person_title'];
     $fields['firstname'] = $student_array['first_name'];
     $fields['lastname'] = $student_array['last_name'];
     $fields['email'] = $student_array['email_address'];
-    $fields['real_name'] = $fields['firstname'] . " " . $fields['lastname'];
-    $user_id = User::insert($fields);
-    $waf->log("added student " . $fields['real_name']);
-
-    // And in the student table
-    require_once("model/Student.class.php");
-    $fields = array();
     $fields['placement_year']   = $year;
     $fields['placement_status'] = $status;
     $fields['programme_id']     = $programme_id;
     $fields['disability_code']  = $student_array['disability_code'];
     $fields['user_id']          = $user_id;
+    $waf->log("added student " . $fields['firstname'] . " " . $fields['surname']);
     Student::insert($fields);
   }
-
 }
 
 ?>

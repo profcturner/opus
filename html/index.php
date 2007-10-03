@@ -426,7 +426,8 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * 
  */
 
-  function add_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl') {
+  function add_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $default=false)
+  {
 
     $object = str_replace(" ", "_", ucwords($object_name));
 
@@ -460,12 +461,13 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * 
  */
 
-  function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='') {
+  function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
+  {
 
     $object = str_replace(" ", "_", ucwords($object_name));
-    
+
     require_once("model/".$object.".class.php");
-    
+
     $obj = new $object;
 
     $nvp_array = call_user_func(array($object, "request_field_values"), False);  // false mean no id is requested
@@ -500,7 +502,8 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * 
  */
 
-  function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl') {
+  function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
+  {
 
     $object = str_replace(" ", "_", ucwords($object_name));  
     require_once("model/".$object.".class.php");

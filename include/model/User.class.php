@@ -700,6 +700,22 @@ Class User extends DTO_User
     $data = User::get_id_and_field("real_name","where id='$id'");
     return($data[$id]);
   }
+
+  function get_username($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = User::get_id_and_field("username","where id='$id'");
+    return($data[$id]);
+  }
+
+  function get_reg_number($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = User::get_id_and_field("reg_number","where id='$id'");
+    return($data[$id]);
+  }
 }
 
 ?>

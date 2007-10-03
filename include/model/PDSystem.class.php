@@ -40,7 +40,7 @@ class PDSystem
     }
 
     $empty_result = array();
-    if($format == 'XML') $empty_result = simplexml_load_string($empty_result);
+    if($format == 'XML') $empty_result = "";
 
     $waf->log("requesting service $service_name from PDSystem", PEAR_LOG_DEBUG, 'debug');
     if(empty($config_sensitive['pds']['url']))
@@ -55,15 +55,21 @@ class PDSystem
     $url = $config_sensitive['pds']['url'] . "/pdp/controller.php?function=$service_name&$input";
 
     $data = @file_get_contents($url);
-  if(substr($data, 0, 5) == "<xmp>")
+    if($format == 'XML')
     {
-      // Seems to be invalid XML, strip the xmp containers
-      $data = substr($data, 5);
-      // and the end
-      $data =substr($data, 0, strlen($data)-6);
+      if(substr($data, 0, 5) == "<xmp>")
+      {
+        // Seems to be invalid XML, strip the xmp containers
+        $data = substr($data, 5);
+        // and the end
+        $data = substr($data, 0, strlen($data)-6);
+      }
+      return(simplexml_load_string($data));
     }
-    //echo htmlspecialchars($data);
-    return(simplexml_load_string($data));
+    else
+    {
+      return($data);
+    }
   }
 
   function exists()
@@ -75,48 +81,31 @@ class PDSystem
   }
 
   /**
-  ** obtains all the templates offered by the PDSystem for CV creation
-  **
-  ** @return a SimpleXML object containing all the templates
+  * obtains all the templates offered by the PDSystem for CV creation
+  *
+  * @return a SimpleXML object containing all the templates
   */
   function get_cv_templates()
   {
-    return(PDSystem::get_data("get_cv_template_list", ""));
+    return(PDSystem::get_data("get_cv_template_list", "", "XML"));
   }
-  
-  
+
+
   /**
-  ** obtains the status of the CVs for a given student. This includes completion information.
-  **
-  ** @param integer $student_id the unique user_id for the student concerned (not the student number)
-  ** @return a SimpleXML object containing all the CV information
+  * obtains the status of all the CVs for a given student.
+  *
+  * This includes completion information.
+  *
+  * @param integer $student_id the unique user_id for the student concerned (not the student number)
+  * @return a SimpleXML object containing all the CV information
   */
   function get_cv_status($student_id)
   {
-    global $conf;
-    global $log;
-    global $page; // We might create a page
-  
-    // The PDSystem uses student numbers more directly
-    $student_reg = get_login_name($student_id);
-  
-    $url = $conf['pdp']['host'] . "/pdp/controller.php?" .
-      "function=get_cv_status" .
-      "&reg_number=$student_reg" .
-      "&username=" . $conf['pdp']['user'] . "&password=" . $conf['pdp']['pass'];
+    require_once("model/User.class.php");
 
-    //$log['security']->LogPrint("Fetching file $url");
-    $file = @file_get_contents($url);
-  
-    if($file == FALSE)
-    {
-      $page = new HTMLOPUS("Error");
-      $log['debug']->LogPrint("Warning! PDP_get_cv_status failed to access the PDSystem");
-      die_gracefully("The PMS was unable to acquire the CV information from the PDP system.");
-    }
-  
-    $cv_status = simplexml_load_string($file);
-    return($cv_status);
+    $reg_number = User::get_reg_number($student_id);
+
+    return(PDSystem::get_data("get_cv_status", "reg_number=$reg_number&", "XML"));
   }
   
   /**

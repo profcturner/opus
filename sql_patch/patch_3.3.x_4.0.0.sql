@@ -13,6 +13,10 @@ update help set contents = replace(contents,'</TITLE>','</h4>');
 -- vacancyactivity
 
 alter table vacancyactivity add column id int unsigned not null auto_increment primary key;
+rename table companyvacancy to companyactivity;
+alter table companyactivity change column vacancy_id activity_id int unsigned;
+alter table companyactivity add column id int unsigned not null auto_increment primary key;
+
 
 -- Policy
 
