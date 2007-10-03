@@ -11,6 +11,22 @@
   <link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css">
   <style type="text/css"> @import url("{$config.opus.url}/css/local.css");</style>
   <style type="text/css"> @import url("{$config.opus.url}/css/{$currentgroup}/local.css");</style>
+  <!--[if gt IE 5.0]><![if lt IE 7]>
+  <style type="text/css">
+  {literal}
+  /* that IE 5+ conditional comment makes this only visible in IE 5+ */
+  ul.makeMenu li {  /* the behaviour to mimic the li:hover rules in IE 5+ */
+  {/literal}
+    behavior: url( {$config.opus.url}/javascript/ie_menu_patch.js );
+  {literal}
+  }
+  ul.makeMenu ul {  /* copy of above declaration without the > selector, except left position is wrong */
+    display: none; position: absolute; top: 2px; left: 78px;
+  }
+  {/literal}
+  </style>
+  <![endif]><![endif]-->
+
 {* Load HTML Area if the "editor" component of page is set *}
 {if $xinha_editor}
 <script language="JavaScript" type="text/javascript">

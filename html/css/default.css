@@ -23,7 +23,7 @@ a:active {
 a:visited {
   text-decoration: none; color : #338;
 }
- 
+
 a:hover {
   text-decoration: underline; color : #338;
 }
@@ -276,13 +276,25 @@ text-decoration: none;
   font-weight:normal;
   white-space:nowrap;
 }
-#menu ul ul {     /* must not be combined with the next rule or IE gets confused */
+#menu ul ul, {     /* must not be combined with the next rule or IE gets confused */
   display: block;              /* specially to go with the className changes in the behaviour file */
 }
+
 #menu ul li:hover > ul {    /* one of the most important declarations - the browser must detect hovering over arbitrary elements
                                   the > targets only the child ul, not any child uls of that child ul */
   display: block;              /* makes the child block visible - one of the most important declarations */
 }
+
+/* Fixes for broken IE behaviour */
+#menu ul li.CSStoHighlight {
+  background-color: #ffa;      /* gives the active menu items a yellow background */
+  color: #000;                 /* makes the active menu item text black */ 
+}
+#menu ul ul.CSStoShow {     /* must not be combined with the next rule or IE gets confused */
+  display: block;              /* specially to go with the className changes in the behaviour file */
+}
+
+#menu ul li a.CSStoHighLight { color: #000; }
 
 /* div id=submenu style */
 
