@@ -62,10 +62,25 @@ function main()
 
   $function = $_SERVER['argv'][1];
 
+  // other parameters passed in regular var=value&var2=value2 format
+  $parameters = $_SERVER['argv'][2];
+  $parameters = explode("&", $parameters);
+  $parameter_count = 0;
+  $key = array();
+  $value = array();
+  foreach($parameters as $keyvalue)
+  {
+    $parts = explode("=", $keyvalue);
+    $key[$parameter_count] = $parts[0];
+    $value[$parameter_count] = $parts[1];
+    $parameter_count++;
+  }
+  $decoded_parameters = array_combine($key, $value);
+
   if(function_exists($function))
   {
     $waf->log("invoking $function", PEAR_LOG_DEBUG);
-    $function($waf);
+    $function($waf, $decoded_parameters);
   }
   else
   {
@@ -74,7 +89,7 @@ function main()
   echo "\n";
 }
 
-function help(&$waf)
+function help(&$waf, $parameters)
 {
   $waf->display("cron.tpl", "cron:user_count", "cron/help.tpl");
 }
@@ -84,7 +99,7 @@ function print_argv(&$waf)
   print_r($_SERVER['argv']);
 }
 
-function user_count(&$waf)
+function user_count(&$waf, $parameters)
 {
   require_once("model/User.class.php");
   $roots       = User::count("where user_type='root'");
@@ -104,7 +119,7 @@ function user_count(&$waf)
   $waf->display("cron.tpl", "cron:user_count", "cron/user_count.tpl");
 }
 
-function company_count(&$waf)
+function company_count(&$waf, $parameters)
 {
   require_once("model/Company.class.php");
   $companies = Company::count();
@@ -114,7 +129,7 @@ function company_count(&$waf)
   $waf->display("cron.tpl", "cron:user_count", "cron/company_count.tpl");
 }
 
-function vacancy_count(&$waf)
+function vacancy_count(&$waf, $parameters)
 {
   require_once("model/Vacancy.class.php");
   $vacancies = Vacancy::count();
@@ -124,7 +139,7 @@ function vacancy_count(&$waf)
   $waf->display("cron.tpl", "cron:user_count", "cron/vacancy_count.tpl");
 }
 
-function expire_vacancies(&$waf)
+function expire_vacancies(&$waf, $parameters)
 {
   $now = date("YmdHis");
   require_once("model/Vacancy.class.php");
@@ -135,4 +150,26 @@ function expire_vacancies(&$waf)
     Vacancy::expire($vacancy);
   }
 }
+
+function phone_home_install(&$waf, $parameters)
+{
+  require_once("model/PhoneHome.class.php");
+
+  PhoneHome::send_install();
+}
+
+function create_admin(&$waf, $parameters)
+{
+  require_once("model/Admin.class.php");
+  $admin = new Admin;
+
+  $fields['username'] = $parameters['username'];
+  $fields['password'] = md5($parameters['password']);
+  $fields['salutation'] = "Dr";
+  $fields['firstname'] = "Demo";
+  $fields['lastname'] = "User";
+  print_r($fields);
+  Admin::insert($fields);
+}
+
 ?>

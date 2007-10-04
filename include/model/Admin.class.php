@@ -41,7 +41,7 @@ class Admin extends DTO_Admin
   // This defines which ones
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email'
+    'salutation','firstname','lastname','email','username','password'
   );
 
   function __construct() 
@@ -98,6 +98,7 @@ class Admin extends DTO_Admin
       }
     }
     // Insert user data first, adding anything else we need
+
     $user_fields['user_type'] = 'admin';
     $user_id = User::insert($user_fields);
 

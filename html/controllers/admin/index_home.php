@@ -3,7 +3,21 @@
 function home(&$waf)
 {
   $waf->assign("user", $waf->user['opus']);
+  require_once("model/User.class.php");
 
+  // Check, is it a superuser?
+  if(User::is_root())
+  {
+    // Do we need to ask about phone home?
+    if(!isset($_SESSION['phonehome_asked']))
+    {
+      require_once("model/PhoneHome.class.php");
+      if(PhoneHome::ask_later())
+      {
+        goto("superuser", "edit_phonehome");
+      }
+    }
+  }
   $waf->display("main.tpl", "admin:home:home:home", "admin/home/home.tpl");
 }
 

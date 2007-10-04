@@ -23,6 +23,7 @@ class Automail extends DTO_Automail
 
   static $_field_defs = array(
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
+    'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages', 'header'=>'true'),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
     'fromh'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'From Header'),
     'toh'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'To Header'),
@@ -91,7 +92,7 @@ class Automail extends DTO_Automail
     return $automail->_count();
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY lookup", $page=0)
   {
     $automail = new Automail;
 
@@ -147,12 +148,15 @@ class Automail extends DTO_Automail
     global $waf;
 
     $automail = Automail::load_by_lookup($lookup, $language_id);
+    if($automail == false) return; // lookup failed
 
     // Defaults from config
     $mailfields["conf_institution"]  =  $config['opus']['institution'];
     $mailfields["conf_website"]      =  $config['opus']['url'];
     $mailfields["conf_appname"]      =  $config['opus']['title'];
+    $mailfields["conf_version"]      =  $config['opus']['version'] . "." . $config['opus']['minor_version'] . "." . $config['opus']['patch_version'];
 
+    require_once("model/User.class.php");
     // Substitute the currently logged in admin details if possible
     if(User::is_admin())
     {
@@ -168,7 +172,7 @@ class Automail extends DTO_Automail
     {
       // We need a primary admin, get the first root user in the database
       require_once("model/User.class.php");
-      $admins = Admin::get_all("where user_type='root'", "order by id");
+      $admins = User::get_all("where user_type='root'", "order by id");
 
       $mailfields["atitle"]     = $admins[0]->salutation;
       $mailfields["afirstname"] = $admins[0]->firstname;
@@ -192,7 +196,7 @@ class Automail extends DTO_Automail
     require_once("model/OPUSMail.class.php");
 
     // Send email
-    $mail_object = new OPUSMail($automail->toh, $automail->subject, $automail->contents, $automail->extra);
+    $mail_object = new OPUSMail($automail->toh, $automail->subject, $automail->contents, $extra);
     $mail_object->send();
 
     $waf->log("Auto email $lookup sent from " . $automail->fromh . 
@@ -222,6 +226,14 @@ class Automail extends DTO_Automail
       }
     }
     return($automail);
+  }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Automail::get_id_and_field("lookup","where id='$id'");
+    return($data[$id]);
   }
 }
 ?>

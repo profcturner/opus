@@ -1,3 +1,16 @@
+create table phonehome
+(
+  send_install enum('Ask', 'Yes', 'No'),
+  send_periodic enum('Ask', 'Yes', 'No'),
+  cc_on_email enum('Yes', 'No'),
+  timestamp_install timestamp,
+  timestamp_periodic timestamp,
+  admin_id int unsigned,
+  id int unsigned primary key
+);
+
+insert into phonehome (send_install, send_periodic, cc_on_email, timestamp_install, timestamp_periodic, admin_id, id) values('Ask', 'Ask', 'No', NULL, NULL, 0, 1);
+
 -- help --
 -- this is moving to the new XML framework long used for vacancies and companies --
 

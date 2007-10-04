@@ -120,5 +120,14 @@ class Language extends DTO_Language
     return $nvp_array;
 
   }
+
+  function get_name($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Language::get_id_and_field("name","where id='$id'");
+    return($data[$id]);
+  }
+
 }
 ?>

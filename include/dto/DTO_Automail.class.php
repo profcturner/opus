@@ -13,6 +13,13 @@ class DTO_Automail extends DTO {
     parent::__construct($handle);
   }
 
+  function _load_by_id($id = 0)
+  {
+    parent::_load_by_id($id = 0);
+    require_once("model/Language.class.php");
+    $this->_language_id = Language::get_name($this->language_id);
+  }
+
   function _load_by_lookup($lookup, $language_id = 1)
   {
     global $waf;
@@ -32,13 +39,13 @@ class DTO_Automail extends DTO {
       else
       {
         $waf->log("unable to find automail lookup $lookup for language_id $language_id", PEAR_LOG_NOTICE, 'debug');
+        return false;
       }
     }
     catch (PDOException $e)
     {
       $this->_log_sql_error($e, $class, "_get_all()");
     }
-    return $object_array; 
   }
 }
 
