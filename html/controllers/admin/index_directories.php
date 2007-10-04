@@ -105,6 +105,27 @@
     remove_object_do($waf, $user, "Student", "section=directories&function=manage_students");
   }
 
+  // Timelines
+
+  function display_timeline(&$waf, &$user)
+  {
+    $student_id = (int) WA::request("student_id");
+    require_once("model/Timeline.class.php");
+
+    Timeline::display_timeline($student_id);
+  }
+
+  // Photos
+
+  function display_photo(&$waf, &$user)
+  {
+    $user_id = (int) WA::request("user_id");
+    $fullsize = WA::request("fullsize");
+    require_once("model/Photo.class.php");
+
+    Photo::display_photo($user_id, $fullsize);
+  }
+
   // Vacanies
 
   function vacancy_directory(&$waf, $user, $title)

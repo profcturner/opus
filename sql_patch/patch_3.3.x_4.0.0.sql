@@ -1,3 +1,10 @@
+
+-- timelines --
+
+rename table timelines to timeline;
+alter table timeline change column last_updated last_updated timestamp;
+alter table timeline add column id int unsigned auto_increment primary key;
+
 create table phonehome
 (
   send_install enum('Ask', 'Yes', 'No'),
