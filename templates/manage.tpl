@@ -135,7 +135,7 @@
           {html_options name=$header|cat:"[]" multiple=true values=$def.list output=$def.list name=$header}<br />{#multiple_select#}
           {*</select>*}
         {else}
-          {html_options values=$def.list output=$def.list name=$header}
+          {html_options options=$def.list name=$header}
         {/if}
       {elseif $def.type == "lookup"}
         {if $def.multiple}
@@ -198,7 +198,7 @@
         {if $def.multiple}
           {html_options multiple='multiple' options=$def.list name=$header|cat:"[]" selected=$object->$header}<br />{#multiple_select#}
         {else}
-        {html_options values=$def.list output=$def.list selected=$object->$header name=$header}
+        {html_options options=$def.list selected=$object->$header name=$header}
         {/if}
       {elseif $def.type == "lookup"}
         {if $def.multiple}

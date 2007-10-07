@@ -48,6 +48,7 @@ class DTO_Student extends DTO
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    if(empty($programmes)) $programmes = array();
     if(empty($other_options)) $other_options = array();
 
     if(!in_array($sort, array('lastname', 'reg_number', 'placement_status', 'last_time')))

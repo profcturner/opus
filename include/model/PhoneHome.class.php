@@ -22,8 +22,8 @@ class PhoneHome extends DTO_PhoneHome
 
   // The questions to ask of the admin
   static $_field_defs = array(
-    'send_install'=>array('type'=>'list', 'list'=>array('Ask', 'Yes', 'No'), 'title'=>'Send an email on installation'),
-    'send_periodic'=>array('type'=>'list', 'list'=>array('Ask', 'Yes', 'No'), 'title'=>'Send an email every month'),
+    'send_install'=>array('type'=>'list', 'list'=>array('Ask'=>'Ask Later', 'Yes'=>'Yes', 'No'=>'No'), 'title'=>'Send an email on installation'),
+    'send_periodic'=>array('type'=>'list', 'list'=>array('Ask'=>'Ask Later', 'Yes'=>'Yes', 'No'=>'No'), 'title'=>'Send an email every month'),
     'cc_on_email'=>array('type'=>'list', 'list'=>array('No', 'Yes'), 'title'=>'CC on emails')
   );
 
