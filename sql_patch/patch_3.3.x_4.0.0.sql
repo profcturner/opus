@@ -1,4 +1,11 @@
 
+-- notes --
+
+rename table notes to note;
+alter table note change column note_id id int unsigned not null auto_increment;
+alter table notelink add column id int unsigned not null auto_increment primary key;
+alter table notelink add column main enum('yes', 'no') after note_id;
+
 -- timelines --
 
 rename table timelines to timeline;
