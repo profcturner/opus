@@ -99,8 +99,8 @@ function company_activity(&$waf)
   $companies_modified = Company::get_all("where modified > " . $since);
 
   $vacancy_headings = array(
-    'description'=>array('type'=>'text','size'=>30, 'header'=>true),
-    'locality'=>array('type'=>'list','size'=>30, 'header'=>true),
+    'description'=>array('type'=>'text','size'=>30, 'header'=>true, 'listclass'=>'vacancy_description'),
+    'locality'=>array('type'=>'list','size'=>30, 'header'=>true, 'listclass'=>'vacancy_locality'),
     'status'=>array('type'=>'text','size'=>30, 'header'=>true)
   );
 

@@ -20,6 +20,7 @@ class Note extends DTO_Note
   static $_field_defs = array(
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorization'),
     'summary'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Summary', 'header'=>true),
+    'notelinks'=>array('type'=>'lookup', 'object'=>'notelink', 'value'=>'name', 'title'=>'Possible Links', 'var'=>'links', 'lookup_function'=>'get_possible_links', 'multiple'=>true),
     'comments'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>32000, 'markup'=>'xhtml')
     );
 
@@ -35,6 +36,12 @@ class Note extends DTO_Note
   {
     return(self::$_field_defs);
   }
+
+  // This defines which variables are stored elsewhere
+  static $_extended_fields = array
+  (
+    'notelinks'
+  );
 
   function load_by_id($id) 
   {
@@ -55,6 +62,9 @@ class Note extends DTO_Note
     $note = new Note;
     // Creation time is NOW.
     $fields['date'] = date("YmdHis");
+    $notelinks = $fields['notelinks']
+    unset($fields['notelinks']);
+
     $note->_insert($fields);
   }
 
@@ -128,6 +138,7 @@ class Note extends DTO_Note
   function request_field_values($include_id = false) 
   {
     $fieldnames = Note::get_fields($include_id);
+    $fieldnames = array_merge($fieldnames, Note::get_extended_fields());
     $nvp_array = array();
 
     foreach ($fieldnames as $fn)
@@ -137,6 +148,19 @@ class Note extends DTO_Note
     return $nvp_array;
   }
 
+  function display($show_error = false, $user_id = 0)
+  {
+    require_once("model/XMLdisplay.class.php");
+    $xml_parser = new XMLdisplay($this->comments);
+    if($show_error)
+    {
+      echo $xml_parser->xml_error;
+    }
+    else
+    {
+      echo $xml_parser->xml_output;
+    }
+  }
 
   function get_name($id)
   {

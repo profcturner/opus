@@ -143,7 +143,10 @@ Class User extends DTO_User
   function update($fields) 
   {
     $user = User::load_by_id($fields[id]);
-    $fields['real_name'] = $user->form_real_name($fields);
+    if(strlen($fields['firstname']) && strlen($fields['lastname']))
+    {
+      $fields['real_name'] = $user->form_real_name($fields);
+    }
     $user->_update($fields);
   }
 

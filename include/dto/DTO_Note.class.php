@@ -39,13 +39,15 @@ class DTO_Note extends DTO {
     $results_array = array();
     try
     {
-      $sql = $con->prepare("select note.*, notelink.main from note left join notelink on note.id = notelink.note_id where link_type = ? and link_id = ?" order by notelink.main DESC, note.date);
+      $sql = $con->prepare("select note.*, notelink.main from note left join notelink on note.id = notelink.note_id where link_type = ? and link_id = ? order by notelink.main DESC, note.date");
       $sql->execute(array($object_type, $object_id));
 
       while($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
-        $results_row['author_name'] = User::get_name($row['author_id']);
-        array_push($results_array, $results_row));
+        //$object = new $results_row['link_type'];
+
+        $results_row['author_name'] = User::get_name($results_row['author_id']);
+        array_push($results_array, $results_row);
       }
     }
     catch (PDOException $e)
