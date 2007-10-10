@@ -27,7 +27,8 @@ function nav_admin()
     ), 
     "information"=>array
     (
-      array("resources", "information", "list_resources", "list_resources"), 
+      array("resources", "information", "list_resources", "list_resources"),
+      array("reports", "information", "list_reports", "list_reports"),
       array("system status", "information", "system_status", "system_status"), 
       array("view logs", "information", "view_logs", "view_logs") 
     ),
@@ -59,7 +60,7 @@ function nav_admin()
     "superuser"=>array
     (
       array("PHPinfo", "superuser", "view_phpinfo", "view_phpinfo"),
-      array("PhoneHome", "superuser", "edit_phonehome", "edit_phonehome")
+      array("Phone Home", "superuser", "edit_phonehome", "edit_phonehome")
     )
   );
 
@@ -70,9 +71,9 @@ function nav_admin()
       array("edit", "student", "edit_student", "edit_student"),
       array("home", "student", "placement_home", "placement_home"),
       array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
-      array("applications", "student", "applications", "applications"),
-      array("assessment", "student", "assessment", "assessment"),
-      array("notes", "student", "notes", "notes"),
+      array("applications", "student", "manage_applications", "manage_applications"),
+      array("assessment", "student", "view_assessments", "view_assessments"),
+      array("notes", "student", "manage_notes", "manage_notes"),
       array("drop", "student", "drop_student", "drop_student")
     )
   );

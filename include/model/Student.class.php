@@ -26,7 +26,7 @@ class Student extends DTO_Student
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'email'=>array('type'=>'email','size'=>40),
  //   'progress'=>array('type'=>'list', 'list'=>array()),
-    'placementyear'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year'),
+    'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year'),
     'placement_status'=>array('type'=>'list', 'list'=>array('Required','Placed','Exempt Applied','Exempt Given','No Info','Left Course','Suspended','To final year','Not Eligible')),
     'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
   );
@@ -204,6 +204,128 @@ class Student extends DTO_Student
     $data = Student::get_id_and_field("user_id","where id='$id'");
     return($data[$id]);
   }
+
+  function get_programme_id($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Student::get_id_and_field("programme_id","where id='$id'");
+    return($data[$id]);
+  }
+
+  function get_assessment_group_id($id=0)
+  {
+    // If no student id is passed in, use current one
+    //if(!$id) $id = $this->
+    $student = Student::load_by_id($id);
+    $programme_id = $student->programme_id;
+    $placement_year = $student->placement_year;
+
+    require_once("model/AssessmentGroupProgramme.class.php");
+
+    // Look for explicit bounded match
+    $group = AssessmentGroupProgramme::load_where("where programme_id = $programme_id and $placement_year >= startyear and $placement_year <= endyear");
+    if($group->group_id) return($group->group_id);
+
+     // Ok, look for a match with an endpoint only
+    $group = AssessmentGroupProgramme::load_where("where programme_id = $programme_id and startyear is null and $placement_year <= endyear");
+    if($group->group_id) return($group->group_id);
+
+    // Ok, look for a match with an startpoint only
+    $group = AssessmentGroupProgramme::load_where("where programme_id = $programme_id and $placement_year >= startyear and endyear is null");
+    if($group->group_id) return($group->group_id);
+
+    // Lastly, look for a match with no endpoints
+    $group = AssessmentGroupProgramme::load_where("where programme_id = $programme_id and startyear is null and endyear is null");
+    if($group->group_id) return($group->group_id);
+
+    // Bail with the default
+    return(1);
+  }
+
+
+  function get_assessment_regime($id)
+  {
+    // This will store the items
+    $regime_items = array();
+
+    // Determine the students assessmentgroup
+    $assessmentgroup_id = Student::get_assessment_group_id($id);
+
+    // Get the regime items
+    require_once("model/AssessmentRegime.class.php");
+    $regime_items = AssessmentRegime::get_all("where group_id=$assessmentgroup_id");
+
+    // Sort these appropriately
+    usort($regime_items, array("AssessmentRegime", "assessment_date_compare"));
+
+    // Now augment this with data from results
+    $weighting_total = 0;
+    $aggregate_total = 0;
+
+    for($loop = 0; $loop < count($regime_items); $loop++)
+    {
+      // Supervisor's don't see other assessments
+      if(User::is_supervisor() && $regime_items[$loop]->assessor != 'industrial')
+      {
+        unset($regime_items[$loop]);
+        continue;
+      }
+      // Do we want hidden stuff for students anymore?
+
+      // Collect the weight as we go...
+      $weighting_total += $regime_items[$loop]->weighting;
+
+      // Try to determine the assessor
+      /* this needs to go in the template"
+      if($row['assessor']=="student") $assessor = "Self Assessment";
+      if($row['assessor']=="academic") $assessor = "Academic Tutor";
+      if($row['assessor']=="industrial") $assessor = "Industrial Supervisor";
+
+      if($assessor == "Unknown")
+      {
+        $otherassessor = assessment_get_other_assessor($student_id, $row["cassessment_id"]);
+        if($otherassessor != FALSE) $assessor = get_user_name($otherassessor);
+      }
+
+      $row['assessor'] = $assessor;
+      */
+
+      // Get the results if possible
+      require_once("model/AssessmentTotal.class.php");
+      $results = AssessmentTotal::load_where("where regime_id = " . $regime_items[$loop]->id . " and assessed_id=" . Student::get_user_id($id));
+
+      $percentage = $results->percentage;
+      if(empty($percentage))
+      {
+        $percentage = "--";
+        $aggregate = "--";
+      }
+      else
+      {
+        $percentage = sprintf("%.02f", $percentage);
+        $aggregate = sprintf("%.02f", $percentage * $row['weighting']);
+        $aggregate_total += $aggregate;
+        $percentage .= "%";
+        $aggregate .= "%";
+      }
+      // Add them to the array
+      $regime_items[$loop]->percentage = $percentage;
+      $regime_items[$loop]->aggregate = $aggregate;
+    }
+    return($regime_items);
+/*
+    // Custom sort
+    usort($regime_items, "assessment_date_compare");
+  
+    $smarty->assign("student_id", $student_id);
+    $smarty->assign("regime_items", $regime_items);
+    $smarty->assign("aggregate_total", $aggregate_total);
+    $smarty->assign("weighting_total", $weighting_total);
+    $smarty->display("assessment/assessment_results.tpl");*/
+  }
+
+
 
   function get_name($id)
   {

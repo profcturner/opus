@@ -155,6 +155,8 @@ class Notelink extends DTO_Notelink
     {
       $result_array['Contact_' . $contact->user_id] = "Contact: " .$contact->real_name;
     }
+
+    // Need to add placement students
     return($result_array);
   }
 }

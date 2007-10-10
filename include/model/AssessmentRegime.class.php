@@ -99,6 +99,44 @@ class AssessmentRegime extends DTO_AssessmentRegime
     return $assessmentregimes;
   }
 
+  /**
+  * custom function for sorting arrays of regime items
+  *
+  * this function is intended to be called by usort
+  *
+  * @param AssessmentRegime $regime_item1 the first item
+  * @param AssessmentRegime $regime_item2 the second item
+  * @return -1 if the first item is less than the second, 1 otherwise
+  */
+  function assessment_date_compare($regime_item1, $regime_item2)
+  {
+    global $config;
+    $yearstart = $config['opus']['yearstart'];
+    if(empty($yearstart)) $yearstart="0930";
+
+    $year1 = $regime_item1->year;
+    $year2 = $regime_item2->year;
+
+    $end1 = $regime_item1->end;
+    $end2 = $regime_item2->end;
+
+    // Calculate how far this is from the start of the academic
+    // year (using a crude estimate in days).
+    if($end1 == 0) return -1;
+    if($end2 == 0) return 1;
+
+    // Dates are MMDD
+    // e.g. 1001 first visit, 0131 final visit
+
+    if($end1 < $yearstart) $year1++;
+    if($end2 < $yearstart) $year2++;
+
+    if($year2 > $year1) return -1;
+    if($year1 < $year2) return 1;
+    return($end1 - $end2);
+  }
+
+
   function get_id_and_field($fieldname) 
   {
     $assessmentregime = new AssessmentRegime;

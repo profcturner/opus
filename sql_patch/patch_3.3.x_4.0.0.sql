@@ -81,6 +81,12 @@ alter table assessment drop column submission_url;
 alter table assessment drop column results_url;
 alter table assessment change column assessment_id id int unsigned not null auto_increment;
 
+-- assessmenttotal --
+
+rename table assessmenttotals to assessmenttotal;
+alter table assessmenttotal change column cassessment_id regime_id int unsigned not null;
+alter table assessmenttotal add column id int unsigned auto_increment not null primary key;
+
 -- assessmentstructure --
 
 alter table assessmentstructure add column id int unsigned not null auto_increment primary key;

@@ -121,6 +121,13 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
     return  $assessmentgroupprogramme->_get_fieldnames($include_id); 
   }
 
+  function load_where($where_clause)
+  {
+    $assessmentgroupprogramme = new AssessmentGroupProgramme;
+    return $assessmentgroupprogramme->_load_where($where_clause);
+  }
+
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = AssessmentGroupProgramme::get_fields($include_id);

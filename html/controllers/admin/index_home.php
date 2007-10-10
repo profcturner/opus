@@ -101,7 +101,7 @@ function company_activity(&$waf)
   $vacancy_headings = array(
     'description'=>array('type'=>'text','size'=>30, 'header'=>true, 'listclass'=>'vacancy_description'),
     'locality'=>array('type'=>'list','size'=>30, 'header'=>true, 'listclass'=>'vacancy_locality'),
-    'status'=>array('type'=>'text','size'=>30, 'header'=>true)
+    'status'=>array('type'=>'text','size'=>30, 'header'=>true, 'listclass'=>'vacancy_status')
   );
 
   $company_headings = array(

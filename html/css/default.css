@@ -855,3 +855,7 @@ background: #ffffff;
   font-size: 0.8em;
   font-weight: normal;
 }
+
+td.vacancy_description {
+  width: 30%;
+}

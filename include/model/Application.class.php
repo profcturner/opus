@@ -29,9 +29,10 @@ class Application extends DTO_Application
   var $addedby = 0;            // Id of user who added this
 
   static $_field_defs = array(
-    'company_id'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Company'),
-    'vacancy_id'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'header'=>true, 'title'=>'Vacancy'),
-    'status'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Status', 'header'=>true)
+    'company_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'title'=>'Company', 'header'=>true),
+    'vacancy_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'header'=>true, 'title'=>'Vacancy'),
+    'status'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Status', 'header'=>true),
+    'created'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Applied', 'header'=>true)
   );
 
   function __construct() 
@@ -58,6 +59,8 @@ class Application extends DTO_Application
 
   function insert($fields) 
   {
+    $fields['created'] = date("YmdHis");
+    $fields['status'] = "unseen";
     $application = new Application;
     $application->_insert($fields);
   }

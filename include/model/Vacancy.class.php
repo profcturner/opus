@@ -254,6 +254,14 @@ class Vacancy extends DTO_Vacancy
     }
   }
 
+  function get_company_id($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Vacancy::get_id_and_field("company_id","where id='$id'");
+    return($data[$id]);
+  }
+
   function get_name($id)
   {
     $id = (int) $id; // Security

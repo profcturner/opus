@@ -83,9 +83,14 @@
     require_once("model/Student.class.php");
     $id = WA::request("id");
     $student = Student::load_by_id($id);
-    $waf->assign("changes", WA::request("changes"));
+    $assessment_group_id = Student::get_assessment_group_id($id);
+    $regime_items = Student::get_assessment_regime($id);
 
-    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
+    $waf->assign("changes", WA::request("changes"));
+    $waf->assign("assessment_group_id", $assessment_group_id);
+    $waf->assign("regime_items", $regime_items);
+
+    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("manage applications", "section=directories&function=manage_applications")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   function edit_student_do(&$waf, &$user) 
@@ -403,6 +408,13 @@
 
   // Applications
 
+  function manage_applications(&$waf, $user, $title)
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application'), array('remove','remove_application'), array('place','add_placement')), "get_all", "where student_id=$student_id", "admin:directories:student_directory:manage_applications");
+  }
+
   /**
   * tag a student as having applied for a vacancy
   */
@@ -412,10 +424,46 @@
     $student_id = $_SESSION['student_id'];
 
     require_once("model/PDSystem.class.php");
-    $cv_status = PDSystem::get_cv_status($student_id);
+    //$cv_status = PDSystem::get_cv_status($student_id);
 
-    print_r($cv_status);
+    //print_r($cv_status);
+
+    require_once("model/Application.class.php");
+    $application = new Application;
+
+    require_once("model/Vacancy.class.php");
+    require_once("model/Company.class.php");
+    $application->student_id = $student_id;
+    $application->vacancy_id = $vacancy_id;
+    $application->company_id = Vacancy::get_company_id($vacancy_id);
+    $application->_vacancy_id = Vacancy::get_name($vacancy_id);
+    $application->_company_id = Company::get_name($application->company_id);
+
+    $waf->assign("mode", "add");
+    $waf->assign("application", $application);
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
   }
+
+  function add_application_do(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    add_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id", "add_application");
+  }
+
+  function remove_application(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    remove_object($waf, $user, "Application", array("remove", "directories", "remove_application_do"), array(array("cancel","section=directories&function=manage_applications&student_id=$student_id")), "", "admin:directories:student_directory:remove_application");
+  }
+
+  function remove_application_do(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    remove_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id");
+  }
+
 
   // Contacts
 
@@ -737,6 +785,28 @@
   function remove_admin_do(&$waf, &$user) 
   {
     remove_object_do($waf, $user, "Admin", "section=directories&function=manage_admins");
+  }
+
+  // Assessments
+  function edit_assessment(&$waf, &$user)
+  {
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+
+    require_once("model/AssessmentRegime.class.php");
+    $regime_item = AssessmentRegime::load_by_id($regime_id);
+
+    // Now get the assessment itself
+    require_once("model/Assessment.class.php");
+    $assessment = Assessment::load_by_id($regime_item->assessment_id);
+    // and its structure
+    require_once("model/AssessmentStructure.class.php");
+    $assessment_structure = AssessmentStructure::get_all("where assessment_id=" . $regime_item->assessment_id);
+
+    // And any results (todo)
+
   }
 
   // Notes
