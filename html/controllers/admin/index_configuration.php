@@ -123,7 +123,11 @@
   {
     $faculty_id = (int) WA::request("id", true);
 
-    add_object($waf, $user, "School", array("add", "configuration", "add_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:organisation_details:add_school");
+    // Make sure the school is set correctly
+    $nvp_array["faculty_id"] = $faculty_id;
+    $waf->assign("nvp_array", $nvp_array);
+
+    add_object($waf, $user, "School", array("add", "configuration", "add_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:add_school");
   }
 
   function add_school_do(&$waf, &$user) 
@@ -368,7 +372,11 @@
 
     add_navigation_history($waf, "Add Programme");
 
-    add_object($waf, $user, "Programme", array("add", "configuration", "add_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:organisation_details:add_programme");
+    // Make sure the school is set correctly
+    $nvp_array["school_id"] = $school_id;
+    $waf->assign("nvp_array", $nvp_array);
+
+    add_object($waf, $user, "Programme", array("add", "configuration", "add_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:add_programme");
   }
 
   function add_programme_do(&$waf, &$user) 

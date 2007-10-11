@@ -141,12 +141,12 @@
         {if $def.multiple}
           {html_options name="$header" multiple=true}
           {php}
-          echo smarty_function_html_options(array('multiple' => true, 'name' => $this->_tpl_vars['header'] . "[]",'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars[$this->_tpl_vars['header']]), $this);
+          echo smarty_function_html_options(array('multiple' => true, 'name' => $this->_tpl_vars['header'] . "[]",'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['nvp_array'][$this->_tpl_vars['header']]), $this);
           {/php}<br />{#multiple_select#}
         {else}
           {html_options name="$header"}
           {php}
-          echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars[$this->_tpl_vars['header']]), $this);
+          echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['nvp_array'][$this->_tpl_vars['header']]), $this);
           {/php}
         {/if}
       {elseif $def.type == "numeric"}
