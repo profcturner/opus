@@ -12,8 +12,8 @@ require_once("dto/DTO_AssessmentGroupProgramme.class.php");
 class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme 
 {
   var $group_id = 0;     // The id from the assessmentgroup table
-  var $startyear = 0;   // Year the programme commenced on this group
-  var $endyear = 0;     // Year the programme finished on this group
+  var $startyear = "";   // Year the programme commenced on this group
+  var $endyear = "";     // Year the programme finished on this group
   var $programme_id = 0;  // The id for the programme
 
   function __construct() 
@@ -47,8 +47,8 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
 
   function insert($fields) 
   {
-    //if($fields['$startyear'] == 0) $fields['startyear']=null;
-    //if($fields['$endyear'] == 0) $fields['endyear']=null;
+    // Null some fields if empty
+    $fields = AssessmentGroupProgramme::set_empty_to_null($fields);
 
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
     $assessmentgroupprogramme->_insert($fields);
@@ -56,13 +56,26 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
 
   function update($fields) 
   {
-    //if($fields['$startyear'] == 0) $fields['startyear']=null;
-    //if($fields['$endyear'] == 0) $fields['endyear']=null;
+    // Null some fields if empty
+    $fields = AssessmentGroupProgramme::set_empty_to_null($fields);
 
     $assessmentgroupprogramme = AssessmentGroupProgramme::load_by_id($fields[id]);
     $assessmentgroupprogramme->_update($fields);
   }
-  
+
+  /**
+  * Goes through certain fields and sets them to null if they are "empty"
+  */
+  function set_empty_to_null($fields)
+  {
+    $set_to_null = array("startyear", "endyear");
+    foreach($set_to_null as $field)
+    {
+      if(!strlen($fields[$field])) $fields[$field] = null;
+    }
+    return($fields);
+  }
+
   /**
   * Wasteful
   */
