@@ -29,6 +29,7 @@ class Admin extends DTO_Admin
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
     'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
+    'inst_admin'=>array('type'=>'list', 'list'=>array('no', 'yes'), 'title'=>'Institutional Admin'),
     'email'=>array('type'=>'email','size'=>40, 'header'=>true),
     'voice'=>array('type'=>'text','size'=>40),
     'fax'=>array('type'=>'text','size'=>40),

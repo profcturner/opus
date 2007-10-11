@@ -173,7 +173,7 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $action_links = array(array('add', "section=configuration&function=add_facultyadmin&faculty_id=$faculty_id"));
-    $actions = array(array('edit', 'edit_facultyadmin'), array('remove', 'remove_facultyadmin'));
+    $actions = array(array('remove', 'remove_facultyadmin'));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -237,7 +237,7 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $action_links = array(array('add', "section=configuration&function=add_schooladmin&school_id=$school_id"));
-    $actions = array(array('edit', 'edit_schooladmin'), array('remove', 'remove_schooladmin'));
+    $actions = array(array('remove', 'remove_schooladmin'));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -301,7 +301,7 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $action_links = array(array('add', "section=configuration&function=add_programmeadmin&programme_id=$programme_id"));
-    $actions = array(array('edit', 'edit_programmeadmin'), array('remove', 'remove_programmeadmin'));
+    $actions = array(array('remove', 'remove_programmeadmin'));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);

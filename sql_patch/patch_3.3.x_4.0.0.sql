@@ -263,6 +263,7 @@ create table admin
   help_directory enum('yes', 'no'),
   status enum('active', 'archive'),
   policy_id int unsigned not null,
+  inst_admin enum('no', 'yes'),
   user_id int unsigned not null,
   id int unsigned not null auto_increment primary key
 );

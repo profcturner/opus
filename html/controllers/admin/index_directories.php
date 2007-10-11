@@ -750,7 +750,27 @@
 
   function manage_admins(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Admin", array(array("add","section=directories&function=add_admin")), array(array('edit', 'edit_admin'), array('remove','remove_admin')), "get_all", "", "admin:directories:admin_directory:manage_admins");
+    require_once("model/Admin.class.php");
+
+    $admin_objects = Admin::get_all("where user_type = 'admin'");
+    $root_objects  = Admin::get_all("where user_type = 'root'");
+
+    $headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+    $actions = array(array('edit', 'edit_admin'), array('remove', 'remove_admin'));
+
+    $waf->assign("headings", $headings);
+    $waf->assign("admin_objects", $admin_objects);
+    $waf->assign("root_objects", $root_objects);
+    $waf->assign("actions", $actions);
+    $waf->assign("action_links", array(array("add", "section=directories&function=add_admin")));
+
+    $waf->display("main.tpl", "admin:directories:admin_directory:manage_admins", "admin/directories/view_admins.tpl");
   }
 
   function add_admin(&$waf, &$user) 
