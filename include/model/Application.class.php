@@ -59,18 +59,37 @@ class Application extends DTO_Application
 
   function insert($fields) 
   {
+    // Null some fields if empty
+    $fields = Application::set_empty_to_null($fields);
+
     $fields['created'] = date("YmdHis");
     $fields['status'] = "unseen";
     $application = new Application;
     $application->_insert($fields);
   }
-  
+
   function update($fields) 
   {
+    // Null some fields if empty
+    $fields = Application::set_empty_to_null($fields);
+
     $application = Application::load_by_id($fields[id]);
     $application->_update($fields);
   }
-  
+
+  /**
+  * Goes through certain fields and sets them to null if they are "empty"
+  */
+  function set_empty_to_null($fields)
+  {
+    $set_to_null = array("created", "modified", "lastseen", "status_modified");
+    foreach($set_to_null as $field)
+    {
+      if(!strlen($fields[$field])) $fields[$field] = null;
+    }
+    return($fields);
+  }
+
   /**
   * Wasteful
   */
@@ -84,10 +103,10 @@ class Application extends DTO_Application
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $application = new Application;
-    return $application->_count();
+    return $application->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)

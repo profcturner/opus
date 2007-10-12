@@ -139,7 +139,7 @@
   {
     $faculty_id = (int) WA::request("id", true);
 
-    edit_object($waf, $user, "School", array("confirm", "configuration", "edit_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"]), array("faculty_id", $faculty_id)), "admin:configuration:organisation_details:edit_school");
+    edit_object($waf, $user, "School", array("confirm", "configuration", "edit_school_do"), array(array("cancel","section=configuration&function=manage_schools")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:edit_school");
   }
 
   function edit_school_do(&$waf, &$user) 
@@ -388,7 +388,7 @@
   {
     $school_id = (int) WA::request("id", true);
 
-    edit_object($waf, $user, "Programme", array("confirm", "configuration", "edit_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"]), array("school_id", $school_id)), "admin:configuration:organisation_details:edit_programme");
+    edit_object($waf, $user, "Programme", array("confirm", "configuration", "edit_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:edit_programme");
   }
 
   function edit_programme_do(&$waf, &$user) 

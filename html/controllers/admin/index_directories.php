@@ -234,8 +234,7 @@
   {
     $id = WA::request("id");
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("applicants", "section=directories&function=manage_applicants&company_id=$id"),
-    array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
   }
 
   function edit_company_do(&$waf, &$user) 
@@ -284,7 +283,31 @@
   {
     $company_id = (int) WA::request("company_id", true);
 
-    manage_objects($waf, $user, "Vacancy", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")), array(array('edit', 'edit_vacancy'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy')), "get_all", "where company_id=$company_id", "admin:directories:vacancies:manage_vacancies");
+    require_once("model/Vacancy.class.php");
+    $objects = Vacancy::get_all("where company_id=$company_id", "order by year(jobstart), status");
+    require_once("model/Application.class.php");
+    for($loop = 0; $loop < count($objects); $loop++)
+    {
+      $objects[$loop]->startyear = substr($objects[$loop]->jobstart, 0, 4);
+      $objects[$loop]->applicants = Application::count("where vacancy_id=" . $objects[$loop]->id);
+    }
+
+    $headings = array(
+      'description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
+      'closedate'=>array('type'=>'text', 'header'=>true),
+      'startyear'=>array('type'=>'text', 'header'=>true),
+      'applicants'=>array('type'=>'text', 'header'=>true),
+      'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special"), 'header'=>true)
+    );
+
+    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy'));
+
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+    $waf->assign("actions", $actions);
+    $waf->assign("action_links", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
+
+    $waf->display("main.tpl", "admin:directories:vacancies:manage_vacancies", "list.tpl");
   }
 
   function add_vacancy(&$waf, &$user) 
@@ -755,22 +778,33 @@
     $admin_objects = Admin::get_all("where user_type = 'admin'");
     $root_objects  = Admin::get_all("where user_type = 'root'");
 
-    $headings = array(
+    $admin_headings = array(
       'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
       'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
       'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
+      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true)
+      //'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+
+    $root_headings = array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
+
     $actions = array(array('edit', 'edit_admin'), array('remove', 'remove_admin'));
 
-    $waf->assign("headings", $headings);
+    $waf->assign("root_headings", $root_headings);
+    $waf->assign("admin_headings", $admin_headings);
     $waf->assign("admin_objects", $admin_objects);
     $waf->assign("root_objects", $root_objects);
     $waf->assign("actions", $actions);
     $waf->assign("action_links", array(array("add", "section=directories&function=add_admin")));
 
-    $waf->display("main.tpl", "admin:directories:admin_directory:manage_admins", "admin/directories/view_admins.tpl");
+    $waf->display("main.tpl", "admin:directories:admin_directory:manage_admins", "admin/directories/list_admins.tpl");
   }
 
   function add_admin(&$waf, &$user) 

@@ -61,6 +61,7 @@ alter table cvgroup change column group_id id int unsigned not null auto_increme
 
 alter table cvgrouptemplate add column id int unsigned auto_increment primary key;
 
+
 -- assessmentgroup --
 
 rename table assessmentgroups to assessmentgroup;
@@ -133,6 +134,13 @@ alter table programme change column course_code srs_ident varchar(30) not null;
 alter table programme change column course_name name tinytext not null;
 alter table programme change column status status enum('active', 'archive') not null;
 alter table programme change column course_id id int unsigned auto_increment not null;
+alter table programme add column cvgroup_id int unsigned;
+
+-- set default group first --
+update programme set cvgroup_id=1;
+-- TODO: copy cv groups over -- 
+
+
 
 -- schools --
 

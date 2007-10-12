@@ -99,7 +99,7 @@ class CVGroup extends DTO_CVGroup
   {
     $cvgroup = new CVGroup;
     $cvgroup_array = $cvgroup->_get_id_and_field($fieldname);
-    $cvgroup_array[0] = 'Global';
+    unset($cvgroup_array[0]);
     return $cvgroup_array;
   }
 
