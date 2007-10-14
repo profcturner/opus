@@ -42,7 +42,7 @@ class Admin extends DTO_Admin
   // This defines which ones
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email','username','password'
+    'salutation','firstname','lastname','email' // ,'username','password'
   );
 
   function __construct() 

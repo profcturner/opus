@@ -34,7 +34,7 @@ class Student extends DTO_Student
   // This defines which ones
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email','username','reg_number'
+    'salutation','firstname','lastname','email','reg_number'
   );
 
   function __construct() 
