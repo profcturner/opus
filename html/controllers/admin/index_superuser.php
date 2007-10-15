@@ -14,7 +14,7 @@
     $php_info = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $php_info);
     $waf->assign("php_info", $php_info);
   
-    $waf->display("main.tpl", "admin:superuser:view_phpinfo:view_phpinfo", "admin/advanced/view_phpinfo.tpl");
+    $waf->display("main.tpl", "admin:superuser:view_phpinfo:view_phpinfo", "super/home/view_phpinfo.tpl");
   }
 
   function edit_phonehome(&$waf, &$user) 
