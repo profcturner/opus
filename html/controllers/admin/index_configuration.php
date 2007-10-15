@@ -410,82 +410,82 @@
 
   function manage_assessmentgroups(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Assessmentgroup", array(array("add","section=configuration&function=add_assessmentgroup")), array(array('regime', 'manage_assessmentregimes'), array('edit', 'edit_assessmentgroup'), array('remove','remove_assessmentgroup')), "get_all", "", "admin:configuration:manage_assessmentgroups:manage_assessmentgroups");
+    manage_objects($waf, $user, "AssessmentGroup", array(array("add","section=configuration&function=add_assessmentgroup")), array(array('regime', 'manage_assessmentregimes'), array('edit', 'edit_assessmentgroup'), array('remove','remove_assessmentgroup')), "get_all", "", "admin:configuration:manage_assessmentgroups:manage_assessmentgroups");
   }
 
   function add_assessmentgroup(&$waf, &$user) 
   {
-    add_object($waf, $user, "Assessmentgroup", array("add", "configuration", "add_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_assessmentgroups:add_assessmentgroup");
+    add_object($waf, $user, "AssessmentGroup", array("add", "configuration", "add_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_assessmentgroups:add_assessmentgroup");
   }
 
   function add_assessmentgroup_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Assessmentgroup", "section=configuration&function=manage_assessmentgroups", "add_assessmentgroup");
+    add_object_do($waf, $user, "AssessmentGroup", "section=configuration&function=manage_assessmentgroups", "add_assessmentgroup");
   }
 
   function edit_assessmentgroup(&$waf, &$user) 
   {
-    edit_object($waf, $user, "Assessmentgroup", array("confirm", "configuration", "edit_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_assessmentgroups:edit_assessmentgroup");
+    edit_object($waf, $user, "AssessmentGroup", array("confirm", "configuration", "edit_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), array(array("user_id",$user["user_id"])), "admin:configuration:manage_assessmentgroups:edit_assessmentgroup");
   }
 
   function edit_assessmentgroup_do(&$waf, &$user) 
   {
-    edit_object_do($waf, $user, "Assessmentgroup", "section=configuration&function=manage_assessmentgroups", "edit_assessmentgroup");
+    edit_object_do($waf, $user, "AssessmentGroup", "section=configuration&function=manage_assessmentgroups", "edit_assessmentgroup");
   }
 
   function remove_assessmentgroup(&$waf, &$user) 
   {
-    remove_object($waf, $user, "Assessmentgroup", array("remove", "configuration", "remove_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentgroup");
+    remove_object($waf, $user, "AssessmentGroup", array("remove", "configuration", "remove_assessmentgroup_do"), array(array("cancel","section=configuration&function=manage_assessmentgroups")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentgroup");
   }
 
   function remove_assessmentgroup_do(&$waf, &$user) 
   {
-    remove_object_do($waf, $user, "Assessmentgroup", "section=configuration&function=manage_assessmentgroups");
+    remove_object_do($waf, $user, "AssessmentGroup", "section=configuration&function=manage_assessmentgroups");
   }
 
-  // Assessmentregimes
+  // AssessmentRegimes
 
   function manage_assessmentregimes(&$waf, $user, $title)
   {
     $group_id = (int) WA::request('id', true);
 
-    manage_objects($waf, $user, "Assessmentregime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", "where group_id=$group_id", "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
+    manage_objects($waf, $user, "AssessmentRegime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", "where group_id=$group_id", "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
   }
 
   function add_assessmentregime(&$waf, &$user) 
   {
     $group_id = (int) WA::request('id', true);
 
-    add_object($waf, $user, "Assessmentregime", array("add", "configuration", "add_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:add_assessmentregime");
+    add_object($waf, $user, "AssessmentRegime", array("add", "configuration", "add_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:add_assessmentregime");
   }
 
   function add_assessmentregime_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes", "add_assessmentregime");
+    add_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes", "add_assessmentregime");
   }
 
   function edit_assessmentregime(&$waf, &$user) 
   {
     $group_id = (int) WA::request('id', true);
 
-    edit_object($waf, $user, "Assessmentregime", array("confirm", "configuration", "edit_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:edit_assessmentregime");
+    edit_object($waf, $user, "AssessmentRegime", array("confirm", "configuration", "edit_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:edit_assessmentregime");
   }
 
   function edit_assessmentregime_do(&$waf, &$user) 
   {
-    edit_object_do($waf, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes", "edit_assessmentregime");
+    edit_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes", "edit_assessmentregime");
   }
 
   function remove_assessmentregime(&$waf, &$user) 
   {
     $group_id = (int) WA::request('id', true);
 
-    remove_object($waf, $user, "Assessmentregime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentregime");
+    remove_object($waf, $user, "AssessmentRegime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentregime");
   }
 
   function remove_assessmentregime_do(&$waf, &$user) 
   {
-    remove_object_do($waf, $user, "Assessmentregime", "section=configuration&function=manage_assessmentregimes");
+    remove_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes");
   }
 
   // AssessmentGroupProgrammes
