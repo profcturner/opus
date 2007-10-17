@@ -71,7 +71,7 @@
           <ul>
 {section loop=$sec name="subsec"}
             <li> 
-              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}">{$sec[subsec][0]|capitalize}</a>
+              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if}{if $sec[subsec][4]}href="{$sec[subsec][4]}">{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}">{/if}{$sec[subsec][0]|capitalize}</a>
             </li>
 {/section}
           </ul>
@@ -91,7 +91,7 @@
 {if $config[opus][cleanurls]} 
           <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{#application_url#}{$sec[subsec][1]}/{$sec[subsec][3]}">{$sec[subsec][0]|capitalize}</a>
 {else}
-         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}">{$sec[subsec][0]|capitalize}</a>
+         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} sjsj="{$sec[subsec][4]}"{if $sec[subsec][4]}href="{$sec[subsec][4]}"{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}">{$sec[subsec][0]|capitalize}{/if}</a>
 {/if} 
         </li>
 {/section}
@@ -134,10 +134,10 @@ Actions
   </div>
   <div id="footer">
     <a href="?section=information&function=help_directory">{#help_directory#}</a> |
-    <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#copyright#}</a> |
-    <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#privacy#}</a> |
-    <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#terms_conditions#}</a> |
-    <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#get_support#}</a> |
+    <a href="?section=information&function=copyright">{#copyright#}</a> |
+    <a href="?section=information&function=privacy">{#privacy#}</a> |
+    <a href="?section=information&function=terms_conditions">{#terms_conditions#}</a> |
+    <a href="http://foss.ulster.ac.uk/support/?func=additem&group=opus">{#get_support#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#report_a_bug#}</a>
     {if $config.opus.benchmarking}| <small>Compile Time: {$benchmark->elapsed()|string_format:"%.2f"} seconds</small>{/if}
   </div>

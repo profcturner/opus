@@ -1,3 +1,3 @@
-<div id="system_management">
+<div id="php_info">
   {$php_info}
 </div>

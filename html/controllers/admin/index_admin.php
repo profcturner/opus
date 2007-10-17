@@ -28,6 +28,7 @@ function nav_admin()
     "information"=>array
     (
       array("resources", "information", "list_resources", "list_resources"),
+      array("help directory", "information", "help_directory", "help_directory"), 
       array("reports", "information", "list_reports", "list_reports"),
       array("system status", "information", "system_status", "system_status"), 
       array("view logs", "information", "view_logs", "view_logs") 
@@ -64,9 +65,15 @@ function nav_admin()
     )
   );
 
+  $student_name = "student";
+  if(isset($_SESSION['student_id']))
+  {
+    require_once("model/Student.class.php");
+    $student_name = Student::get_name($_SESSION['student_id']);
+  }
   $student_nav = array
   (
-    "student"=>array
+    $student_name=>array
     (
       array("edit", "student", "edit_student", "edit_student"),
       array("home", "student", "placement_home", "placement_home"),

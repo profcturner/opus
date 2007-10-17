@@ -13,17 +13,17 @@ class Lastitems
     $this->maxindex = -1;
   }
 
-  function add_here($human)
+  function add_here($human, $unique_id, $human_long="")
   {
+    $lastitem = new Lastitem($human, $unique_id, $_SERVER['REQUEST_URI'], $human_long);
+    $this->add($lastitem);
   }
 
   function add($lastitem)
   {
     $index = $this->get_index($lastitem);
-    if($index)
+    if($index != -1)
     {
-      //echo "This items exists at offset $index...\n";
-      //echo "There are " . count($this->queue) . " items now...\n";
       // This is already on the list, unset it...
       unset($this->queue[$index]);
       // and then add...
@@ -52,7 +52,7 @@ class Lastitems
     foreach($this->queue as $lastitem)
     {
       array_push($items,
-        array($lastitem->human, "recent", "goto_last", "goto_last", $lastitem->url));
+        array($lastitem->human, "recent", "last_items", "last_items", $lastitem->url));
     }
     $nav = array
     (
@@ -71,37 +71,30 @@ class Lastitems
     // Already present?
     for($index = 0; $index <= $this->maxindex; $index++)
     {
-      //echo "@";
-      //if($lastitem->type == $this->queue[$index]->type) echo "t";
-      //if($lastitem->id == $this->queue[$index]->id) echo "i";
-      //echo "\n$index : " . $lastitem->id . " : " . $this->queue[$index]->id; 
-      //echo "\n$index : " . $lastitem->type . " : " . $this->queue[$index]->type; 
-
-
-      if(($lastitem->type == $this->queue[$index]->type) &&
-        ($lastitem->id == $this->queue[$index]->id)) return($index);
+      if($lastitem->unique_ident == $this->queue[$index]->unique_ident) return($index);
     }
-    return(false);
+    return(-1);
   }
 }
 
 class Lastitem
 {
-  var $type;
-  var $id;
   var $human;
   var $human_long;
   var $url;
+  var $unique_ident;
   var $when;
 
-  function __construct($type, $id, $human, $url, $human_long="")
+  function __construct($human, $unique_ident, $url, $human_long="")
   {
-    $this->type = $type;
-    $this->id = $id;
     $this->human = $human;
+    $this->unique_ident = $unique_ident;
     $this->url = $url;
     $this->when = date("YmdHis");
-    $this->human_long = $human_long;
+    if(strlen($human_long))
+      $this->human_long = $human_long;
+    else
+      $this->human_long = $human;
   }
 
 }

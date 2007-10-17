@@ -75,6 +75,11 @@
     $id = $_SESSION['student_id'] = WA::request("id");
     $changes = WA::request("changes");
 
+    require_once("model/Student.class.php");
+    $student_name = Student::get_name($id);
+    $_SESSION['lastitems']->add_here("s:$student_name", "s:$id", "Student: $student_name");
+
+
     goto("directories", "edit_student_real&id=$id&changes=$changes");
   }
 
@@ -86,6 +91,7 @@
     $assessment_group_id = Student::get_assessment_group_id($id);
     $regime_items = Student::get_assessment_regime($id);
 
+    //$_SESSION['lastitems']->add_here("s:" . $student->real_name, "s:$id", "Student: " . $student->real_name);
     $waf->assign("changes", WA::request("changes"));
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
@@ -234,6 +240,10 @@
   {
     $id = WA::request("id");
 
+    require_once("model/Company.class.php");
+    $company_name = Company::get_name($id);
+    $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
+ 
     edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
   }
 
@@ -260,6 +270,10 @@
 
     require_once("model/Company.class.php");
     $company = Company::load_by_id($id);
+
+    // Make "recent" menu entry
+    $company_name = $company->name;
+    $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
 
     // Some lookups
     require_once("model/Activitytype.class.php");
@@ -358,6 +372,12 @@
   function edit_vacancy(&$waf, &$user) 
   {
     $id = (int) WA::request("id");
+
+    // Make a "recent" menu item
+    require_once("model/Vacancy.class.php");
+    $vacancy_desc = Vacancy::get_name($id);
+    $_SESSION['lastitems']->add_here("v:$vacancy_desc", "v:$id", "Vacancy: $vacancy_desc");
+
     $company_id = (int) WA::request("company_id", true);
     $waf->assign("xinha_editor", true);
 
@@ -392,6 +412,10 @@
 
     require_once("model/Vacancy.class.php");
     $vacancy = Vacancy::load_by_id($id);
+
+    // Make a "recent" menu item
+    $vacancy_desc = $vacancy->description;
+    $_SESSION['lastitems']->add_here("v:$vacancy_desc", "v:$id", "Vacancy: $vacancy_desc");
 
     // Some lookups
     require_once("model/Activitytype.class.php");
@@ -487,6 +511,15 @@
     remove_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id");
   }
 
+  function manage_applicants(&$waf, $user, $title)
+  {
+    $vacancy_id = (int) WA::request("id");
+
+    require_once("model/Application.class.php");
+    $applications = Application::get_all("where vacancy_id=$vacancy_id", "order by created");
+    $waf->assign("applications", $applications);
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/manage_applicants.tpl");
+  }
 
   // Contacts
 
