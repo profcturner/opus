@@ -7,6 +7,7 @@ class ldap_uu
     global $waf;
     global $config_sensitive;
 
+    if(!strlen($username) || !strlen($password)) return false;
     $ldap_host = $config_sensitive['opus']['auth']['ldap'];
     if(!strlen($ldap_host)) return false;
 
@@ -53,12 +54,9 @@ class ldap_uu
       }
       else
       {
-        $valid = False;
+        // Nothing coming back
+        return false;
       }
-    }
-    else
-    {
-      $valid = False;
     }
 
     $auth_user['valid'] = True;
