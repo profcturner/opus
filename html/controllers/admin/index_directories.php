@@ -236,13 +236,22 @@
     add_object_do($waf, $user, "Company", "section=directories&function=manage_companies", "add_company");
   }
 
-  function edit_company(&$waf, &$user) 
+  function edit_company(&$waf, &$user)
   {
-    $id = WA::request("id");
+    // Put student in session to "pick it up"
+    $id = $_SESSION['company_id'] = WA::request("id");
 
     require_once("model/Company.class.php");
     $company_name = Company::get_name($id);
     $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
+
+    goto("directories", "edit_company_real&id=$id");
+  }
+
+  function edit_company_real(&$waf, &$user) 
+  {
+    $id = WA::request("id");
+
  
     edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
   }

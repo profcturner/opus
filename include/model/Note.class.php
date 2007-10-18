@@ -62,7 +62,7 @@ class Note extends DTO_Note
     $note = new Note;
     // Creation time is NOW.
     $fields['date'] = date("YmdHis");
-    $notelinks = $fields['notelinks']
+    $notelinks = $fields['notelinks'];
     unset($fields['notelinks']);
 
     $note->_insert($fields);

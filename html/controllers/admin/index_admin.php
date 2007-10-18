@@ -85,6 +85,27 @@ function nav_admin()
     )
   );
 
+  if(isset($_SESSION['company_id']))
+  {
+    $company_name = "company";
+
+    require_once("model/Company.class.php");
+    $company_name = Company::get_name($_SESSION['company_id']);
+
+    $company_nav = array
+    (
+      $company_name=>array
+      (
+        array("edit", "company", "edit_company", "edit_company"),
+        array("view", "company", "view_company", "view_company"),
+        array("vacancies", "company", "manage_vacancies", "manage_vacancies"),
+        array("contacts", "company", "manage_contacts", "manage_contacts"),
+        array("notes", "company", "list_notes", "list_notes"),
+        array("drop", "company", "drop_company", "drop_company")
+      )
+    );
+  }
+
   $last_item_nav = $_SESSION['lastitems']->get_nav();
 
   if(User::is_root())
@@ -100,6 +121,12 @@ function nav_admin()
   {
     $nav = array_merge_recursive($nav, $student_nav);
   }
+  if(isset($_SESSION['company_id']))
+  {
+    $nav = array_merge_recursive($nav, $company_nav);
+  }
+
+
   return(array_merge_recursive($nav, $last_item_nav));
 }
 

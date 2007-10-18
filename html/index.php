@@ -163,6 +163,22 @@ function load_user($username)
   $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
   $_SESSION['waf']['user'] = $waf->user;
   User::update($fields);
+  drop_cookie();
+  $waf->assign("cookie", $_COOKIE);
+}
+
+function drop_cookie()
+{
+  global $waf;
+  $reg_number = $waf->user['opus']['reg_number'];
+
+  if(strlen($reg_number))
+  {
+    require_once("WA.Cookie.class.php");
+    $expiry = time() + 1800;
+    $cookie_value="reg_number=$reg_number&session_id=" . session_id();
+    Cookie::write("OPUSTicket",  $cookie_value, $expiry, '/', 'localhost');
+  }
 }
 
 /**
