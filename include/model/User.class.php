@@ -247,6 +247,8 @@ Class User extends DTO_User
     $user = new User;
     $user->username = $username;
     $user->_load_by_field('username');
+    // Return false is no user was found
+    if(!strlen($user->user_type)) return false;
     return $user;
   }
 

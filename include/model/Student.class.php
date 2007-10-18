@@ -27,14 +27,14 @@ class Student extends DTO_Student
     'email'=>array('type'=>'email','size'=>40),
  //   'progress'=>array('type'=>'list', 'list'=>array()),
     'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year'),
-    'placement_status'=>array('type'=>'list', 'list'=>array('Required','Placed','Exempt Applied','Exempt Given','No Info','Left Course','Suspended','To final year','Not Eligible')),
+    'placement_status'=>array('type'=>'list', 'list'=>array('Required'=>'Required','Placed'=>'Placed','Exempt Applied'=>'Exempt Applied','Exempt Given'=>'Exempt Given','No Info'=>'No Info','Left Course'=>'Left Course','Suspended'=>'Suspended','To final year'=>'To final year','Not Eligible'=>'Not Eligible')),
     'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
   );
 
   // This defines which ones
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email','reg_number'
+    'salutation','firstname','lastname','email'
   );
 
   function __construct() 

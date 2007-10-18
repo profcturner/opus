@@ -103,8 +103,8 @@ function main()
     $waf->assign("nav", $nav);
     // call user function
     $waf->call_user_function($user, $section, $function, "home", "error");
-  } 
-  else 
+  }
+  else
   {
     // Show the login screen
     login($waf);
@@ -120,6 +120,14 @@ function load_user($username)
 
   // Load the user from the table, these next actions are done each access
   $user = User::load_by_username($username);
+  if($user == false)
+  {
+    $waf->log("no user account found for authenticated user");
+    $waf->logout_user();
+    unset($_SESSION);
+    session_destroy();
+    $waf->halt("error:no_user");
+  }
 
   $fields['id'] = $user->id;
   $fields['last_time'] = $now;

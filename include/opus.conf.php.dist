@@ -55,6 +55,9 @@ $config_sensitive['opus']['preference']['dsn'] = "mysql:host=localhost;dbname=pr
 $config_sensitive['opus']['preference']['username'] = "root";
 $config_sensitive['opus']['preference']['password'] = "test";
 
+// LDAP authentication
+$config_sensitive['opus']['auth']['ldap'] = "ldap.ulster.ac.uk";
+
 
 // PDSystem configuration options, use this to define the linked PDSystem (if any)
 // Make the URL blank if the PDSystem is not installed
