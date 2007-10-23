@@ -107,7 +107,7 @@
     $waf->assign("placement_fields", $placement_fields);
     $waf->assign("placement_options", $placement_options);
 
-    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("manage applications", "section=directories&function=manage_applications")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
+    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("manage applications", "section=directories&function=manage_applications")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   function edit_student_do(&$waf, &$user) 
@@ -1041,6 +1041,24 @@
   function add_note_do(&$waf, &$user) 
   {
     add_object_do($waf, $user, "Note", "section=directories&function=manage_admins", "add_admin");
+  }
+
+  function reset_password(&$waf)
+  {
+    $user_id = (int) WA::request("user_id");
+    $error_function = WA::request("error_function");
+
+    require_once("model/User.class.php");
+    $success = User::reset_password($id);
+
+    if($success || empty($error_function))
+    {
+      header("location:" . $_SERVER['HTTP_REFERER'] . "&changes=true");
+    }
+    else
+    {
+      goto("directories", "$error_function");
+    }
   }
 
 ?>

@@ -138,8 +138,6 @@ Class User extends DTO_User
     return($user_id);
   }
 
-
-
   function update($fields) 
   {
     $user = User::load_by_id($fields[id]);
@@ -161,6 +159,39 @@ Class User extends DTO_User
   {
     $user = new User;
     return $user->_count($where);
+  }
+
+  function reset_password($id = 0)
+  {
+    global $waf;
+    // Non admins can only do this for themselves
+    if(!User::is_admin())
+    {
+      $id = User::get_id();
+    }
+    $user = User::load_by_id($id);
+    if(!strlen($user->email))
+    {
+      $waf->log("no email for " . $user->real_name . " so password cannot be sent");
+      return(false);
+    }
+    $fields = array();
+    $fields['id']         = $user->id;
+    $fields['password']   = $user->password = User::make_password();
+
+    // Write changes to user
+    $user->update($fields);
+
+    // Other information required for email
+    $fields['salutation'] = $user->salutation;
+    $fields['firstname']  = $user->firstname;
+    $fields['lastname']   = $user->lastname;
+    $fields['username']   = $user->username;
+    $fields['email']      = $user->email;
+
+    User::email_password($fields, $fields['password']);
+    $waf->log($user->real_name . " has been sent a new password to " . $user->email);
+    return(true);
   }
 
   function email_password($fields, $password)
