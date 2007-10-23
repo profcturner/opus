@@ -98,6 +98,7 @@ class Student extends DTO_Student
     global $waf;
     // We have a potential security problem here, we should check id and user_id are really linked.
     $student = Student::load_by_id($fields['id']);
+    if(!isset($fields['user_id'])) $fields['user_id'] = $student->user_id;
     if($student->user_id != $fields['user_id'])
     {
       $waf->security_log("attempt to update student with mismatching user_id fields");

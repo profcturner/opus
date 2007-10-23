@@ -51,6 +51,34 @@
     $opus->display("main.tpl", "admin:information:view_logs:view_logs", "admin/information/log_viewer.tpl");
   }
 
+  function help_directory(&$waf)
+  {
+    require_once("model/Admin.class.php");
+    require_once("model/HelpDirectory.class.php");
+
+    $student_id = $_SESSION['student_id'];
+    if(empty($student_id)) $student_id = WA::request("student_id");
+
+    if($student_id)
+    {
+      require_once("model/Student.class.php");
+      $student = Student::load_by_id($student_id);
+      $waf->assign("student_id", $student_id);
+      $waf->assign("student", $student);
+    }
+
+    $root_admins = HelpDirectory::get_root_admins();
+
+    $admin_headings = Admin::get_admin_list_headings();
+    $root_headings = Admin::get_root_list_headings();
+
+    $waf->assign("root_admins", $root_admins);
+    $waf->assign("admin_headings", $admin_headings);
+    $waf->assign("root_headings", $root_headings);
+
+    $waf->display("main.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
+  }
+
   function system_status(&$waf)
   {
     // Find any ceiling on the number of users to show

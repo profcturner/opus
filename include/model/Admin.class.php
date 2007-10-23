@@ -35,7 +35,7 @@ class Admin extends DTO_Admin
     'fax'=>array('type'=>'text','size'=>40),
     'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
     'signature'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
-    'help_directory'=>array('type'=>'list', 'list'=>array('yes', 'no')),
+    'help_directory'=>array('type'=>'list', 'list'=>array('yes'=>'Show', 'no'=>'Don\'t Show')),
     'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
   );
 
@@ -58,6 +58,29 @@ class Admin extends DTO_Admin
   function get_extended_fields()
   {
     return self::$_extended_fields;
+  }
+
+  function get_admin_list_headings()
+  {
+    return array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
+      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true)
+      //'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
+  }
+
+  function get_root_list_headings()
+  {
+    return array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
+      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+    );
   }
 
   function load_by_id($id) 

@@ -65,25 +65,27 @@ function nav_admin()
     )
   );
 
-  $student_name = "student";
   if(isset($_SESSION['student_id']))
   {
+    $student_name = "student";
+
     require_once("model/Student.class.php");
     $student_name = Student::get_name($_SESSION['student_id']);
-  }
-  $student_nav = array
-  (
-    $student_name=>array
+
+    $student_nav = array
     (
-      array("edit", "student", "edit_student", "edit_student"),
-      array("home", "student", "placement_home", "placement_home"),
-      array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
-      array("applications", "student", "manage_applications", "manage_applications"),
-      array("assessment", "student", "view_assessments", "view_assessments"),
-      array("notes", "student", "manage_notes", "manage_notes"),
-      array("drop", "student", "drop_student", "drop_student")
-    )
-  );
+      $student_name=>array
+      (
+        array("edit", "student", "edit_student", "edit_student"),
+        array("home", "student", "placement_home", "placement_home"),
+        array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
+        array("applications", "student", "manage_applications", "manage_applications"),
+        array("assessment", "student", "view_assessments", "view_assessments"),
+        array("notes", "student", "list_notes", "list_notes"),
+        array("drop", "student", "drop_student", "drop_student")
+      )
+    );
+  }
 
   if(isset($_SESSION['company_id']))
   {

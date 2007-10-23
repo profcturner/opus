@@ -72,6 +72,11 @@ class Application extends DTO_Application
   {
     // Null some fields if empty
     $fields = Application::set_empty_to_null($fields);
+    require_once("model/User.class.php");
+    if(User::is_student())
+    {
+      $fields['modified'] = date("YmdHis");
+    }
 
     $application = Application::load_by_id($fields[id]);
     $application->_update($fields);
@@ -123,6 +128,57 @@ class Application extends DTO_Application
     return $applications;
   }
 
+  /**
+  * fetches triaged, augments lists of applications for a vacancy
+  *
+  * the applications are augmented with the student name and programme name
+  *
+  * @param int $vacancy_id the id of the vacancy to fetch applications for
+  * @return an array, containing arrays of placed, available and unavailable students
+  */
+  function get_all_triaged($vacancy_id)
+  {
+    $vacancy_id = (int) $vacancy_id; // security
+    // Get an initial list
+    $applications = Application::get_all("where vacancy_id = $vacancy_id", "order by created");
+
+    // Now start to triage, and augment.
+    $placed = array();
+    $available = array();
+    $unavailable = array();
+
+    require_once("model/Student.class.php");
+    require_once("model/Programme.class.php");
+    foreach($applications as $application)
+    {
+      // Get the student's details
+      $student = Student::load_by_id($application->student_id);
+      // Augment the record
+      $application->_student_real_name = $student->real_name;
+      $application->_student_programme = Programme::get_name($student->programme_id);
+
+      if($student->placement_status == 'Required')
+      {
+        array_push($available, $application);
+      }
+      else
+      {
+        if($student->placement_status == 'Placed')
+        {
+          // With this company?
+          require_once("model/Placement.class.php");
+          if(Placement::count("where vacancy_id=$vacancy_id and student_id=" . $student->id))
+          {
+            array_push($placed, $application);
+          }
+        // Otherwise, the student is placed elsewhere or has another status
+        array_push($unavailable, $application);
+        }
+      }
+    }
+    return(array($placed, $available, $unavailable));
+  }
+
   function get_id_and_field($fieldname) 
   {
     $application = new Application;
@@ -143,19 +199,17 @@ class Application extends DTO_Application
     $application = new Application;
     return  $application->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Application::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
-
   }
 }
 ?>

@@ -79,22 +79,33 @@
     $student_name = Student::get_name($id);
     $_SESSION['lastitems']->add_here("s:$student_name", "s:$id", "Student: $student_name");
 
-
     goto("directories", "edit_student_real&id=$id&changes=$changes");
   }
 
   function edit_student_real(&$waf, &$user)
   {
     require_once("model/Student.class.php");
-    $id = WA::request("id");
+    $id = (int) WA::request("id");
     $student = Student::load_by_id($id);
     $assessment_group_id = Student::get_assessment_group_id($id);
     $regime_items = Student::get_assessment_regime($id);
+    require_once("model/Placement.class.php");
+    $placements = Placement::get_all("where student_id=$id", "order by jobstart");
+    $placement_fields = array(
+       'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
+       'company_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'title'=>'Company','header'=>true),
+       'jobstart'=>array('type'=>'text', 'size'=>20, 'title'=>'Start','header'=>true),
+       'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
+    );
+    $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'));
 
-    //$_SESSION['lastitems']->add_here("s:" . $student->real_name, "s:$id", "Student: " . $student->real_name);
     $waf->assign("changes", WA::request("changes"));
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
+    $waf->assign("assessed_id", $student->user_id);
+    $waf->assign("placements", $placements);
+    $waf->assign("placement_fields", $placement_fields);
+    $waf->assign("placement_options", $placement_options);
 
     edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("manage applications", "section=directories&function=manage_applications")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
@@ -525,10 +536,75 @@
     $vacancy_id = (int) WA::request("id");
 
     require_once("model/Application.class.php");
-    $applications = Application::get_all("where vacancy_id=$vacancy_id", "order by created");
-    $waf->assign("applications", $applications);
+    $possible_status = array('unseen','seen','invited to interview','missed interview','offered','unsuccessful');
+    $all_applications = Application::get_all_triaged($vacancy_id);
+    $waf->assign("placed", $all_applications[0]);
+    $waf->assign("available", $all_applications[1]);
+    $waf->assign("unavailable", $all_applications[2]);
+    $waf->assign("status_values", $possible_status);
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/manage_applicants.tpl");
   }
+
+  // Placements
+
+  /**
+  * record a placement with a vacancy
+  */
+  function add_placement(&$waf, &$user)
+  {
+    $application_id = (int) WA::request("id");
+
+    require_once("model/Application.class.php");
+    $application = Application::load_by_id($application_id);
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id($application->vacancy_id);
+
+    // Set up some fields from the vacancy
+    $nvp_array['jobstart'] = $vacancy->jobstart;
+    $nvp_array['jobend'] = $vacancy->jobend;
+    $nvp_array['position'] = $vacancy->description;
+    $nvp_array['salary'] = $vacancy->salary;
+    $waf->assign("nvp_array", $nvp_array);
+
+    add_object($waf, $user, "Placement", array("add", "directories", "add_placement_do"), array(array("cancel","section=directories&function=edit_student&id=" . $application->student_id)), array(array("company_id", $application->company_id), array("vacancy_id", $application->vacancy_id), array("student_id", $application->student_id)), "admin:directories:student_directory:add_placement");
+  }
+
+  function add_placement_do(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    add_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id", "add_placement");
+  }
+
+  function edit_placement(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    edit_object($waf, $user, "Placement", array("confirm", "directories", "edit_placement_do"), array(array("cancel","section=directories&function=edit_student&id=$student_id")), array(array("student_id", $student_id), array("user_id",$user["user_id"])), "admin:directories:placement_directory:edit_placement");
+  }
+
+  function edit_placement_do(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    edit_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id", "edit_placement");
+  }
+
+
+  function remove_placement(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    remove_object($waf, $user, "Placement", array("remove", "directories", "remove_placement_do"), array(array("cancel","section=directories&function=manage_placements&student_id=$student_id")), "", "admin:directories:student_directory:remove_placement");
+  }
+
+  function remove_placement_do(&$waf, &$user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    remove_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id");
+  }
+
+
 
   // Contacts
 
@@ -820,22 +896,8 @@
     $admin_objects = Admin::get_all("where user_type = 'admin'");
     $root_objects  = Admin::get_all("where user_type = 'root'");
 
-    $admin_headings = array(
-      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
-      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
-      'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
-      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
-      'email'=>array('type'=>'email','size'=>40, 'header'=>true)
-      //'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
-    );
-
-    $root_headings = array(
-      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
-      'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
-      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
-      'email'=>array('type'=>'email','size'=>40, 'header'=>true),
-      'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
-    );
+    $admin_headings = Admin::get_admin_list_headings();
+    $root_headings = Admin::get_root_list_headings();
 
     $actions = array(array('edit', 'edit_admin'), array('remove', 'remove_admin'));
 
@@ -891,18 +953,37 @@
     // and for whom
     $assessed_id = (int) WA::request("assessed_id");
 
+    require_once("model/Student.class.php");
+    $student = Student::load_by_id($assessed_id);
     require_once("model/AssessmentRegime.class.php");
     $regime_item = AssessmentRegime::load_by_id($regime_id);
-
     // Now get the assessment itself
     require_once("model/Assessment.class.php");
     $assessment = Assessment::load_by_id($regime_item->assessment_id);
     // and its structure
     require_once("model/AssessmentStructure.class.php");
     $assessment_structure = AssessmentStructure::get_all("where assessment_id=" . $regime_item->assessment_id);
-
     // And any results (todo)
+    require_once("model/AssessmentTotal.class.php");
+    $assessment_total = AssessmentTotal::get_all("where regime_id=$regime_id and assessed_id=$assessed_id");
+    if($assessment_total[0]->assessor_id)
+    {
+      require_once("model/User.class.php");
+      $assessor = User::load_by_id($assessor);
+    }
+    require_once("model/AssessmentResult.class.php");
+    $assessment_results = AssessmentResult::get_all("where regime_id=$regime_id and assessed_id=$assessed_id");
 
+    // Assign this all to Smarty
+    $waf->assign("assessed_user", $student);
+    $waf->assign("assessor", $assessor);
+    $waf->assign("assessment", $assessment);
+    $waf->assign("assessment_structure", $assessment_structure);
+    $waf->assign("assessment_total", $assessment_total[0]);
+    $waf->assign("assessment_results", $assessment_results);
+    $waf->assign("regime_item", $regime_item);
+
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
   // Notes

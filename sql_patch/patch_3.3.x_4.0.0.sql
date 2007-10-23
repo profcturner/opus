@@ -1,4 +1,9 @@
 
+-- placement --
+
+alter table placement change column placement_id id int unsigned auto_increment;
+alter table placement change column supervisor_surname supervisor_lastname tinytext;
+
 -- notes --
 
 rename table notes to note;
@@ -87,6 +92,11 @@ alter table assessment change column assessment_id id int unsigned not null auto
 rename table assessmenttotals to assessmenttotal;
 alter table assessmenttotal change column cassessment_id regime_id int unsigned not null;
 alter table assessmenttotal add column id int unsigned auto_increment not null primary key;
+
+rename table assessmentresults to assessmentresult;
+alter table assessmentresult change column cassessment_id regime_id int unsigned not null;
+alter table assessmentresult add column id int unsigned not null auto_increment primary key;
+
 
 -- assessmentstructure --
 

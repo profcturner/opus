@@ -9,6 +9,11 @@
     goto("directories", "edit_student&id=$id");
   }
 
+  function vacancy_directory(&$waf)
+  {
+    goto("directories", "vacancy_directory");
+  }
+
   function manage_applications(&$waf, $user, $title)
   {
     $student_id = (int) WA::request("student_id", true);
@@ -23,8 +28,14 @@
     require_once("model/Student.class.php");
     $regime_items = Student::get_assessment_regime($id);
     $waf->assign("regime_items", $regime_items);
+    $waf->assign("assessed_id", $id);
 
     $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
+  }
+
+  function list_notes(&$waf)
+  {
+    goto("directories", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);
   }
 
   /**

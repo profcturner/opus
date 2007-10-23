@@ -4,6 +4,13 @@
 {if $changes}{#changes_applied#}{/if}
 {include file="manage.tpl"}
 
+<h3>{#placement_history#}</h3>
+{if $placements}
+{include file="list.tpl" objects=$placements headings=$placement_fields actions=$placement_options}
+{else}
+{#no_history#}
+{/if}
+
 <h3>Timeline</h3>
 <img width="600" height="100" src="?section=directories&function=display_timeline&student_id={$object->user_id}" />
 
