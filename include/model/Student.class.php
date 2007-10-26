@@ -155,6 +155,12 @@ class Student extends DTO_Student
     return $students;
   }
 
+  function get_ids($where_clause="", $order_clause="")
+  {
+    $student = new Student;
+    return($student->_get_ids($where_clause, $order_clause));
+  }
+
   function get_id_and_field($fieldname) 
   {
     $students = new Student;
@@ -326,7 +332,15 @@ class Student extends DTO_Student
     $smarty->display("assessment/assessment_results.tpl");*/
   }
 
+  function get_last_application_time($id)
+  {
+    require_once("model/Application.class.php");
+    // Get the last application!
+    $applications = Application::_get_all("where student_id=$id", "order by created DESC", 0, 1);
+    $application = $applications[0];
 
+    return $application->created;
+  }
 
   function get_name($id)
   {

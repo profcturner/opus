@@ -37,8 +37,8 @@ class Vacancy extends DTO_Vacancy
     'description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
     'vacancy_type'=>array('type'=>'lookup', 'object'=>'vacancytype', 'value'=>'name', 'title'=>'Type', 'var'=>'vacancytypes'),
     'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true),
-    'jobstart'=>array('type'=>'date', 'inputstyle'=>'popup', 'required'=>'true'),
-    'jobend'=>array('type'=>'date', 'inputstyle'=>'popup'),
+    'jobstart'=>array('type'=>'date', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date'),
+    'jobend'=>array('type'=>'date', 'inputstyle'=>'popup', 'title'=>'Job Finish Date'),
     'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1'),
     'address2'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 2'),
     'address3'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 3'),
@@ -48,7 +48,7 @@ class Vacancy extends DTO_Vacancy
     'postcode'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20, 'title'=>'Postcode'),
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
     'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special")),
-    'closedate'=>array('type'=>'date', 'inputstyle'=>'popup'),
+    'closedate'=>array('type'=>'date', 'inputstyle'=>'popup', 'title'=>'Application Deadline'),
     'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml')
      );
 
@@ -270,6 +270,61 @@ class Vacancy extends DTO_Vacancy
     return($data[$id]);
   }
 
+  /**
+  * checks for vacancies that are open and past their close date, and closes them
+  */
+  function close_expired_vacancies()
+  {
+    $now = date("YmdHis");
+    $vacancies = Vacancy::get_ids("where status != 'closed' and $now > closedate");
+
+    foreach($vacancies as $vacancy_id)
+    {
+      Vacancy::close_vacancy($vacancy_id);
+    }
+  }
+
+  /**
+  * closes a given vacancy, and notifies the company contact
+  */
+  function close_vacancy($vacancy_id)
+  {
+    global $waf;
+
+    $vacancy = Vacancy::load_by_id($vacancy_id);
+    // Perform the close
+    $vacancy->status = 'closed';
+    $vacancy->_update();
+    $waf->log("vacancy " . $vacancy->description . " (Company " . $vacancy->_company_id . ") automatically closed");
+
+    // Let the contact know
+    if($vacancy->contact_id)
+    {
+      require_once("model/Contact.class.php");
+      $contact = Contact::load_by_id($contact_id);
+      if(!strlen($contact->email)) return; // Can't email them!
+
+      // Any more information
+      require_once("model/Application.class.php");
+      $application_count = Application::count("where vacancy_id=" . $vacancy->id);
+
+      // Start to populate the mail fields
+      $mailfields = array();
+      $mailfields['custom_vacancydesc'] = $vacancy->description;
+      $mailfields['custom_companyname'] = $vacancy->_company_id;
+      $mailfields['custom_editurl'] = "?section=directories&function=edit_vacancy&id=" . $vacancy->id;
+      $mailfields['custom_editurl'] = "?section=directories&function=manage_applicants&id=" . $vacancy->id;
+      $mailfields['custom_applicationcount'] = $application_count;
+      $mailfields['rtitle']     = $contact->title;
+      $mailfields['rfirstname'] = $contact->firstname;
+      $mailfields['rsurname']   = $contact->lastname;
+      $mailfields['remail']     = $contact->email;
+      $mailfields['rposition']  = $contact->position;
+
+      require_once("model/Automail.class.php");
+      Automail::sendmail("CompanyOnClosed", $mailfields);
+    }
+  }
 
 }
 ?>

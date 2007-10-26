@@ -156,5 +156,52 @@ class Timeline extends DTO_Timeline
     imeagedestroy($image);
   }
 
+  function update_all_years()
+  {
+    // Check academic year
+    $year = get_academic_year();
+
+    Timeline::update_year($year - 1);
+    Timeline::update_year($year);
+    Timeline::update_year($year + 1);
+  }
+
+  function update_year($year)
+  {
+    global $waf;
+
+    $message = "Updating timelines for $year";
+    //echo $message . "\n";
+    $waf->log($message);
+
+    require_once("model/Student.class.php");
+    $student_ids = Student::get_ids("where placement_year=$year");
+
+    foreach($student_ids as $student_id)
+    {
+      // echo " Looking at student $user_id\n";
+      // For each student, get the user_id
+      $user_id = $row["user_id"];
+
+      $timeline_stamp = get_datetime($student_id);
+      if(!$timeline_stamp)
+      {
+        // No image exists in the database, add one...
+        add_image($student_id);
+      }
+      else
+      {
+        // Is it up-to-date?
+        if(Student::get_last_application_time($student_id) > $timeline_stamp)
+        {
+          // No, so modify image
+          Timeline::modify_image($student_id);
+        }
+      }
+    }
+    $message = "Updating timelines for $year complete";
+    //echo $message . "\n";
+    $log['system']->LogPrint($message);
+  }
 }
 ?>

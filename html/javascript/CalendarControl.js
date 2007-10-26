@@ -78,6 +78,8 @@ function CalendarControl() {
   var selectedMonth = 0;
   var selectedDay = 0;
 
+  var dateFormat = "ymd";
+
   var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var dateField = null;
 
@@ -144,7 +146,18 @@ function CalendarControl() {
       if (month < 10) {month = "0" + month;}
       if (day < 10) {day = "0" + day;}
 
-      var dateString = day+"-"+month+"-"+year;
+      // Default to ymd format
+      var dateString = year+"-"+month+"-"+day;
+
+      if(dateFormat == 'dmy')
+      {
+        dateString = day+"-"+month+"-"+year;
+      }
+      if(dateFormat == 'mdy')
+      {
+        dateString = month+"-"+day+"-"+year;
+      }
+
       dateField.value = dateString;
       hide();
     }
@@ -231,6 +244,7 @@ function CalendarControl() {
       }
       table = table + "</tr>";
     }
+    table = table + "<tr><td colspan='7'>Time (24hr) <input type='text' size='2' /> : <input type='text' size='2' /></td></tr>";
 
     table = table + "<tr class='header'><th colspan='7' style='padding: 3px;'><a href='javascript:clearCalendarControl();'>Clear</a> | <a href='javascript:hideCalendarControl();'>Close</a></td></tr>";
     table = table + "</table>";
@@ -254,10 +268,24 @@ function CalendarControl() {
       try {
         var dateString = new String(dateField.value);
         var dateParts = dateString.split("-");
-        
-        selectedDay = parseInt(dateParts[0],10);
+
+        selectedDay = parseInt(dateParts[2],10);
         selectedMonth = parseInt(dateParts[1],10);
-        selectedYear = parseInt(dateParts[2],10);
+        selectedYear = parseInt(dateParts[0],10);
+
+        if(dateFormat == 'dmy')
+        {
+          selectedDay = parseInt(dateParts[0],10);
+          selectedMonth = parseInt(dateParts[1],10);
+          selectedYear = parseInt(dateParts[2],10);
+        }
+
+        if(dateFormat == 'mdy')
+        {
+          selectedDay = parseInt(dateParts[1],10);
+          selectedMonth = parseInt(dateParts[0],10);
+          selectedYear = parseInt(dateParts[2],10);
+        }
       } catch(e) {}
     }
 

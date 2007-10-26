@@ -36,8 +36,6 @@
   {#provisional_results#}
 {/if}
 {sectionelse}
-<p align="center">
-There is no assessment schedule recorded on the system for this course yet.
-</p>
+{#no_assessment_schedule#}
 {/section}
 <!-- Assessment Matrix ends -->

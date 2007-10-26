@@ -172,4 +172,16 @@ function create_admin(&$waf, $parameters)
   Admin::insert($fields);
 }
 
+function update_timelines()
+{
+  require_once("model/Timeline.class.php");
+  Timeline::update_all_years();
+}
+
+function close_expired_vacancies()
+{
+  require_once("model/Vacancy.class.php");
+  Vacancy::close_expired_vacancies();
+}
+
 ?>
