@@ -76,6 +76,7 @@ function main()
     $parameter_count++;
   }
   $decoded_parameters = array_combine($key, $value);
+  $waf->assign("parameters", $decoded_parameters);
 
   if(function_exists($function))
   {
@@ -84,7 +85,7 @@ function main()
   }
   else
   {
-    help($waf);
+    help($waf, $parameters);
   }
   echo "\n";
 }
@@ -92,11 +93,6 @@ function main()
 function help(&$waf, $parameters)
 {
   $waf->display("cron.tpl", "cron:user_count", "cron/help.tpl");
-}
-
-function print_argv(&$waf)
-{
-  print_r($_SERVER['argv']);
 }
 
 function user_count(&$waf, $parameters)
@@ -139,23 +135,18 @@ function vacancy_count(&$waf, $parameters)
   $waf->display("cron.tpl", "cron:user_count", "cron/vacancy_count.tpl");
 }
 
-function expire_vacancies(&$waf, $parameters)
-{
-  $now = date("YmdHis");
-  require_once("model/Vacancy.class.php");
-
-  $vacancies = Vacancy::get_ids("where closedate > $now");
-  foreach($vacancies as $vacancy)
-  {
-    Vacancy::expire($vacancy);
-  }
-}
-
 function phone_home_install(&$waf, $parameters)
 {
   require_once("model/PhoneHome.class.php");
 
   PhoneHome::send_install();
+}
+
+function phone_home_periodic(&$waf, $parameters)
+{
+  require_once("model/PhoneHome.class.php");
+
+  PhoneHome::send_periodic();
 }
 
 function create_admin(&$waf, $parameters)
@@ -178,10 +169,27 @@ function update_timelines()
   Timeline::update_all_years();
 }
 
-function close_expired_vacancies()
+function expire_vacancies()
 {
   require_once("model/Vacancy.class.php");
   Vacancy::close_expired_vacancies();
+}
+
+function update_perl_config()
+{
+}
+
+function get_academic_year()
+{
+  global $config;
+  $yearstart = $config['opus']['yearstart'];
+  if(empty($yearstart)) $yearstart="0930";
+
+  if(empty($year)){
+    if(date("md") < $yearstart) $year = date("Y") - 1;
+    else $year = date("Y");
+  }
+  return($year);
 }
 
 ?>

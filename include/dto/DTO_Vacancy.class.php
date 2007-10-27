@@ -13,6 +13,14 @@ class DTO_Vacancy extends DTO {
     parent::__construct($handle);
   }
 
+  function _load_by_id($id=0)
+  {
+    parent::_load_by_id($id);
+
+    require_once("model/Company.class.php");
+    $this->_company_id = Company::get_name($this->company_id);
+  }
+
   function _get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options)
   {
     global $waf;

@@ -295,13 +295,14 @@ class Vacancy extends DTO_Vacancy
     // Perform the close
     $vacancy->status = 'closed';
     $vacancy->_update();
-    $waf->log("vacancy " . $vacancy->description . " (Company " . $vacancy->_company_id . ") automatically closed");
+    $waf->log("vacancy " . $vacancy->description . " (" . $vacancy->_company_id . ") automatically closed");
 
     // Let the contact know
     if($vacancy->contact_id)
     {
       require_once("model/Contact.class.php");
-      $contact = Contact::load_by_id($contact_id);
+      $contact = Contact::load_by_id($vacancy->contact_id);
+      print_r($contact);
       if(!strlen($contact->email)) return; // Can't email them!
 
       // Any more information
