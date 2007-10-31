@@ -1,33 +1,38 @@
 #!/usr/bin/perl
 
 # OPUS
+#
 # Creates a timeline in the database
-# This script was original written by Eoin Mullan, adapted by Colin Turner
-
-use strict;
-use GD;
-use DBI;
-
-################################################################################
-# This script creates a timeline for one student. It should be passed the
-# systems id number for the student (which is different from their student ID)
+#
+# The script takes, as its first argument, the id from the student table
+# of the student to update. Note that this is not the registration number
+#
 # The four constants listed in block capitals at the beginning of the script
 # determine different properties of the jpeg that the script will create.
 # In the createTimeline function, the variables $start_year, $start_month,
 # $end_year, and $end_month should be set to imform the script the earliest and
 # most recent times that should be represented on the image.
-################################################################################
-
-################################################################################
-# Updated on: 23-Apr-2005
-# Script can now be passed specific start and end dates by calling it like:
-# perl timeline.pl <students PMS ID> <start year> <start month> <end year>
+#
+# Advanced Usage:
+#
+# perl timeline.pl <OPUS student ID> <start year> <start month> <end year>
 #                                                                    <end month>
 # The months should be passed in as a number from 1 to 12. If times are passed
 # to the script in this way they will override the default values. To use the
 # default values, the script should be called with a single parameter, i.e. the
-# students PMS ID.
-################################################################################
+# OPUS student id.
+#
+# This script was original written by Eoin Mullan, adapted by Colin Turner
+#
+# This software is released under the GPL v2.
+# See LICENSE in top directory for more details
+
+# read an automatically generated file with the database details in it
+require "config.pl";
+
+use strict;
+use GD;
+use DBI;
 
 # Set the constants used to draw the timeline (measurments in pixels)
 use constant PIC_HEIGHT => 100;         # This should not be set lower than 100
@@ -40,56 +45,41 @@ use constant MONTH_TEXT_SPACING => 30;  # This constant determines the minimum
                                         # prevent month one month name
                                         # overwriting another
 
-#my $db_hostname = 'localhost';
-#my $db_database = 'placement';
-#my $db_username = 'placement';
-#my $db_password = '7FNH3s6';
-
-my $db_hostname = 'pdsdb.ws.ulster.ac.uk';
-my $db_database = 'pds_pms_live';
-my $db_username = 'pds';
-my $db_password = 'pdsdevelop';
-
-print $db_hostname;
-
-exit;
-
 # Set variables that will be passed to the program
-my $user_id = $ARGV[0];
+my $student_id = $ARGV[0];
 
 my @dates = ();
 
 # Firstly connect to the database and get all the information on a student
 # by calling the getDates subroutine
-my ($student_no, $real_name, $year, $status, @dates)=getDates($user_id, @dates);
+my ($reg_number, $real_name, $placement_year, $placement_status, @dates)=getDates($student_id, @dates);
 
 # Now a list of all the dates on which the student applied for are in the
-# array @dates, and the variables $student_no, $real_name, $year and $status
+# array @dates, and the variables $student_no, $real_name, $year and $placement_status
 # also hold useful information on the student which is needed to create the
 # timeline
 
-createTimeline($student_no, $real_name, $year, $status, @dates);
+createTimeline($reg_number, $real_name, $year, $placement_status, @dates);
 
-################
-## Subroutine ##
-################
 sub createTimeline
 {
   # This subroutine creates the graph and outputs it to STDOUT. This data
-  # should always be redirected appropriatly or captured by the calling
+  # should always be redirected appropriately or captured by the calling
   # program.
 
-  my $student_no = shift @_;
+  my $reg_number = shift @_;
   my $real_name = shift @_;
-  my $year = shift @_;
-  my $status = shift @_;
+  my $placement_year = shift @_;
+  my $placement_status = shift @_;
   my %dates = {};
 
-  my $start_year = $ARGV[1] || $year - 1; # Set start year to second argument,
+  my $start_year = $ARGV[1] || $placement_year - 1; 
+                                          # Set start year to second argument,
                                           # or if none is given, use default
   my $start_month = $ARGV[2] || '11';     # Set month to third argument, or if
                                           # none is given, use the default
-  my $end_year = $ARGV[3] || $year;       # Set end year to forth atgument,
+  my $end_year = $ARGV[3] || $placement_year;
+                                          # Set end year to forth atgument,
                                           # or if none is given, use default
   my $end_month = $ARGV[4] || '12';       # Set end month to fifth argument,
                                           # or if none is given, use default
@@ -160,11 +150,11 @@ sub createTimeline
   my $brush_white = $brush->colorAllocate(255,255,255);   # Black
   my $brush_color;
   # If the student is placed the timeline is draws in green
-  if ('Placed' eq $status)
+  if ('Placed' eq $placement_status)
   {
     $brush_color = $brush->colorAllocate(0,225,127);   # green
   }
-  elsif ('Required' eq $status)
+  elsif ('Required' eq $placement_status)
   {
     $brush_color = $brush->colorAllocate(0,0,0); # grey
   }
@@ -272,7 +262,7 @@ sub createTimeline
   # Add name and student no along the top of the image (number written first
   # because it has a more predictable length
   $image->string(gdLargeFont,$left_border, 5, "Student no:", $black);
-  $image->string(gdLargeFont,$left_border+95, 5, "$student_no", $dark_green);
+  $image->string(gdLargeFont,$left_border+95, 5, "$reg_number", $dark_green);
   $image->string(gdLargeFont,$left_border+180, 5, "Student Name:", $black);
   $image->string(gdLargeFont,$left_border+295, 5, "$real_name", $dark_green);
   $image->string(gdLargeFont,PIC_LENGTH - $left_border - 12, 5, "$#_",
@@ -307,36 +297,43 @@ sub createTimeline
 # student a blank string will be returned
 sub getDates
 {
-  my $user_id = shift @_;
+  my $student_id = shift @_;
   my @dates = @_;
   $dates[0] = \0;
 
-  # Get the information needed to connect to the database
-  #`grep "\$conf\\['database'\\]\\['username'\\]" ../include/config.php` =~ /= '(\w+)';$/;
-  my $user = $1;
-  #`grep "\$conf\\['database'\\]\\['database'\\]" ../include/config.php` =~ /= '(\w+)';$/;
-  my $database = $1;
-  #`grep "\$conf\\['database'\\]\\['password'\\]" ../include/config.php` =~ /= '(\w+)';$/;
-  my $password = $1;
-
-  # For testing, the above lines are not used. Instead the program connects to
-  # a test database with the information below
-
   # And connect to the database
-  my $dbh = DBI->connect("DBI:mysql:host=$db_hostname;database=$db_database",
-                          "$db_username","$db_password", {PrintError=>0, RaiseError=>1});
-  # From the systems id number, get the student number
-  my $sth = $dbh->prepare('SELECT student_id ' .
-                          'FROM cv_pdetails ' .
-                        "WHERE id = '$user_id'");
+  my $dbh = DBI->connect($opus::db_dsn, $opus::username, $opus::password, {PrintError=>0, RaiseError=>1});
+
+  # Some information is in the student table
+  my $sth = $dbh->prepare('select user_id, placement_status, placement_year from student where id=?');
+  $sth->bind_param(1, $student_id);
   $sth->execute();
-  my $student_no = '';
-  $sth->bind_columns(\$student_no);
+  my $user_id;
+  my $placement_status;
+  my $placement_year;
+  $sth->bind_columns(\$user_id, \$placement_status, \$placement_year);
   unless ($sth->fetch)
   {
-      die "$0 could not determine the student number for id $user_id\n";
+      die "$0 could not obtain student data id $student_id\n";
   }
   $sth->finish;
+
+  # Some is in the user table
+  my $sth = $dbh->prepare('select real_name, reg_number from user where id=?');
+  $sth->bind_param(1, $user_id);
+  $sth->execute();
+  my $real_name;
+  my $reg_number;
+  $sth->bind_columns(\$real_name, \$reg_number);
+  unless ($sth->fetch)
+  {
+      die "$0 could not obtain user data id $student_id\n";
+  }
+  $sth->finish;
+
+
+
+
 
   # Got the student number, find out the times they have made an application
   $sth = $dbh->prepare('SELECT created ' .
@@ -368,11 +365,11 @@ sub getDates
                         'FROM students ' .
 	                "WHERE user_id = $user_id");
   $sth->execute();
-  my ($status, $year) = $sth->fetchrow();
+  my ($placement_status, $year) = $sth->fetchrow();
   $sth->finish;
 
   # Prepend this data onto the dates array;
-  unshift @dates, $status;
+  unshift @dates, $placement_status;
   unshift @dates, $year;
   unshift @dates, $real_name;
   unshift @dates, $student_no;

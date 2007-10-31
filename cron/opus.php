@@ -175,8 +175,31 @@ function expire_vacancies()
   Vacancy::close_expired_vacancies();
 }
 
+/**
+* write the database access credentials to a suitable perl file
+*/
 function update_perl_config()
 {
+  global $waf;
+  global $config_sensitive;
+
+  $filename = "config.pl";
+  $fp = @fopen($filename, "w");
+  if($fp == false)
+  {
+    $message = "unable to write perl configuration file";
+    echo $message;
+    $waf->log($message);
+    return;
+  }
+  fwrite($fp, "# automatically generated file, make changes to the php configuration\n");
+  fwrite($fp, "# and run 'opus update_perl_config'\n\n");
+  fwrite($fp, "package opus;\n\n");
+  fwrite($fp, "\$db_dsn='" . $config_sensitive['opus']['database']['dsn'] . "';\n");
+  fwrite($fp, "\$db_username='" . $config_sensitive['opus']['database']['username'] . "';\n");
+  fwrite($fp, "\$db_password='" . $config_sensitive['opus']['database']['password'] . "';\n");
+  fwrite($fp, "# end of file\n");
+  fclose($fp);
 }
 
 function get_academic_year()
