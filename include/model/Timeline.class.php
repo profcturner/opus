@@ -50,13 +50,13 @@ class Timeline extends DTO_Timeline
     $timeline = new Timeline;
     $timeline->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $timeline = Timeline::load_by_id($fields[id]);
     $timeline->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -66,7 +66,7 @@ class Timeline extends DTO_Timeline
     $timeline->id = $id;
     return $timeline->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -79,7 +79,7 @@ class Timeline extends DTO_Timeline
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
   {
     $timeline = new Timeline;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -90,26 +90,26 @@ class Timeline extends DTO_Timeline
     return $timelines;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $timeline = new Timeline;
-    $timeline_array = $timeline->_get_id_and_field($fieldname);
+    $timeline_array = $timeline->_get_id_and_field($fieldname, $where_clause);
     unset($timeline_array[0]);
     return $timeline_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $timeline = new Timeline;
     $timeline->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $timeline = new Timeline;
     return  $timeline->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Timeline::get_fields($include_id);
@@ -171,7 +171,7 @@ class Timeline extends DTO_Timeline
     global $waf;
 
     $message = "Updating timelines for $year";
-    //echo $message . "\n";
+    if($waf->unattended) echo "$message\n";
     $waf->log($message);
 
     require_once("model/Student.class.php");
@@ -183,25 +183,89 @@ class Timeline extends DTO_Timeline
       // For each student, get the user_id
       $user_id = $row["user_id"];
 
-      $timeline_stamp = get_datetime($student_id);
-      if(!$timeline_stamp)
+      $last_updated = Timeline::get_id_and_field("last_updated", "where student_id=$student_id");
+      if(!$last_updated)
       {
         // No image exists in the database, add one...
         add_image($student_id);
       }
       else
       {
+        $data = each($last_updated);
+        $key = $data['key'];
         // Is it up-to-date?
-        if(Student::get_last_application_time($student_id) > $timeline_stamp)
+        if(Student::get_last_application_time($student_id) > $data['value'])
         {
           // No, so modify image
-          Timeline::modify_image($student_id);
+          Timeline::modify_image($student_id, $data['key']);
         }
       }
     }
     $message = "Updating timelines for $year complete";
-    //echo $message . "\n";
-    $log['system']->LogPrint($message);
+    if($waf->unattended) echo "$message\n";
+    $waf->log($message);
+  }
+
+  function add_image($student_id)
+  {
+    global $waf;
+
+    $message = "Adding new timeline for student $student_id";
+    if($waf->unattended) echo "  $message\n";
+    $waf->log($message);
+
+    $image = Timeline::get_timeline_image($student_id);
+    if($image)
+    {
+      $fields['last_updates'] = date("YmdHis");
+      $fields['image'] = $image;
+      $fields['student_id'] = $student_id;
+      $timeline->insert($fields);
+    }
+    else
+    {
+      $waf->log("error updating timeline image");
+    }
+  }
+
+  function modify_timeline_image($student_id, $timeline_id)
+  {
+    global $waf;
+
+    $message = "Modifying timeline for student $student_id";
+    if($waf->unattended) echo "  $message\n";
+    $waf->log($message);
+
+    $image = get_timeline_image($student_id);
+    if($image)
+    {
+      $timeline = Timeline::load_by_id($timeline_id);
+      $fields['last_updated'] = date("YmdHis");
+      $fields['image'] = $image;
+      $timeline->update($fields);
+    }
+    else
+    {
+      $waf->log("error updating timeline image");
+    }
+  }
+
+  function get_timeline_image($student_id)
+  {
+    global $waf;
+
+    $perl_script = $waf->base_dir . "/cron/timeline.pl";
+    $fp = popen("$perl_script $student_id", "rb");
+
+    if(!$fp)
+    {
+      $waf->log("unable to generate timeline");
+      return FALSE;
+    }
+    $image = stream_get_contents($fp); // Requires PHP 5.1+ (already required for UUWAF)
+    pclose($fp);
+
+    return($image);
   }
 }
 ?>
