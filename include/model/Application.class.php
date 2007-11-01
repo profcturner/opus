@@ -66,6 +66,10 @@ class Application extends DTO_Application
     $fields['status'] = "unseen";
     $application = new Application;
     $application->_insert($fields);
+
+    // Invalidate any timeline, causing it to be redrawn
+    require_once("model/Timeline.class.php");
+    Timeline::invalidate($fields['student_id']);
   }
 
   function update($fields) 

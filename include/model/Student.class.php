@@ -123,6 +123,10 @@ class Student extends DTO_Student
 
     $student = Student::load_by_id($fields[id]);
     $student->_update($fields);
+
+    // Finally invalidate any timeline to ensure it is correctly regenerated
+    require_once("model/Timeline.class.php");
+    Timeline::invalidate($fields['id']);
   }
 
   function exists($id) 
@@ -335,8 +339,9 @@ class Student extends DTO_Student
   function get_last_application_time($id)
   {
     require_once("model/Application.class.php");
+    $application = new Application;
     // Get the last application!
-    $applications = Application::_get_all("where student_id=$id", "order by created DESC", 0, 1);
+    $applications = $application->_get_all("where student_id=$id", "order by created DESC", 0, 1);
     $application = $applications[0];
 
     return $application->created;

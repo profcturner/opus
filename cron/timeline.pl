@@ -55,11 +55,12 @@ my @dates = ();
 my ($reg_number, $real_name, $placement_year, $placement_status, @dates)=getDates($student_id, @dates);
 
 # Now a list of all the dates on which the student applied for are in the
-# array @dates, and the variables $student_no, $real_name, $year and $placement_status
+# array @dates, and the variables $reg_number, $real_name,
+# $placement_year and $placement_status
 # also hold useful information on the student which is needed to create the
 # timeline
 
-createTimeline($reg_number, $real_name, $year, $placement_status, @dates);
+createTimeline($reg_number, $real_name, $placement_year, $placement_status, @dates);
 
 sub createTimeline
 {
@@ -302,7 +303,7 @@ sub getDates
   $dates[0] = \0;
 
   # And connect to the database
-  my $dbh = DBI->connect($opus::db_dsn, $opus::username, $opus::password, {PrintError=>0, RaiseError=>1});
+  my $dbh = DBI->connect($opus::db_dsn, $opus::db_username, $opus::db_password, {PrintError=>0, RaiseError=>1});
 
   # Some information is in the student table
   my $sth = $dbh->prepare('select user_id, placement_status, placement_year from student where id=?');
@@ -331,14 +332,9 @@ sub getDates
   }
   $sth->finish;
 
-
-
-
-
+  # Now to get the actual application dates
   # Got the student number, find out the times they have made an application
-  $sth = $dbh->prepare('SELECT created ' .
-                        'FROM companystudent ' .
-                "WHERE student_id = '$user_id'");
+  $sth = $dbh->prepare('select created from application where student_id=?');
   $sth->execute();
   my $date = '';
   $sth->bind_columns(\$date);
@@ -349,30 +345,11 @@ sub getDates
   }
   $sth->finish;
 
-  # Before returning the dates, find the students name, year and status
-  # First the name...
-  $sth = $dbh->prepare('SELECT real_name ' .
-                        'FROM id ' .
-		  "WHERE id_number = '$user_id'");
-  $sth->execute();
-  my $real_name = '';
-  $sth->bind_columns(\$real_name);
-  $real_name = "Couldn't find name" unless ($sth->fetch);
-  $sth->finish;
-
-  # Find the students status and year
-  $sth = $dbh->prepare('SELECT status, year ' .
-                        'FROM students ' .
-	                "WHERE user_id = $user_id");
-  $sth->execute();
-  my ($placement_status, $year) = $sth->fetchrow();
-  $sth->finish;
-
   # Prepend this data onto the dates array;
   unshift @dates, $placement_status;
-  unshift @dates, $year;
+  unshift @dates, $placement_year;
   unshift @dates, $real_name;
-  unshift @dates, $student_no;
+  unshift @dates, $reg_number;
 
   # Disconnect from the database
   $dbh->disconnect;

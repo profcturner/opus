@@ -136,12 +136,12 @@ class Timeline extends DTO_Timeline
     $timeline = new Timeline;
 
     $data = Timeline::get_id_and_field("image","where student_id='$student_id'");
-    $image = ($data[$id]);
+    $split = each($data);
 
     header("Content-type: application/jpeg");
     header("Content-Disposition: inline; filename=timeline.jpeg");
     if(!count($data)) Timeline::display_blank_timeline();
-    else print $image;
+    else print $split['value'];
   }
 
   function display_blank_timeline()
@@ -187,14 +187,15 @@ class Timeline extends DTO_Timeline
       if(!$last_updated)
       {
         // No image exists in the database, add one...
-        add_image($student_id);
+        Timeline::add_image($student_id);
       }
       else
       {
         $data = each($last_updated);
         $key = $data['key'];
         // Is it up-to-date?
-        if(Student::get_last_application_time($student_id) > $data['value'])
+        $last_application = Student::get_last_application_time($student_id);
+        if(($last_application > $data['value']) || ($data['value'] = '0000-00-00 00:00:00'))
         {
           // No, so modify image
           Timeline::modify_image($student_id, $data['key']);
@@ -214,13 +215,13 @@ class Timeline extends DTO_Timeline
     if($waf->unattended) echo "  $message\n";
     $waf->log($message);
 
-    $image = Timeline::get_timeline_image($student_id);
+    $image = Timeline::create_image($student_id);
     if($image)
     {
-      $fields['last_updates'] = date("YmdHis");
+      $fields['last_updated'] = date("YmdHis");
       $fields['image'] = $image;
       $fields['student_id'] = $student_id;
-      $timeline->insert($fields);
+      Timeline::insert($fields);
     }
     else
     {
@@ -228,7 +229,7 @@ class Timeline extends DTO_Timeline
     }
   }
 
-  function modify_timeline_image($student_id, $timeline_id)
+  function modify_image($student_id, $timeline_id)
   {
     global $waf;
 
@@ -236,7 +237,7 @@ class Timeline extends DTO_Timeline
     if($waf->unattended) echo "  $message\n";
     $waf->log($message);
 
-    $image = get_timeline_image($student_id);
+    $image = Timeline::create_image($student_id);
     if($image)
     {
       $timeline = Timeline::load_by_id($timeline_id);
@@ -250,7 +251,7 @@ class Timeline extends DTO_Timeline
     }
   }
 
-  function get_timeline_image($student_id)
+  function create_image($student_id)
   {
     global $waf;
 
@@ -266,6 +267,20 @@ class Timeline extends DTO_Timeline
     pclose($fp);
 
     return($image);
+  }
+
+  /**
+  * sets the last_updated stamp to zero, invalidating the timeline
+  *
+  * @param int $student_id the id from the student table
+  */
+  function invalidate($student_id)
+  {
+    $student_id = (int) $student_id; // security
+    $timeline = new Timeline;
+    $timeline->_load_where("where student_id = $student_id");
+    $timeline->last_updated = 0;
+    $timeline->_update();
   }
 }
 ?>

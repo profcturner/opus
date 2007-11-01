@@ -195,7 +195,7 @@ function update_perl_config()
   fwrite($fp, "# automatically generated file, make changes to the php configuration\n");
   fwrite($fp, "# and run 'opus update_perl_config'\n\n");
   fwrite($fp, "package opus;\n\n");
-  fwrite($fp, "\$db_dsn='" . $config_sensitive['opus']['database']['dsn'] . "';\n");
+  fwrite($fp, "\$db_dsn='dbi:" . $config_sensitive['opus']['database']['dsn'] . "';\n");
   fwrite($fp, "\$db_username='" . $config_sensitive['opus']['database']['username'] . "';\n");
   fwrite($fp, "\$db_password='" . $config_sensitive['opus']['database']['password'] . "';\n");
   fwrite($fp, "# end of file\n");
