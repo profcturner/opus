@@ -165,6 +165,9 @@ function create_admin(&$waf, $parameters)
 
 function update_timelines()
 {
+  // Better ensure the configuration is up-to-date
+  update_perl_config();
+
   require_once("model/Timeline.class.php");
   Timeline::update_all_years();
 }
@@ -213,6 +216,11 @@ function get_academic_year()
     else $year = date("Y");
   }
   return($year);
+}
+
+function upgrade_3_to_4()
+{
+
 }
 
 ?>
