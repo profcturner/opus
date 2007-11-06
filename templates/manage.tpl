@@ -68,9 +68,16 @@
 
 {/if}
 
-{section loop=$validation_messages name=validation}
-  ieee!!!!{$validation_messages[validation]}
-{/section}
+{foreach from=$validation_messages item=validation name=validation}
+{if $smarty.foreach.validation.first}
+<div id="warning">
+{#validation_errors#}<br />
+{/if}
+  {$validation[0]} {$validation[2]} ({$validation[1]})<br />
+{if $smarty.foreach.validation.last}
+</div>
+{/if}
+{/foreach}
 
 <div id="table_manage">
 <form method="POST" ENCTYPE="multipart/form-data" action="" name="mainform">
@@ -105,6 +112,8 @@
         <a href="{$object->$header}">{$object->$header}</a>
       {elseif $def.type == "date"} 
         {$object->$header|date_format}
+      {elseif $def.type == "isodate"} 
+        {$object->$header|date_format}
       {elseif $def.type == "currency"}
         &pound;{$object->$header|string_format:"%.2f"}
       {elseif $def.type == "image" || $def.type == "file"}
@@ -137,6 +146,13 @@
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="DMY" day_value_format="%02d"}
         {/if}
+      {elseif $def.type == "isodate"}
+        {if $def.inputstyle == "popup"}
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
+        {else}
+          {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="DMY" day_value_format="%02d"}
+        {/if}
+        {#iso_date#}
       {elseif $def.type == "image" || $def.type == "file"}
         <input type="file" name="{$header}"/><input type="hidden" name="MAX_FILE_SIZE" value="30000" />
       {elseif $def.type == "list"}
@@ -199,6 +215,13 @@
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time=$object->$header start_year=$def.year_start end_year=$def.year_end field_order="DMY" day_value_format="%02d"}
         {/if}
+      {elseif $def.type == "isodate"}
+        {if $def.inputstyle == "popup"}
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if} onFocus='showCalendarControl(this);'/>
+        {else}
+          {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time=$object->$header start_year=$def.year_start end_year=$def.year_end field_order="DMY" day_value_format="%02d"}
+        {/if}
+        {#iso_date#}
       {elseif $def.type == "flexidate"}
         <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> {#flexidate#}
       {elseif $def.type == "image" || $def.type == "file"}
