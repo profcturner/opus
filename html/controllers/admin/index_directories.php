@@ -2,6 +2,8 @@
 
   function student_directory(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("student", "list")) $waf->halt("error:policy:permissions");
+
     $letters = array();
     for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
     $waf->assign("letters", $letters);
@@ -24,6 +26,8 @@
 
   function search_students(&$waf)
   {
+    if(!Policy::check_default_policy("student", "list")) $waf->halt("error:policy:permissions");
+
     $search = WA::request("search");
     $year = WA::request("year");
     $programmes = WA::request("programmes");
@@ -48,6 +52,8 @@
 
   function simple_search_student(&$waf)
   {
+    if(!Policy::check_default_policy("student", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Student.class.php");
     $initial = WA::request("initial");
 
@@ -61,11 +67,15 @@
 
   function add_student(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student");
   }
 
   function add_student_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Student", "section=directories&function=manage_students", "add_student");
   }
 
@@ -74,6 +84,8 @@
     // Put student in session to "pick it up"
     $id = $_SESSION['student_id'] = WA::request("id");
     $changes = WA::request("changes");
+
+    if(!Policy::is_auth_for_student($id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
 
     require_once("model/Student.class.php");
     $student_name = Student::get_name($id);
@@ -86,6 +98,9 @@
   {
     require_once("model/Student.class.php");
     $id = (int) WA::request("id");
+
+    if(!Policy::is_auth_for_student($id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
+
     $student = Student::load_by_id($id);
     $assessment_group_id = Student::get_assessment_group_id($id);
     $regime_items = Student::get_assessment_regime($id);
@@ -114,16 +129,22 @@
   {
     $id = WA::request("id");
 
+    if(!Policy::is_auth_for_student($id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Student", "section=directories&function=edit_student&id=$id&changes=1", "edit_student_real");
   }
 
   function remove_student(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Student", array("remove", "directories", "remove_student_do"), array(array("cancel","section=directories&function=manage_students")), "", "admin:directories:student_directory:remove_student");
   }
 
   function remove_student_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Student", "section=directories&function=manage_students");
   }
 
@@ -133,6 +154,8 @@
   {
     $student_id = (int) WA::request("student_id");
     require_once("model/Timeline.class.php");
+
+    if(!Policy::is_auth_for_student($student_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
 
     Timeline::display_timeline($student_id);
   }
@@ -239,16 +262,22 @@
 
   function add_company(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Company", array("add", "directories", "add_company_do"), array(array("cancel","section=directories&function=manage_companies")), array(array("user_id",$user["user_id"])), "admin:directories:companies:add_company");
   }
 
   function add_company_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Company", "section=directories&function=manage_companies", "add_company");
   }
 
   function edit_company(&$waf, &$user)
   {
+    if(!Policy::check_default_policy("company", "edit")) $waf->halt("error:policy:permissions");
+
     // Put student in session to "pick it up"
     $id = $_SESSION['company_id'] = WA::request("id");
 
@@ -261,24 +290,31 @@
 
   function edit_company_real(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
+
     $id = WA::request("id");
 
- 
     edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=manage_companies"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
   }
 
   function edit_company_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Company", "section=directories&function=manage_companies", "edit_company");
   }
 
   function remove_company(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Company", array("remove", "directories", "remove_company_do"), array(array("cancel","section=directories&function=manage_companies")), "", "admin:directories:companies:remove_company");
   }
 
   function remove_company_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Company", "section=directories&function=manage_companies");
   }
 
@@ -346,6 +382,8 @@
 
   function add_vacancy(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("vacancy", "create")) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Company.class.php");
     $company = new Company;
@@ -365,6 +403,8 @@
   */
   function clone_vacancy(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("vacancy", "create")) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
     $id = (int) WA::request("id");
 
@@ -384,6 +424,8 @@
 
   function add_vacancy_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("vacancy", "create")) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
 
     add_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "add_vacancy");
@@ -391,6 +433,8 @@
 
   function edit_vacancy(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("vacancy", "edit")) $waf->halt("error:policy:permissions");
+
     $id = (int) WA::request("id");
 
     // Make a "recent" menu item
@@ -406,6 +450,8 @@
 
   function edit_vacancy_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("vacancy", "edit")) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
 
     edit_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "edit_vacancy");
@@ -413,6 +459,8 @@
 
   function remove_vacancy(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
 
     remove_object($waf, $user, "Vacancy", array("remove", "directories", "remove_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies&company_id=$company_id")), "", "admin:directories:vacancies:remove_vacancy");
@@ -420,6 +468,8 @@
 
   function remove_vacancy_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
 
     remove_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id");
@@ -479,6 +529,9 @@
   {
     $student_id = (int) WA::request("student_id", true);
 
+    if(!Policy::is_auth_for_student($student_id, "student", "viewCompanies")) $waf->halt("error:policy:permissions");
+
+
     manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application'), array('remove','remove_application'), array('place','add_placement')), "get_all", "where student_id=$student_id", "admin:directories:student_directory:manage_applications");
   }
 
@@ -489,6 +542,8 @@
   {
     $vacancy_id = (int) WA::request("id");
     $student_id = $_SESSION['student_id'];
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
 
     require_once("model/PDSystem.class.php");
     //$cv_status = PDSystem::get_cv_status($student_id);
@@ -514,6 +569,9 @@
   function add_application_do(&$waf, &$user) 
   {
     $student_id = (int) WA::request("student_id", true);
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id", "add_application");
   }
 
@@ -521,12 +579,16 @@
   {
     $student_id = (int) WA::request("student_id", true);
 
+    if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Application", array("remove", "directories", "remove_application_do"), array(array("cancel","section=directories&function=manage_applications&student_id=$student_id")), "", "admin:directories:student_directory:remove_application");
   }
 
   function remove_application_do(&$waf, &$user) 
   {
     $student_id = (int) WA::request("student_id", true);
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id");
   }
@@ -545,6 +607,42 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/manage_applicants.tpl");
   }
 
+  function manage_applicants_do(&$waf)
+  {
+    $status = WA::request("status"); 
+    $old_status = WA::request("old_status");
+    $send = WA::request("send");
+    $id = (int) WA::request("id");
+
+    // Array of student ids for which status is changed
+    $status_changes = array();
+    foreach($old_status as $key => $value)
+    {
+      if($status[$key] != $value) array_push($status_changes, $key);
+    }
+
+    // Check if CVs were requested
+    if(!empty($send))
+    {
+      // Send CVs via email
+      foreach($send as $student_id)
+      {
+
+      }
+    }
+
+    // Check if changes were made to status, if so offer up a dialog
+    if(count($status_changes))
+    {
+      $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/message_applicants.tpl");
+    }
+    else
+    {
+      // No changes, back to same screen
+      goto("directories", "manage_applicants&id=$id");
+    }
+  }
+
   // Placements
 
   /**
@@ -559,6 +657,8 @@
     require_once("model/Vacancy.class.php");
     $vacancy = Vacancy::load_by_id($application->vacancy_id);
 
+    if(!Policy::is_auth_for_student($application->student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
     // Set up some fields from the vacancy
     $nvp_array['jobstart'] = $vacancy->jobstart;
     $nvp_array['jobend'] = $vacancy->jobend;
@@ -572,6 +672,9 @@
   function add_placement_do(&$waf, &$user) 
   {
     $student_id = (int) WA::request("student_id", true);
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id", "add_placement");
   }
 
@@ -579,12 +682,16 @@
   {
     $student_id = (int) WA::request("student_id", true);
 
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
     edit_object($waf, $user, "Placement", array("confirm", "directories", "edit_placement_do"), array(array("cancel","section=directories&function=edit_student&id=$student_id")), array(array("student_id", $student_id), array("user_id",$user["user_id"])), "admin:directories:placement_directory:edit_placement");
   }
 
   function edit_placement_do(&$waf, &$user) 
   {
     $student_id = (int) WA::request("student_id", true);
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id", "edit_placement");
   }
@@ -594,12 +701,16 @@
   {
     $student_id = (int) WA::request("student_id", true);
 
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Placement", array("remove", "directories", "remove_placement_do"), array(array("cancel","section=directories&function=manage_placements&student_id=$student_id")), "", "admin:directories:student_directory:remove_placement");
   }
 
   function remove_placement_do(&$waf, &$user) 
   {
     $student_id = (int) WA::request("student_id", true);
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id");
   }
@@ -610,6 +721,8 @@
 
   function contact_directory(&$waf)
   {
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("contact_directory_form");
 
@@ -624,6 +737,8 @@
 
   function search_contacts(&$waf)
   {
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Contact.class.php");
     $search = WA::request("search");
     $sort = WA::request("sort");
@@ -664,6 +779,8 @@
 
   function simple_search_contact(&$waf)
   {
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Contact.class.php");
     $initial = WA::request("initial");
 
@@ -691,6 +808,8 @@
 
   function manage_contacts(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Contact.class.php");
 
     $company_id = (int) WA::request("company_id", true);
@@ -717,6 +836,8 @@
 
   function add_contact(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("contact", "create")) $waf->halt("error:policy:permissions");
+
     $company_id = (int) WA::request("company_id", true);
 
     add_object($waf, $user, "Contact", array("add", "directories", "add_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"]), array("company_id", $company_id)), "admin:directories:contacts:add_contact");
@@ -724,11 +845,15 @@
 
   function add_contact_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("contact", "create")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "add_contact");
   }
 
   function edit_contact(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
+
     require_once("model/Contact.class.php");
     $id = WA::request("id");
     $contact = Contact::load_by_id($id);
@@ -738,16 +863,22 @@
 
   function edit_contact_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "edit_contact");
   }
 
   function remove_contact(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("contact", "delete")) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Contact", array("remove", "directories", "remove_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), "", "admin:directories:contacts:remove_contact");
   }
 
   function remove_contact_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("contact", "delete")) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts");
   }
 
@@ -755,6 +886,8 @@
 
   function staff_directory(&$waf)
   {
+    if(!Policy::check_default_policy("staff", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("staff_directory_form");
 
@@ -768,11 +901,16 @@
     $waf->assign("letters", $letters);
     $waf->assign("schools", $schools);
 
+    $actions = array(array('add', 'section=directories&function=add_staff'));
+    $waf->assign("action_links", $actions);
+
     $waf->display("main.tpl", "admin:directories:staff_directory:staff_directory", "admin/directories/staff_directory.tpl");
   }
 
   function search_staff(&$waf)
   {
+    if(!Policy::check_default_policy("staff", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Staff.class.php");
     $search = WA::request("search");
     $sort = WA::request("sort");
@@ -822,6 +960,8 @@
 
   function simple_search_staff(&$waf)
   {
+    if(!Policy::check_default_policy("staff", "list")) $waf->halt("error:policy:permissions");
+
     require_once("model/Staff.class.php");
     $initial = WA::request("initial");
 
@@ -850,21 +990,29 @@
 
   function manage_staff(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("staff", "list")) $waf->halt("error:policy:permissions");
+
     manage_objects($waf, $user, "Staff", array(array("add","section=directories&function=add_staff")), array(array('edit', 'edit_staff'), array('remove','remove_staff')), "get_all", "", "staff:directories:staff_directory:manage_staff");
   }
 
   function add_staff(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("staff", "create")) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Staff", array("add", "directories", "add_staff_do"), array(array("cancel","section=directories&function=manage_staff")), array(array("user_id",$user["user_id"])), "staff:directories:staff_directory:add_staff");
   }
 
   function add_staff_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("staff", "create")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Staff", "section=directories&function=manage_staff", "add_staff");
   }
 
   function edit_staff(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("staff", "edit")) $waf->halt("error:policy:permissions");
+
     require_once("model/Staff.class.php");
     $id = WA::request("id");
     $staff = Staff::load_by_id($id);
@@ -874,16 +1022,22 @@
 
   function edit_staff_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("staff", "edit")) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Staff", "section=directories&function=manage_staff", "edit_staff");
   }
 
   function remove_staff(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Staff", array("remove", "directories", "remove_staff_do"), array(array("cancel","section=directories&function=manage_staff")), "", "staff:directories:staff_directory:remove_staff");
   }
 
   function remove_staff_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Staff", "section=directories&function=manage_staff");
   }
 
@@ -913,11 +1067,15 @@
 
   function add_admin(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Admin", array("add", "directories", "add_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:admin_directory:add_admin");
   }
 
   function add_admin_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "add_admin");
   }
 
@@ -925,6 +1083,8 @@
   {
     require_once("model/Admin.class.php");
     $id = WA::request("id");
+    if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
+
     $admin = Admin::load_by_id($id);
 
     edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin");
@@ -932,22 +1092,31 @@
 
   function edit_admin_do(&$waf, &$user) 
   {
+    $id = WA::request("id");
+    if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "edit_admin");
   }
 
   function remove_admin(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Admin", array("remove", "directories", "remove_admin_do"), array(array("cancel","section=directories&function=manage_admins")), "", "admin:directories:admin_directory:remove_admin");
   }
 
   function remove_admin_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Admin", "section=directories&function=manage_admins");
   }
 
   // Assessments
   function edit_assessment(&$waf, &$user)
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("id");
     // and for whom
@@ -1049,7 +1218,7 @@
     $error_function = WA::request("error_function");
 
     require_once("model/User.class.php");
-    $success = User::reset_password($id);
+    $success = User::reset_password($user_id);
 
     if($success || empty($error_function))
     {

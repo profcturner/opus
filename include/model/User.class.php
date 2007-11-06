@@ -163,6 +163,7 @@ Class User extends DTO_User
 
   function reset_password($id = 0)
   {
+    if($id == 0) return(false);
     global $waf;
     // Non admins can only do this for themselves
     if(!User::is_admin())
@@ -175,9 +176,10 @@ Class User extends DTO_User
       $waf->log("no email for " . $user->real_name . " so password cannot be sent");
       return(false);
     }
+    $password = User::make_password();
     $fields = array();
     $fields['id']         = $user->id;
-    $fields['password']   = $user->password = User::make_password();
+    $fields['password']   = $user->password = md5($password);
 
     // Write changes to user
     $user->update($fields);
@@ -189,7 +191,7 @@ Class User extends DTO_User
     $fields['username']   = $user->username;
     $fields['email']      = $user->email;
 
-    User::email_password($fields, $fields['password']);
+    User::email_password($fields, $password);
     $waf->log($user->real_name . " has been sent a new password to " . $user->email);
     return(true);
   }

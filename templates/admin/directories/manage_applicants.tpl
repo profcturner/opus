@@ -23,6 +23,9 @@ function toggleAll(checked)
 <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
 
 <form name="applicants">
+  <input type="hidden" name="section" value="directories" />
+  <input type="hidden" name="function" value="manage_applicants_do" />
+  <input type="submit" />
 {if $placed}
 {include file="admin/directories/manage_applicants_subsection.tpl" applications=$placed subsection_title="Already Selected"}
 {/if}

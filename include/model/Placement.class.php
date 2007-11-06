@@ -78,6 +78,11 @@ class Placement extends DTO_Placement
     require_once('model/Student.class.php');
     Student::update($student_fields);
 
+    if(strlen($fields['supervisor_lastname']) && strlen($fields['supervisor_email']))
+    {
+      // Enough to trigger a supervisor creation
+    }
+
   }
 
   function update($fields) 

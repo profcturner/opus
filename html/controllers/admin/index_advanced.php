@@ -164,6 +164,7 @@
 
   function edit_policy_permissions_do(&$waf, $user, $title)
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
     require_once("model/Policy.class.php");
 
     $fields = array();
@@ -185,11 +186,15 @@
 
   function add_policy(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Policy", array("add", "advanced", "add_policy_do"), array(array("cancel","section=advanced&function=manage_policies")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_policies:add_policy");
   }
 
   function add_policy_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Policy", "section=advanced&function=manage_policies", "add_policy");
   }
 
@@ -200,20 +205,24 @@
 
   function edit_policy_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Policy", "section=advanced&function=manage_policies", "edit_policy");
   }
 
   function remove_policy(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Policy", array("remove", "advanced", "remove_policy_do"), array(array("cancel","section=advanced&function=manage_policies")), "", "admin:advanced:manage_policies:remove_policy");
   }
 
   function remove_policy_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Policy", "section=advanced&function=manage_policies");
   }
-
-
 
   // Languages
 
@@ -224,11 +233,15 @@
 
   function add_language(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Language", array("add", "advanced", "add_language_do"), array(array("cancel","section=advanced&function=manage_languages")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_languages:add_language");
   }
 
   function add_language_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Language", "section=advanced&function=manage_languages", "add_language");
   }
 
@@ -239,16 +252,22 @@
 
   function edit_language_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Language", "section=advanced&function=manage_languages", "edit_language");
   }
 
   function remove_language(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Language", array("remove", "advanced", "remove_language_do"), array(array("cancel","section=advanced&function=manage_languages")), "", "admin:advanced:manage_languages:remove_language");
   }
 
   function remove_language_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Language", "section=advanced&function=manage_languages");
   }
 
@@ -261,11 +280,15 @@
 
   function add_activitytype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Activitytype", array("add", "advanced", "add_activitytype_do"), array(array("cancel","section=advanced&function=manage_activitytypes")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_activitytypes:add_activitytype");
   }
 
   function add_activitytype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Activitytype", "section=advanced&function=manage_activitytypes", "add_activitytype");
   }
 
@@ -276,16 +299,22 @@
 
   function edit_activitytype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Activitytype", "section=advanced&function=manage_activitytypes", "edit_activitytype");
   }
 
   function remove_activitytype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Activitytype", array("remove", "advanced", "remove_activitytype_do"), array(array("cancel","section=advanced&function=manage_activitytypes")), "", "admin:advanced:manage_activitytypes:remove_activitytype");
   }
 
   function remove_activitytype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Activitytype", "section=advanced&function=manage_activitytypes");
   }
 
@@ -298,11 +327,15 @@
 
   function add_vacancytype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Vacancytype", array("add", "advanced", "add_vacancytype_do"), array(array("cancel","section=advanced&function=manage_vacancytypes")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_vacancytypes:add_vacancytype");
   }
 
   function add_vacancytype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Vacancytype", "section=advanced&function=manage_vacancytypes", "add_vacancytype");
   }
 
@@ -313,16 +346,22 @@
 
   function edit_vacancytype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Vacancytype", "section=advanced&function=manage_vacancytypes", "edit_vacancytype");
   }
 
   function remove_vacancytype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Vacancytype", array("remove", "advanced", "remove_vacancytype_do"), array(array("cancel","section=advanced&function=manage_vacancytypes")), "", "admin:advanced:manage_vacancytypes:remove_vacancytype");
   }
 
   function remove_vacancytype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Vacancytype", "section=advanced&function=manage_vacancytypes");
   }
 
@@ -330,6 +369,8 @@
 
   function manage_channels(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("channel", "list")) $waf->halt("error:policy:permissions");
+
     set_navigation_history($waf, "Channels");
 
     manage_objects($waf, $user, "Channel", array(array("add","section=advanced&function=add_channel")), array(array('edit', 'edit_channel'), array('associations', 'manage_channelassociations'), array('remove','remove_channel')), "get_all", "", "admin:advanced:manage_channels:manage_channels");
@@ -337,16 +378,22 @@
 
   function add_channel(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "create")) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Channel", array("add", "advanced", "add_channel_do"), array(array("cancel","section=advanced&function=manage_channels")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_channels:add_channel");
   }
 
   function add_channel_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "create")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Channel", "section=advanced&function=manage_channels", "add_channel");
   }
 
   function edit_channel(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     $id = (int) WA::request("id");
     require_once("model/Channel.class.php");
     $channel = Channel::load_by_id($id);
@@ -358,16 +405,22 @@
 
   function edit_channel_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Channel", "section=advanced&function=manage_channels", "edit_channel");
   }
 
   function remove_channel(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "delete")) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Channel", array("remove", "advanced", "remove_channel_do"), array(array("cancel","section=advanced&function=manage_channels")), "", "admin:advanced:manage_channels:remove_channel");
   }
 
   function remove_channel_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "delete")) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Channel", "section=advanced&function=manage_channels");
   }
 
@@ -375,6 +428,8 @@
 
   function manage_channelassociations(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     $channel_id = (int) WA::request('id', true);
     require_once("model/Channel.class.php");
     $channel = Channel::load_by_id($channel_id);
@@ -399,6 +454,8 @@
 
   function add_channelassociation_programme(&$waf)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     require_once("model/Programme.class.php");
     $channel_id = (int) WA::request('id', true);
 
@@ -412,6 +469,8 @@
 
   function add_channelassociation_school(&$waf)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     require_once("model/School.class.php");
     $channel_id = (int) WA::request('id', true);
 
@@ -425,6 +484,8 @@
 
   function add_channelassociation_activity(&$waf)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     require_once("model/Activitytype.class.php");
     $channel_id = (int) WA::request('id', true);
 
@@ -438,6 +499,8 @@
 
   function add_channelassociation_assessmentgroup(&$waf)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     require_once("model/AssessmentGroup.class.php");
     $channel_id = (int) WA::request('id', true);
 
@@ -449,25 +512,31 @@
     $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_assessmentgroup", "admin/advanced/add_channelassociation.tpl");
   }
 
-
-
   function add_channelassociation_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "ChannelAssociation", "section=advanced&function=manage_channelassociations", "add_channelassociation");
   }
 
   function remove_channelassociation(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "ChannelAssociation", array("remove", "advanced", "remove_channelassociation_do"), array(array("cancel","section=advanced&function=manage_channelassociations")), "", "admin:advanced:manage_channelassociations:remove_channelassociation");
   }
 
   function remove_channelassociation_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "ChannelAssociation", "section=advanced&function=manage_channelassociations");
   }
 
   function move_channelassociation_up(&$waf, &$user)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     // Get the assessment id and varorder
     $channel_id = (int) WA::request('channel_id');
     $id = (int) WA::request('id');
@@ -480,6 +549,8 @@
 
   function move_channelassociation_down(&$waf, &$user)
   {
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+
     // Get the assessment id and varorder
     $channel_id = (int) WA::request('channel_id');
     $id = (int) WA::request('id');
@@ -500,31 +571,43 @@
 
   function add_mimetype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Mimetype", array("add", "advanced", "add_mimetype_do"), array(array("cancel","section=advanced&function=manage_mimetypes")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_mimetypes:add_mimetype");
   }
 
   function add_mimetype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Mimetype", "section=advanced&function=manage_mimetypes", "add_mimetype");
   }
 
   function edit_mimetype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     edit_object($waf, $user, "Mimetype", array("confirm", "advanced", "edit_mimetype_do"), array(array("cancel","section=advanced&function=manage_mimetypes")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_mimetypes:edit_mimetype");
   }
 
   function edit_mimetype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Mimetype", "section=advanced&function=manage_mimetypes", "edit_mimetype");
   }
 
   function remove_mimetype(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Mimetype", array("remove", "advanced", "remove_mimetype_do"), array(array("cancel","section=advanced&function=manage_mimetypes")), "", "admin:advanced:manage_mimetypes:remove_mimetype");
   }
 
   function remove_mimetype_do(&$waf, &$user) 
   {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Mimetype", "section=advanced&function=manage_mimetypes");
   }
 
@@ -532,36 +615,50 @@
 
   function manage_automail(&$waf, $user, $title)
   {
+    if(!Policy::check_default_policy("automail", "list")) $waf->halt("error:policy:permissions");
+
     manage_objects($waf, $user, "Automail", array(array("add","section=advanced&function=add_automail")), array(array('edit', 'edit_automail'), array('remove','remove_automail')), "get_all", "", "admin:advanced:manage_automail:manage_automail");
   }
 
   function add_automail(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("automail", "create")) $waf->halt("error:policy:permissions");
+
     add_object($waf, $user, "Automail", array("add", "advanced", "add_automail_do"), array(array("cancel","section=advanced&function=manage_automail")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_automail:add_automail");
   }
 
   function add_automail_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("automail", "create")) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Automail", "section=advanced&function=manage_automail", "add_automail");
   }
 
   function edit_automail(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("automail", "edit")) $waf->halt("error:policy:permissions");
+
     edit_object($waf, $user, "Automail", array("confirm", "advanced", "edit_automail_do"), array(array("cancel","section=advanced&function=manage_automail")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_automail:edit_automail");
   }
 
   function edit_automail_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("automail", "edit")) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Automail", "section=advanced&function=manage_automail", "edit_automail");
   }
 
   function remove_automail(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("automail", "delete")) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Automail", array("remove", "advanced", "remove_automail_do"), array(array("cancel","section=advanced&function=manage_automail")), "", "admin:advanced:manage_automail:remove_automail");
   }
 
   function remove_automail_do(&$waf, &$user) 
   {
+    if(!Policy::check_default_policy("automail", "delete")) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Automail", "section=advanced&function=manage_automail");
   }
 
@@ -596,11 +693,15 @@
 
   function remove_assessment(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     remove_object($waf, $user, "Assessment", array("remove", "advanced", "remove_assessment_do"), array(array("cancel","section=advanced&function=manage_assessments")), "", "admin:advanced:manage_assessments:remove_assessment");
   }
 
   function remove_assessment_do(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Assessment", "section=advanced&function=manage_assessments");
   }
 
@@ -619,6 +720,8 @@
 
   function move_assessmentstructure_up(&$waf, &$user)
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     // Get the assessment id and varorder
     $assessment_id = (int) WA::request('assessment_id');
     $id = (int) WA::request('id');
@@ -631,6 +734,8 @@
 
   function move_assessmentstructure_down(&$waf, &$user)
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     // Get the assessment id and varorder
     $assessment_id = (int) WA::request('assessment_id');
     $id = (int) WA::request('id');
@@ -644,6 +749,8 @@
 
   function add_assessmentstructure(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     add_navigation_history($waf, "Add Item");
 
     add_object($waf, $user, "Assessmentstructure", array("add", "advanced", "add_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_assessments:add_assessmentstructure");
@@ -651,11 +758,15 @@
 
   function add_assessmentstructure_do(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     add_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures", "add_assessmentstructure");
   }
 
   function edit_assessmentstructure(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     $id = (int) WA::request('id', true);
 
     require_once('model/Assessmentstructure.class.php');
@@ -667,11 +778,15 @@
 
   function edit_assessmentstructure_do(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     edit_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures", "edit_assessmentstructure");
   }
 
   function remove_assessmentstructure(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     add_navigation_history($waf, "Remove Item");
 
     remove_object($waf, $user, "Assessmentstructure", array("remove", "advanced", "remove_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), "", "admin:advanced:manage_assessments:remove_assessmentstructure");
@@ -679,6 +794,8 @@
 
   function remove_assessmentstructure_do(&$waf, &$user) 
   {
+    if(!User::is_root) $waf->halt("error:policy:permissions");
+
     remove_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures");
   }
 

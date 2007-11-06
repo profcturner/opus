@@ -19,7 +19,7 @@
     <td>{$applications[applications]->_student_real_name}</td>
     <td>{$applications[applications]->_student_programme}</td>
     <td>{$applications[applications]->created}{if $applications[applications]->modified}<br />Modified: {$applications[applications]->modified}{/if}</td>
-    <td>{html_options name="status["|cat:$applications[applications]->student_id|cat:"]" values=$status_values output=$status_values selected=$applications[applications]->status}</td>
+    <td>{html_options name="status["|cat:$applications[applications]->student_id|cat:"]" values=$status_values output=$status_values selected=$applications[applications]->status}<input type="hidden" name="old_status[{$applications[applications]->student_id}]" value={$applications[applications]->status} /></td>
     <td class="action"><a href="">cv</a></td>
     <td class="action">{if $applications[applications]->letter}<a href="">letter</a>{else}letter{/if}</td>
     <td class="action"><a href="?section=directories&function=edit_student&id={$applications[applications]->student_id}">edit</a></td>

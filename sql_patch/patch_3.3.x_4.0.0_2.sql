@@ -10,6 +10,7 @@ alter table staff drop column department;
 alter table staff drop column staffno;
 alter table staff drop column email;
 alter table staff add column postcode tinytext not null after address;
+alter table staff change column status status enum('active','archive');
 alter table staff add column id int unsigned not null auto_increment primary key;
 
 -- admin --
