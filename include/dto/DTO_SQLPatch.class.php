@@ -19,25 +19,27 @@ class DTO_SQLPatch extends DTO
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    if($waf->unattended) echo "upgrading database schema from version 3 to 4\n";
     $waf->log("upgrading database schema from version 3 to 4");
 
     // Copy student data across
     try
     {
-      $sql = $con->prepare("SELECT email, course, id FROM `cv_pdetails`");
+      $sql = $con->prepare("SELECT * FROM `cv_pdetails`");
       $sql->execute();
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
         // Copy to relevant tables
-        $sql2 = $con->prepare("update user set email=? where id=?");
-        $sql2->execute(array($results_row['email'], $results_row['id']));
+        $sql2 = $con->prepare("update user set salutation=?, firstname=?, lastname=?, reg_number=username, email=? where id=?");
+        $sql2->execute(array($results_row['title'], $results_row['firstname'], $results_row['lastname'], $results_row['email'], $results_row['id']));
         $sql2 = $con->prepare("update student set programme_id=? where user_id=?");
         $sql2->execute(array($results_row['course'], $results_row['id']));
       }
     }
     catch (PDOException $e)
     {
+      if($waf->unattended) echo " error upgrading student information\n";
       $this->_log_sql_error($e, $class, "upgrade_3_to_4(student)");
     }
 
@@ -58,6 +60,7 @@ class DTO_SQLPatch extends DTO
     }
     catch (PDOException $e)
     {
+      if($waf->unattended) echo " error upgrading admin information\n";
       $this->_log_sql_error($e, $class, "upgrade_3_to_4(admin)");
     }
 
@@ -76,6 +79,7 @@ class DTO_SQLPatch extends DTO
     }
     catch (PDOException $e)
     {
+      if($waf->unattended) echo " error upgrading staff information\n";
       $this->_log_sql_error($e, $class, "upgrade_3_to_4(staff)");
     }
 
@@ -94,6 +98,7 @@ class DTO_SQLPatch extends DTO
     }
     catch (PDOException $e)
     {
+      if($waf->unattended) echo " error upgrading contact information\n";
       $this->_log_sql_error($e, $class, "upgrade_3_to_4(contact)");
     }
 
@@ -102,7 +107,7 @@ class DTO_SQLPatch extends DTO
 
     //
 
-
+    if($waf->unattended) echo "upgrade complete\n";
   }
 }
 

@@ -280,7 +280,7 @@ create table admin
   address text,
   help_directory enum('yes', 'no'),
   status enum('active', 'archive'),
-  policy_id int unsigned not null,
+  policy_id int unsigned null,
   inst_admin enum('no', 'yes'),
   user_id int unsigned not null,
   id int unsigned not null auto_increment primary key
@@ -289,6 +289,6 @@ create table admin
 
 
 
-
+alter table staff add column id int unsigned auto_increment primary key;
 alter table staff change column status status enum('active', 'archive');
 

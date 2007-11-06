@@ -15,8 +15,8 @@ class Language extends DTO_Language
   var $ident = "";     // Standard identifier (e.g. en for english)
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Language', 'header'=>true),
-    'ident'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'title'=>'Identifier', 'header'=>true),
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Language', 'header'=>true, 'mandatory'=>true),
+    'ident'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'title'=>'Identifier', 'header'=>true, 'mandatory'=>true),
   );
 
   function __construct() 

@@ -28,20 +28,20 @@ class Company extends DTO_Company
   var $allocation = "";
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name','header'=>true),
-    'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1'),
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name','header'=>true, 'mandatory'=>true),
+    'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1', 'mandatory'=>true),
     'address2'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 2'),
     'address3'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 3'),
-    'town'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Town'),
-    'locality'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Locality', 'header'=>true),
-    'country'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Country'),
+    'town'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Town', 'mandatory'=>true),
+    'locality'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Locality', 'header'=>true, 'mandatory'=>true),
+    'country'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Country', 'mandatory'=>true),
     'postcode'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20, 'title'=>'Postcode'),
-    'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true),
+    'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true, 'mandatory'=>true),
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
     'voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Phone'),
     'fax'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Fax'),
     'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
-    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml')
+    'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml', 'mandatory'=>true)
      );
 
   // This defines which variables are stored elsewhere

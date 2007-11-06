@@ -17,7 +17,7 @@ class Faculty extends DTO_Faculty
   var $status = "";      // Status flags
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'faculty_name'),
+    'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'faculty_name', 'mandatory'=>true),
     'www'=>array('type'=>'url', 'size'=>60, 'maxsize'=>200, 'title'=>'Web Address'),
     'srs_ident'=>array('type'=>'text', 'size'=>40, 'maxsize'=>60, 'title'=>'SRS Code'),
     'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))

@@ -119,11 +119,11 @@ class Policy extends DTO_Policy
   {
     global $log;
     // roots are always authorised
-    if(is_root()) return(TRUE);
+    if(User::is_root()) return(TRUE);
   
     // Get the course id, if undefined, only root users can deal with them
     $course_id = get_course_id($student_id);
-    if(empty($course_id) && !is_root()) return FALSE;
+    if(empty($course_id)) return FALSE;
   
     $school_id = get_school_id($course_id);
   
@@ -154,10 +154,10 @@ class Policy extends DTO_Policy
     $school_id = (int) $school_id;
 
     // root users have automatic access by definition
-    if(is_root()) return true;
+    if(User::is_root()) return true;
 
     // Well, the user better be an admin then..
-    if(!is_admin()) return false;
+    if(!User::is_admin()) return false;
 
     // Ok, now down to basics... Check the major loaded policy
     if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
@@ -206,7 +206,7 @@ class Policy extends DTO_Policy
   function is_auth_for_course($course_id, $category, $permission)
   {
     // root users have automatic access by definition
-    if(is_root()) return(TRUE);
+    if(User::is_root()) return(TRUE);
   
     // Well, the user better be an admin or...
     if(!is_admin())

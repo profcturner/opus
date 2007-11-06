@@ -21,12 +21,12 @@ class Student extends DTO_Student
   // Several of these fields actually reside in the User table
   static $_field_defs = array
   (
-    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
+    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title', 'mandatory'=>true),
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
-    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
-    'email'=>array('type'=>'email','size'=>40),
+    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true, 'mandatory'=>true),
+    'email'=>array('type'=>'email','size'=>40, 'mandatory'=>true),
  //   'progress'=>array('type'=>'list', 'list'=>array()),
-    'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year'),
+    'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year', 'mandatory'=>true),
     'placement_status'=>array('type'=>'list', 'list'=>array('Required'=>'Required','Placed'=>'Placed','Exempt Applied'=>'Exempt Applied','Exempt Given'=>'Exempt Given','No Info'=>'No Info','Left Course'=>'Left Course','Suspended'=>'Suspended','To final year'=>'To final year','Not Eligible'=>'Not Eligible')),
     'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
   );

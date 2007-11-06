@@ -16,9 +16,9 @@ class Assessment extends DTO_Assessment
   var $template_filename = "";   // Path to template the skins the form
 
   static $_field_defs = array(
-    'description'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Admin Description', 'header'=>true, 'listclass'=>'assessment_admin_description'),
-    'student_description'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Student Description', 'header'=>true, 'listclass'=>'assessment_student_description'),
-    'template_filename'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Template', 'header'=>true, 'listclass'=>'assessment_template_name')
+    'description'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Admin Description', 'header'=>true, 'listclass'=>'assessment_admin_description', 'mandatory'=>true),
+    'student_description'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Student Description', 'header'=>true, 'listclass'=>'assessment_student_description', 'mandatory'=>true),
+    'template_filename'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Template', 'header'=>true, 'listclass'=>'assessment_template_name', 'mandatory'=>true)
   );
 
   function __construct() 

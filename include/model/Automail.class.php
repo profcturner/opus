@@ -22,9 +22,9 @@ class Automail extends DTO_Automail
   var $contents = "";    // The message body
 
   static $_field_defs = array(
-    'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
+    'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true, 'mandatory'=>true),
     'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages', 'header'=>'true'),
-    'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
+    'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description', 'mandatory'=>true),
     'fromh'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'From Header'),
     'toh'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'To Header'),
     'cch'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'CC Header'),

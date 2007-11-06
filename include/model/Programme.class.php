@@ -19,7 +19,7 @@ class Programme extends DTO_Programme
   var $cvgroup_id = 1;   // The CV group the programme belongs to
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'programme_name'),
+    'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'programme_name', 'mandatory'=>true),
     'srs_ident'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'header'=>true, 'title'=>'Code'),
     'www'=>array('type'=>'url', 'size'=>60, 'maxsize'=>200, 'title'=>'Web Address'),
     'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'var'=>'schools'),

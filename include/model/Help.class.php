@@ -21,8 +21,8 @@ class Help extends DTO_Help
   static $_field_defs = array(
     'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages'),
     'channel_id'=>array('type'=>'lookup', 'object'=>'channel', 'value'=>'name', 'title'=>'Channel', 'var'=>'channels', 'header'=>'true'),
-    'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true),
-    'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),
+    'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'header'=>true, 'mandatory'=>true),
+    'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description', 'mandatory'=>true),
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorisation'),
     'contents'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>80, 'maxsize'=>32000, 'markup'=>'xhtml')
 

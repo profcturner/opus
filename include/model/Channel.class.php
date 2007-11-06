@@ -15,7 +15,7 @@ class Channel extends DTO_Channel
   var $description = ""; // Brief description of channel
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>30, 'title'=>'Name', 'header'=>true, 'listclass'=>'channel_name'),
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>30, 'title'=>'Name', 'header'=>true, 'listclass'=>'channel_name', 'mandatory'=>true),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'channel_description')
     );
 
@@ -161,7 +161,7 @@ class Channel extends DTO_Channel
     }
     return($in_channel);
   }
-  
+
 
 }
 ?>

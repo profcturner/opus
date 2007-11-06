@@ -19,7 +19,7 @@ class Note extends DTO_Note
 
   static $_field_defs = array(
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorization'),
-    'summary'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Summary', 'header'=>true),
+    'summary'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Summary', 'header'=>true, 'mandatory'=>true),
     'notelinks'=>array('type'=>'lookup', 'object'=>'notelink', 'value'=>'name', 'title'=>'Possible Links', 'var'=>'links', 'lookup_function'=>'get_possible_links', 'multiple'=>true),
     'comments'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>32000, 'markup'=>'xhtml')
     );

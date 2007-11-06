@@ -28,7 +28,6 @@ class Resource extends DTO_Resource
   var $uploader;         // The user_id of the uploader
   var $status = "";      // Various status fields
 
-
   static $_field_defs = array(
     'file_upload'=>array('type'=>'file'),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description'),

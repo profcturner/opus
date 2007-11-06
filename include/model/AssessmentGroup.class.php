@@ -15,7 +15,7 @@ class AssessmentGroup extends DTO_AssessmentGroup
   var $comments = "";     // Information about the assessment
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'AssessmentGroup', 'header'=>true),
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'AssessmentGroup', 'header'=>true, 'mandatory'=>true),
     'comments'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>50)
   );
 

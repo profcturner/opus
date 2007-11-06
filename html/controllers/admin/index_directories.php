@@ -916,9 +916,9 @@
     if(!Policy::check_default_policy("staff", "list")) $waf->halt("error:policy:permissions");
 
     require_once("model/Staff.class.php");
-    $search = WA::request("search");
-    $sort = WA::request("sort");
-    $schools = WA::request("schools");
+    $search = WA::request("search", true);
+    $sort = WA::request("sort", true);
+    $schools = WA::request("schools", true);
 
     if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:staffs:invalid_search");
 

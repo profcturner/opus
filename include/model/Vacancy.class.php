@@ -36,7 +36,7 @@ class Vacancy extends DTO_Vacancy
   static $_field_defs = array(
     'description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true),
     'vacancy_type'=>array('type'=>'lookup', 'object'=>'vacancytype', 'value'=>'name', 'title'=>'Type', 'var'=>'vacancytypes'),
-    'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true),
+    'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true, 'mandatory'=>true),
     'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date', 'mandatory'=>true),
     'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job Finish Date'),
     'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1'),
@@ -47,7 +47,7 @@ class Vacancy extends DTO_Vacancy
     'country'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Country'),
     'postcode'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20, 'title'=>'Postcode'),
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
-    'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special")),
+    'status'=>array('type'=>'list', 'list'=>array("open"=>"open", "closed"=>"closed", "special"=>"special")),
     'closedate'=>array('type'=>'date', 'inputstyle'=>'popup', 'title'=>'Application Deadline'),
     'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml', 'mandatory'=>true)
      );

@@ -24,13 +24,13 @@ class Admin extends DTO_Admin
   // Several of these fields actually reside in the User table
   static $_field_defs = array
   (
-    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title'),
-    'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
-    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true),
+    'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title', 'mandatory'=>true),
+    'firstname'=>array('type'=>'text','size'=>30, 'header'=>true, 'mandatory'=>true),
+    'lastname'=>array('type'=>'text','size'=>30, 'header'=>true, 'mandatory'=>true),
     'position'=>array('type'=>'text','size'=>50,'header'=>true),
     'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
     'inst_admin'=>array('type'=>'list', 'list'=>array('no', 'yes'), 'title'=>'Institutional Admin'),
-    'email'=>array('type'=>'email','size'=>40, 'header'=>true),
+    'email'=>array('type'=>'email','size'=>40, 'header'=>true, 'mandatory'=>true),
     'voice'=>array('type'=>'text','size'=>40),
     'fax'=>array('type'=>'text','size'=>40),
     'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),

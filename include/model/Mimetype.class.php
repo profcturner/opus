@@ -17,8 +17,8 @@ class Mimetype extends DTO_Mimetype
   var $uploadable = ""; // Various flags
 
   static $_field_defs = array(
-    'type'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Type', 'header'=>true, 'listclass'=>'mimetype_type'),
-    'extensions'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Extensions', 'listclass'=>'mimetype_extensions'),
+    'type'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Type', 'header'=>true, 'listclass'=>'mimetype_type', 'mandatory'=>true),
+    'extensions'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Extensions', 'listclass'=>'mimetype_extensions', 'mandatory'=>true),
     'comment'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Comment', 'header'=>true, 'listclass'=>'comment'),
     'uploadable'=>array('type'=>'list', 'list'=>array('yes', 'no')),
     );

@@ -18,7 +18,7 @@ class School extends DTO_School
   var $faculty_id = 0;   // ID of faculty this school belongs to
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'school_name'),
+    'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'school_name', 'mandatory'=>true),
     'srs_ident'=>array('type'=>'text', 'size'=>40, 'maxsize'=>60),
     'www'=>array('type'=>'url', 'size'=>60, 'maxsize'=>200, 'title'=>'Web Address'),
     'faculty_id'=>array('type'=>'lookup', 'object'=>'faculty', 'value'=>'name', 'title'=>'Faculty', 'var'=>'faculties'),

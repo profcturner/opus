@@ -29,14 +29,14 @@ class Placement extends DTO_Placement
   var $student_id;            // The id, from the student table
 
   static $_field_defs = array(
-    'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
+    'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true),
     //'vacancy_type'=>array('type'=>'lookup', 'object'=>'vacancytype', 'value'=>'name', 'title'=>'Type', 'var'=>'vacancytypes'),
     'jobstart'=>array('type'=>'date', 'inputstyle'=>'popup', 'required'=>'true'),
     'jobend'=>array('type'=>'date', 'inputstyle'=>'popup'),
     'salary'=>array('type'=>'text', 'size'=>6, 'maxsize'=>20),
-    'supervisor_title'=>array('type'=>'text', 'size'=>5, 'maxsize'=>100, 'title'=>"Supervisor Title<br /><small>Mr, Dr, etc.</small>"),
+    'supervisor_title'=>array('type'=>'text', 'size'=>5, 'maxsize'=>100, 'title'=>"Supervisor Title<br /><small>Mr, Dr, etc.</small>", 'mandatory'=>true),
     'supervisor_firstname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor First name"),
-    'supervisor_lastname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Last name"),
+    'supervisor_lastname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Last name", 'mandatory'=>true),
     'supervisor_email'=>array('type'=>'email', 'size'=>40, 'maxsize'=>100, 'title'=>"Supervisor Email"),
     'supervisor_voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Phone")
   );

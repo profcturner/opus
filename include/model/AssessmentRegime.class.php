@@ -23,8 +23,8 @@ class AssessmentRegime extends DTO_AssessmentRegime
 
   static $_field_defs = array(
     'assessment_id'=>array('type'=>'lookup', 'object'=>'assessment', 'value'=>'description', 'title'=>'Assessment', 'size'=>20, 'var'=>'assessments'),
-    'student_description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Student Description', 'header'=>true),
-    'weighting'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4, 'header'=>true),
+    'student_description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Student Description', 'header'=>true, 'mandatory'=>true),
+    'weighting'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4, 'header'=>true, 'mandatory'=>true),
     'assessor'=>array('type'=>'list', 'list'=>array('academic','industrial','student','other'), 'header'=>true),
     'year'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4),
     'start'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4),
