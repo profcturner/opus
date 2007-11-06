@@ -57,64 +57,63 @@ class Policy extends DTO_Policy
   */
   function load_default_policy()
   {
-    if(User::is_root()) return FALSE;
-  
+    global $waf;
+    if(isset($_SESSION['user']['policy'])) return true;
+
+    if(User::is_root()) return false;
+
     if(User::is_admin())
     {
-      $query = "SELECT policy_id FROM admins WHERE user_id=" . $_SESSION['user']['id'];
+      require_once("model/Admin.class.php");
+      $admin = Admin::load_by_user_id(User::get_id());
+      $policy_id = $admin->policy_id;
+
+      if(empty($policy_id))
+      {
+        $waf->log("no policy for admin user");
+        $waf->halt("error:policy:no_policy");
+      }
     }
-  
-    if(is_staff())
+
+    if(User::is_staff())
     {
-      if(!is_course_director()) return FALSE;
-      $query = "SELECT policy_id FROM coursedirectors WHERE staff_id=" . $_SESSION['user']['id'];
+      // Need to think about this one... for course directors
+      return false;
     }
-    $result = mysql_query($query)
-      or print_mysql_error2("Unable to obtain policy number", $query);
-    $row = mysql_fetch_row($result);
-    $policy_id = $row[0];
-    mysql_free_result($result);
-  
-    if(empty($policy_id))
-    {
-      die_gracefully("There is no security policy defined for your user.");
-    }
-  
-    return(load_policy($policy_id));
+    $_SESSION['user']['policy'] = Policy::load_by_id($policy_id);
+    return(true);
   }
-  
-  
+
   /**
-  **	Checks a loaded policy for a given permission in a category
-  **	@param	$category   The major category for the policy eg. student, company
-  **      @param	$permission The permission for the category to check for, eg. create, edit
-  **	@return Boolean variable which specifies if the subtype is permitted under the policy
+  * Checks a loaded policy for a given permission in a category
+  *
+  * @param  $category The major category for the policy eg. student, company
+  * @param  $permission The permission for the category to check for, eg. create, edit
+  * @return Boolean variable which specifies if the subtype is permitted under the policy
   */
   function check_policy($policy, $category, $permission)
   {
     if(User::is_root()) return TRUE;
-  
-    return(strstr($policy[$category], $permission));
+
+    return(strstr($policy->$category, $permission));
   }
-  
-  
+
   /**
-  *	Checks the default policy for a given permission in a category
-  *	@param	$category	The major category for the policy
-  *	@param	$permission	The permission for the category to check for, eg. create
-  *	@see check_policy
+  * Checks the default policy for a given permission in a category
+  * @param  $category The major category for the policy
+  * @param  $permission The permission for the category to check for, eg. create
+  * @see check_policy
   */
   function check_default_policy($category, $permission)
   {
     if(User::is_root()) return TRUE;
-  
-    return(check_policy($_SESSION['user']['policy'], $category, $permission));
+
+    return(Policy::check_policy($_SESSION['user']['policy'], $category, $permission));
   }
-  
-  
+
+
   /**
-  **	@function is_auth_for_student
-  **	Checks for authorisation at the school or course level for a student
+  * Checks for authorisation at the school or course level for a student
   */
   function is_auth_for_student($student_id, $category, $permission)
   {
@@ -135,39 +134,41 @@ class Policy extends DTO_Policy
       return is_auth_for_course($course_id, $category, $permission);
     }
   }
-  
-  /**	@function is_auth_for_school
-  **	Checks the current user for permission for an action upon a school
-  **	Users with root access are automatically granted permission. An
-  **	admin level user will have their default policy checked for permission
-  **	for this action. If that permission is granted, they will be checked
-  **	for authorisation to act for that school, and if that is ok, any
-  **	local policy acting upon them in that school will be checked.
-  **	@param $school_id	The id of the school to be checked
-  **	@param $category	The major category for the policy
-  **	@param $permission	The permission sought in the catgory
-  **	@return	Boolean variable specifying if permission is granted.
+
+  /**
+  **  Checks the current user for permission for an action upon a school
+  **
+  **  Users with root access are automatically granted permission. An
+  **  admin level user will have their default policy checked for permission
+  **  for this action. If that permission is granted, they will be checked
+  **  for authorisation to act for that school, and if that is ok, any
+  **  local policy acting upon them in that school will be checked.
+  **  @param $school_id The id of the school to be checked
+  **  @param $category  The major category for the policy
+  **  @param $permission  The permission sought in the catgory
+  **  @return Boolean variable specifying if permission is granted.
   **
   */
   function is_auth_for_school($school_id, $category, $permission)
   {
+    $school_id = (int) $school_id;
+
     // root users have automatic access by definition
-    if(is_root()) return(TRUE);
-  
+    if(is_root()) return true;
+
     // Well, the user better be an admin then..
-    if(!is_admin()) return(FALSE);
-  
+    if(!is_admin()) return false;
+
     // Ok, now down to basics... Check the major loaded policy
-    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return(FALSE);
-  
-    if(empty($school_id)) return(FALSE);
+    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+
+    if(empty($school_id)) return false;
     // Finally, check that we are specified for the school and there is
     // no overriding policy in the school
-    $query = "SELECT * FROM adminschool WHERE admin_id=" . $_SESSION['user']['id'] .
-            " AND school_id=$school_id";
-    $result = mysql_query($query)
-      or print_mysql_error2("Unable to check admin school policy", $query);
-  
+
+    require_once("model/SchoolAdmin.class.php");
+    $schooladmin = SchoolAdmin::load_where("where school_id=$school_id and admin_id=" . User::get_id());
+
     // Determine if the school is specified
     if(!mysql_num_rows($result)) $decision = FALSE;
     else

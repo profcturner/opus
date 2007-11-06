@@ -336,7 +336,7 @@ function add_navigation_history(&$waf, $title)
 
 function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl') 
 {
-    $page = WA::request("page");
+    $page = WA::request("page", true);
     
     $pages = array();
     $waf->assign("page", $page);
@@ -363,8 +363,7 @@ function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl')
  * 
  */
 
-function view_object(&$waf, $user, $object_name, $page_title, $tag_line, $action_button, $hidden_values, $manage_tpl, $section, $subsection, $id)
-{
+function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl') {
 
     $object = str_replace(" ", "_", ucwords($object_name));
 
@@ -372,24 +371,18 @@ function view_object(&$waf, $user, $object_name, $page_title, $tag_line, $action
 
     $instance = new $object;
 
-    $object = call_user_func(array($object, "load_by_id"), $id);
-    //$fieldnames = call_user_func(array(ucwords($object_name), "get_fields"));
-    $waf->assign("page_title", $page_title);
+    $id = WA::request("id");
+    $object = $instance->load_by_id($id, true);
     $waf->assign("action_button", $action_button);
-    $waf->assign("tag_line", $tag_line);
+    $waf->assign("action_links", $action_links);
     $waf->assign("mode", "remove");
     $waf->assign("object", $object);
     $waf->assign("headings", $instance->get_field_defs());
     $waf->assign("hidden_values", $hidden_values);
     $content = $waf->fetch($manage_tpl);
     $waf->assign("content", $content);
-    $waf->assign("section", $section);
-    $waf->assign("subsection", $subsection);
-    $waf->display("main.tpl");
-
-    // Log view
-    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
-    $waf->log("viewing $object_name $human_name");
+    $waf->display("main.tpl", $config_section, $manage_tpl);
+    
   }
 
 /**
@@ -420,12 +413,15 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     require_once("model/".$object.".class.php");
     
     $instance = new $object;
+    $object_num = $instance->count($get_all_parameter[0]);
     
     $waf->assign("action_links", $action_links);
     $waf->assign("headings", $instance->get_field_defs());
     $waf->assign("actions", $actions);
 
-    if (is_array($get_all_parameter)) {
+    $waf->assign("object_num", $object_num);
+
+    if (is_array($get_all_parameter)) { 
       $objects = call_user_func_array(array($object, $get_all_method), $get_all_parameter);
     } else {
       $objects = call_user_func(array($object, $get_all_method), $get_all_parameter);
@@ -498,8 +494,14 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $validation_messages = $obj->_validate($nvp_array);
 
     if (count($validation_messages) == 0) {
-      call_user_func(array($object, "insert"), $nvp_array);
-      header("location: ?$goto");
+      $response = $obj->insert($nvp_array);
+
+      if (!is_numeric($response)) 
+      {
+        $_SESSION['waf']['error_message'] = $response;
+      }
+
+      header("location: ?$goto"); 
     } else {
       if ($goto_error == "") $goto_error = "add_".strtolower($object);
       $waf->assign("nvp_array", $nvp_array);
@@ -574,7 +576,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
         $validation_messages = $obj->_validate($nvp_array);
 
     if (count($validation_messages) == 0) {
-      call_user_func(array($object, "update"), $nvp_array);
+      $obj->update($nvp_array);
       header("location: ?$goto");
     } else {
          if ($goto_error == "") $goto_error = "edit_".strtolower($object);
@@ -617,7 +619,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $instance = new $object;
 
     $id = WA::request("id");
-    $object = call_user_func(array($object, "load_by_id"), $id);
+    $object = call_user_func_array(array($object, "load_by_id"), array($id, true));
     $waf->assign("action_button", $action_button);
     $waf->assign("action_links", $action_links);
     $waf->assign("mode", "remove");
@@ -686,6 +688,30 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     }
   }
 
+  function associate_objects(&$waf, &$user, $object_name, $objects_name, $action_button, $get_all_method, $get_all_parameter="", $config_section, $assign_tpl='assign.tpl') {
+  
+    $object = str_replace(" ", "_", ucwords($object_name));
+
+    require_once("model/".$object.".class.php");
+    
+    $instance = new $object;
+
+    $object_num = call_user_func(array($object, "count"));
+    
+    $waf->assign("action_links", $action_links);
+    $waf->assign("headings", $instance->get_field_defs());
+    $waf->assign("actions", $actions);
+    $waf->assign("object_num", $object_num);
+
+    if (is_array($get_all_parameter)) { 
+      $objects = call_user_func_array(array($object, $get_all_method), $get_all_parameter);
+    } else {
+      $objects = call_user_func(array($object, $get_all_method), $get_all_parameter);
+    }
+
+    generate_table($waf, $objects, $config_section, $assign_tpl);
+  }
+
 /**
  * This generates an assign table, a table that can be used to assign one object to a number of
  * instance of another object, i.e. assign a user to a number of groups.
@@ -696,9 +722,22 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * @uses WA::request()
  */
 
-  function generate_assign_table(&$waf, $objects) 
+  function generate_assign_table(&$waf, $objects, $config_section, $assign_tpl='assign.tpl') 
   {
-    $page = WA::request("page");
+
+
+    $page = WA::request("page", true);
+    
+    $pages = array();
+    
+    $waf->assign("page", $page);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", $config_section, $list_tpl);
+
+
+
+//    $page = WA::request("page");
     $pages = array();
 
     $number_of_objects = count($objects);
@@ -716,7 +755,11 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
     $object_list = $waf->fetch("assign_list.tpl");
     $waf->assign("content", $object_list);
-    $waf->display("main.tpl");
+    $waf->display("main.tpl", $config_section, $assign_tpl);
+  }
+  
+  function assign_objects_do(&$WA) {
+
   }
 
 /**
@@ -729,16 +772,16 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
 
   function validate_field() 
   {
-    $object_name = WA::request("object");
+    $object = WA::request("object");
     $field = WA::request("field");
     $value = WA::request("value");
+    
+    $lookup_name = str_replace("_", " ", $object);
+    $lookup_name = str_replace(" ", "_", ucwords($lookup_name));
+   
+    require_once("model/".$lookup_name.".class.php");
 
-    //$lookup_name = str_replace("_", " ", $object);
-    //$lookup_name = str_replace(" ", "_", ucwords($lookup_name));
-
-    require_once("model/".$object_name.".class.php");
-
-    $obj = new $object_name;
+    $obj = new $lookup_name;
     echo $obj->_validation_response($field, $value);
   }
 

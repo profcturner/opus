@@ -9,7 +9,7 @@ body {
   color:#000000;
   background-color:#ffffff;
   padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;;
+  margin: 0px 0px 0px 0px;
   border: 0px #ccc solid;
 }
 a:link {
@@ -63,7 +63,7 @@ h3 {
    border-left: 5px solid #006584;
    margin-bottom: 5px;
    margin-top: 0px;
-   background-image: url(/pdp/images/style_images/blue/drops/heading.gif);
+   background-image: url(/opus/images/heading.gif);
    background-repeat: no-repeat;
    text-align: left;
 }
@@ -130,21 +130,30 @@ em.validation_message {
   color:#ffffff;
 }
 
+a.group {
+  color:#aaaaaa;
+}
+
 #sql_error {
-  padding:1em;
-  border: 1px red solid;
+  padding:0.5em;
+  border: 1px red dotted;
+  margin: 0.2em;
+  background:#ffdddd;
+  color:#990000;
 }
 
 #warning {
   padding:1em;
   border: 2px red dotted;
-  color: red;
+  background:#ffdddd;
+  color:#990000;
 }
 
 #brief {
   padding: 1em;
   border: 1px black dashed;
 }
+
 
 /* div id=menu style */
 
@@ -276,7 +285,7 @@ text-decoration: none;
   font-weight:normal;
   white-space:nowrap;
 }
-#menu ul ul, {     /* must not be combined with the next rule or IE gets confused */
+#menu ul ul {     /* must not be combined with the next rule or IE gets confused */
   display: block;              /* specially to go with the className changes in the behaviour file */
 }
 
@@ -380,12 +389,31 @@ text-decoration: none;
   font-size:1.4em;
 }
 
+#tools {
+  display:block;
+  background: #eee;
+  width:10em;
+  float:right;
+  border:2px #ddcccc solid;
+  margin-left:1em;
+  margin-top:0.5em;
+  margin-bottom:0.5em;
+  margin-right:0.1em;
+  padding:1em;
+  
+}
 #news {
-/*width: auto;
-background: #eee;*/
-  width:20%;
-  float:left;
-  border-left:1px #555555 dotted;
+  display:block;
+  background: #eee;
+  width:15em;
+  float:right;
+  border:2px #ddcccc solid;
+  margin-left:1em;
+  margin-top:0.5em;
+  margin-bottom:0.5em;
+  margin-right:0.1em;
+  padding:1em;
+  
 }
 
 #news ul {
@@ -444,17 +472,17 @@ textarea {
   padding: 0px;
   margin: 0px;
   border: 0px;
-  white-space:nowrap;
+  /*white-space:nowrap;*/
 }
 #table_list td {
   font-family: Verdana, Arial, sans-serif;
   padding: 2px;
   border-right:#ccc 1px solid;
 }
-#table_list tr.dark_row {
+#table_list .dark_row {
   background-color:#e5e5e5;
 }
-#table_list tr.light_row {
+#table_list .light_row {
   background-color:#ffffff;
 }
 
@@ -472,20 +500,23 @@ textarea {
 #table_list th.action { 
   border-right:0px;
   color:#303060;
-  text-align:left;
+  text-align:center;
   font-weight:bold;
   width:1em;
+  white-space:nowrap;
 }
 #table_list td.action {
   padding: 3px;
   border-right:0px;
-  text-align:left;
+  text-align:center;
+  white-space:nowrap;
 }
 #table_list td.action a {
   padding: 3px;
   border-right:0px;
   color:#0D436F;
   text-align:center;
+  white-space:nowrap;
 }
 #table_list tr:hover {
   background-color:#ffd5e5;
@@ -498,6 +529,16 @@ textarea {
 }
 #table_manage tr {
   background: #fafafa;
+}
+
+#table_manage th {
+  background: #fafafa;
+  font-size: 0.9em;
+  color: #443333;
+  padding-left: 1em;
+  padding-top:0.3em;
+  padding-bottom:3px;
+  padding-right:3px;
 }
 #table_manage td {
   background: #fafafa;
@@ -602,9 +643,28 @@ textarea {
 
 #tag_line {
   padding-left:1em;
+  padding-bottom:0.2em;
   font-size:0.9em;
   color: #444444;
   border-bottom: 1px #cccccc solid;
+}
+
+#tag_line p {
+  margin-top :0.1em;
+  margin-bottom: 0.1em;
+}
+
+#tag_line h2 {
+  font-size :1em;
+}
+
+#info_text {
+  padding-left:1em;
+  padding-top:0.2em;
+  padding-bottom:0.2em;
+  font-size:0.9em;
+  color: #444444;
+  border-bottom: 0px #cccccc solid;
 }
 
 .red {
@@ -684,8 +744,8 @@ textarea {
   margin-left: auto;
   clear: both;
   line-height: 3em;
-  min-height: 80px;
-  height: 80px;
+  min-height: 4em;
+  height: 4em;
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: #dddddd;
@@ -699,6 +759,10 @@ textarea {
 
 }
 
+.list_fancy_action {
+  float:right;
+}
+
 .qualification_date_attained {
   float:right;
   font-size: small;
@@ -706,17 +770,19 @@ textarea {
 }
 
 .qualification_institution {
-  clear:left;
-  float:left;
+  clear:right;
+  float:right;
   font-size: small;
 }
 .qualification_subjects {
   float:left;
+  clear:both;
   font-size: large;
   color: #d033ff;
 }
 .qualification_qualification {
-  float:left;
+  float:right;
+  clear:right;
   font-size: large;
   padding-right:1em;
   color: #d033ff;
@@ -826,6 +892,7 @@ textarea {
   background-image: URL("/opus/images/calendar_small.jpg");
   width:34px;
   cursor:pointer;
+  border: 0px;
 }
 
 .info_label {
@@ -834,6 +901,15 @@ textarea {
   float:left;
   font-size: 0.8em;
   color: #444444;
+}
+
+#mandatory input {
+  border-bottom: 1px #f88 solid;
+  
+}
+
+#mandatory textarea {
+  border-bottom: 1px #f88 solid;
 }
 
 #php_info .h{

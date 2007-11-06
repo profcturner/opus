@@ -68,6 +68,10 @@
 
 {/if}
 
+{section loop=$validation_messages name=validation}
+  ieee!!!!{$validation_messages[validation]}
+{/section}
+
 <div id="table_manage">
 <form method="POST" ENCTYPE="multipart/form-data" action="" name="mainform">
 <table cellpadding="0" cellspacing="0" border="0">
@@ -86,10 +90,10 @@
 {* td to hold the validation image, the class validation can be used to set this width *}
 
 {if $mode == "add" || $mode == "edit"}
-    <td class="validation"><span class="validation_message" id="{$header}_validation">{$validation_messages[$header]}</span></td>
+    <td class="validation"><span class="validation_message" id="{$header}_validation">{$validation_messages[$header][0]}</span></td>
 {/if}
 
-    <td>
+    <td {if $def.mandatory}id="mandatory"{/if}>
 {if $mode == "view" || $mode == "remove"}
 
       {if $def.type == "lookup"}
@@ -103,6 +107,8 @@
         {$object->$header|date_format}
       {elseif $def.type == "currency"}
         &pound;{$object->$header|string_format:"%.2f"}
+      {elseif $def.type == "image" || $def.type == "file"}
+      {$object->_file_name}
       {else}
         {$object->$header|nl2br}
       {/if}
@@ -121,6 +127,10 @@
         <textarea rows="{$def.rowsize|default:6}" cols="{$def.colsize|default:60}" name="{$header}" {if $def.markup == "xhtml"} id="xhtmlArea"{assign var='xinha_editor' value=true} {else}id="{$header}_{$object->id}"{/if}  onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}  onKeyDown="textCounter(document.mainform.{$header},document.mainform.{$header}_Len,{if $def.maxsize}{$def.maxsize}{else}{math equation='x * y' x=$def.rowsize y=$def.colsize}{/if});getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" onKeyUp="textCounter(document.mainform.{$header},document.mainform.{$header}_Len,{if $def.maxsize}{$def.maxsize}{else}{math equation='x * y' x=$def.rowsize y=$def.colsize}{/if});getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');">{$nvp_array[$header]|default:$object->$header}</textarea>
       {elseif $def.type == "flexidate"}
         <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if} /> {#flexidate#}
+      {elseif $def.type == "timestamp"}
+        <input type="hidden" name="{$header}" value="{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}"/>{$nvp_array[$header]|default:$object->$header} [This will update automatically]
+      {elseif $def.type == "createtimestamp"}
+        <input type="hidden" name="{$header}" value="{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}"/>{$nvp_array[$header]|default:$object->$header} [This will update automatically]
       {elseif $def.type == "date"}
         {if $def.inputstyle == "popup"}
           <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
@@ -128,7 +138,7 @@
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="DMY" day_value_format="%02d"}
         {/if}
       {elseif $def.type == "image" || $def.type == "file"}
-        <input type="file" name="{$header}" size="{$def.size}"/>
+        <input type="file" name="{$header}"/><input type="hidden" name="MAX_FILE_SIZE" value="30000" />
       {elseif $def.type == "list"}
         {if $def.multiple}
           {html_options multiple='multiple' options=$def.list name=$header|cat:"[]" selected=$object->$header}<br />{#multiple_select#}
@@ -179,6 +189,10 @@
       <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
          {elseif $def.type == "duration"}
          <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>&nbsp;{$def.scale}
+      {elseif $def.type == "timestamp"}
+        <input type="hidden" name="{$header}" value="{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}"/>{$nvp_array[$header]|default:$object->$header} [This will update automatically]
+      {elseif $def.type == "createtimestamp"}
+        <input type="hidden" name="{$header}" value="{$nvp_array[$header]|default:$object->$header}"/>{$nvp_array[$header]|default:$object->$header}
       {elseif $def.type == "date"}
         {if $def.inputstyle == "popup"}
           <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if} onFocus='showCalendarControl(this);'/>
@@ -188,10 +202,8 @@
       {elseif $def.type == "flexidate"}
         <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> {#flexidate#}
       {elseif $def.type == "image" || $def.type == "file"}
-      {if $object->$header}<a href="">{$object->$header}</a>
-      {else}
-      <input type="file" name="{$header}" size="{$def.size}"/>
-      {/if}
+      <a href="?section=main&function=download&hash={$object->_hash}">{$object->_file_name}</a>
+      <input type="hidden" name="artefact_id" value="{$object->artefact_id}"/>    
       {elseif $def.type == "list"}
         {if $def.multiple}
           {html_options multiple='multiple' options=$def.list name=$header|cat:"[]" selected=$object->$header}<br />{#multiple_select#}

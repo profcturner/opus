@@ -42,12 +42,19 @@ class SchoolAdmin extends DTO_SchoolAdmin
     return $schooladmin;
   }
 
+  function load_where($where_clause) 
+  {
+    $schooladmin = new SchoolAdmin;
+    $schooladmin->_load_where($where_clause);
+    return $schooladmin;
+  }
+
   function insert($fields) 
   {
     $schooladmin = new SchoolAdmin;
     $schooladmin->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $schooladmin = SchoolAdmin::load_by_id($fields[id]);

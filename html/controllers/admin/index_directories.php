@@ -389,11 +389,15 @@
     $company = new Company;
     $company = $company->load_by_id($company_id);
 
-    foreach(array("address1", "address2", "address3", "postcode", "locality", "town", "country") as $field)
+    $existing_nvp_array = $waf->get_template_vars("nvp_array");
+    if(!strlen($existing_nvp_array['locality']))
     {
-      $nvp_array[$field] = $company->$field;
+      foreach(array("address1", "address2", "address3", "postcode", "locality", "town", "country") as $field)
+      {
+        $nvp_array[$field] = $company->$field;
+      }
+      $waf->assign("nvp_array", $nvp_array);
     }
-    $waf->assign("nvp_array", $nvp_array);
 
     add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:add_vacancy");
   }
