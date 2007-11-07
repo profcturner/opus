@@ -145,7 +145,7 @@ class Resource extends DTO_Resource
     $waf->log("Resource [" . $fields['description'] . "] added");
 
   }
-  
+
   /**
   * updates a given resource, either by the file, or information
   */
@@ -173,7 +173,7 @@ class Resource extends DTO_Resource
     $resource->modified = date("YmdHis");
     $resource->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -183,23 +183,24 @@ class Resource extends DTO_Resource
     $resource->id = $id;
     return $resource->_exists();
   }
-  
+
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $resource = new Resource;
-    return $resource->_count();
+    return $resource->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY channel_id, description", $page=0)
   {
+    global $config;
     $resource = new Resource;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $resources = $resource->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $resources = $resource->_get_all($where_clause, $order_by, 0, 1000);
@@ -215,7 +216,7 @@ class Resource extends DTO_Resource
 
   /**
   * Removes a resource from file storage as well as the database
-  */ 
+  */
   function remove($id=0) 
   {
     global $waf;
@@ -230,7 +231,7 @@ class Resource extends DTO_Resource
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $resource = new Resource;
     return  $resource->_get_fieldnames($include_id); 
   }
@@ -242,7 +243,6 @@ class Resource extends DTO_Resource
     {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
     }
-
     return $nvp_array;
   }
 }

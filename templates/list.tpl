@@ -1,13 +1,16 @@
 <div id="table_list">
-{eval assign=object_num var=$objects|@count}
-{if $object_num > #TABLE_ROW_MAX#}
-{math assign=pages equation="ceil((x/y)+1)" x=$object_num y=#TABLE_ROW_MAX#}
-{math assign=start_obj equation="(p-1)*n" n=#TABLE_ROW_MAX# p=$page|default:1}
+{if !$ROWS_PER_PAGE}
+{assign var='ROWS_PER_PAGE' value='20'}
+{/if}
+{if $object_num > $ROWS_PER_PAGE}
+{math assign=pages equation="ceil((x/y)+1)" x=$object_num y=$ROWS_PER_PAGE}
+{math assign=start_obj equation="(p-1)*n" n=$ROWS_PER_PAGE p=$page|default:1}
 pages
 {section name="myLoop" start=1 loop=$pages}
-{if $page==$smarty.section.myLoop.index}<strong>{$smarty.section.myLoop.index}</strong>&nbsp;{else}<a href="{$SCRIPT_NAME}?section={$section}&function={$smarty.request.function}&page={$smarty.section.myLoop.index}">{$smarty.section.myLoop.index}</a>&nbsp;{/if}
+{if $page == $smarty.section.myLoop.index}<strong>{$smarty.section.myLoop.index}</strong>&nbsp;{else}<a href="{$SCRIPT_NAME}?section={$section}&function={$smarty.request.function}&page={$smarty.section.myLoop.index}">{$smarty.section.myLoop.index}</a>&nbsp;{/if}
 {/section}
 {/if}
+{if $objects}
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>
 {foreach from=$headings key=key item=def}
@@ -17,7 +20,7 @@ pages
     <th class="action">{$actions[action][0]|capitalize}</th>
 {/section}
   </tr>
-{section loop=$objects name=object start=$start_obj max=#TABLE_ROW_MAX#}
+{section loop=$objects name=object max=$ROWS_PER_PAGE}
   <tr class="{cycle values="dark_row,light_row"}">
 {foreach from=$headings key=key item=def}
     {if $def.header == true}
@@ -31,7 +34,7 @@ pages
       {elseif $def.type == "date"}
         {$objects[object]->$fn|date_format}
          {elseif $def.type == "link"}
-            <a href="{#APPLICATION_URL#}/{#CONTROLLER_NAME#}?function={$def.url}&id={$objects[object]->id}">{$objects[object]->$fn}</a>
+            <a href="{$def.url}}</a>
       {elseif $def.type == "currency"}
         &pound;{$objects[object]->$fn|string_format:"%.2f"}
       {else}
@@ -42,13 +45,13 @@ pages
 
 {section loop=$actions name=action}
     <td class="action">
-      <a href="?section={$actions[action][2]|default:$section}&function={$actions[action][1]}&id={$objects[object]->id}">{$actions[action][0]}</a>&nbsp;
+      <a href="?section={$section}&function={$actions[action][1]}&id={$objects[object]->id}&page={$page}">{$actions[action][0]}</a>&nbsp;
     </td>
 {/section}
   </tr>
 {/section}
 </table>
-{if $object_num == 0}
+{else}
 {$no_list|default:#no_list#}
 {/if}
 </div>

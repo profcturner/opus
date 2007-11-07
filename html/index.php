@@ -411,10 +411,10 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $object = str_replace(" ", "_", ucwords($object_name));
 
     require_once("model/".$object.".class.php");
-    
+
     $instance = new $object;
     $object_num = $instance->count($get_all_parameter[0]);
-    
+
     $waf->assign("action_links", $action_links);
     $waf->assign("headings", $instance->get_field_defs());
     $waf->assign("actions", $actions);

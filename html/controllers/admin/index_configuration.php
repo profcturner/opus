@@ -7,7 +7,7 @@
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=configuration&function=add_resource")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", "", "admin:configuration:resources:manage_resources");
+    manage_objects($waf, $user, "Resource", array(array("add","section=configuration&function=add_resource")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", array("where lookup NOT LIKE 'PRIVATE%'"), "admin:configuration:resources:manage_resources");
   }
 
   function add_resource(&$waf, &$user) 
