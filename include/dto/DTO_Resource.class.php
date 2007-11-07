@@ -7,8 +7,8 @@
 require_once("dto/DTO.class.php");
 require_once("model/Channel.class.php");
 
-class DTO_Resource extends DTO {
-
+class DTO_Resource extends DTO
+{
   function __construct($handle) 
   {
     parent::__construct($handle);
@@ -20,10 +20,7 @@ class DTO_Resource extends DTO {
 
     $channel = Channel::load_by_id($this->channel_id);
     $this->_channel_id = $channel->name;
-
   }
-
-
 }
 
 ?>

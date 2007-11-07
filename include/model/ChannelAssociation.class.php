@@ -49,13 +49,13 @@ class ChannelAssociation extends DTO_ChannelAssociation
     $channelassociation = new ChannelAssociation;
     $channelassociation->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $channelassociation = ChannelAssociation::load_by_id($fields[id]);
     $channelassociation->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -65,7 +65,7 @@ class ChannelAssociation extends DTO_ChannelAssociation
     $channelassociation->id = $id;
     return $channelassociation->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -78,7 +78,7 @@ class ChannelAssociation extends DTO_ChannelAssociation
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
   {
     $channelassociation = new ChannelAssociation;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -97,31 +97,29 @@ class ChannelAssociation extends DTO_ChannelAssociation
     return $channelassociation_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $channelassociation = new ChannelAssociation;
     $channelassociation->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $channelassociation = new ChannelAssociation;
     return  $channelassociation->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = ChannelAssociation::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
-
   }
 
   function get_all_extended($channel_id)
@@ -144,6 +142,114 @@ class ChannelAssociation extends DTO_ChannelAssociation
     $channelassociation->_move_down($channel_id, $priority);
   }
 
+  function user_in_channel_association($user_id)
+  {
+    $in_channel = false;
+    $object_id = $this->object_id;
+    switch($this->type)
+    {
+      case 'programme':
+        return(ChannelAssociation::user_in_channel_association_programme($object_id, $user_id));
+        break;
+      case 'school':
+        return(ChannelAssociation::user_in_channel_association_school($object_id, $user_id));
+        break;
+      case 'assessmentgroup':
+        return(ChannelAssociation::user_in_channel_association_assessmentgroup($object_id, $user_id));
+        break;
+      case 'activity':
+        return(ChannelAssociation::user_in_channel_association_activity($object_id, $user_id));
+        break;
+    }
+  }
 
+  function user_in_channel_association_programme($programme_id, $user_id)
+  {
+    if(User::is_student($user_id))
+    {
+      require_once("model/Student.class.php");
+      return(Student::get_programme_id($user_id) == $programme_id);
+    }
+    if(User::is_admin($user_id))
+    {
+      require_once("model/Policy.class.php");
+      return(Policy::is_auth_for_programme($programme_id, "channel", "read"));
+    }
+    if(User::is_supervisor($user_id))
+    {
+      require_once("model/Supervisor.class.php");
+      require_once("model/Student.class.php");
+      return(Student::get_programme_id(Supervisor::get_supervisee_id($user_id)) == $programme_id);
+    }
+    // No staff code yet, nothing seems appropriate here...
+    return false;
+  }
+
+  function user_in_channel_association_school($school_id, $user_id)
+  {
+    if(User::is_student($user_id))
+    {
+      require_once("model/Student.class.php");
+      require_once("model/Programme.class.php");
+      return(Programme::get_school_id(Student::get_programme_id($user_id)) == $school_id);
+    }
+    if(User::is_admin($user_id))
+    {
+      require_once("model/Policy.class.php");
+      return(Policy::is_auth_for_school($school_id, "channel", "read"));
+    }
+    if(User::is_staff($user_id))
+    {
+      require_once("model/Staff.class.php");
+      return(Staff::get_school_id($user_id) == $school_id);
+    }
+    if(User::is_supervisor($user_id))
+    {
+      require_once("model/Programme.class.php");
+      require_once("model/Supervisor.class.php");
+      require_once("model/Student.class.php");
+      return(Programme::get_school_id(Student::get_programme_id(Supervisor::get_supervisee_id($user_id))) == $school_id);
+    }
+    return false;
+  }
+
+  function user_in_channel_association_assessmentgroup($group_id, $user_id)
+  {
+    $group_id = (int) $group_id;
+
+    // For students, ask what the assessmentgroup is
+    if(User::is_student($user_id))
+    {
+      return(Student::get_assessmentgroup($user_id) == $group_id);
+    }
+    // For others, take each programme and look at it...
+    require_once("model/AssessmentGroupProgramme.class.php");
+    $links = AssessmentGroupProgramme::get_all("where group_id=$group_id");
+    foreach($links as $link)
+    {
+      if(ChannelAssociation::user_in_channel_association_programme($link->programme_id, $user_id)) return true;
+    }
+    return false;
+  }
+
+  function user_in_channel_association_activity($activity_id, $user_id)
+  {
+    $user_id = (int) $user_id;
+
+    // This is only for HR contacts...
+    if(!User::is_company($user_id)) return false;
+    $in_activity = false;
+
+    // What companies does this user act for?
+    require_once("model/CompanyContact.class.php");
+    require_once("model/CompanyActivity.class.php");
+    $links = CompanyContact::get_all("where contact_id=$user_id");
+    foreach($links as $link)
+    {
+      $company_id = $link->company_id;
+      if(CompanyActivity::count("where company_id=$company_id and activity=$activity_id")) return true;
+    }
+    return false;
+  }
 }
 ?>

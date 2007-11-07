@@ -134,5 +134,12 @@ class School extends DTO_School
     return($data[$id]);
   }
 
+  function get_faculty_id($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = School::get_id_and_field("faculty_id","where id='$id'");
+    return($data[$id]);
+  }
 }
 ?>

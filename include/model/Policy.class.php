@@ -9,7 +9,7 @@ require_once("dto/DTO_Policy.class.php");
 /**
 * The Policy model class
 */
-class Policy extends DTO_Policy 
+class Policy extends DTO_Policy
 {
   var $name = "";      // Policy name
   var $help = "";
@@ -32,7 +32,7 @@ class Policy extends DTO_Policy
   var $assessmentgroup = "";
 
   static $_field_defs = array(
-    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name', 'header'=>true),
+    'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name', 'header'=>true, 'mandatory'=>true),
     'priority'=>array('type'=>'text', 'size'=>7, 'title'=>'Priority', 'header'=>true)
   );
 
@@ -49,160 +49,7 @@ class Policy extends DTO_Policy
     return(self::$_field_defs);
   }
 
-
-/////////////////////////////////////
-
-  /**
-  * Loads the users default policy into $_SESSION['user']['policy']
-  */
-  function load_default_policy()
-  {
-    global $waf;
-    if(isset($_SESSION['user']['policy'])) return true;
-
-    if(User::is_root()) return false;
-
-    if(User::is_admin())
-    {
-      require_once("model/Admin.class.php");
-      $admin = Admin::load_by_user_id(User::get_id());
-      $policy_id = $admin->policy_id;
-
-      if(empty($policy_id))
-      {
-        $waf->log("no policy for admin user");
-        $waf->halt("error:policy:no_policy");
-      }
-    }
-
-    if(User::is_staff())
-    {
-      // Need to think about this one... for course directors
-      return false;
-    }
-    $_SESSION['user']['policy'] = Policy::load_by_id($policy_id);
-    return(true);
-  }
-
-  /**
-  * Checks a loaded policy for a given permission in a category
-  *
-  * @param  $category The major category for the policy eg. student, company
-  * @param  $permission The permission for the category to check for, eg. create, edit
-  * @return Boolean variable which specifies if the subtype is permitted under the policy
-  */
-  function check_policy($policy, $category, $permission)
-  {
-    if(User::is_root()) return TRUE;
-
-    return(strstr($policy->$category, $permission));
-  }
-
-  /**
-  * Checks the default policy for a given permission in a category
-  * @param  $category The major category for the policy
-  * @param  $permission The permission for the category to check for, eg. create
-  * @see check_policy
-  */
-  function check_default_policy($category, $permission)
-  {
-    if(User::is_root()) return TRUE;
-
-    return(Policy::check_policy($_SESSION['user']['policy'], $category, $permission));
-  }
-
-
-  /**
-  * Checks for authorisation at the school or course level for a student
-  */
-  function is_auth_for_student($student_id, $category, $permission)
-  {
-    global $log;
-    // roots are always authorised
-    if(User::is_root()) return(TRUE);
-  
-    // Get the course id, if undefined, only root users can deal with them
-    $course_id = get_course_id($student_id);
-    if(empty($course_id)) return FALSE;
-  
-    $school_id = get_school_id($course_id);
-  
-    // See if we are authorised at a school level, otherwise check course level
-    if(is_auth_for_school($school_id, $category, $permission)) return TRUE;
-    else
-    {
-      return is_auth_for_course($course_id, $category, $permission);
-    }
-  }
-
-  /**
-  **  Checks the current user for permission for an action upon a school
-  **
-  **  Users with root access are automatically granted permission. An
-  **  admin level user will have their default policy checked for permission
-  **  for this action. If that permission is granted, they will be checked
-  **  for authorisation to act for that school, and if that is ok, any
-  **  local policy acting upon them in that school will be checked.
-  **  @param $school_id The id of the school to be checked
-  **  @param $category  The major category for the policy
-  **  @param $permission  The permission sought in the catgory
-  **  @return Boolean variable specifying if permission is granted.
-  **
-  */
-  function is_auth_for_school($school_id, $category, $permission)
-  {
-    $school_id = (int) $school_id;
-
-    // root users have automatic access by definition
-    if(User::is_root()) return true;
-
-    // Well, the user better be an admin then..
-    if(!User::is_admin()) return false;
-
-    // Ok, now down to basics... Check the major loaded policy
-    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
-
-    if(empty($school_id)) return false;
-    // Finally, check that we are specified for the school and there is
-    // no overriding policy in the school
-
-    require_once("model/SchoolAdmin.class.php");
-    $schooladmin = SchoolAdmin::load_where("where school_id=$school_id and admin_id=" . User::get_id());
-
-    // Determine if the school is specified
-    if(!mysql_num_rows($result)) $decision = FALSE;
-    else
-    {
-      // It is, so check for any overriding local policy
-      $decision = TRUE;
-      $row = mysql_fetch_array($result);
-      if(!empty($row["policy_id"]))
-      {
-        $policy = load_policy($row["policy_id"]);
-        $decision = check_policy($policy, $category, $permission);
-      }
-    }
-    mysql_free_result($result);
-  
-    return($decision);
-  }
-  
-  /**	@function is_auth_for_course
-  **	Checks the current user for permission for an action upon a course
-  **	Users with root access are automatically granted permission. An
-  **	admin level user will have their default policy checked for permission
-  **	for this action. If that permission is granted, they will be checked
-  **	for authorisation to act for that course, and if that is ok, any
-  **	local policy acting upon them in that school will be checked.
-  **	Course directors will also be allowed under similar circumstances
-  **	these are staff members with a limited policy.
-  **	Note that overriding authority granted for a school is NOT checked for.
-  **	@param $course_id	The id of the course to be checked
-  **	@param $category	The major category for the policy
-  **	@param $permission	The permission sought in the catgory
-  **	@return	Boolean variable specifying if permission is granted.
-  **
-  */
+/*
   function is_auth_for_course($course_id, $category, $permission)
   {
     // root users have automatic access by definition
@@ -269,28 +116,7 @@ class Policy extends DTO_Policy
   
     return($decision);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////
+*/
 
   function load_by_id($id) 
   {
@@ -305,13 +131,13 @@ class Policy extends DTO_Policy
     $policy = new Policy;
     $policy->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $policy = Policy::load_by_id($fields[id]);
     $policy->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -321,7 +147,7 @@ class Policy extends DTO_Policy
     $policy->id = $id;
     return $policy->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -334,7 +160,7 @@ class Policy extends DTO_Policy
   function get_all($where_clause="", $order_by="ORDER BY priority DESC, name", $page=0)
   {
     $policy = new Policy;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -353,31 +179,29 @@ class Policy extends DTO_Policy
     return $policy_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $policy = new Policy;
     $policy->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $policy = new Policy;
     return  $policy->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Policy::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
-
   }
 
   function get_name($id)
@@ -387,6 +211,264 @@ class Policy extends DTO_Policy
 
     $data = Policy::get_id_and_field("name","where id='$id'");
     return($data[$id]);
+  }
+
+  /**
+  * Loads the users default policy into $_SESSION['user']['policy']
+  */
+  function load_default_policy()
+  {
+    global $waf;
+    if(isset($_SESSION['user']['policy'])) return true;
+
+    if(User::is_root()) return false;
+
+    if(User::is_admin())
+    {
+      require_once("model/Admin.class.php");
+      $admin = Admin::load_by_user_id(User::get_id());
+      $policy_id = $admin->policy_id;
+
+      if(empty($policy_id))
+      {
+        $waf->log("no policy for admin user");
+        $waf->halt("error:policy:no_policy");
+      }
+
+      if($admin->inst_admin == 'yes')
+      {
+        $_SESSION['user']['policy']['institutional_admin'] = true;
+      }
+    }
+
+    if(User::is_staff())
+    {
+      // Need to think about this one... for course directors
+      return false;
+    }
+    $_SESSION['user']['policy'] = Policy::load_by_id($policy_id);
+    return(true);
+  }
+
+  /**
+  * Checks a loaded policy for a given permission in a category
+  *
+  * @param  $category The major category for the policy eg. student, company
+  * @param  $permission The permission for the category to check for, eg. create, edit
+  * @return Boolean variable which specifies if the subtype is permitted under the policy
+  */
+  function check_policy($policy, $category, $permission)
+  {
+    if(User::is_root()) return TRUE;
+
+    return(strstr($policy->$category, $permission));
+  }
+
+  /**
+  * Checks the default policy for a given permission in a category
+  * @param  $category The major category for the policy
+  * @param  $permission The permission for the category to check for, eg. create
+  * @see check_policy
+  */
+  function check_default_policy($category, $permission)
+  {
+    if(User::is_root()) return TRUE;
+
+    return(Policy::check_policy($_SESSION['user']['policy'], $category, $permission));
+  }
+
+  /**
+  * Checks for authorisation at the school or course level for a student
+  */
+  function is_auth_for_student($student_id, $category, $permission)
+  {
+    global $waf;
+    // roots are always authorised
+    if(User::is_root()) return true;
+
+    // Check for institutional permission
+    if(Policy::is_auth_for_university($category, $permission)) return true;
+
+    // Get the programme id, and other unit ids
+    // if undefined, only root users can deal with them
+    require_once("model/Programme.class.php");
+    $programme_id = Student::get_programme_id($student_id);
+    if(empty($programme_id)) return false;
+    $school_id = Programme::get_school_id($programme_id);
+    require_once("model/School.class.php");
+    $faculty_id = School::get_faculty_id($school_id);
+
+    // Check from top down, faculty first
+    if(Policy::is_auth_for_faculty($faculty_id, $category, $permission)) return true;
+    // Then School
+    if(Policy::is_auth_for_school($school_id, $category, $permission)) return true;
+    // Finally Course
+    return Policy::is_auth_for_programme($programme_id, $category, $permission);
+  }
+
+  /**
+  * Checks the current user for permission for an action upon a institution
+  *
+  * Users with root access are automatically granted permission. An
+  * admin level user will have their default policy checked for permission
+  * for this action. If that permission is granted, they will be checked
+  * for authorisation to act for that institution, and if that is ok, any
+  * local policy acting upon them in that institution will be checked.
+  * @param $category  The major category for the policy
+  * @param $permission  The permission sought in the catgory
+  * @return Boolean variable specifying if permission is granted.
+  */
+  function is_auth_for_institution($category, $permission)
+  {
+    // root users have automatic access by definition
+    if(User::is_root()) return true;
+
+    // Well, the user better be an admin then..
+    if(!User::is_admin()) return false;
+
+    if($_SESSION['user']['policy']['institutional_admin'])
+    {
+      return(Policy::check_default_policy($category, $permission));
+    }
+    return false;
+  }
+
+  /**
+  * Checks the current user for permission for an action upon a faculty
+  *
+  * Users with root access are automatically granted permission. An
+  * admin level user will have their default policy checked for permission
+  * for this action. If that permission is granted, they will be checked
+  * for authorisation to act for that faculty, and if that is ok, any
+  * local policy acting upon them in that faculty will be checked.
+  * @param $faculty_id The id of the faculty to be checked
+  * @param $category  The major category for the policy
+  * @param $permission  The permission sought in the catgory
+  * @return Boolean variable specifying if permission is granted.
+  */
+  function is_auth_for_faculty($faculty_id, $category, $permission)
+  {
+    $faculty_id = (int) $faculty_id;
+
+    // root users have automatic access by definition
+    if(User::is_root()) return true;
+
+    // Well, the user better be an admin then..
+    if(!User::is_admin()) return false;
+
+    // Ok, now down to basics... Check the major loaded policy
+    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+
+    if(empty($faculty_id)) return false;
+    // Finally, check that we are specified for the faculty and there is
+    // no overriding policy in the faculty
+
+    require_once("model/FacultyAdmin.class.php");
+    $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
+    $facultyadmin = SchoolAdmin::load_where("where faculty_id=$faculty_id and admin_id=$admin_id");
+
+    // Determine if the faculty is specified
+    if(!$facultyadmin->id) $decision = false;
+    else
+    {
+      // It is, so check for any overriding local policy
+      $decision = true;
+      $policy = Policy::load_by_id($facultyadmin->policy_id);
+      $decision = Policy::check_policy($policy, $category, $permission);
+    }
+    return($decision);
+  }
+
+  /**
+  * Checks the current user for permission for an action upon a school
+  *
+  * Users with root access are automatically granted permission. An
+  * admin level user will have their default policy checked for permission
+  * for this action. If that permission is granted, they will be checked
+  * for authorisation to act for that school, and if that is ok, any
+  * local policy acting upon them in that school will be checked.
+  * @param $school_id The id of the school to be checked
+  * @param $category  The major category for the policy
+  * @param $permission  The permission sought in the catgory
+  * @return Boolean variable specifying if permission is granted.
+  */
+  function is_auth_for_school($school_id, $category, $permission)
+  {
+    $school_id = (int) $school_id;
+
+    // root users have automatic access by definition
+    if(User::is_root()) return true;
+
+    // Well, the user better be an admin then..
+    if(!User::is_admin()) return false;
+
+    // Ok, now down to basics... Check the major loaded policy
+    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+
+    if(empty($school_id)) return false;
+    // Finally, check that we are specified for the school and there is
+    // no overriding policy in the school
+
+    require_once("model/SchoolAdmin.class.php");
+    $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
+    $schooladmin = SchoolAdmin::load_where("where school_id=$school_id and admin_id=$admin_id");
+
+    // Determine if the school is specified
+    if(!$schooladmin->id) $decision = false;
+    else
+    {
+      // It is, so check for any overriding local policy
+      $decision = true;
+      $policy = Policy::load_by_id($schooladmin->policy_id);
+      $decision = Policy::check_policy($policy, $category, $permission);
+    }
+    return($decision);
+  }
+
+  /**
+  * Checks the current user for permission for an action upon a programme
+  *
+  * Users with root access are automatically granted permission. An
+  * admin level user will have their default policy checked for permission
+  * for this action. If that permission is granted, they will be checked
+  * for authorisation to act for that programme, and if that is ok, any
+  * local policy acting upon them in that programme will be checked.
+  * @param $programme_id The id of the programme to be checked
+  * @param $category  The major category for the policy
+  * @param $permission  The permission sought in the catgory
+  * @return Boolean variable specifying if permission is granted.
+  */
+  function is_auth_for_programme($programme_id, $category, $permission)
+  {
+    $programme_id = (int) $programme_id;
+
+    // root users have automatic access by definition
+    if(User::is_root()) return true;
+
+    // Well, the user better be an admin then..
+    if(!User::is_admin()) return false;
+
+    // Ok, now down to basics... Check the major loaded policy
+    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+
+    if(empty($programme_id)) return false;
+    // Finally, check that we are specified for the programme and there is
+    // no overriding policy in the programme
+
+    require_once("model/ProgrammeAdmin.class.php");
+    $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
+    $programmeadmin = SchoolAdmin::load_where("where programme_id=$programme_id and admin_id=$admin_id");
+
+    // Determine if the programme is specified
+    if(!$programmeadmin->id) $decision = false;
+    else
+    {
+      // It is, so check for any overriding local policy
+      $decision = true;
+      $policy = Policy::load_by_id($programmeadmin->policy_id);
+      $decision = Policy::check_policy($policy, $category, $permission);
+    }
+    return($decision);
   }
 }
 ?>

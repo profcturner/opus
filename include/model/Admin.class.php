@@ -18,6 +18,7 @@ class Admin extends DTO_Admin
   var $signature;         // Signature to use in emails (not supported yet)
   var $help_directory;    // Show in help directory?
   var $status;            // Archive or not?
+  var $inst_admin;        // Institutional level admin?
   var $policy_id;         // The default policy for this user
   var $user_id;           // Matches id from user table
 

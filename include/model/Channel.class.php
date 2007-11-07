@@ -9,7 +9,7 @@ require_once("dto/DTO_Channel.class.php");
 /**
 * The Channel model class
 */
-class Channel extends DTO_Channel 
+class Channel extends DTO_Channel
 {
   var $name = "";        // Very brief channel name
   var $description = ""; // Brief description of channel
@@ -59,7 +59,7 @@ class Channel extends DTO_Channel
     $channel = Channel::load_by_id($fields[id]);
     $channel->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -69,7 +69,7 @@ class Channel extends DTO_Channel
     $channel->id = $id;
     return $channel->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -82,7 +82,7 @@ class Channel extends DTO_Channel
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
     $channel = new Channel;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -97,37 +97,39 @@ class Channel extends DTO_Channel
   {
     $channel = new Channel;
     $channel_array = $channel->_get_id_and_field($fieldname);
+    // Nuke any we should not see
+    foreach($channel_array as $key => $value)
+    {
+      if(!Channel::user_in_channel($key)) unset($channel_array[$key]);
+    }
     $channel_array[0] = 'Global';
     return $channel_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $channel = new Channel;
     $channel->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $channel = new Channel;
     return  $channel->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Channel::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
-
   }
-
 
   /**
   * Checks to see if a user is "in" a channel
@@ -138,18 +140,20 @@ class Channel extends DTO_Channel
   */
   function user_in_channel($channel_id, $user_id = 0)
   {
+    if(User::is_root()) return true;
     // Limit even internal injection possibilities
     $channel_id = (int) $channel_id;
+    if($user_id == 0) $user_id = User::get_id();
     // Assume no...
     $in_channel = false;
 
-    require_once("model/Channelassociation.class.php");
-    $associations = Channelassociation::get_all("where channel_id=$channel_id");
+    require_once("model/ChannelAssociation.class.php");
+    $associations = ChannelAssociation::get_all("where channel_id=$channel_id");
 
     foreach($associations as $association)
     {
       // Does this association include this person
-      if($association->user_in_channel_association($user_id))
+      if($association->user_in_channel_association($channel_id, $user_id))
       {
         if($association->permission == 'enable') $in_channel = true;
         else
@@ -161,7 +165,5 @@ class Channel extends DTO_Channel
     }
     return($in_channel);
   }
-
-
 }
 ?>

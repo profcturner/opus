@@ -63,10 +63,10 @@ class CompanyActivity extends DTO_CompanyActivity
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $companyactivity = new CompanyActivity;
-    return $companyactivity->_count();
+    return $companyactivity->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="", $page=0)

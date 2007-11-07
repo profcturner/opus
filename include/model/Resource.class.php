@@ -196,7 +196,7 @@ class Resource extends DTO_Resource
   function get_all($where_clause="", $order_by="ORDER BY channel_id, description", $page=0)
   {
     $resource = new Resource;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -212,7 +212,6 @@ class Resource extends DTO_Resource
     $resource = new Resource;
     return  $resource->_get_id_and_field($fieldname);
   }
-
 
   /**
   * Removes a resource from file storage as well as the database
@@ -239,15 +238,12 @@ class Resource extends DTO_Resource
   {
     $fieldnames = Resource::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
-
   }
 }
 ?>
