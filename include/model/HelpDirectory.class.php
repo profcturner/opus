@@ -4,7 +4,7 @@
 * Encapsulates functionality to produce the dynamic help directory
 * @package OPUS
 */
-require_once("dto/DTO_.class.php");
+
 /**
 * Encapsulates functionality to produce the dynamic help directory
 *

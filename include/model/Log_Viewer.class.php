@@ -4,7 +4,7 @@
 * Handles the display and searching of log files
 * @package OPUS
 */
-require_once("dto/DTO_.class.php");
+
 /**
 * Handles the display and searching of log files
 *

@@ -95,10 +95,10 @@ class Programme extends DTO_Programme
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $programme = new Programme;
-    return $programme->_count();
+    return $programme->_count($where_clause="");
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)

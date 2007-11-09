@@ -1,5 +1,13 @@
 <?php
 
+/**
+* Advanced Menu for Administrators
+*
+* @package OPUS
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+*/
+
   // Policies
 
   function manage_policies(&$waf, $user, $title)

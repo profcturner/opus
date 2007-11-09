@@ -4,7 +4,7 @@
 * PDSystem integration and support
 * @package OPUS
 */
-require_once("dto/DTO_.class.php");
+
 /**
 * PDSystem integration and support
 *

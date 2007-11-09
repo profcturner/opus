@@ -1,5 +1,13 @@
 <?php
 
+/**
+* Company Menu for Administrators
+*
+* @package OPUS
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+*/
+
   /**
   * link back to the edit company page
   */

@@ -25,11 +25,10 @@ class DTO_Programme extends DTO
 
   /**
   * augments standard loading with programme name
-  * @param int $id the id from the programme table
   */
-  function _load_by_id($id)
+  function _load_by_id()
   {
-    parent::_load_by_id($id);
+    parent::_load_by_id();
 
     require_once("model/School.class.php");
 
