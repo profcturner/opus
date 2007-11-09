@@ -1,13 +1,17 @@
 <?php
-
 /**
-* The model object for applications for jobs
+* This class defines and handles the applications students make for listed vacancies.
 * @package OPUS
 */
 require_once("dto/DTO_Application.class.php");
-
 /**
-* The Application model class
+* This class defines and handles the applications students make for listed vacancies.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Vacancy.class.php
+* @package OPUS
+*
 */
 class Application extends DTO_Application 
 {

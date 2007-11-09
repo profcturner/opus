@@ -1,12 +1,22 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_Vacancy extends DTO {
+/**
+* DTO handling for Vacancy
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for Vacancy
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Vacancy.class.php
+* @package OPUS
+*
+*/
+
+class DTO_Vacancy extends DTO
+{
 
   function __construct($handle) 
   {

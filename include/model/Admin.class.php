@@ -1,28 +1,52 @@
 <?php
 /**
- * @package PDSystem
- *
- * reg_number -> username
- * user_id -> id
- * last few fields have gone
- */
-
+* Encapulates extra data that administrators have as well as user data
+* @package OPUS
+*/
 require_once("dto/DTO_Admin.class.php");
-
-class Admin extends DTO_Admin 
+/**
+* Encapulates extra data that administrators have as well as user data
+*
+* The administrator user has significant extra data to handle above and beyond that
+* defined in the User class. This class contains that data and the handling and allows
+* transparent loading and handling of the composite user objects.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see User.class.php
+* @package OPUS
+*
+*/
+class Admin extends DTO_Admin
 {
-  var $position;          // position in company
-  var $voice;             // Phone number
-  var $fax;               // Fax number
-  var $address;           // Full Address
-  var $signature;         // Signature to use in emails (not supported yet)
-  var $help_directory;    // Show in help directory?
-  var $status;            // Archive or not?
-  var $inst_admin;        // Institutional level admin?
-  var $policy_id;         // The default policy for this user
-  var $user_id;           // Matches id from user table
+  /** @var string position in company */
+  var $position;
+  /** @var string Phone number */
+  var $voice;
+  /** @var string Fax number */
+  var $fax;
+  /** @var string Full address */
+  var $address;
+  /** @var string Signature to use in emails (not supported yet) */
+  var $signature;
+  /** @var string (yes / no) value as to whether to show in help directory */
+  var $help_directory;
+  /** @var string status (active / archive) where the administrator is active */
+  var $status;
+  /** @var string (yes / no) value as to whether the administrators has rights as the institutoinal level */
+  var $inst_admin;
+  /** @var int the default policy id for this user, NULL means no policy */
+  var $policy_id;
+  /**
+  * @var int matches the id from the User table 
+  * @see User.class.php
+  */
+  var $user_id;
 
-  // Several of these fields actually reside in the User table
+  /**
+  * @var static array of header fields, several of these fields actually reside in the User table
+  * @see User.class.php
+  */
   static $_field_defs = array
   (
     'salutation'=>array('type'=>'text', 'size'=>20, 'header'=>true, 'title'=>'Title', 'mandatory'=>true),
@@ -40,27 +64,49 @@ class Admin extends DTO_Admin
     'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
   );
 
-  // This defines which ones
+  /**
+  * @var static array of which field_defs are stored elsewhere
+  * @see $_field_defs
+  * @see User.class.php
+  */
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email' // ,'username','password'
+    'salutation','firstname','lastname','email'
   );
 
+  /**
+  * Model Constructor
+  */
   function __construct() 
   {
     parent::__construct();
   }
 
+  /**
+  * returns header definitions
+  * @see $_field_defs
+  * @return an array as above
+  */
   function get_field_defs()
   {
     return self::$_field_defs;
   }
 
+  /**
+  * returns header definitions pertaining to another class
+  * @see $_extended_fields
+  * @return an array as above
+  */
   function get_extended_fields()
   {
     return self::$_extended_fields;
   }
 
+  /**
+  * returns custom header definitions for administration directory
+  * @see $_field_defs
+  * @return an array as above
+  */
   function get_admin_list_headings()
   {
     return array(
@@ -69,10 +115,14 @@ class Admin extends DTO_Admin
       'policy_id'=>array('type'=>'lookup', 'object'=>'policy', 'value'=>'name', 'title'=>'Policy', 'var'=>'policies', 'header'=>true),
       'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
       'email'=>array('type'=>'email','size'=>40, 'header'=>true)
-      //'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
   }
 
+  /**
+  * returns custom header definitions for root users in the administration directory
+  * @see $_field_defs
+  * @return an array as above
+  */
   function get_root_list_headings()
   {
     return array(
@@ -84,6 +134,11 @@ class Admin extends DTO_Admin
     );
   }
 
+  /**
+  * loads an administrator user, include underlying data from the user table
+  * @param int $id the id from the admin table
+  * @return a composite object of admin and user data
+  */
   function load_by_id($id) 
   {
      $admin = new Admin;
@@ -92,6 +147,11 @@ class Admin extends DTO_Admin
      return $admin;
   }
 
+  /**
+  * loads an administrator user, include underlying data from the user table using the user id
+  * @param int $id the id from the user table
+  * @return a composite object of admin and user data
+  */
   function load_by_user_id($user_id) 
   {
      $admin = new Admin;
@@ -101,9 +161,13 @@ class Admin extends DTO_Admin
   }
 
   /**
-  * inserts data about a new admin to the User and Admin tables
+  * adds a new admin user, and emails them if possible
   *
-  * this is more sophisticated that usual because there are two tables.
+  * This is more sophisticated than usual because there are two tables,
+  * fields in the user object are automatically created there.
+  *
+  * @param array $fields an array of key value pairs for the object
+  * @return the id from the admin table of the new object
   */
   function insert($fields) 
   {
@@ -134,12 +198,19 @@ class Admin extends DTO_Admin
     if($user_fields['email'])
     {
       require_once("model/Automail.class.php");
-
     }
 
     return $admin->_insert($fields);
   }
 
+  /**
+  * updates an admin user
+  *
+  * This is more sophisticated than usual because there are two tables,
+  * fields in the user object are automatically updated there.
+  *
+  * @param array $fields an array of key value pairs to modify for the object
+  */
   function update($fields) 
   {
     global $waf;
@@ -184,6 +255,12 @@ class Admin extends DTO_Admin
     return $admin->_count($where);
   }
 
+  /**
+  * gets all fields for admins for a large number of objects
+  *
+  * the underlying function joins the admin and user tables, so fields
+  * from either can be used in the where_clause
+  */
   function get_all($where_clause="", $order_by="", $page=0, $end=0) 
   {
     $admin = new Admin;

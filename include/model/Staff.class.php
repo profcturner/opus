@@ -1,13 +1,21 @@
 <?php
-/**
- * @package PDSystem
- *
- * reg_number -> username
- * user_id -> id
- * last few fields have gone
- */
 
+/**
+* Defines the extra fields for academic staff
+* @package OPUS
+*/
 require_once("dto/DTO_Staff.class.php");
+/**
+* Defines the extra fields for academic staff
+*
+* This melds data from the staff and user tables together
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see User.class.php
+* @package OPUS
+*
+*/
 
 class Staff extends DTO_Staff 
 {

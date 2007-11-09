@@ -1,12 +1,26 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_Admin extends DTO {
+/**
+* DTO handling for Admin
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for Admin
+*
+* Mainly, this class provides logical joining of data from both the
+* user and admin tables.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Admin.class.php
+* @see User.class.php
+* @package OPUS
+*
+*/
+
+class DTO_Admin extends DTO
+{
 
   function __construct($handle='default') 
   {

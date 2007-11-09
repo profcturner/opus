@@ -10,23 +10,25 @@
 </form>
 
 <h3>Root (Super Admin) Users</h3>
-{section name=root loop=$root_users}
-{$root_users[root]->salutation}
-{$root_users[root]->firstname}
-{$root_users[root]->lastname},
-{$root_users[root]->online}
-{/section}
+{include file="list.tpl" objects=$root_users headings=$admin_headings}
 
-<h3>Student (Super Admin) Users</h3>
-{section name=student loop=$student_users}
-{$student_users[student]->salutation}
-{$student_users[student]->firstname}
-{$student_users[student]->lastname},
-{$student_users[student]->online}
-<br />
-{/section}
+<h3>Administrators</h3>
+{include file="list.tpl" objects=$admin_users headings=$admin_headings}
 
-{include file="list.tpl"}
+<h3>Students</h3>
+{include file="list.tpl" objects=$student_users}
+
+<h3>Company HR Contacts</h3>
+{include file="list.tpl" objects=$company_users}
+
+<h3>Workplace Supervisors</h3>
+{include file="list.tpl" objects=$supervisor_users}
+
+<h3>Academic Staff</h3>
+{include file="list.tpl" objects=$staff_users}
+
+
+
 
 <h3>User Totals</h3>
 

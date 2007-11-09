@@ -1,13 +1,22 @@
 <?php
 
 /**
-* The model object for Assessments
+* Handles an individual assessment
 * @package OPUS
 */
 require_once("dto/DTO_Assessment.class.php");
-
 /**
-* The Assessment model class
+* Handles an individual assessment
+*
+* Defines the location and name of an individual assessment. The AssessmentStructure class
+* defines what variables exist in this object, and the AssessmentRegime class defines how
+* this assessment is included in various assessment regimes.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see AssessmentStructure.class.php
+* @see AssessmentRegime.class.php
+* @package OPUS
 */
 class Assessment extends DTO_Assessment 
 {

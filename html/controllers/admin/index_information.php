@@ -90,18 +90,22 @@
     require_once("model/User.class.php");
 
     // ignore limits on root users
-    $root_users  = User::get_all("where user_type='root'", "order by last_index");
+    require_once("model/SystemStatus.class.php");
+    $root_users  = SystemStatus::get_root_users();
+    $admin_users = SystemStatus::get_admin_users($max_users);
+    $admin_headings = SystemStatus::get_admin_headings();
+    print_r($admin_headings);
 
-    $admin_users = User::get_all("where user_type='admin'", "order by last_index", 0, $max_users);
-    $company_users = User::get_all("where user_type='company'", "order by last_index", 0, $max_users);
-    $supervisor_users = User::get_all("where user_type='supervisor'", "order by last_index", 0, $max_users);
-    $staff_users = User::get_all("where user_type='staff'", "order by last_index", 0, $max_users);
-    $student_users = User::get_all("where user_type='student'", "order by last_index", 0, $max_users);
+    $company_users = User::get_all("where user_type='company'", "order by last_time desc", 0, $max_users);
+    $supervisor_users = User::get_all("where user_type='supervisor'", "order by last_time desc ", 0, $max_users);
+    $staff_users = User::get_all("where user_type='staff'", "order by last_time desc", 0, $max_users);
+    $student_users = User::get_all("where user_type='student'", "order by last_time desc", 0, $max_users);
 
     $headings = array(
-      'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
+      'username'=>array('type'=>'text','size'=>30, 'header'=>true),
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Name'),
       'online'=>array('type'=>'list','values'=>array('no','yes'), 'header'=>true),
-      'lastname'=>array('type'=>'text','size'=>30, 'header'=>true)
+      'last_time'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Last Access')
     );
 
     // Get user counts
@@ -114,7 +118,7 @@
     $total_count = $root_count + $admin_count + $company_count + $supervisor_count + $staff_count + $student_count;
 
     $waf->assign("headings", $headings);
-    $waf->assign("objects", $student_users);
+    $waf->assign("admin_headings", $admin_headings);
 
     $waf->assign("root_users", $root_users);
     $waf->assign("admin_users", $admin_users);

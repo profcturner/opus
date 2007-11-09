@@ -1,12 +1,22 @@
 <?php
-/**
- * @package PDSystem
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_ChannelAssociation extends DTO {
+/**
+* DTO handling for ChannelAssociation
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for ChannelAssociation
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see ChannelAssociation.class.php
+* @package OPUS
+*
+*/
+
+class DTO_ChannelAssociation extends DTO
+{
 
   function __construct($handle) 
   {

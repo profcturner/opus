@@ -119,8 +119,6 @@ class Resource extends DTO_Resource
   * Inserts a new resource
   *
   * @param array $fields the fields to be added
-  *
-  * @todo URGENT: $config is not working here ... ?!
   */
   function insert($fields) 
   {

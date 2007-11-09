@@ -1,10 +1,19 @@
 <?php
+
 /**
- * @package OPUS
- *
- *
- */
+* DTO handling for SchoolAdmin
+* @package OPUS
+*/
 require_once("dto/DTO.class.php");
+/**
+* DTO handling for SchoolAdmin
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see SchoolAdmin.class.php
+* @package OPUS
+*
+*/
 
 class DTO_SchoolAdmin extends DTO
 {
@@ -13,6 +22,9 @@ class DTO_SchoolAdmin extends DTO
     parent::__construct($handle);
   }
 
+  /**
+  * augments normal loading with any policy name
+  */
   function _load_by_id($id=0)
   {
     // Base class

@@ -1,13 +1,21 @@
 <?php
-/**
- * @package PDSystem
- *
- * reg_number -> studentname
- * student_id -> id
- * last few fields have gone
- */
 
+/**
+* Defines the extra fields for students
+* @package OPUS
+*/
 require_once("dto/DTO_Student.class.php");
+/**
+* Defines the extra fields for students
+*
+* This melds data from the student and user tables together
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see User.class.php
+* @package OPUS
+*
+*/
 
 class Student extends DTO_Student 
 {

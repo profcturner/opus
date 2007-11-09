@@ -1,12 +1,25 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_Staff extends DTO {
+/**
+* DTO handling for Staff
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for Staff
+*
+* This code logically joins the staff and user table for many queries, allowing all
+* relevant variables to be used in where clauses etc..
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Staff.class.php
+* @package OPUS
+*
+*/
+
+class DTO_Staff extends DTO
+{
 
   function __construct($handle='default') 
   {

@@ -1,18 +1,31 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_VacancyActivity extends DTO {
+/**
+* DTO handling for VacancyActivity
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for VacancyActivity
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see VacancyActivity.class.php
+* @package OPUS
+*
+*/
+
+class DTO_VacancyActivity extends DTO
+{
 
   function __construct($handle) 
   {
     parent::__construct($handle);
   }
 
+  /**
+  * fetches an array of all activities defined for a given vacancy
+  */
   function _get_activity_ids_for_vacancy($vacancy_id)
   {
     global $waf;

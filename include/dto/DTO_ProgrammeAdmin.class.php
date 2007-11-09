@@ -1,10 +1,19 @@
 <?php
+
 /**
- * @package OPUS
- *
- *
- */
+* DTO handling for ProgrammeAdmin
+* @package OPUS
+*/
 require_once("dto/DTO.class.php");
+/**
+* DTO handling for ProgrammeAdmin
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see ProgrammeAdmin.class.php
+* @package OPUS
+*
+*/
 
 class DTO_ProgrammeAdmin extends DTO
 {
@@ -13,6 +22,9 @@ class DTO_ProgrammeAdmin extends DTO
     parent::__construct($handle);
   }
 
+  /**
+  * augments standard loading with policy names
+  */
   function _load_by_id($id=0)
   {
     // Base class

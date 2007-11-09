@@ -1,13 +1,21 @@
 <?php
-/**
- * @package PDSystem
- *
- * reg_number -> username
- * user_id -> id
- * last few fields have gone
- */
 
+/**
+* Defines the extra fields for company HR Contacts
+* @package OPUS
+*/
 require_once("dto/DTO_Contact.class.php");
+/**
+* Defines the extra fields for company HR Contacts
+*
+* This melds data from the contact and user tables together
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see User.class.php
+* @package OPUS
+*
+*/
 
 class Contact extends DTO_Contact 
 {

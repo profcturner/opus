@@ -1,12 +1,22 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_Contact extends DTO {
+/**
+* DTO handling for Contact
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for Contact
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Contact.class.php
+* @package OPUS
+*
+*/
+
+class DTO_Contact extends DTO
+{
 
   function __construct($handle='default') 
   {

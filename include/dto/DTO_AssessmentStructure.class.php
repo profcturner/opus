@@ -1,13 +1,22 @@
 <?php
+
 /**
- * @package PDSystem
- *
- *
- */
+* DTO handling for AssessmentStructure
+* @package OPUS
+*/
 require_once("dto/DTO.class.php");
+/**
+* DTO handling for AssessmentStructure
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see AssessmentStructure.class.php
+* @package OPUS
+*
+*/
 
-
-class DTO_AssessmentStructure extends DTO {
+class DTO_AssessmentStructure extends DTO
+{
 
   function __construct($handle) 
   {
@@ -34,7 +43,7 @@ class DTO_AssessmentStructure extends DTO {
 
       $sql = $con->prepare("SELECT varorder FROM assessmentstructure WHERE assessment_id=? ORDER BY varorder");
       $sql->execute(array($assessment_id));
-  
+
       // Look for our chosen entry, and the one above...
       $next = 0;
       $found = FALSE;

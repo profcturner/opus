@@ -1,10 +1,21 @@
 <?php
+
 /**
- * @package OPUS
- *
- *
- */
+* DTO handling for Student
+* @package OPUS
+*/
 require_once("dto/DTO.class.php");
+/**
+* DTO handling for Student
+*
+* Performs logical joining of the student and user tables where required.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Student.class.php
+* @package OPUS
+*
+*/
 
 class DTO_Student extends DTO
 {

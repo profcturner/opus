@@ -1,12 +1,22 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_Automail extends DTO {
+/**
+* DTO handling for Automail
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for Automail
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Automail.class.php
+* @package OPUS
+*
+*/
+
+class DTO_Automail extends DTO
+{
 
   function __construct($handle) 
   {

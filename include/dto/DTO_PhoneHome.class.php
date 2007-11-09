@@ -1,18 +1,32 @@
 <?php
-/**
- * @package OPUS
- *
- *
- */
-require_once("dto/DTO.class.php");
 
-class DTO_PhoneHome extends DTO {
+/**
+* DTO handling for PhoneHome
+* @package OPUS
+*/
+require_once("dto/DTO.class.php");
+/**
+* DTO handling for PhoneHome
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see PhoneHome.class.php
+* @package OPUS
+*
+*/
+
+class DTO_PhoneHome extends DTO
+{
 
   function __construct($handle) 
   {
     parent::__construct($handle);
   }
 
+  /**
+  * obtain unix timestamps for last notification of phonehome functionality
+  * @return an associative array with keys timestamp_install and timestamp_periodic
+  */
   function _get_unixtimes()
   {
     global $waf;

@@ -1,13 +1,19 @@
 <?php
 
 /**
-* The model object for Activitytypes
+* Used the define all the activities that exist in the OPUS system
 * @package OPUS
 */
 require_once("dto/DTO_Activitytype.class.php");
-
 /**
-* The Activitytype model class
+* Used the define all the activities that exist in the OPUS system
+*
+* That is, things like "Engineering", "Computing", "Social Work" etc.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 class Activitytype extends DTO_Activitytype 
 {
