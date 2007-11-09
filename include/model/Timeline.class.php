@@ -1,19 +1,24 @@
 <?php
 
 /**
-* The model object for Timelines
+* Handles creation and display of timelines
 * @package OPUS
 */
 require_once("dto/DTO_Timeline.class.php");
-
 /**
-* The Timeline model class
+* Handles creation and display of timelines
 *
 * Timelines are a novel way of showing student application activity. Because the
 * creation of these graphs is computational intensive they are produced offline
 * using, at least for the moment, Perl. PHP is used to reduce the numbers of
 * redraws. If timelines don't work for you, check your cron framework is operational.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Timeline extends DTO_Timeline 
 {
   var $student_id = 0;   // The user id of the student the timeline belongs to

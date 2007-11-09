@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for CVGroups
+* Defines the groups of programmes that have different CV handling
 * @package OPUS
 */
 require_once("dto/DTO_CVGroup.class.php");
-
 /**
-* The CVGroup model class
+* Defines the groups of programmes that have different CV handling
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class CVGroup extends DTO_CVGroup 
 {
   var $name = "";            // Name of cvgroup

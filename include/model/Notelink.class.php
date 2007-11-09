@@ -1,14 +1,20 @@
 <?php
 
 /**
-* The model object for linking Notes to other objects
+* Handles what entities a given note in OPUS is linked to
 * @package OPUS
 */
 require_once("dto/DTO_Notelink.class.php");
-
 /**
-* The Notelink model class
+* Handles what entities a given note in OPUS is linked to
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Note.class.php
+* @package OPUS
+*
 */
+
 class Notelink extends DTO_Notelink 
 {
   var $link_type = "";      // The object linked to

@@ -5,10 +5,15 @@
 * @package OPUS
 */
 require_once("dto/DTO_Company.class.php");
-
 /**
-* The Company model class
+* The model object for companies
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Company extends DTO_Company 
 {
   var $name = "";      // Company name

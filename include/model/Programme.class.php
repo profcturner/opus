@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for Programmes
+* Defines and handles programmes of study
 * @package OPUS
 */
 require_once("dto/DTO_Programme.class.php");
-
 /**
-* The Programme model class
+* Defines and handles programmes of study
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Programme extends DTO_Programme 
 {
   var $name = "";        // Name of programme

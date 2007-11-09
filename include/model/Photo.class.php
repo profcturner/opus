@@ -1,14 +1,20 @@
 <?php
 
 /**
-* The model object for Photos
+* Handles the retrieval of photographs that OPUS already knows about
 * @package OPUS
 */
 
 /**
-* The Photo model class
+* Handles the retrieval of photographs that OPUS already knows about
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+* @todo need to add an upload mechanism
 *
 */
+
 class Photo
 {
   /**

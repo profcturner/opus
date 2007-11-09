@@ -1,9 +1,20 @@
 <?php
-/**
- * @package OPUS
- *
- */
 
+/**
+* Encapsulated timing of events
+* @package OPUS
+*/
+
+/**
+* Encapsulated timing of events
+*
+* Generally used to time script execution times.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
 
 class Benchmark
 {

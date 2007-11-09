@@ -1,14 +1,22 @@
 <?php
 
 /**
-* The model object for linking Programmes to Admins
+* Handles which programmes and administrator has rights over
 * @package OPUS
 */
 require_once("dto/DTO_ProgrammeAdmin.class.php");
-
 /**
-* The ProgrammeAdmin model class
+* Handles which programmes and administrator has rights over
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Admin.class.php
+* @see Programme.class.php
+* @see Policy.class.php
+* @package OPUS
+*
 */
+
 class ProgrammeAdmin extends DTO_ProgrammeAdmin 
 {
   var $programme_id = 0;    // The id from the programme table

@@ -1,5 +1,20 @@
 <?php
 
+/**
+* Test authentication
+* @package OPUS
+*/
+
+/**
+* Test authentication
+*
+* @author Gordon Crawford <g.crawford@ulster.ac.uk>
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
 class testauth
 {
   function waf_authenticate_user($username, $password)

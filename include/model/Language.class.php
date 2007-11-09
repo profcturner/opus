@@ -1,14 +1,23 @@
 <?php
 
 /**
-* The model object for help prompts
+* Languages supported by OPUS
 * @package OPUS
 */
 require_once("dto/DTO_Language.class.php");
-
 /**
-* The Language model class
+* Languages supported by OPUS
+*
+* This is still an evolving issue, with version 4 about 95% of the work for localization is
+* complete, but there are still some outstanding problems which should be address in the
+* 4.x lifecycle.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Language extends DTO_Language 
 {
   var $name = "";      // Language name

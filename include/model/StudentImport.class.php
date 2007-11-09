@@ -1,5 +1,18 @@
 <?php
 
+/**
+* Handles the mass import of students
+* @package OPUS
+*/
+
+/**
+* Handles the mass import of students
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
 class StudentImport
 {
 

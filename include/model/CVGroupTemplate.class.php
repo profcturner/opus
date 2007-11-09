@@ -5,10 +5,16 @@
 * @package OPUS
 */
 require_once("dto/DTO_CVGroupTemplate.class.php");
-
 /**
-* The CVGroupTemplate model class
+* The model object for linking CVGroups with PDSystem Templates
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see CVGroup.class.php
+* @package OPUS
+*
 */
+
 class CVGroupTemplate extends DTO_CVGroupTemplate 
 {
   var $group_id = 0;     // The id from the cvgroup table

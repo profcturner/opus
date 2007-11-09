@@ -1,7 +1,18 @@
 <?php
 
-// We need mime type handling
+/**
+* Encapsulates file uploading
+* @package OPUS
+*/
 require_once "model/Mimetype.class.php";
+/**
+* Encapsulates file uploading
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
 
 class File_Upload
 {

@@ -1,23 +1,24 @@
 <?php
 
 /**
-* Web Services Support
-*
-* @author Colin Turner <c.turner@ulster.ac.uk>
-* @version 4.0
+* Handles support for webservices, the loosely coupled layer for talking with the outside world
 * @package OPUS
 */
 
 /**
-* Web Service Support Calls
+* Handles support for webservices, the loosely coupled layer for talking with the outside world
 *
 * Both the PDSystem and OPUS use an abstracted layer to communicate with any
 * Student Records System (SRS).
 *
 * This small class handles authentication for that task, and returning data
 *
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
 * @package OPUS
+*
 */
+
 class WebServices
 {
 

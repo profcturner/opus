@@ -1,15 +1,29 @@
 <?php
 
 /**
-* This class handles the (optional) sending of non confidential information
-* to the University of Ulster to help support our open source activities
-*
+* Handles the (totally optional) sending of non condfidential information to the development team
 * @package OPUS
 */
 require_once("dto/DTO_PhoneHome.class.php");
-
 /**
-* The PhoneHome class
+* Handles the (totally optional) sending of non condfidential information to the development team
+*
+* Only with your absolute consent, OPUS will send information about installation, and again with
+* your permission periodic emails about the counts of information in your database.
+*
+* This is so
+* <ul>
+* <li>we can better understand our customer base and how to help them; and</li>
+* <li>justify the effort put into the open sourcing activity to our own management.</li>
+* </ul>
+*
+* Of course, you can study the code here to reassure yourself nothing is done that is other than
+* stated above.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 class PhoneHome extends DTO_PhoneHome 
 {
@@ -73,6 +87,18 @@ class PhoneHome extends DTO_PhoneHome
     }
   }
 
+  /**
+  * adds the admin to the cc field if appropriate
+  *
+  * OPUS asks (until not to) if it is permitted to send information. On that screen the logged
+  * in admin can select to be CC'd on any email.
+  * If the box is <b>checked</b> and if there is nothing already in the CC field
+  * (in which case it has been previously dealt with) it is left alone, or otherwise the
+  * admin is added.
+  * If the box is <b>unchecked</b> then the CC field is emptied.
+  *
+  * @param boolean $cc_on_email true if the box was checked, false otherwise
+  */
   function update_cc_in_automail($cc_on_email)
   {
     // Update the automail template for the CC fields
@@ -145,6 +171,12 @@ class PhoneHome extends DTO_PhoneHome
     }
   }
 
+  /**
+  * potentially send installation information, if permitted
+  *
+  * checks if a super-admin has authorised this and if so, sends the information.
+  * The template can be checked, it sends the URL, insitution name and version.
+  */
   function send_install()
   {
     global $waf;
@@ -165,6 +197,15 @@ class PhoneHome extends DTO_PhoneHome
     $phonehome->_update();
   }
 
+  /**
+  * potentially send count information, if permitted
+  *
+  * checks if a super-admin has authorised this and if so, sends the information,
+  * provided it is about a month or more since the last time.
+  *
+  * The template can be checked, it sends the URL, insitution name and version,
+  * as well as counts that you can see in the function body.
+  */
   function send_periodic()
   {
     global $waf;

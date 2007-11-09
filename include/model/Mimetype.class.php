@@ -1,13 +1,17 @@
 <?php
 
 /**
-* The model object for Mimetypes
+* Defines the mimetypes of files that OPUS should handle in some way
 * @package OPUS
 */
 require_once("dto/DTO_Mimetype.class.php");
-
 /**
-* The Mimetype model class
+* Defines the mimetypes of files that OPUS should handle in some way
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 class Mimetype extends DTO_Mimetype 
 {

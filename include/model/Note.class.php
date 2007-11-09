@@ -1,14 +1,24 @@
 <?php
 
 /**
-* The model object for note templates
+* Handles notes within OPUS, the write once documentation system
 * @package OPUS
 */
 require_once("dto/DTO_Note.class.php");
-
 /**
-* The Note model class
+* Handles notes within OPUS, the write once documentation system
+*
+* Notes are deliberately intended to never be deleted or updated. This is so that
+* they might provide some legal defence if needed. You will note that the usual
+* update and remove functions are totally absent from this class.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Notelink.class.php
+* @package OPUS
+*
 */
+
 class Note extends DTO_Note 
 {
   var $date = "";        // Datestamp for note
@@ -68,13 +78,6 @@ class Note extends DTO_Note
     $note->_insert($fields);
   }
 
-  /*  
-  function update($fields) 
-  {
-    $note = Note::load_by_id($fields[id]);
-    $note->_update($fields);
-  }
-  */
 
   /**
   * Wasteful
@@ -121,13 +124,6 @@ class Note extends DTO_Note
     return  $note->_get_id_and_field($fieldname);
   }
 
-  /*
-  function remove($id=0) 
-  {
-    $note = new Note;
-    $note->_remove_where("WHERE id=$id");
-  }
-  */
   function get_fields($include_id = false) 
   {
     $note = new Note;

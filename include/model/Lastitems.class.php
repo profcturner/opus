@@ -1,5 +1,19 @@
 <?php
 
+/**
+* Handles the filing and recall of recently visited items
+* @package OPUS
+*/
+
+/**
+* Handles the filing and recall of recently visited items
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
 class Lastitems
 {
   var $queue;

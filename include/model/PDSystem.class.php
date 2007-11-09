@@ -2,20 +2,18 @@
 
 /**
 * PDSystem integration and support
+* @package OPUS
+*/
+require_once("dto/DTO_.class.php");
+/**
+* PDSystem integration and support
 *
 * @author Colin Turner <c.turner@ulster.ac.uk>
-* @version 4.0
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
 * @package OPUS
+*
 */
 
-/**
-* PDSystem Support Calls
-*
-* When OPUS is used in conjunction with the PDSystem there are a number of calls it uses to retrieve information
-* from that system. These are enclosed in this object.
-*
-* @package OPUS
-*/
 class PDSystem
 {
   /**

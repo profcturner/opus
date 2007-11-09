@@ -1,14 +1,22 @@
 <?php
 
 /**
-* The model object for linking Facultys to Admins
+* Associates Administrators with particular Faculties
 * @package OPUS
 */
 require_once("dto/DTO_FacultyAdmin.class.php");
-
 /**
-* The FacultyAdmin model class
+* Associates Administrators with particular Faculties
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Admin.class.php
+* @see Faculty.class.php
+* @see Policy.class.php
+* @package OPUS
+*
 */
+
 class FacultyAdmin extends DTO_FacultyAdmin 
 {
   var $faculty_id = 0;    // The id from the faculty table

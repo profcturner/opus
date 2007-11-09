@@ -5,6 +5,13 @@
 * @package OPUS
 */
 
+/**
+* The database user authentication object for OPUS
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*/
 class dbusernameauth
 {
   function waf_authenticate_user($username, $password)

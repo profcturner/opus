@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for vacancies
+* Defines the activities that are associated with a given company
 * @package OPUS
 */
 require_once("dto/DTO_CompanyActivity.class.php");
-
 /**
-* The CompanyActivity model class
+* Defines the activities that are associated with a given company
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class CompanyActivity extends DTO_CompanyActivity 
 {
   var $company_id = "";   // The company

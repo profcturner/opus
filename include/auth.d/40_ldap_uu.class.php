@@ -1,5 +1,20 @@
 <?php
 
+/**
+* LDAP authentication for University of Ulster
+* @package OPUS
+*/
+
+/**
+* LDAP authentication for University of Ulster
+*
+* @author Gordon Crawford <g.crawford@ulster.ac.uk>
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
 class ldap_uu
 {
   function waf_authenticate_user($username, $password)

@@ -1,5 +1,22 @@
 <?php
 
+/**
+* Encapsulates functionality to produce the dynamic help directory
+* @package OPUS
+*/
+require_once("dto/DTO_.class.php");
+/**
+* Encapsulates functionality to produce the dynamic help directory
+*
+* This establishes which administrator users are most helpful by context.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Admin.class.php
+* @package OPUS
+*
+*/
+
 class HelpDirectory
 {
   /**

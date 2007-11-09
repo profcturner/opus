@@ -1,11 +1,27 @@
 <?php
 
+/**
+* Defines and handles the Administrator Menu
+* @package OPUS
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+*/
+
 // All admin users need to know about policy code, even root users
 require_once("model/Policy.class.php");
 
 // The admin log file should be created, and it should be the default
 $GLOBALS['waf']->set_default_log("admin");
 
+/**
+* Defines and handles the Administrator Menu
+*
+* This is a complicated example since many aspects of the Administrator menu
+* are dynamic.
+*
+* @return a multidimensinal array that defines menu structure
+*
+*/
 function nav_admin() 
 {
   $basic_nav = array
@@ -65,6 +81,7 @@ function nav_admin()
     )
   );
 
+  // If a student is being dealt with, add a dynamic menu
   if(isset($_SESSION['student_id']))
   {
     $student_name = "student";
@@ -87,6 +104,7 @@ function nav_admin()
     );
   }
 
+  // If a company is being dealt with, add a dynamic menu
   if(isset($_SESSION['company_id']))
   {
     $company_name = "company";
@@ -108,8 +126,10 @@ function nav_admin()
     );
   }
 
+  // Get the Recent items
   $last_item_nav = $_SESSION['lastitems']->get_nav();
 
+  // Merge in root functionality if appropriate
   if(User::is_root())
   {
     $nav = array_merge_recursive($basic_nav, $root_nav);
@@ -119,6 +139,7 @@ function nav_admin()
     $nav = $basic_nav;
   }
 
+  // And the context menus
   if(isset($_SESSION['student_id']))
   {
     $nav = array_merge_recursive($nav, $student_nav);
@@ -128,7 +149,7 @@ function nav_admin()
     $nav = array_merge_recursive($nav, $company_nav);
   }
 
-
+  // Finally add the recent items
   return(array_merge_recursive($nav, $last_item_nav));
 }
 

@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for vacancies
+* Handles vacancies or job adverts
 * @package OPUS
 */
 require_once("dto/DTO_Vacancy.class.php");
-
 /**
-* The Vacancy model class
+* Handles vacancies or job adverts
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Vacancy extends DTO_Vacancy 
 {
   var $company_id = "";   // The company offering the vacancy

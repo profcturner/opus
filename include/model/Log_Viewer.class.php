@@ -1,21 +1,23 @@
 <?php 
 
-/*
-// Check security policy for logged in user
-if(!empty($logname))
-{
-  if(!check_default_policy('log', $logname))
-    die_gracefully("Sorry, you do not have permission to view this log");
-  log_view($logname, $search, $lines);
-  log_view_form();
-}
-else output_help("AdminLogViewer");
-*/
-
-
 /**
-* @todo policy code needs reimplemented
+* Handles the display and searching of log files
+* @package OPUS
 */
+require_once("dto/DTO_.class.php");
+/**
+* Handles the display and searching of log files
+*
+* This uses some unix like command line tools for elegance and speed, such as
+* grep, cat and tail. I might reimplement this for Windows sometime, but I
+* would suggest trying to obtain ports of these very simple, free utilities.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
+
 class Log_Viewer
 {
   var $available_logs;
@@ -28,6 +30,12 @@ class Log_Viewer
 
     if($lines == 0) $lines = 100;
     if($logname == "") $logname = 'general';
+
+    require_once("model/Policy.class.php");
+    if(!Policy::check_default_policy("log", $logname))
+    {
+      $waf->halt("error:policy:no_permission");
+    }
 
     $waf->assign("selected_log", $logname);
     $waf->assign("search", $search);
@@ -56,6 +64,8 @@ class Log_Viewer
     global $waf;
     global $config;
 
+    $lines = (int) $lines; // security
+
     if(!in_array($logname, $this->available_logs))
     {
       $waf->security_log("Illegal log name $logname attempted");
@@ -67,7 +77,7 @@ class Log_Viewer
     // is given, other we use grep.
     // Encapsulate the search string in quotes to prevent hacking!
     if(empty($search)) $command = "cat ";
-    else $command = "grep \"$search\" ";
+    else $command = "grep " . escapeshellarg($search) ." ";
 
     // Add the log filename to the end of the command so far.
     $command .= $logfile;

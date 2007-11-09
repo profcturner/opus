@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for Facultys
+* Defines and handles Faculties
 * @package OPUS
 */
 require_once("dto/DTO_Faculty.class.php");
-
 /**
-* The Faculty model class
+* Defines and handles Faculties
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Faculty extends DTO_Faculty 
 {
   var $name = "";        // Name of faculty

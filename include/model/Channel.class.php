@@ -1,13 +1,17 @@
 <?php
 
 /**
-* The model object for Channels
+* Handles channels, the main means of restricting information to interested parties
 * @package OPUS
 */
 require_once("dto/DTO_Channel.class.php");
-
 /**
-* The Channel model class
+* Handles channels, the main means of restricting information to interested parties
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 class Channel extends DTO_Channel
 {

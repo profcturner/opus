@@ -1,6 +1,12 @@
 <?php
 
 /**
+* allows lightweight multipart messaging from OPUS
+* @package OPUS
+*/
+
+/**
+* allows lightweight multipart messaging from OPUS
 *
 * @author Colin Turner <c.turner@ulster.ac.uk>
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
@@ -8,12 +14,6 @@
 *
 */
 
-/**
-* OPUSMail
-*
-* This class allows lightweight multipart messaging from OPUS
-* @package OPUS
-*/
 class OPUSMail
 {
   var $to;

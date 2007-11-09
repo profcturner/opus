@@ -1,14 +1,21 @@
 <?php
 
 /**
-* The model object for vacancies
+* Handles what activities are associated with a given vacancy
 * @package OPUS
 */
 require_once("dto/DTO_VacancyActivity.class.php");
-
 /**
-* The VacancyActivity model class
+* Handles what activities are associated with a given vacancy
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Vacancy.class.php
+* @see Activitytype.class.php
+* @package OPUS
+*
 */
+
 class VacancyActivity extends DTO_VacancyActivity 
 {
   var $vacancy_id = "";   // The vacancy

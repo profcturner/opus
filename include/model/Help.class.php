@@ -1,14 +1,20 @@
 <?php
 
 /**
-* The model object for help prompts
+* Handles the help prompts, often used for news display within OPUS
 * @package OPUS
 */
 require_once("dto/DTO_Help.class.php");
-
 /**
-* The Help model class
+* Handles the help prompts, often used for news display within OPUS
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+* @todo URGENT need auth handling
+*
 */
+
 class Help extends DTO_Help 
 {
   var $lookup = "";      // A text lookup field for the prompt

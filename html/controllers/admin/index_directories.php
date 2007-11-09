@@ -1,5 +1,13 @@
 <?php
 
+  /**
+  * Directory Menu for Administrators
+  *
+  * @package OPUS
+  * @author Colin Turner <c.turner@ulster.ac.uk>
+  * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+  */
+
   function student_directory(&$waf, $user, $title)
   {
     if(!Policy::check_default_policy("student", "list")) $waf->halt("error:policy:permissions");

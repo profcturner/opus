@@ -5,10 +5,15 @@
 * @package OPUS
 */
 require_once("dto/DTO_CompanyContact.class.php");
-
 /**
-* The CompanyContact model class
+* The model object for associating contacts with companies
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class CompanyContact extends DTO_CompanyContact 
 {
   var $company_id = "";  // The id column from the company table

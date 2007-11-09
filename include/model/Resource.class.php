@@ -1,13 +1,17 @@
 <?php
 
 /**
-* The model object for Resources
+* Handles resources, file based objects used for various purposes
 * @package OPUS
 */
 require_once("dto/DTO_Resource.class.php");
-
 /**
-* The Resource model class
+* Handles resources, file based objects used for various purposes
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
 class Resource extends DTO_Resource 
 {

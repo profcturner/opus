@@ -1,13 +1,26 @@
 <?php
 
 /**
-* The model object for Vacancytypes
+* Handles the types of vacancies that OPUS will handle
 * @package OPUS
 */
 require_once("dto/DTO_Vacancytype.class.php");
-
 /**
-* The Vacancytype model class
+* Handles the types of vacancies that OPUS will handle
+*
+* That is, things like
+* <ul>
+*   <li>One year full time sandwhich placement</li>
+*   <li>Part time placement</li>
+*   <li>Summer jobs</li>
+*   <li>Graduate vacancies jobs</li>
+* </ul>
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Vacancy.class.php
+* @package OPUS
+*
 */
 class Vacancytype extends DTO_Vacancytype 
 {
@@ -17,7 +30,7 @@ class Vacancytype extends DTO_Vacancytype
 
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>40, 'title'=>'Name', 'header'=>true, 'listclass'=>'vacancytype_name'),
-    'priority'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'title'=>'Priority'),
+    'priority'=>array('type'=>'numeric', 'size'=>10, 'maxsize'=>10, 'title'=>'Priority'),
     'help'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>80, 'markup'=>'xhtml')
   );
 

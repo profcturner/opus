@@ -1,6 +1,18 @@
 <?php
 
+/**
+* Handles the storage of user preferences, possibly in a different database 
+* @package OPUS
+*/
 require_once("dto/DTO_Preference.class.php");
+/**
+* Handles the storage of user preferences, possibly in a different database 
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
 
 class Preference extends DTO_Preference
 {

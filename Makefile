@@ -31,7 +31,7 @@ clean:
 # Make development documentation, you will need phpdoc installed
 devdoc:
 	mkdir -p ../phpdoc/
-	phpdoc -d html -d include -t ../phpdoc/ -dn OPUS --title "OPUS Development Documentation"
+	phpdoc -d html,include -t ../phpdoc/ -dc OPUS --title "OPUS Development Documentation"
 
 
 #

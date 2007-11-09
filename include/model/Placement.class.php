@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for placements for jobs
+* Handles the recording of placements themselves
 * @package OPUS
 */
 require_once("dto/DTO_Placement.class.php");
-
 /**
-* The Placement model class
+* Handles the recording of placements themselves
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class Placement extends DTO_Placement 
 {
   var $position;              // The job title

@@ -1,5 +1,14 @@
 <?php
 
+/**
+* Home Menu for Administrators
+*
+* @package OPUS
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+*/
+
+
 function home(&$waf)
 {
   $waf->assign("user", $waf->user['opus']);

@@ -1,14 +1,19 @@
 <?php
 
 /**
-* The model object for Schools
+* Defines and handles schools
 * @package OPUS
 */
 require_once("dto/DTO_School.class.php");
-
 /**
-* The School model class
+* Defines and handles schools
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class School extends DTO_School 
 {
   var $name = "";        // Name of school

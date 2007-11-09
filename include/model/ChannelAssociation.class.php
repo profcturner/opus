@@ -1,14 +1,21 @@
 <?php
 
 /**
-* The model object for Schools
+* Handles the various things associated with channels
 * @package OPUS
 */
 require_once("dto/DTO_ChannelAssociation.class.php");
-
 /**
-* The ChannelAssociation model class
+* Handles the various things associated with channels
+*
+* In particular, programmes, schools, assessmentgroups or activitytypes
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
 */
+
 class ChannelAssociation extends DTO_ChannelAssociation 
 {
   var $permission = "";  // Either enable or disable

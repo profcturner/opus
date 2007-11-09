@@ -1,14 +1,30 @@
 <?php
 
 /**
-* The model object for security policies
+* Handles security limits for administrator users
 * @package OPUS
 */
 require_once("dto/DTO_Policy.class.php");
-
 /**
-* The Policy model class
+* Handles security limits for administrator users
+*
+* This important functionality handles the limits of powers on various administrator
+* users. Policies can be defined and manipulated, and administrators assigned these
+* policies. The policy in the Admin object is the absolute ceiling on powers, but
+* even lower powers can be granted for a given school, faculty etc..
+*
+* To be able to act on an entity an administrator normally needs a policy, and a link
+* to that entity, an in institutional, faculty, school or programme level.
+*
+* Note that, super-admin or root users are totally outside the policy framework.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Admin.class.php
+* @package OPUS
+*
 */
+
 class Policy extends DTO_Policy
 {
   var $name = "";      // Policy name
@@ -33,7 +49,7 @@ class Policy extends DTO_Policy
 
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name', 'header'=>true, 'mandatory'=>true),
-    'priority'=>array('type'=>'text', 'size'=>7, 'title'=>'Priority', 'header'=>true)
+    'priority'=>array('type'=>'numeric', 'size'=>7, 'title'=>'Priority', 'header'=>true)
   );
 
   function __construct() 

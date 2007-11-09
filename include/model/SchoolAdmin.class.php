@@ -1,15 +1,21 @@
 <?php
 
 /**
-* The model object for linking Schools to Admins
+* Associates Administrators with particular Schools
 * @package OPUS
 */
 require_once("dto/DTO_SchoolAdmin.class.php");
-
 /**
-* The SchoolAdmin model class
-*/
-class SchoolAdmin extends DTO_SchoolAdmin 
+* Associates Administrators with particular Schools
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Admin.class.php
+* @see School.class.php
+* @see Policy.class.php
+* @package OPUS
+*
+*/class SchoolAdmin extends DTO_SchoolAdmin 
 {
   var $school_id = 0;    // The id from the school table
   var $admin_id = 0;     // The id from the user table for the admin
