@@ -34,6 +34,11 @@
     $opus->display("main.tpl", "admin:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
+  function list_reports(&$opus, $user, $title)
+  {
+    $opus->halt("error:test:error");
+  }
+
   function view_logs(&$opus, $user, $title)
   {
     require_once("model/Log_Viewer.class.php");

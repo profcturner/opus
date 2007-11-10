@@ -20,6 +20,9 @@ $config['waf']['waf_debug']             = True; // Only enable this for extreme 
 $config['waf']['validation_image_ok']   = "images/ok-small.png";
 $config['waf']['validation_image_fail'] = "images/fail-small.png";
 $config['waf']['auth_dir']              = '/usr/share/opus/include/auth.d'; // Used to load authentication objects, you may want to customize the contents of this dir
+$config['waf']['required_waf_version']  = "1.0.0";
+$config['waf']['app_error_function']    = "error";
+
 
 // Uncomment this to have opus somewhere other than the default
 //$config['waf']['base_dir'] = '/usr/local/share/opus'; // for example
