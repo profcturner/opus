@@ -46,7 +46,9 @@ function toggleAll(checked)
   </tr>
   {if $show_timelines}
   <tr class="{cycle name="cycle2" values="dark_row,light_row"}">
-    <td colspan="4"><small><span class="status_{$students[students].status}"><img src="" /></td>
+    <td></td>
+    <td colspan="5"><img width="600" height="100" src="?section=directories&function=display_timeline&student_id={$students[students].id}" />
+    </td>
   </tr>
   {/if}
   {sectionelse}
@@ -55,6 +57,6 @@ function toggleAll(checked)
 </table>
 <a href="" onclick="toggleAll(true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
 <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
-{$students|count}
+{$student_count} {#matching_students#}
 </form>
 </div>

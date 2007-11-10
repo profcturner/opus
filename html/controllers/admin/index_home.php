@@ -95,20 +95,25 @@ function company_activity(&$waf)
   else
   {
     // since the last login
-    $since = $waf->user['opus']['last_login'];
-    if(!$last_login) $since = 0;
-  } 
+    $last_login = $waf->user['opus']['last_login'];
+    $pd = date_parse($last_login);
+    $since = sprintf("%04u%02u%02u%02u%02u%02u", $pd['year'], $pd['month'], $pd['day'], $pd['hour'], $pd['minute'], $pd['second']);
+  }
+  $waf->assign("since", $since);
 
   require_once("model/Vacancy.class.php");
   require_once("model/Company.class.php");
 
-  $vacancies_created = Vacancy::get_all("where created > " . $since);
-  $vacancies_modified = Vacancy::get_all("where modified > " . $since);
-  $companies_created = Company::get_all("where created > " . $since);
-  $companies_modified = Company::get_all("where modified > " . $since);
+  $vacancy = new Vacancy;
+  $company = new Company;
+  $vacancies_created = $vacancy->_get_all("where created > " . $since);
+  $vacancies_modified = $vacancy->_get_all("where modified > " . $since);
+  $companies_created = $company->_get_all("where created > " . $since);
+  $companies_modified = $company->_get_all("where modified > " . $since);
 
   $vacancy_headings = array(
     'description'=>array('type'=>'text','size'=>30, 'header'=>true, 'listclass'=>'vacancy_description'),
+    'company_id'=>array('type'=>'lookup', 'size'=>30, 'header'=>true, 'title'=>'Company Name'),
     'locality'=>array('type'=>'list','size'=>30, 'header'=>true, 'listclass'=>'vacancy_locality'),
     'status'=>array('type'=>'text','size'=>30, 'header'=>true, 'listclass'=>'vacancy_status')
   );

@@ -36,7 +36,7 @@
 
   function list_reports(&$opus, $user, $title)
   {
-    $opus->halt("error:test:error");
+    $opus->display("main.tpl", "admin:information:list_reports:list_reports", "admin/information/list_reports.tpl");
   }
 
   function view_logs(&$opus, $user, $title)

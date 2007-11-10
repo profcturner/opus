@@ -54,7 +54,12 @@
     require_once("model/Student.class.php");
     $objects = Student::get_all_extended($search, $year, $programmes, $sort, $other_options);
 
+    $other_options = WA::request("other_options");
+    if(in_array("ShowTimlines", $other_options)) $waf->assign("show_timelines", true);
+
+    $waf->assign("show_timelines", true);
     $waf->assign("students", $objects);
+    $waf->assign("student_count", count($objects));
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
 
@@ -68,7 +73,11 @@
     require_once("model/Student.class.php");
     $objects = Student::get_all_by_initial($initial);
 
+    $other_options = WA::request("other_options");
+    if(in_array("ShowTimlines", $other_options)) $waf->assign("show_timelines", true);
+
     $waf->assign("students", $objects);
+    $waf->assign("student_count", count($objects));
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
 
