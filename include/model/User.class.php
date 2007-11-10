@@ -439,6 +439,14 @@ Class User extends DTO_User
     return($data[$id]);
   }
 
+  function get_email($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = User::get_id_and_field("email","where id='$id'");
+    return($data[$id]);
+  }
+
   function get_username($id)
   {
     $id = (int) $id; // Security

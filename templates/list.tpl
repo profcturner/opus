@@ -45,7 +45,7 @@ pages
 
 {section loop=$actions name=action}
     <td class="action">
-      <a href="?section={$section}&function={$actions[action][1]}&id={$objects[object]->id}&page={$page}">{$actions[action][0]}</a>&nbsp;
+      <a href="?section={if $actions[action][2]}{$actions[action][2]}{else}{$section}{/if}&function={$actions[action][1]}&id={$objects[object]->id}&page={$page}">{$actions[action][0]}</a>&nbsp;
     </td>
 {/section}
   </tr>

@@ -55,10 +55,11 @@
     $objects = Student::get_all_extended($search, $year, $programmes, $sort, $other_options);
 
     $other_options = WA::request("other_options");
-    if(in_array("ShowTimlines", $other_options)) $waf->assign("show_timelines", true);
+    if(empty($other_options)) $other_options = array();
+    if(in_array("ShowTimelines", $other_options)) $waf->assign("show_timelines", true);
 
-    $waf->assign("show_timelines", true);
     $waf->assign("students", $objects);
+    $waf->assign("action_links", array(array('add', 'section=directories&function=add_student')));
     $waf->assign("student_count", count($objects));
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
@@ -74,11 +75,78 @@
     $objects = Student::get_all_by_initial($initial);
 
     $other_options = WA::request("other_options");
-    if(in_array("ShowTimlines", $other_options)) $waf->assign("show_timelines", true);
+    if(empty($other_options)) $other_options = array();
+    if(in_array("ShowTimelines", $other_options)) $waf->assign("show_timelines", true);
 
     $waf->assign("students", $objects);
+    $waf->assign("action_links", array(array('add', 'section=directories&function=add_student')));
     $waf->assign("student_count", count($objects));
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
+  }
+
+  function mass_email(&$waf)
+  {
+    $users = WA::request('users');
+    $message = WA::request('message');
+    $cc_me = WA::request('CC');
+    $subject = WA::request('subject');
+    $redirect_url = WA::request("redirect_url");
+
+    $valid_recipients = array();
+    $invalid_recipients = array();
+
+    if(!empty($message) && count($users))
+    {
+      require_once("model/User.class.php");
+      $sender_details = User::load_by_id(User::get_id());
+
+      $sender_email =
+        $sender_details->real_name . " <" . $sender_details->email . ">";
+
+      $to_email =
+        "Undisclosed Recipients <" . $sender_details->email . ">";
+
+      $extra = "From: $sender_email\r\n";
+      if($cc_me) $extra .= "Cc: $sender_email\r\n";
+
+      $bcc = "bcc: ";
+
+      foreach($users as $user_id)
+      {
+        $user = User::load_by_id($user_id);
+
+        $user_email = $user->real_name . " <" . $user->email . ">";
+
+        // Do we in fact, have an email address to send to?
+        if(strlen($user->email))
+        {
+          $bcc .= $user_email . ", ";
+          array_push($valid_recipients, $user);
+        }
+        else
+        {
+          array_push($invalid_recipients, $user);
+        }
+      }
+
+      // Trim extra comma off
+      $bcc = substr($bcc, 0, -2) . "\r\n";
+      $extra .= $bcc;
+
+      require_once("model/OPUSMail.class.php");
+
+      $new_mail = new OPUSMail($to_email, $subject, $message, $extra);
+      $new_mail->send();
+    }
+    else
+    {
+      $waf->assign("invalid_email", true);
+      // No message, or no users selected
+    }
+    $waf->assign("action_links", array(array('done', $redirect_url)));
+    $waf->assign("valid_recipients", $valid_recipients);
+    $waf->assign("invalid_recipients", $invalid_recipients);
+    $waf->display("main.tpl", "admin:directories:mass_email:mass_email", "admin/directories/mass_email.tpl");
   }
 
 
@@ -86,7 +154,7 @@
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
-    add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=manage_students")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student");
+    add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student");
   }
 
   function add_student_do(&$waf, &$user) 

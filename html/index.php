@@ -33,6 +33,7 @@ function main()
   require_once("opus.conf.php");
   require_once("WA.class.php");
 
+
   if($config['opus']['benchmarking'])
   {
     require_once("model/Benchmark.class.php");
@@ -63,6 +64,10 @@ function main()
   // Tell UUWAF about our database connections - there are two
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
   $waf->register_data_connection('preferences', $config_sensitive['opus']['preference']['dsn'], $config_sensitive['opus']['preference']['username'], $config_sensitive['opus']['preference']['password']);
+
+  require_once("model/Service.class.php");
+  $service_status = Service::checks();
+  $waf->assign_by_ref("service_status", $service_status);
 
   // Try to authenticate any username and password credentials
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 

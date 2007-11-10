@@ -1,6 +1,17 @@
 -- The upgrade from OPUS 3.3.x to 4.0.0 is profound at the database level
 -- and for the first time ever consists of two parts.
 
+-- new service table --
+
+create table service
+(
+  status enum('started', 'stopped') not null,
+  schema_version tinytext not null,
+  id int unsigned not null auto_increment primary key
+);
+
+insert into service values('stopped', '4.0.0', 1);
+
 -- placement --
 
 alter table placement change column placement_id id int unsigned auto_increment;
@@ -286,9 +297,8 @@ create table admin
   id int unsigned not null auto_increment primary key
 );
 
-
-
-
 alter table staff add column id int unsigned auto_increment primary key;
 alter table staff change column status status enum('active', 'archive');
+
+
 

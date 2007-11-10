@@ -12,7 +12,7 @@
 {/if}
 
 <h3>Timeline</h3>
-<img width="600" height="100" src="?section=directories&function=display_timeline&student_id={$object->id}" />
+<img width="600" height="100" src="?section=directories&function=display_timeline&student_id={$object->user_id}" />
 
 <h3>Photograph</h3>
 <a href="?section=directories&function=display_photo&user_id={$object->user_id}&fullsize=true" >
