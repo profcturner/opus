@@ -107,7 +107,6 @@
     $root_users  = SystemStatus::get_root_users();
     $admin_users = SystemStatus::get_admin_users($max_users);
     $admin_headings = SystemStatus::get_admin_headings();
-    print_r($admin_headings);
 
     $company_users = User::get_all("where user_type='company'", "order by last_time desc", 0, $max_users);
     $supervisor_users = User::get_all("where user_type='supervisor'", "order by last_time desc ", 0, $max_users);

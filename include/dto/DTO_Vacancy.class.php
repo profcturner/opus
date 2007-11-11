@@ -36,6 +36,9 @@ class DTO_Vacancy extends DTO
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    $sort_types = array("name", "locality");
+    if(!in_array($sort, $sort_types)) $sort="name";
+
     if(empty($other_options)) $other_options = array();
     if(empty($vacancy_types)) $vacancy_types = array();
     if(empty($activities)) $activities = array();
@@ -66,6 +69,7 @@ class DTO_Vacancy extends DTO
 
     $full_query = "SELECT vacancy.*, company.name as company_name FROM vacancy LEFT JOIN company ON vacancy.company_id = company.id";
     if(!empty($searchc)) $full_query .= " WHERE $searchc";
+    if(!empty($sort)) $full_query .= " ORDER BY `$sort`";
 
     $object_array = array();
     try

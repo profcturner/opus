@@ -31,7 +31,7 @@ class Placement extends DTO_Placement
   var $supervisor_voice;
   var $company_id;            // The company of the placement
   var $vacancy_id;            // The vacancy placed with
-  var $student_id;            // The id, from the student table
+  var $student_id;            // The id, from the user table for the student
 
   static $_field_defs = array(
     'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true),
@@ -122,7 +122,7 @@ class Placement extends DTO_Placement
     $placement->id = $id;
     return $placement->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -135,7 +135,7 @@ class Placement extends DTO_Placement
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
     $placement = new Placement;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -155,30 +155,28 @@ class Placement extends DTO_Placement
   }
 
 
-  function remove($id=0) 
-  {  
+  function remove($id=0)
+  {
     $placement = new Placement;
     $placement->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $placement = new Placement;
-    return  $placement->_get_fieldnames($include_id); 
+    return  $placement->_get_fieldnames($include_id);
   }
-  function request_field_values($include_id = false) 
+
+  function request_field_values($include_id = false)
   {
     $fieldnames = Placement::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
-
   }
 }
 ?>

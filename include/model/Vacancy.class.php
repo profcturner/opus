@@ -307,7 +307,6 @@ class Vacancy extends DTO_Vacancy
     {
       require_once("model/Contact.class.php");
       $contact = Contact::load_by_id($vacancy->contact_id);
-      print_r($contact);
       if(!strlen($contact->email)) return; // Can't email them!
 
       // Any more information

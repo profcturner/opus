@@ -10,12 +10,12 @@
   </tr>
   {section name=companies loop=$companies}
   <tr class="{cycle name="cycle1" values="dark_row,light_row"}">
-    <td>{$companies[companies]->name|escape:"htmlall"}</td>
-    <td>{$companies[companies]->locality|escape:"htmlall"}</td>
-    <td class="action"><a href="?section=directories&function=view_company&company_id={$companies[companies]->id}">view</a></td>
-    <td class="action"><a href="?section=directories&function=manage_contacts&company_id={$companies[companies]->id}">contacts</a></td>
-    <td class="action"><a href="?section=directories&function=manage_vacancies&company_id={$companies[companies]->id}">vacancies</a></td>
-    <td class="action"><a href="?section=directories&function=edit_company&id={$companies[companies]->id}">edit</a></td>
+    <td>{$companies[companies].name|escape:"htmlall"}</td>
+    <td>{$companies[companies].locality|escape:"htmlall"}</td>
+    <td class="action"><a href="?section=directories&function=view_company&company_id={$companies[companies].id}">view</a></td>
+    <td class="action"><a href="?section=directories&function=manage_contacts&company_id={$companies[companies].id}">contacts</a></td>
+    <td class="action"><a href="?section=directories&function=manage_vacancies&company_id={$companies[companies].id}">vacancies</a></td>
+    <td class="action"><a href="?section=directories&function=edit_company&id={$companies[companies].id}">edit</a></td>
   </tr>
   {/section}
 </table>

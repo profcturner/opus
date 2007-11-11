@@ -265,7 +265,8 @@
     $activity_types = Activitytype::get_id_and_field("name");
     $vacancy_types = Vacancytype::get_id_and_field("name");
     $sort_types = array("name", "locality");
-    $other_options = array("ShowClosed" => "Show Closed", "ShowCompanies" => "Show Companies", "ShowVacancies" => "Show Vacancies");
+    $other_options = array("ShowClosed" => "Show Closed");
+    //, "ShowCompanies" => "Show Companies", "ShowVacancies" => "Show Vacancies");
 
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("vacancy_directory_form");
@@ -334,7 +335,7 @@
 
     require_once("model/Company.class.php");
     // A simplification, doesn't honour switches yet...
-    $waf->assign("companies", Company::get_all());
+    $waf->assign("companies", Company::get_all_extended($search, $activities, $sort));
     $waf->assign("action_links", array(array("add","section=directories&function=add_company")));
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "admin/directories/search_companies.tpl");
   }

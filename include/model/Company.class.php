@@ -177,7 +177,7 @@ class Company extends DTO_Company
   function get_all($where_clause="", $order_by="ORDER BY name, locality", $page=0)
   {
     $company = new Company;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -187,6 +187,13 @@ class Company extends DTO_Company
     }
     return $companys;
   }
+
+  function get_all_extended($search, $activities, $sort)
+  {
+    $company = new Company;
+    return($company->_get_all_extended($search, $activities, $sort));
+  }
+
 
   function get_id_and_field($fieldname, $where_clause="") 
   {

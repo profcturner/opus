@@ -187,7 +187,6 @@
       $fields[$key] = implode(",", $values);
     }
 
-    //print_r($fields); exit;
     Policy::update($fields);
     header("location: ?section=advanced&function=manage_policies");
   }
