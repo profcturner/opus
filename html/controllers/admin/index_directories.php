@@ -190,7 +190,7 @@
     $assessment_group_id = Student::get_assessment_group_id($id);
     $regime_items = Student::get_assessment_regime($id);
     require_once("model/Placement.class.php");
-    $placements = Placement::get_all("where student_id=$id", "order by jobstart");
+    $placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart");
     $placement_fields = array(
        'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
        'company_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'title'=>'Company','header'=>true),
