@@ -92,7 +92,7 @@ class DTO_Vacancy extends DTO
 
   function get_vacancy_activities($vacancy_id)
   {
-    require_once("model/Vacancyactivity.class.php");
+    require_once("model/VacancyActivity.class.php");
     $object_array = Vacancyactivity::get_all("where vacancy_id=$vacancy_id");
 
     $activities = array();
