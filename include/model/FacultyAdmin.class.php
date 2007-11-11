@@ -75,10 +75,10 @@ class FacultyAdmin extends DTO_FacultyAdmin
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $facultyadmin = new FacultyAdmin;
-    return $facultyadmin->_count();
+    return $facultyadmin->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
@@ -95,10 +95,10 @@ class FacultyAdmin extends DTO_FacultyAdmin
     return $facultyadmins;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $facultyadmin = new FacultyAdmin;
-    $facultyadmin_array = $facultyadmin->_get_id_and_field($fieldname);
+    $facultyadmin_array = $facultyadmin->_get_id_and_field($fieldname, $where_clause);
     return $facultyadmin_array;
   }
 

@@ -297,10 +297,10 @@ class Admin extends DTO_Admin
     return $admin->_get_all_by_programme($programme_id);
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $admins = new Admin;
-    return  $admins->_get_id_and_field($fieldname);
+    return  $admins->_get_id_and_field($fieldname, $where_clause);
   }
 
   function get_fields($include_id = false) 

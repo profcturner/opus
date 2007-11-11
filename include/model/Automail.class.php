@@ -86,10 +86,10 @@ class Automail extends DTO_Automail
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $automail = new Automail;
-    return $automail->_count();
+    return $automail->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY lookup", $page=0)
@@ -106,10 +106,10 @@ class Automail extends DTO_Automail
     return $automails;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $automail = new Automail;
-    return  $automail->_get_id_and_field($fieldname);
+    return  $automail->_get_id_and_field($fieldname, $where_clause);
   }
 
   function remove($id=0) 

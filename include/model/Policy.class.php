@@ -167,10 +167,10 @@ class Policy extends DTO_Policy
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $policy = new Policy;
-    return $policy->_count();
+    return $policy->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority DESC, name", $page=0)
@@ -187,10 +187,10 @@ class Policy extends DTO_Policy
     return $policys;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $policy = new Policy;
-    $policy_array = $policy->_get_id_and_field($fieldname);
+    $policy_array = $policy->_get_id_and_field($fieldname, $where_clause);
     $policy_array[0] = "None defined";
     return $policy_array;
   }

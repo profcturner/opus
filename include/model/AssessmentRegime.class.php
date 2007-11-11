@@ -79,10 +79,10 @@ class AssessmentRegime extends DTO_AssessmentRegime
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $assessmentregime = new AssessmentRegime;
-    return $assessmentregime->_count();
+    return $assessmentregime->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY student_description", $page=0)
@@ -137,10 +137,10 @@ class AssessmentRegime extends DTO_AssessmentRegime
   }
 
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $assessmentregime = new AssessmentRegime;
-    $assessmentregime_array = $assessmentregime->_get_id_and_field($fieldname);
+    $assessmentregime_array = $assessmentregime->_get_id_and_field($fieldname, $where_clause);
     unset($assessmentregime_array[0]);
     return $assessmentregime_array;
   }

@@ -122,10 +122,10 @@ class Programme extends DTO_Programme
     return $programme_array;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $programme = new Programme;
-    $programme_array = $programme->_get_id_and_field($fieldname);
+    $programme_array = $programme->_get_id_and_field($fieldname, $where_clause);
     unset($programme_array[0]);
     return $programme_array;
   }

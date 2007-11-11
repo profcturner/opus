@@ -76,20 +76,20 @@ class Help extends DTO_Help
     $help->id = $id;
     return $help->_exists();
   }
-  
+
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $help = new Help;
-    return $help->_count();
+    return $help->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY lookup, channel_id", $page=0)
   {
     $help = new Help;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -100,10 +100,10 @@ class Help extends DTO_Help
     return $helps;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $help = new Help;
-    return  $help->_get_id_and_field($fieldname);
+    return  $help->_get_id_and_field($fieldname, $where_clause="");
   }
 
 
@@ -144,6 +144,13 @@ class Help extends DTO_Help
     {
       echo $xml_parser->xml_output;
     }
+  }
+
+  function get_name($id)
+  {
+    $help = Help::load_by_id($id);
+
+    return($help->_channel_id . ":" . $help->lookup);
   }
 }
 ?>

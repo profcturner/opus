@@ -80,10 +80,10 @@ require_once("dto/DTO_SchoolAdmin.class.php");
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $schooladmin = new SchoolAdmin;
-    return $schooladmin->_count();
+    return $schooladmin->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
@@ -100,10 +100,10 @@ require_once("dto/DTO_SchoolAdmin.class.php");
     return $schooladmins;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $schooladmin = new SchoolAdmin;
-    $schooladmin_array = $schooladmin->_get_id_and_field($fieldname);
+    $schooladmin_array = $schooladmin->_get_id_and_field($fieldname, $where_clause);
     return $schooladmin_array;
   }
 

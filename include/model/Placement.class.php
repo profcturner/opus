@@ -146,10 +146,10 @@ class Placement extends DTO_Placement
     return $placements;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $placement = new Placement;
-    $placement_array = $placement->_get_id_and_field($fieldname);
+    $placement_array = $placement->_get_id_and_field($fieldname, $where_clause);
     unset($placement_array[0]);
     return $placement_array;
   }

@@ -92,10 +92,10 @@ class AssessmentStructure extends DTO_AssessmentStructure
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $assessmentstructure = new AssessmentStructure;
-    return $assessmentstructure->_count();
+    return $assessmentstructure->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY varorder", $page=0)
@@ -112,10 +112,10 @@ class AssessmentStructure extends DTO_AssessmentStructure
     return $assessmentstructures;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $assessmentstructure = new AssessmentStructure;
-    $assessmentstructure_array = $assessmentstructure->_get_id_and_field($fieldname);
+    $assessmentstructure_array = $assessmentstructure->_get_id_and_field($fieldname, $where_clause);
     return $assessmentstructure_array;
   }
 

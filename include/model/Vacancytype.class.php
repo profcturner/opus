@@ -80,10 +80,10 @@ class Vacancytype extends DTO_Vacancytype
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $vacancytype = new Vacancytype;
-    return $vacancytype->_count();
+    return $vacancytype->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
@@ -100,10 +100,10 @@ class Vacancytype extends DTO_Vacancytype
     return $vacancytypes;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $vacancytype = new Vacancytype;
-    $vacancytype_array = $vacancytype->_get_id_and_field($fieldname, "", "order by priority");
+    $vacancytype_array = $vacancytype->_get_id_and_field($fieldname, $where_clause, "order by priority");
     unset($vacancytype_array[0]);
     return $vacancytype_array;
   }

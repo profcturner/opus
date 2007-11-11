@@ -187,10 +187,10 @@ class Application extends DTO_Application
     return(array($placed, $available, $unavailable));
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $application = new Application;
-    $application_array = $application->_get_id_and_field($fieldname);
+    $application_array = $application->_get_id_and_field($fieldname, $where_clause);
     unset($application_array[0]);
     return $application_array;
   }

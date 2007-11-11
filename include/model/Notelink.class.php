@@ -65,10 +65,10 @@ class Notelink extends DTO_Notelink
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $notelink = new Notelink;
-    return $notelink->_count();
+    return $notelink->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)

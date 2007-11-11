@@ -74,10 +74,10 @@ class Faculty extends DTO_Faculty
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $faculty = new Faculty;
-    return $faculty->_count();
+    return $faculty->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
@@ -94,10 +94,10 @@ class Faculty extends DTO_Faculty
     return $facultys;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $faculty = new Faculty;
-    $faculty_array = $faculty->_get_id_and_field($fieldname);
+    $faculty_array = $faculty->_get_id_and_field($fieldname, $where_clause);
     unset($faculty_array[0]);
     return $faculty_array;
   }

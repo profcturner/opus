@@ -75,10 +75,10 @@ class Language extends DTO_Language
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $language = new Language;
-    return $language->_count();
+    return $language->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
@@ -95,10 +95,10 @@ class Language extends DTO_Language
     return $languages;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $language = new Language;
-    $language_array = $language->_get_id_and_field($fieldname);
+    $language_array = $language->_get_id_and_field($fieldname, $where_clause);
     unset($language_array[0]);
     return $language_array;
   }

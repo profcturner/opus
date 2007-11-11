@@ -66,10 +66,10 @@ class AssessmentGroup extends DTO_AssessmentGroup
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $assessmentgroup = new AssessmentGroup;
-    return $assessmentgroup->_count();
+    return $assessmentgroup->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
@@ -86,10 +86,10 @@ class AssessmentGroup extends DTO_AssessmentGroup
     return $assessmentgroups;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $assessmentgroup = new AssessmentGroup;
-    $assessmentgroup_array = $assessmentgroup->_get_id_and_field($fieldname);
+    $assessmentgroup_array = $assessmentgroup->_get_id_and_field($fieldname, $where_clause);
     unset($assessmentgroup_array[0]);
     return $assessmentgroup_array;
   }

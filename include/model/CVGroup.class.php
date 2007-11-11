@@ -80,10 +80,10 @@ class CVGroup extends DTO_CVGroup
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $cvgroup = new CVGroup;
-    return $cvgroup->_count();
+    return $cvgroup->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
@@ -100,10 +100,10 @@ class CVGroup extends DTO_CVGroup
     return $cvgroups;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $cvgroup = new CVGroup;
-    $cvgroup_array = $cvgroup->_get_id_and_field($fieldname);
+    $cvgroup_array = $cvgroup->_get_id_and_field($fieldname, $where_clause);
     unset($cvgroup_array[0]);
     return $cvgroup_array;
   }

@@ -258,10 +258,10 @@ Class User extends DTO_User
     return $users;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $users = new User;
-    return  $users->_get_id_and_field($fieldname);
+    return  $users->_get_id_and_field($fieldname, $where_clause);
   }
 
   function get_fields($include_id = false) 

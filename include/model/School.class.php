@@ -76,10 +76,10 @@ class School extends DTO_School
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $school = new School;
-    return $school->_count();
+    return $school->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)

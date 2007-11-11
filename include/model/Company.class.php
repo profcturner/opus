@@ -168,10 +168,10 @@ class Company extends DTO_Company
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $company = new Company;
-    return $company->_count();
+    return $company->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name, locality", $page=0)
@@ -188,23 +188,23 @@ class Company extends DTO_Company
     return $companys;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $company = new Company;
-    $company_array = $company->_get_id_and_field($fieldname);
+    $company_array = $company->_get_id_and_field($fieldname, $where_clause);
     unset($company_array[0]);
     return $company_array;
   }
 
 
   function remove($id=0) 
-  {  
+  {
     $company = new Company;
     $company->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $company = new Company;
     return  $company->_get_fieldnames($include_id); 
   }

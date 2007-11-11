@@ -67,10 +67,10 @@ class CVGroupTemplate extends DTO_CVGroupTemplate
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $cvgrouptemplate = new CVGroupTemplate;
-    return $cvgrouptemplate->_count();
+    return $cvgrouptemplate->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY template_id", $page=0)
@@ -87,10 +87,10 @@ class CVGroupTemplate extends DTO_CVGroupTemplate
     return $cvgrouptemplates;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $cvgrouptemplate = new CVGroupTemplate;
-    $cvgrouptemplate_array = $cvgrouptemplate->_get_id_and_field($fieldname);
+    $cvgrouptemplate_array = $cvgrouptemplate->_get_id_and_field($fieldname, $where_clause);
     return $cvgrouptemplate_array;
   }
 

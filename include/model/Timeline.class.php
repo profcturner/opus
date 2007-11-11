@@ -75,10 +75,10 @@ class Timeline extends DTO_Timeline
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $timeline = new Timeline;
-    return $timeline->_count();
+    return $timeline->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)

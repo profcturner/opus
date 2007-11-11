@@ -70,10 +70,10 @@ class VacancyActivity extends DTO_VacancyActivity
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $vacancyactivity = new VacancyActivity;
-    return $vacancyactivity->_count();
+    return $vacancyactivity->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="", $page=0)
@@ -90,10 +90,10 @@ class VacancyActivity extends DTO_VacancyActivity
     return $vacancyactivitys;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $vacancyactivity = new VacancyActivity;
-    $vacancyactivity_array = $vacancyactivity->_get_id_and_field($fieldname);
+    $vacancyactivity_array = $vacancyactivity->_get_id_and_field($fieldname, $where_clause);
     unset($vacancyactivity_array[0]);
     return $vacancyactivity_array;
   }

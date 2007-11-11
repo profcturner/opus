@@ -88,10 +88,10 @@ class CompanyActivity extends DTO_CompanyActivity
     return $companyactivitys;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $companyactivity = new CompanyActivity;
-    $companyactivity_array = $companyactivity->_get_id_and_field($fieldname);
+    $companyactivity_array = $companyactivity->_get_id_and_field($fieldname, $where_clause);
     unset($companyactivity_array[0]);
     return $companyactivity_array;
   }

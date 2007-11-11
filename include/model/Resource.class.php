@@ -210,10 +210,10 @@ class Resource extends DTO_Resource
     return $resources;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $resource = new Resource;
-    return  $resource->_get_id_and_field($fieldname);
+    return  $resource->_get_id_and_field($fieldname, $where_clause);
   }
 
   /**

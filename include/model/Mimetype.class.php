@@ -81,10 +81,10 @@ class Mimetype extends DTO_Mimetype
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $mimetype = new Mimetype;
-    return $mimetype->_count();
+    return $mimetype->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
@@ -101,10 +101,10 @@ class Mimetype extends DTO_Mimetype
     return $mimetypes;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $mimetype = new Mimetype;
-    $mimetype_array = $mimetype->_get_id_and_field($fieldname);
+    $mimetype_array = $mimetype->_get_id_and_field($fieldname, $where_clause);
     $mimetype_array[0] = 'Global';
     return $mimetype_array;
   }

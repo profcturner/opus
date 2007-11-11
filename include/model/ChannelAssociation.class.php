@@ -76,10 +76,10 @@ class ChannelAssociation extends DTO_ChannelAssociation
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $channelassociation = new ChannelAssociation;
-    return $channelassociation->_count();
+    return $channelassociation->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
@@ -96,10 +96,10 @@ class ChannelAssociation extends DTO_ChannelAssociation
     return $channelassociations;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $channelassociation = new ChannelAssociation;
-    $channelassociation_array = $channelassociation->_get_id_and_field($fieldname);
+    $channelassociation_array = $channelassociation->_get_id_and_field($fieldname, $where_clause);
     $channelassociation_array[0] = 'Global';
     return $channelassociation_array;
   }

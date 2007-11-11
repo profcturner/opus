@@ -89,10 +89,10 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
-    return $assessmentgroupprogramme->_count();
+    return $assessmentgroupprogramme->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY programme_id, startyear, endyear", $page=0)
@@ -109,10 +109,10 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
     return $assessmentgroupprogrammes;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
-    $assessmentgroupprogramme_array = $assessmentgroupprogramme->_get_id_and_field($fieldname);
+    $assessmentgroupprogramme_array = $assessmentgroupprogramme->_get_id_and_field($fieldname, $where_clause);
     return $assessmentgroupprogramme_array;
   }
 

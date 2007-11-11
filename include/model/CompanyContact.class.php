@@ -70,10 +70,10 @@ class CompanyContact extends DTO_CompanyContact
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $companycontact = new CompanyContact;
-    return $companycontact->_count();
+    return $companycontact->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
@@ -90,10 +90,10 @@ class CompanyContact extends DTO_CompanyContact
     return $companycontacts;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $companycontact = new CompanyContact;
-    $companycontact_array = $companycontact->_get_id_and_field($fieldname);
+    $companycontact_array = $companycontact->_get_id_and_field($fieldname, $where_clause);
     $companycontact_array[0] = 'Global';
     return $companycontact_array;
   }

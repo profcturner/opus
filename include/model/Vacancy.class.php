@@ -186,10 +186,10 @@ class Vacancy extends DTO_Vacancy
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $vacancy = new Vacancy;
-    return $vacancy->_count();
+    return $vacancy->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY description, locality", $page=0)
@@ -206,10 +206,10 @@ class Vacancy extends DTO_Vacancy
     return $vacancys;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $vacancy = new Vacancy;
-    $vacancy_array = $vacancy->_get_id_and_field($fieldname);
+    $vacancy_array = $vacancy->_get_id_and_field($fieldname, $where_clause);
     unset($vacancy_array[0]);
     return $vacancy_array;
   }

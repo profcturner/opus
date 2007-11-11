@@ -77,10 +77,10 @@ class Channel extends DTO_Channel
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $channel = new Channel;
-    return $channel->_count();
+    return $channel->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
@@ -97,10 +97,10 @@ class Channel extends DTO_Channel
     return $channels;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $channel = new Channel;
-    $channel_array = $channel->_get_id_and_field($fieldname);
+    $channel_array = $channel->_get_id_and_field($fieldname, $where_clause);
     // Nuke any we should not see
     foreach($channel_array as $key => $value)
     {

@@ -75,10 +75,10 @@ class ProgrammeAdmin extends DTO_ProgrammeAdmin
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $programmeadmin = new ProgrammeAdmin;
-    return $programmeadmin->_count();
+    return $programmeadmin->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
@@ -95,10 +95,10 @@ class ProgrammeAdmin extends DTO_ProgrammeAdmin
     return $programmeadmins;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $programmeadmin = new ProgrammeAdmin;
-    $programmeadmin_array = $programmeadmin->_get_id_and_field($fieldname);
+    $programmeadmin_array = $programmeadmin->_get_id_and_field($fieldname, $where_clause);
     return $programmeadmin_array;
   }
 

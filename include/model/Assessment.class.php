@@ -76,10 +76,10 @@ class Assessment extends DTO_Assessment
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $assessment = new Assessment;
-    return $assessment->_count();
+    return $assessment->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY description", $page=0)
@@ -96,10 +96,10 @@ class Assessment extends DTO_Assessment
     return $assessments;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $assessment = new Assessment;
-    $assessment_array = $assessment->_get_id_and_field($fieldname);
+    $assessment_array = $assessment->_get_id_and_field($fieldname, $where_clause);
     unset($assessment_array[0]);
     return $assessment_array;
   }

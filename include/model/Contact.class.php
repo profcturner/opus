@@ -206,10 +206,10 @@ class Contact extends DTO_Contact
     return $contacts;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $contacts = new Contact;
-    return  $contacts->_get_id_and_field($fieldname);
+    return  $contacts->_get_id_and_field($fieldname, $where_clause);
   }
 
   function get_fields($include_id = false) 

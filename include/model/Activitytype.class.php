@@ -69,10 +69,10 @@ class Activitytype extends DTO_Activitytype
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $activitytype = new Activitytype;
-    return $activitytype->_count();
+    return $activitytype->_count($where_clause);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
@@ -89,10 +89,10 @@ class Activitytype extends DTO_Activitytype
     return $activitytypes;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $activitytype = new Activitytype;
-    $activitytype_array = $activitytype->_get_id_and_field($fieldname, "", "order by name");
+    $activitytype_array = $activitytype->_get_id_and_field($fieldname, $where_clause, "order by name");
     unset($activitytype_array[0]);
     return $activitytype_array;
   }

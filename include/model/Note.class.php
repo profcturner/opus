@@ -92,10 +92,10 @@ class Note extends DTO_Note
   /**
   * Wasteful
   */
-  function count() 
+  function count($where_clause="") 
   {
     $note = new Note;
-    return $note->_count();
+    return $note->_count($where_clause);
   }
 
   function get_all_by_links($object_name, $object_id)
@@ -118,10 +118,10 @@ class Note extends DTO_Note
     return $notes;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $note = new Note;
-    return  $note->_get_id_and_field($fieldname);
+    return  $note->_get_id_and_field($fieldname, $where_clause);
   }
 
   function get_fields($include_id = false) 

@@ -182,10 +182,10 @@ class Staff extends DTO_Staff
     return $staffs;
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $staffs = new Staff;
-    return  $staffs->_get_id_and_field($fieldname);
+    return  $staffs->_get_id_and_field($fieldname, $where_clause);
   }
 
   function get_fields($include_id = false) 
