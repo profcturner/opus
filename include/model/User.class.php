@@ -462,6 +462,64 @@ Class User extends DTO_User
     $data = User::get_id_and_field("reg_number","where id='$id'");
     return($data[$id]);
   }
+
+  function get_user_type($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = User::get_user_type("user_type","where id='$id'");
+    return($data[$id]);
+  }
+
+  /**
+  * check a standard OPUS authentication line against a user
+  *
+  * in a number of places, OPUS uses a text line to define users permitted
+  * to access an item. The line has the form
+  * [all] [type] ![type]
+  *
+  * all means access is unrestricted, otherwise the line takes the form of
+  * a list of allowed user types, optionally with excluded types.
+  *
+  * e.g. "all !student" means all users other than students
+  *
+  * @param string $auth_line the authentication line to check
+  * @param int $user_id the user to check, zero means the logged in user
+  * @return boolean true if permitted, false otherwise
+  */
+  function check_auth($auth_line, $user_id = 0)
+  {
+    if($user_id == 0)
+    {
+      $current_user_type = $_SESSION['waf']['user']['opus']['user_type'];
+    }
+    else
+    {
+      $current_user_type = User::get_user_type($user_id);
+    }
+
+    $allowed = FALSE;
+    // Ok, authenticate the user against this;
+    $auth_parts = explode(" ", $auth_line);
+    if(User::is_admin($user_id))
+      $allowed = TRUE;
+    else
+    {
+      foreach($auth_parts as $auth_part)
+      {
+        if($auth_part == $current_user_type) $allowed = TRUE;
+        if($auth_part == 'all') $allowed = TRUE;
+      }
+    }
+    // Check for the effects of exclusions now
+    if($allowed == TRUE)
+    {
+      foreach($auth_parts as $auth_part)
+        if($auth_part == ("!" . $current_user_type)) $allowed = FALSE;
+    }
+    return($allowed);
+  }
+
 }
 
 ?>

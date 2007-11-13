@@ -61,7 +61,6 @@ class Resource extends DTO_Resource
   * Views (downloads) a given resource filename
   *
   * @param int id the id from the resource table
-  * @todo URGENT needs security
   */
   function view($id)
   {
@@ -71,6 +70,14 @@ class Resource extends DTO_Resource
     $resource = new Resource;
     $resource->id = $id;
     $resource->_load_by_id();
+
+    // Check we are authorised for the file
+    require_once("model/Channel.class.php");
+    if(!Channel::user_in_channel($resource->channel_id))
+      $waf->halt("error:resource:no_permission");
+    require_once("model/User.class.php");
+    if(!User::check_auth($resource->auth))
+      $waf->halt("error:resource:no_permission");
 
     // Get Mime Information
     require_once("model/Mimetype.class.php");
@@ -200,6 +207,18 @@ class Resource extends DTO_Resource
     global $config;
     $resource = new Resource;
 
+    $valid_resources = array();
+    require_once("model/Channel.class.php");
+    require_once("model/User.class.php");
+
+    // Paging is currently pretty incompatible with OPUS's post query tinkering
+    $resources = $resource->_get_all($where_clause, $order_by, 0, 1000000);
+    foreach($resources as $resource)
+    {
+      if(!Channel::user_in_channel($resource->channel_id)) continue;
+      if(!User::check_auth($resource->auth)) continue;
+    }
+    /*
     if ($page <> 0) {
       $start = ($page-1)*$config['opus']['rows_per_page'];
       $limit = $config['opus']['rows_per_page'];
@@ -207,6 +226,7 @@ class Resource extends DTO_Resource
     } else {
       $resources = $resource->_get_all($where_clause, $order_by, 0, 1000);
     }
+    */
     return $resources;
   }
 
@@ -237,6 +257,7 @@ class Resource extends DTO_Resource
     $resource = new Resource;
     return  $resource->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = Resource::get_fields($include_id);
