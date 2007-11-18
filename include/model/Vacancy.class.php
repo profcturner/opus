@@ -54,6 +54,7 @@ class Vacancy extends DTO_Vacancy
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
     'status'=>array('type'=>'list', 'list'=>array("open"=>"open", "closed"=>"closed", "special"=>"special")),
     'closedate'=>array('type'=>'date', 'inputstyle'=>'popup', 'title'=>'Application Deadline'),
+    'contact_id'=>array('type'=>'lookup', 'object'=>'contact', 'value'=>'dud', 'title'=>'Contact', 'var'=>'contacts', 'lookup_function'=>'lookup_contacts_for_company'),
     'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml', 'mandatory'=>true)
      );
 

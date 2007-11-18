@@ -242,6 +242,22 @@ class Contact extends DTO_Contact
     $contact->_remove_where("WHERE id=$id");
   }
 
+  /**
+  * provides information for the contact lookup field in vacancies
+  */
+  function lookup_contacts_for_company()
+  {
+    $company_id = WA::request("company_id");
+    $contacts = Contact::get_all_by_company($company_id);
+    if(!count($contacts)) $contacts = array();
+
+    $lookups = array();
+    foreach($contacts as $contact)
+    {
+      $lookups[$contact->id] = $lookups[$contact->real_name];
+    }
+    return($lookups);
+  }
 }
 
 ?>

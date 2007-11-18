@@ -24,6 +24,7 @@ class Student extends DTO_Student
   var $programme_id     = ""; // id of programme
   var $user_id          = ""; // Id of user from the user table
   var $progress         = ""; // whether the student has signed off on the disclaimer and other issues
+  var $academic_user_id = ""; // user_id of the academic tutor
   var $disability_code  = "";
 
   // Several of these fields actually reside in the User table
@@ -36,6 +37,7 @@ class Student extends DTO_Student
  //   'progress'=>array('type'=>'list', 'list'=>array()),
     'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year', 'mandatory'=>true),
     'placement_status'=>array('type'=>'list', 'list'=>array('Required'=>'Required','Placed'=>'Placed','Exempt Applied'=>'Exempt Applied','Exempt Given'=>'Exempt Given','No Info'=>'No Info','Left Course'=>'Left Course','Suspended'=>'Suspended','To final year'=>'To final year','Not Eligible'=>'Not Eligible')),
+    'academic_user_id'=>array('type'=>'lookup', 'object'=>'staff', 'value'=>'dud', 'title'=>'Academic Tutor', 'var'=>'tutors', 'lookup_function'=>'lookup_tutors_by_school'),
     'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
   );
 

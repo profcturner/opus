@@ -250,5 +250,6 @@ class Company extends DTO_Company
     $data = Company::get_id_and_field("name","where id='$id'");
     return($data[$id]);
   }
+
 }
 ?>

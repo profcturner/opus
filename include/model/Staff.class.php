@@ -218,6 +218,28 @@ class Staff extends DTO_Staff
     $staff->_remove_where("WHERE id=$id");
   }
 
+  /**
+  * provides information for the tutor lookup in the student dialog
+  */
+  function lookup_tutors_by_school()
+  {
+    $student_id = WA::request('id');
+    require_once("model/Student.class.php");
+    $programme_id = Student::get_programme_id($student_id);
+    require_once("model/Programme.class.php");
+    $school_id = Programme::get_school_id($programme_id);
+
+    $staff = Staff::get_all("where school_id=$school_id", "order by lastname");
+    if(!count($staff)) $staff = array();
+
+    $objects = array();
+    $objects[0] = "no tutor is selected";
+    foreach($staff as $staff_member)
+    {
+      $objects[$staff_member->id] = $staff_member->real_name;
+    }
+    return($objects);
+  }
 }
 
 ?>
