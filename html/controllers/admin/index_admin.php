@@ -76,8 +76,9 @@ function nav_admin()
   (
     "superuser"=>array
     (
-      array("PHPinfo", "superuser", "view_phpinfo", "view_phpinfo"),
-      array("Phone Home", "superuser", "edit_phonehome", "edit_phonehome")
+      array("services", "superuser", "edit_service", "edit_service"),
+      array("Phone Home", "superuser", "edit_phonehome", "edit_phonehome"),
+      array("PHP info", "superuser", "view_phpinfo", "view_phpinfo")
     )
   );
 

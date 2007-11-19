@@ -65,9 +65,7 @@ function main()
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
   $waf->register_data_connection('preferences', $config_sensitive['opus']['preference']['dsn'], $config_sensitive['opus']['preference']['username'], $config_sensitive['opus']['preference']['password']);
 
-  require_once("model/Service.class.php");
-  $service_status = Service::checks();
-  $waf->assign_by_ref("service_status", $service_status);
+  $system_status = check_system_status($waf);
 
   // Try to authenticate any username and password credentials
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 
@@ -184,6 +182,23 @@ function drop_cookie()
     $cookie_value="reg_number=$reg_number&session_id=" . session_id();
     Cookie::write("OPUSTicket",  $cookie_value, $expiry, '/', 'localhost');
   }
+}
+
+function check_system_status(&$waf)
+{
+  require_once("model/Service.class.php");
+  $service_status = Service::checks();
+  if($service_status == "opus:ok") return true; // all is well
+  if($service_status == "error:opus:old_schema")
+  {
+    $waf->assign("opus_oldschema", true);
+    $waf->assign("opus_closed", true);
+  }
+  if($service_status == "error:opus:closed")
+  {
+    $waf->assign("opus_closed", true);
+  }
+  return(false);
 }
 
 /**

@@ -269,6 +269,7 @@ rename table students to student;
 alter table student change column year placement_year year not null;
 alter table student change column status placement_status enum('Required','Placed','Exempt Applied','Exempt Given','No Info','Left Course','Suspended','To final year','Not Eligible');
 alter table student add column programme_id int unsigned;
+alter table student add column academic_user_id int unsigned after programme_id;
 alter table student add column id int unsigned not null auto_increment primary key;
 
 -- need to copy information to user --

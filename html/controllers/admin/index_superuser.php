@@ -16,7 +16,7 @@
   function view_phpinfo(&$waf) 
   {
     ob_start();
-    phpinfo();   
+    phpinfo();
     $php_info = ob_get_contents();
     ob_end_clean(); 
     $php_info = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $php_info);
@@ -38,8 +38,21 @@
 
   function edit_phonehome_do(&$waf, &$user) 
   {
-
     edit_object_do($waf, $user, "PhoneHome", "section=home&function=home", "edit_phonehome");
   }
+
+  function edit_service(&$waf, &$user) 
+  {
+    // This table only has one row...
+    $id = 1;
+
+    edit_object($waf, $user, "Service", array("confirm", "superuser", "edit_service_do"), array(array("cancel","section=home&function=home")), array(array("admin_id",User::get_id())), "admin:superuser:edit_service:edit_service");
+  }
+
+  function edit_service_do(&$waf, &$user) 
+  {
+    edit_object_do($waf, $user, "Service", "section=superuser&function=edit_service", "edit_service");
+  }
+
 
 ?>

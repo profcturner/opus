@@ -115,6 +115,12 @@
 {/if}
     <div id="tag_line">{#tag_line#|default:$tag_line|default:"No \$tag_line"}
     </div>
+{if ($opus_closed)}
+  <div id="warning">{#opus_closed#}{if $user.opus.user_type == 'root'}{#opus_closed_root#}{/if}</div>
+{/if}
+{if ($opus_oldschema)}
+  <div id="warning">{#opus_oldschema#}</div>
+{/if}
 {if $SQL_error}
     <div id="sql_error">{#sql_error#}{if $config.waf.debugging}<br />[{$SQL_error}]{/if} </div>
 {/if}

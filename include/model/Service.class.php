@@ -30,7 +30,7 @@ class Service extends DTO_Service
 
   static $_field_defs = array
   (
-    'status'=>array('type'=>'list','values'=>array('started'=>'started','stopped'=>'stopped'), 'header'=>true),
+    'status'=>array('type'=>'list', 'list'=>array('started'=>'started','stopped'=>'stopped'), 'header'=>true),
   );
 
   function __construct() 
@@ -58,6 +58,7 @@ class Service extends DTO_Service
   function update($fields) 
   {
     $service = Service::load_by_id(1);
+    unset($fields['schema_version']);
     $service->_update($fields);
   }
 
@@ -104,7 +105,7 @@ class Service extends DTO_Service
     {
       return("error:opus:old_schema");
     }
-    return true;
+    return "opus:ok";
   }
 
   function is_started()
