@@ -144,7 +144,8 @@ class Channel extends DTO_Channel
   */
   function user_in_channel($channel_id, $user_id = 0)
   {
-    if(User::is_root()) return true;
+    if(User::is_root()) return true;  // Root's see everything!
+    if($channel_id == 0) return true; // Global channel
     // Limit even internal injection possibilities
     $channel_id = (int) $channel_id;
     if($user_id == 0) $user_id = User::get_id();

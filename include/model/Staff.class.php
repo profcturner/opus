@@ -240,6 +240,19 @@ class Staff extends DTO_Staff
     }
     return($objects);
   }
+
+  function get_name($id)
+  {
+    return(User::get_name(Staff::get_user_id($id)));
+  }
+
+  function get_school_id($id)
+  {
+    $id = (int) $id; // Security
+
+    $data = Staff::get_id_and_field("school_id","where id='$id'");
+    return($data[$id]);
+  }
 }
 
 ?>
