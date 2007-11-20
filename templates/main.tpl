@@ -19,7 +19,7 @@
         display:none;
     }
 
-    #menu ul li.home, li.student_directory, li.list_resources, li.resources, li.manage_assessments, li.view_phpinfo
+    #menu ul li.home, li.student_directory, li.list_resources, li.resources, li.manage_assessments, li.view_phpinfo, li.menutop
     {
       {/literal}
         behavior: url( {$config.opus.url}/javascript/ie_menu_patch.htc  );
@@ -68,7 +68,7 @@
       <ul>
 {foreach from=$nav key="sec_name" item="sec" name="sec_loop"}
 {if $sec_name != "search"}
-        <li {if $sec[0][2]}class="{$sec[0][2]}"{/if}>
+        <li class="menutop{if $sec[0][2]} {$sec[0][2]}{/if}">
 
 {if $config[opus][cleanurls]}
           <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="{$sec[0][1]}/{$sec[0][3]}">{$sec_name|capitalize}</a>
