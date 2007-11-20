@@ -22,7 +22,7 @@
     #menu ul li.home, li.student_directory, li.list_resources, li.resources, li.manage_assessments, li.view_phpinfo
     {
       {/literal}
-        behavior: url( {$config.opus.url}/javascript/ie_menu_patch.js  );
+        behavior: url( {$config.opus.url}/javascript/ie_menu_patch.htc  );
       {literal}
     }
 
