@@ -296,15 +296,21 @@ text-decoration: none;
 
 /* Fixes for broken IE behaviour */
 #menu ul li.CSStoHighlight {
-  background-color: #ffa;      /* gives the active menu items a yellow background */
-  color: #000;                 /* makes the active menu item text black */ 
+  background-color: #fff;      /* gives the active menu items a yellow background */
+  color: #000;                 /* makes the active menu item text black */
+  z-index:100;
+  display:block;
 }
+
 #menu ul ul.CSStoShow {     /* must not be combined with the next rule or IE gets confused */
   display: block;              /* specially to go with the className changes in the behaviour file */
+  position:absolute;
+  width:auto;
+  background-color: #fff;
+  border:1px #ddd solid;
 }
 
 #menu ul li a.CSStoHighLight { color: #000; }
-
 /* div id=submenu style */
 
 #submenu {
