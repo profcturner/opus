@@ -35,6 +35,7 @@ $config['opus']['title']                = 'OPUS';
 $config['opus']['title_short']          = 'OPUS';
 $config['opus']['tagline']              = 'Online Placement University System';
 $config['opus']['institution']          = 'University of Ulster';
+// Note, you should, by preference use an https URL with a security certificate
 $config['opus']['url']                  = 'http://localhost/opus';
 $config['opus']['cleanurls']            = False;
 $config['opus']['version']              = 4;
