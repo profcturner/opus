@@ -520,6 +520,26 @@ Class User extends DTO_User
     return($allowed);
   }
 
+  function upload_path($user_id)
+  {
+    global $config;
+
+    $upload_dir = $config['opus']['paths']['resources'];
+    $top_path = $user_id % 1000;
+
+    if (!file_exists($upload_dir.$top_path)) mkdir($upload_dir.$top_path);
+    if (!file_exists($upload_dir.$top_path."/".$user_id)) mkdir($upload_dir.$top_path."/".$user_id);
+
+    $path = $upload_dir.$top_path."/".$user_id."/";
+
+    return $path;
+  }
+
+  function not_over_quota($user_id)
+  {
+    return true;
+  }
+
 }
 
 ?>

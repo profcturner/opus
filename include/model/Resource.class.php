@@ -230,6 +230,22 @@ class Resource extends DTO_Resource
     return $resources;
   }
 
+  function get_all_by_company($company_id)
+  {
+    global $config;
+    $resource = new Resource;
+
+    return($resource->_get_all_by_company($company_id));
+  }
+
+  function get_all_by_vacancy($vacancy_id)
+  {
+    global $config;
+    $resource = new Resource;
+
+    return($resource->_get_all_by_company($vacancy_id));
+  }
+
   function get_id_and_field($fieldname, $where_clause="") 
   {
     $resource = new Resource;

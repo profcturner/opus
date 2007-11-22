@@ -6,6 +6,7 @@
     <th class="action">View</th>
     <th class="action">Contacts</th>
     <th class="action">Vacancies</th>
+    <th class="action">Resources</th>
     <th class="action">Edit</th>
   </tr>
   {section name=companies loop=$companies}
@@ -15,6 +16,7 @@
     <td class="action"><a href="?section=directories&function=view_company&company_id={$companies[companies].id}">view</a></td>
     <td class="action"><a href="?section=directories&function=manage_contacts&company_id={$companies[companies].id}">contacts</a></td>
     <td class="action"><a href="?section=directories&function=manage_vacancies&company_id={$companies[companies].id}">vacancies</a></td>
+    <td class="action"><a href="?section=directories&function=manage_company_resources&company_id={$companies[companies].id}">resources</a></td>
     <td class="action"><a href="?section=directories&function=edit_company&id={$companies[companies].id}">edit</a></td>
   </tr>
   {/section}
