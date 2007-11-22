@@ -1,0 +1,12 @@
+/* Cascading Style Sheet       */
+/* Placement Management System */
+/* Colin Turner                */
+
+/* Alterations to style when channel help editing is on */
+
+
+.channel_help
+{
+  border:1px solid;
+  padding:5px
+}

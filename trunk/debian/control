@@ -1,0 +1,23 @@
+Source: opus
+Section: web
+Priority: extra
+Maintainer: Colin Turner <c.turner@ulster.ac.uk>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: opus
+Architecture: all
+Depends: apache2, php5, php5-cli, libapache2-mod-php5, php5-mysql, smarty, php-pear, debconf, mysql-client, mysql-server
+Recommends: php5-gd
+Description: On-line Placement University System
+ OPUS is a comprehensive web based tool for
+ managing all aspects of placement.
+
+Package: opus-doc
+Architecture: all
+Depends: 
+Description: On-line Placement University System
+ OPUS is a comprehensive web based tool for
+ managing all aspects of placement.
+ .
+ This is the documentation for OPUS.

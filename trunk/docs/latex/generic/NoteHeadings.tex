@@ -1,0 +1,28 @@
+%
+% Headings for notes
+%
+% Colin Turner
+%
+
+% Latex 2e
+
+% Headings
+
+
+
+\pagestyle{fancyplain}
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%\renewcommand{\chaptermark}[1]{\markleft{#1}{}}
+\setlength{\headrulewidth}{0 pt}              
+%\renewcommand{\headrule}{{\color{cyan}%
+%\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+\lhead[\fancyplain{}{\colorbox{cyan}{\color{white}\thepage\normalcolor}}]%
+      {\fancyplain{}{\colorbox{cyan}{\color{white}\rightmark}\normalcolor}}
+\rhead[\fancyplain{}{\colorbox{cyan}{\color{white}\leftmark\normalcolor}}]%
+      {\fancyplain{}{\colorbox{cyan}{\color{white}\thepage\normalcolor}}}
+\cfoot[\fancyplain{\colorbox{cyan}{\color{white}\thepage\normalcolor}}{}]%
+      {\fancyplain{\colorbox{cyan}{\color{white}\thepage\normalcolor}}{}}
+%\cfoot{\vspace{0.5 cm}\includegraphics[scale=0.3]{png/logo_print2.png}}

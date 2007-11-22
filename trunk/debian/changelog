@@ -1,0 +1,18 @@
+opus (3.3.1) unstable; urgency=low
+
+  * Several serious bugs fixed from 3.3.0
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Tue, 24 Jul 2007 13:03:02 +0100
+
+opus (3.3.0) unstable; urgency=low
+
+  * Initial milestone release.
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Sat, 14 Jul 2007 01:03:12 +0100
+
+opus (3.2.0-1) unstable; urgency=low
+
+  * Initial release, this is for TESTING only, do NOT BUILD
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Thu,  15 March 2007 22:00:00 +0000
+
