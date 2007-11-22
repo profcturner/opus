@@ -247,6 +247,16 @@ create table phonehome
 -- make sure we initially ask --
 insert into phonehome (send_install, send_periodic, cc_on_email, timestamp_install, timestamp_periodic, admin_id, id) values('Ask', 'Ask', 'No', NULL, NULL, 0, 1);
 
+-- CSV Mapping --
+
+create table csvmapping
+(
+  name tinytext not null,
+  pattern tinytext not null,
+  replacement tinytext not null,
+  id int unsigned not null auto_increment primary key
+);
+
 -- NOW MAJOR CHANGES - USER TABLES --
 
 -- users --

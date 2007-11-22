@@ -88,11 +88,12 @@ class Help extends DTO_Help
 
   function get_all($where_clause="", $order_by="ORDER BY lookup, channel_id", $page=0)
   {
+    global $config;
     $help = new Help;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $helps = $help->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $helps = $help->_get_all($where_clause, $order_by, 0, 1000);
