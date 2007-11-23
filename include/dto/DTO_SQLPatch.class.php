@@ -41,7 +41,7 @@ class DTO_SQLPatch extends DTO
       {
         // Copy to relevant tables
         $sql2 = $con->prepare("update user set salutation=?, firstname=?, lastname=?, reg_number=username, email=? where id=?");
-        $sql2->execute(array($results_row['title'], $results_row['firstname'], $results_row['lastname'], $results_row['email'], $results_row['id']));
+        $sql2->execute(array($results_row['title'], $results_row['firstname'], $results_row['surname'], $results_row['email'], $results_row['id']));
         $sql2 = $con->prepare("update student set programme_id=? where user_id=?");
         $sql2->execute(array($results_row['course'], $results_row['id']));
       }
@@ -73,6 +73,7 @@ class DTO_SQLPatch extends DTO
       $this->_log_sql_error($e, $class, "upgrade_3_to_4(admin)");
     }
 
+    echo "staff";
     // Copy staff data across
     try
     {
@@ -92,6 +93,7 @@ class DTO_SQLPatch extends DTO
       $this->_log_sql_error($e, $class, "upgrade_3_to_4(staff)");
     }
 
+    echo "contacts";
     // Contacts
     try
     {
@@ -103,6 +105,9 @@ class DTO_SQLPatch extends DTO
         // Copy to relevant tables
         $sql2 = $con->prepare("update user set salutation=?, firstname=?, lastname=?, email=? where id=?");
         $sql2->execute(array($results_row['title'], $results_row['firstname'], $results_row['surname'], $results_row['email'], $results_row['user_id']));
+        $sql2 = $con->prepare("insert into contact (position, voice, fax, user_id) values(?, ?, ?, ?");
+        $sql2->execute(array($results_row['position'], $results_row['voice'], $results_row['fax'], $results_row['user_id']));
+
       }
     }
     catch (PDOException $e)

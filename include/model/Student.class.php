@@ -62,6 +62,16 @@ class Student extends DTO_Student
     return self::$_extended_fields;
   }
 
+  function load_by_user_id($user_id)
+  {
+    $user_id = (int) $user_id; // security
+
+    $student = new Student;
+    $student->_load_where("where user_id = $user_id");
+    return($student);
+
+  }
+
   function load_by_id($id) 
   {
      $student = new Student;
@@ -226,22 +236,31 @@ class Student extends DTO_Student
     return($data[$id]);
   }
 
-  function get_programme_id($id)
+  /**
+  * gets the programme id
+  *
+  * @param int $user_id the id from the <strong>user</strong> table
+  */
+  function get_programme_id($user_id)
   {
-    $id = (int) $id; // Security
-
-    $data = Student::get_id_and_field("programme_id","where id='$id'");
-    return($data[$id]);
+    $user_id = (int) $user_id; // Security
+    $student = new Student;
+    return($student->_get_fields("programme_id","where user_id='$user_id'"));
   }
 
-  function get_assessment_group_id($id=0)
+  /**
+  * gets the assessment group id
+  *
+  * @param int $user_id the id from the <strong>user</strong> table
+  */
+  function get_assessment_group_id($user_id)
   {
     // If no student id is passed in, use current one
     //if(!$id) $id = $this->
-    $student = Student::load_by_id($id);
+    $student = Student::load_by_user_id($user_id);
+    if(empty($student->id)) return 1; // student is mangled, play safe
     $programme_id = $student->programme_id;
     $placement_year = $student->placement_year;
-
     require_once("model/AssessmentGroupProgramme.class.php");
 
     // Look for explicit bounded match
@@ -257,7 +276,7 @@ class Student extends DTO_Student
     if($group->group_id) return($group->group_id);
 
     // Lastly, look for a match with no endpoints
-    $group = AssessmentGroupProgramme::load_where("where programme_id = $programme_id and startyear is null and endyear is null");
+    $group = AssessmentGroupProgramme::load_where("where programme_id = $programme_id and (startyear is null) and (endyear is null)");
     if($group->group_id) return($group->group_id);
 
     // Bail with the default
@@ -265,13 +284,13 @@ class Student extends DTO_Student
   }
 
 
-  function get_assessment_regime($id)
+  function get_assessment_regime($user_id)
   {
     // This will store the items
     $regime_items = array();
 
     // Determine the students assessmentgroup
-    $assessmentgroup_id = Student::get_assessment_group_id($id);
+    $assessmentgroup_id = Student::get_assessment_group_id($user_id);
 
     // Get the regime items
     require_once("model/AssessmentRegime.class.php");
@@ -314,7 +333,7 @@ class Student extends DTO_Student
 
       // Get the results if possible
       require_once("model/AssessmentTotal.class.php");
-      $results = AssessmentTotal::load_where("where regime_id = " . $regime_items[$loop]->id . " and assessed_id=" . Student::get_user_id($id));
+      $results = AssessmentTotal::load_where("where regime_id = " . $regime_items[$loop]->id . " and assessed_id=$user_id");
 
       $percentage = $results->percentage;
       if(empty($percentage))

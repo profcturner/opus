@@ -73,12 +73,12 @@
 {if $config[opus][cleanurls]}
           <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="{$sec[0][1]}/{$sec[0][3]}">{$sec_name|capitalize}</a>
 {else}        
-          <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="?section={$sec[0][1]}&function={$sec[0][3]}">{$sec_name|capitalize}</a>
+          <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="?section={$sec[0][1]}&function={$sec[0][3]}&page=">{$sec_name|capitalize}</a>
 {if $sec_name != "logout"}
           <ul>
 {section loop=$sec name="subsec"}
             <li> 
-              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if}{if $sec[subsec][4]}href="{$sec[subsec][4]}">{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}">{/if}{$sec[subsec][0]|capitalize}</a>
+              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if}{if $sec[subsec][4]}href="{$sec[subsec][4]}">{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=">{/if}{$sec[subsec][0]|capitalize}</a>
             </li>
 {/section}
           </ul>
@@ -98,7 +98,7 @@
 {if $config[opus][cleanurls]} 
           <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{#application_url#}{$sec[subsec][1]}/{$sec[subsec][3]}">{$sec[subsec][0]|capitalize}</a>
 {else}
-         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} sjsj="{$sec[subsec][4]}"{if $sec[subsec][4]}href="{$sec[subsec][4]}"{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}">{$sec[subsec][0]|capitalize}{/if}</a>
+         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} sjsj="{$sec[subsec][4]}"{if $sec[subsec][4]}href="{$sec[subsec][4]}"{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=">{$sec[subsec][0]|capitalize}{/if}</a>
 {/if} 
         </li>
 {/section}

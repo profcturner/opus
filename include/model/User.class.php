@@ -113,7 +113,7 @@ Class User extends DTO_User
     {
       // Another user
       $user = User::load_by_id($user_id);
-      if($user->usertype == $type) return true;
+      if($user->user_type == $type) return true;
       else return false;
     }
   }

@@ -23,11 +23,11 @@ attractive. Nevertheless, there are some minor changes to note.
   of the screen), OPUS will save these preferences for use in your next
   session.
 
-* The menus have been completely reimplemented, and we are aware that they
-  do not perform as well as we would like under some especially non CSS
-  compliant browsers (e.g. Internet Explorer before version 7). We are working
-  to improve this. Still other improvements have been made (see bug #207,
-  bug #196).
+* The menus have been completely reimplemented, and should be much more
+  clean and clear. Each function has a menu item of its own. Complex
+  functionality is in separate menus. Context sensitive menus appear in
+  certain circumstances (e.g. when editing a student). Still other 
+  improvements have been made (see bug #207, bug #196).
 
 * Students will now be able to record applications they make to special
   vacancies, these can't be automatically verified but are still useful as

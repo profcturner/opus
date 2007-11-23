@@ -516,6 +516,7 @@ textarea {
   border-right:0px;
   text-align:center;
   white-space:nowrap;
+  width:1em;
 }
 #table_list td.action a {
   padding: 3px;
@@ -940,4 +941,13 @@ background: #ffffff;
 
 td.vacancy_description {
   width: 30%;
+}
+
+#help_prompt {
+    border: 1px green solid;
+}
+
+#help_prompt_link {
+    text-align: right;
+    color: gray;
 }

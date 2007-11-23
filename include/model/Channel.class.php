@@ -144,7 +144,7 @@ class Channel extends DTO_Channel
   */
   function user_in_channel($channel_id, $user_id = 0)
   {
-    if(User::is_root()) return true;  // Root's see everything!
+    if(User::is_root() && $user_id == 0) return true;  // Root's see everything!
     if($channel_id == 0) return true; // Global channel
     // Limit even internal injection possibilities
     $channel_id = (int) $channel_id;
@@ -158,9 +158,12 @@ class Channel extends DTO_Channel
     foreach($associations as $association)
     {
       // Does this association include this person
-      if($association->user_in_channel_association($channel_id, $user_id))
+      if($association->user_in_channel_association($user_id))
       {
-        if($association->permission == 'enable') $in_channel = true;
+        if($association->permission == 'enable')
+        {
+          $in_channel = true;
+        }
         else
         {
           // Admin users almost certainly don't want to be removed for this...

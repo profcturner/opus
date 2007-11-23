@@ -137,7 +137,8 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
   function load_where($where_clause)
   {
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
-    return $assessmentgroupprogramme->_load_where($where_clause);
+    $assessmentgroupprogramme->_load_where($where_clause);
+    return($assessmentgroupprogramme);
   }
 
 
