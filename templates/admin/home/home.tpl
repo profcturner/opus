@@ -1,4 +1,8 @@
 {* Smarty *}
 
 {#last_login#} {$user.last_login}<br />
-{$help_prompter->display("StaffHome")}
+{if $user.user_type == "root"}
+{$help_prompter->display("RootHome")}
+{else}
+{$help_prompter->display("AdminHome")}
+{/if}
