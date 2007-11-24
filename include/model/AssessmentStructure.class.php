@@ -100,11 +100,13 @@ class AssessmentStructure extends DTO_AssessmentStructure
 
   function get_all($where_clause="", $order_by="ORDER BY varorder", $page=0)
   {
+    global $config;
+    $rows_per_page = $config['opus']['rows_per_page'];
     $assessmentstructure = new AssessmentStructure;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$rows_per_page;
+      $limit = $rows_per_page;
       $assessmentstructures = $assessmentstructure->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $assessmentstructures = $assessmentstructure->_get_all($where_clause, $order_by, 0, 1000);

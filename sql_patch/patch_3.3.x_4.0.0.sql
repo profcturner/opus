@@ -254,6 +254,7 @@ create table csvmapping
   name tinytext not null,
   pattern tinytext not null,
   replacement tinytext not null,
+  exclude tinytext not null,
   id int unsigned not null auto_increment primary key
 );
 

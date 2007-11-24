@@ -27,11 +27,13 @@ class CSVMapping extends DTO_CSVMapping
   var $name = "";         // Name of this format
   var $pattern = "";      // Pattern for preg_replace, use parentheses for parts to catch
   var $replacement = "";  // Replacement
+  var $exclude = "";      // Exclude lines matching this pattern
 
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name of Mapping', 'header'=>true, 'mandatory'=>true),
     'pattern'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Pattern', 'mandatory'=>true),
     'replacement'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Replacement', 'mandatory'=>true),
+    'exclude'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200),
   );
 
   function __construct() 

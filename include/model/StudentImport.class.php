@@ -87,6 +87,54 @@ class StudentImport
     return($student);
   }
 
+  function import_via_file($programme_id, $year, $status, $onlyyear, $password, $test, $csv_mapping)
+  {
+    StudentImport::import_csv($_FILES['userfile']['tmp_name'], 1); //hardcode for test
+    unlink($_FILES['userfile']['tmp_name']);
+  }
+
+
+  function import_csv($filename, $csvmap_id)
+  {
+    $standard_pattern =       "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
+    global $waf;
+    require_once("model/CSVMapping.class.php");
+
+    // Get the csv mapping
+    $csvmap = CSVMapping::load_by_id($csvmap_id);
+
+    $fp = fopen($filename, "r");
+
+    $rejected_lines = array();
+    while($line = fgets ($fp, 2048))
+    {
+      $line = trim($line);
+      // Valid lines must match the normal pattern, and not any exclude
+      if(!preg_match($csvmap->pattern, $line) || (strlen($csvmap->exclude) && preg_match($csvmap->exclude, $line)))
+      {
+        array_push($rejected_lines, $line);
+        continue; // move on
+      }
+      // Ok, do the replacement to change to standard format
+      $line = preg_replace($csvmap->pattern, $csvmap->replacement, $line);
+      // Finally extract data from the standard format to an array as if from SRS
+      if(preg_match($standard_pattern, $line, $matches))
+      {
+        $student = array();
+        $student['year']            = $matches[1];
+        $student['reg_number']      = $matches[2];
+        $student['person_title']    = $matches[3];
+        $student['first_name']      = $matches[4];
+        $student['last_name']       = $matches[5];
+        $student['email_address']   = $matches[6];
+        $student['programme_code']  = $matches[7];
+        $student['disability_code'] = $matches[8];
+        print_r($student);
+        // debug for now.
+      }
+    }
+  }
+
   function add_student($student_array, $programme_id, $status, $year)
   {
     global $waf;

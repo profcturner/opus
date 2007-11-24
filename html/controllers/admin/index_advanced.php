@@ -700,14 +700,14 @@
 
   function remove_assessment(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     remove_object($waf, $user, "Assessment", array("remove", "advanced", "remove_assessment_do"), array(array("cancel","section=advanced&function=manage_assessments")), "", "admin:advanced:manage_assessments:remove_assessment");
   }
 
   function remove_assessment_do(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "Assessment", "section=advanced&function=manage_assessments");
   }
@@ -717,93 +717,94 @@
   function manage_assessmentstructure(&$waf, $user, $title)
   {
     $assessment_id = (int) WA::request('id', true);
+    $page = (int) WA::request('page');
 
     require_once('model/Assessment.class.php');
     $assessment = Assessment::load_by_id($assessment_id);
     add_navigation_history($waf, $assessment->description);
 
-    manage_objects($waf, $user, "Assessmentstructure", array(array("add","section=advanced&function=add_assessmentstructure")), array(array('edit', 'edit_assessmentstructure'), array('up', "move_assessmentstructure_up&assessment_id=$assessment_id"), array('down', "move_assessmentstructure_down&assessment_id=$assessment_id"), array('remove','remove_assessmentstructure')), "get_all", "where assessment_id=$assessment_id", "admin:advanced:manage_assessments:manage_assessmentstructures");
+    manage_objects($waf, $user, "AssessmentStructure", array(array("add","section=advanced&function=add_assessmentstructure")), array(array('edit', 'edit_assessmentstructure'), array('up', "move_assessmentstructure_up&assessment_id=$assessment_id"), array('down', "move_assessmentstructure_down&assessment_id=$assessment_id"), array('remove','remove_assessmentstructure')), "get_all", array("where assessment_id=$assessment_id", "order by varorder", $page), "admin:advanced:manage_assessments:manage_assessmentstructures");
   }
 
   function move_assessmentstructure_up(&$waf, &$user)
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     // Get the assessment id and varorder
     $assessment_id = (int) WA::request('assessment_id');
     $id = (int) WA::request('id');
 
-    require_once('model/Assessmentstructure.class.php');
+    require_once('model/AssessmentStructure.class.php');
 
-    Assessmentstructure::move_up($assessment_id, $id);
+    AssessmentStructure::move_up($assessment_id, $id);
     header("location: ?section=advanced&function=manage_assessmentstructure&id=$assessment_id");
   }
 
   function move_assessmentstructure_down(&$waf, &$user)
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     // Get the assessment id and varorder
     $assessment_id = (int) WA::request('assessment_id');
     $id = (int) WA::request('id');
 
-    require_once('model/Assessmentstructure.class.php');
+    require_once('model/AssessmentStructure.class.php');
 
-    Assessmentstructure::move_down($assessment_id, $id);
+    AssessmentStructure::move_down($assessment_id, $id);
     header("location: ?section=advanced&function=manage_assessmentstructure&id=$assessment_id");
   }
 
 
   function add_assessmentstructure(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     add_navigation_history($waf, "Add Item");
 
-    add_object($waf, $user, "Assessmentstructure", array("add", "advanced", "add_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_assessments:add_assessmentstructure");
+    add_object($waf, $user, "AssessmentStructure", array("add", "advanced", "add_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_assessments:add_assessmentstructure");
   }
 
   function add_assessmentstructure_do(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures", "add_assessmentstructure");
+    add_object_do($waf, $user, "AssessmentStructure", "section=advanced&function=manage_assessmentstructures", "add_assessmentstructure");
   }
 
   function edit_assessmentstructure(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     $id = (int) WA::request('id', true);
 
-    require_once('model/Assessmentstructure.class.php');
-    $assessmentstructure = Assessmentstructure::load_by_id($id);
+    require_once('model/AssessmentStructure.class.php');
+    $assessmentstructure = AssessmentStructure::load_by_id($id);
     add_navigation_history($waf, $assessmentstructure->name);
 
-    edit_object($waf, $user, "Assessmentstructure", array("confirm", "advanced", "edit_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_assessments:edit_assessmentstructure");
+    edit_object($waf, $user, "AssessmentStructure", array("confirm", "advanced", "edit_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), array(array("user_id",$user["user_id"])), "admin:advanced:manage_assessments:edit_assessmentstructure");
   }
 
   function edit_assessmentstructure_do(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures", "edit_assessmentstructure");
+    edit_object_do($waf, $user, "AssessmentStructure", "section=advanced&function=manage_assessmentstructures", "edit_assessmentstructure");
   }
 
   function remove_assessmentstructure(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     add_navigation_history($waf, "Remove Item");
 
-    remove_object($waf, $user, "Assessmentstructure", array("remove", "advanced", "remove_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), "", "admin:advanced:manage_assessments:remove_assessmentstructure");
+    remove_object($waf, $user, "AssessmentStructure", array("remove", "advanced", "remove_assessmentstructure_do"), array(array("cancel","section=advanced&function=manage_assessmentstructures")), "", "admin:advanced:manage_assessments:remove_assessmentstructure");
   }
 
   function remove_assessmentstructure_do(&$waf, &$user) 
   {
-    if(!User::is_root) $waf->halt("error:policy:permissions");
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "Assessmentstructure", "section=advanced&function=manage_assessmentstructures");
+    remove_object_do($waf, $user, "AssessmentStructure", "section=advanced&function=manage_assessmentstructures");
   }
 
 ?>

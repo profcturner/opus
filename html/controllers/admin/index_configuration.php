@@ -900,9 +900,17 @@
     $status       = $_REQUEST['status'];
     $test         = $_REQUEST['test'];
     $onlyyear     = (int) $_REQUEST['onlyyear'];
+    $csv_mapping  = (int) $_REQUEST['csv_mapping'];
 
     require_once("model/StudentImport.class.php");
-    StudentImport::import_programme_via_SRS($programme_id, $year, $status, $onlyyear, $password, $test);
+    if(isset($_FILES['userfile']))
+    {
+      StudentImport::import_via_file($programme_id, $year, $status, $onlyyear, $password, $test, $csv_mapping);
+    }
+    else
+    {
+      StudentImport::import_programme_via_SRS($programme_id, $year, $status, $onlyyear, $password, $test);
+    }
 
     $waf->display("main.tpl", "admin:configuration:import_data:import_students_srs", "admin/configuration/import_students_srs.tpl");
   }
