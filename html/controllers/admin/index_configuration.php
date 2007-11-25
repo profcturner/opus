@@ -881,11 +881,15 @@
     // Normally, we are doing this for students on placement next year
     $year = get_academic_year()+1;
 
+    require_once("model/CSVMapping.class.php");
+    $csvmappings = CSVMapping::get_id_and_field("name");
+
     require_once("model/Programme.class.php");
     $programmes = Programme::get_id_and_description();
 
     $waf->assign("year", $year);
     $waf->assign("programmes", $programmes);
+    $waf->assign("csvmappings", $csvmappings);
 
     $waf->display("main.tpl", "admin:configuration:import_data:import_students", "admin/configuration/import_students_form.tpl");
   }
@@ -894,13 +898,13 @@
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
-    $password     = $_REQUEST['password'];
-    $programme_id = (int) $_REQUEST['programme_id'];
-    $year         = (int) $_REQUEST['year'];
-    $status       = $_REQUEST['status'];
-    $test         = $_REQUEST['test'];
-    $onlyyear     = (int) $_REQUEST['onlyyear'];
-    $csv_mapping  = (int) $_REQUEST['csv_mapping'];
+    $password       = $_REQUEST['password'];
+    $programme_id   = (int) $_REQUEST['programme_id'];
+    $year           = (int) $_REQUEST['year'];
+    $status         = $_REQUEST['status'];
+    $test           = $_REQUEST['test'];
+    $onlyyear       = (int) $_REQUEST['onlyyear'];
+    $csvmapping_id  = (int) $_REQUEST['csv_mapping'];
 
     require_once("model/StudentImport.class.php");
     if(isset($_FILES['userfile']))

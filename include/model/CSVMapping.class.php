@@ -107,7 +107,8 @@ class CSVMapping extends DTO_CSVMapping
   {
     $csvmapping = new CSVMapping;
     $csvmapping_array = $csvmapping->_get_id_and_field($fieldname, $where_clause);
-    unset($csvmapping_array[0]);
+    $csvmapping_array[0] = "Automatic";
+    if($fieldname != 'name') unset($csvmapping_array[0]);
     return $csvmapping_array;
   }
 

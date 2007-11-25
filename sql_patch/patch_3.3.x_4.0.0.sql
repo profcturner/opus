@@ -258,6 +258,11 @@ create table csvmapping
   id int unsigned not null auto_increment primary key
 );
 
+-- University of Ulster examples --
+
+INSERT INTO `csvmapping` VALUES ('University of Ulster Module List','/^\"(.*)\",\"(.*)\",\"(.*), (.*) (.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/','\"${1}\",\"${2}\",\"${5}\",\"${4}\",\"${3}\",\"${11}\",\"${6}\",\"\"','',1),('University of Ulster Programme List','/^\"(.*)\",\"(.*)\",\"(.*), (.*) (.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/','\"${1}\",\"${2}\",\"${5}\",\"${4}\",\"${3}\",\"${11}\",\"\",\"\"','',2);
+
+
 -- NOW MAJOR CHANGES - USER TABLES --
 
 -- users --

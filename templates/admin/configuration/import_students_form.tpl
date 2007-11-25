@@ -20,6 +20,12 @@
         <td><input type="file" size="30" name="userfile"></td>
       </tr>
       <tr>
+        <td class="property">CSV Mapping for file</td>
+        <td>
+          {html_options name="csvmapping_id" options=$csvmappings}
+        </td>
+      </tr>
+      <tr>
         <td class="property">Programme</td>
         <td>
           {html_options name="programme_id" options=$programmes}
