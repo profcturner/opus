@@ -64,12 +64,12 @@
   {
     $page = WA::request("page");
 
-    manage_objects($waf, $user, "CSVMapping", array(array("add","section=superuser&function=add_csvmapping")), array(array('edit', 'edit_csvmapping'), array('remove','remove_csvmapping')), "get_all", array("", "order by name", $page), "admin:superuser:csvmappings:manage_csvmappings");
+    manage_objects($waf, $user, "CSVMapping", array(array("add","section=superuser&function=add_csvmapping")), array(array('edit', 'edit_csvmapping'), array('remove','remove_csvmapping')), "get_all", array("", "order by name", $page), "admin:superuser:manage_csvmappings:manage_csvmappings");
   }
 
   function add_csvmapping(&$waf, &$user) 
   {
-    add_object($waf, $user, "CSVMapping", array("add", "superuser", "add_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), array(array("user_id",$user["user_id"])), "admin:superuser:csvmappings:add_csvmapping");
+    add_object($waf, $user, "CSVMapping", array("add", "superuser", "add_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), array(array("user_id",$user["user_id"])), "admin:superuser:manage_csvmappings:add_csvmapping", "super/home/manage_csvmapping.tpl");
   }
 
   function add_csvmapping_do(&$waf, &$user) 
@@ -79,7 +79,7 @@
 
   function edit_csvmapping(&$waf, &$user) 
   {
-    edit_object($waf, $user, "CSVMapping", array("confirm", "superuser", "edit_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), array(array("user_id",$user["user_id"])), "admin:superuser:csvmappings:edit_csvmapping");
+    edit_object($waf, $user, "CSVMapping", array("confirm", "superuser", "edit_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), array(array("user_id",$user["user_id"])), "admin:superuser:manage_csvmappings:edit_csvmapping", "super/home/manage_csvmapping.tpl");
   }
 
   function edit_csvmapping_do(&$waf, &$user) 
@@ -89,7 +89,7 @@
 
   function remove_csvmapping(&$waf, &$user) 
   {
-    remove_object($waf, $user, "CSVMapping", array("remove", "superuser", "remove_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), "", "admin:superuser:csvmappings:remove_csvmapping");
+    remove_object($waf, $user, "CSVMapping", array("remove", "superuser", "remove_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), "", "admin:superuser:manage_csvmappings:remove_csvmapping");
   }
 
   function remove_csvmapping_do(&$waf, &$user) 
