@@ -147,5 +147,120 @@ class AssessmentStructure extends DTO_AssessmentStructure
     return $nvp_array;
 
   }
+
+  /**
+  * checks an inbound assessment variable against options.
+  * @param value is the value entered by the user
+  * @return any error that occurred, or an empty variable
+  * @todo needs to use a template for error text.
+  */
+  function validate_options($value)
+  {
+    $error = array();
+    if(strstr($this->options, "compulsory"))
+    {
+      if($value != "0")
+      {
+        if(empty($value) || $value="")
+        {
+          array_push($error, $this->human . " cannot by empty");
+        }
+      }
+    }
+    return($error);
+  }
+
+  /**
+  * checks an inbound assessment variable against a minimum.
+  * @param string $value is the value entered by the user
+  * @return any error that occurred, or an empty array
+  */
+  function validate_variable_minimum($value)
+  {
+    $error = array();
+    if(!empty($this->min))
+    {
+      if($this->type == 'textual')
+      {
+        if(strlen($value) < $this->min)
+        {
+          array_push($error, $this->human . " must have a length greater than " . $this->min;
+        }
+      }
+      if($this->type == 'numeric')
+      {
+        if($value < $this->min)
+        {
+          array_push($error, $this->human . " cannot have a value less than " . $this->min;
+        }
+      }
+    }
+    return($error);
+  }
+
+
+  /**
+  * checks an inbound assessment variable against a maximum.
+  * @param string $value is the value entered by the user
+  * @return any error that occurred, or an empty variable
+  */
+  function validate_variable_maximum($value)
+  {
+    $error = array();
+    if(!empty($this->max))
+    {
+      if($this->type == 'textual')
+      {
+        if(strlen($value) > $this->max)
+        {
+          array_push($error, $this->human) . " must have a length less than " . $this->max;
+        }
+      }
+      if($this->type == 'numeric')
+      {
+        if($value > $this->max)
+        {
+          array_push($error, $this->human . " cannot have a value more than " . $this->max;
+        }
+      }
+    }
+    return($error);
+  }
+
+  /**
+  * Checks an individual assessment variable for validity.
+  * @param string $value is the inbound value for this item
+  * @return An array of error lines that will be empty if there are no errors.
+  */
+  function validate_variable($value)
+  {
+    $error = array();
+    if($this->type == 'assesseddate' || $this->type == 'date')
+    {
+      if(!(($this->type == 'date') && empty($value)))
+      {
+        if(empty($value))
+        {
+          // Anything needed here?
+        }
+        else
+        {
+          $date = parse_date($value);
+          if(!checkdate($date['month'], $date['day'], $date['year']))
+          {
+            array_push($error, $this->human . " is invalid.";
+          }
+        }
+      }
+    }
+    array_merge($error, $this->validate_variable_minimum($value));
+    array_merge($error, $this->validate_variable_maximum($value));
+    array_merge($error, $this->validate_variable_options($value));
+
+    return($error);
+  }
+
+
+
 }
 ?>

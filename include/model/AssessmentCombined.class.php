@@ -5,7 +5,7 @@ class AssessmentCombined
   var $structure; // Assessment structure and validation information
   var $variables; // The variables submitted by the user
   var $error;     // Error information
-  var $cassessment_id;
+  var $regime_id;
   var $assessment_id;
   var $assessed_id;
   var $assessed_name;
@@ -57,7 +57,6 @@ class AssessmentCombined
   {
     require_once("model/AssessmentTotal.class.php");
 
-    
     $sql = "select *, UNIX_TIMESTAMP(created) as created_unix, " .
       "UNIX_TIMESTAMP(assessed) as assessed_unix from assessmenttotals where " .
       "assessed_id=" . $this->assessed_id . " and " .
@@ -139,7 +138,7 @@ class AssessmentCombined
   }
 
 
-  function saveResults()
+  function save_results()
   {
     // Don't overwrite results if errors occured
     if(!empty($this->error)) return;
@@ -162,63 +161,50 @@ class AssessmentCombined
     }
 
     // Delete any existing results
-    $query = "DELETE FROM assessmentresults where ".
-      "cassessment_id=" . $this->cassessment_id . " AND " .
-      "assessed_id=" . $this->assessed_id;
-    mysql_query($query)
-      or print_mysql_error2("Unable to clear existing results.", $query);
-
+    AssessmentResult::remove("where regime_id = " . $this->regime_id . " and assessed_id = " . $this->assessed_id);
 
     // Assessement date defaults to now if we don't get something more
-    // approropriate
+    // appropriate
     $assesseddate = $now;
     foreach($this->structure as $item)
     {
-      if($item['type']=='assesseddate')
+      if($item->type == 'assesseddate')
       {
-	// assessed dates are special, and stored in totals, not results
-	$assesseddate = make_datetime(parse_date($this->variables[$item['name']]));
+        // assessed dates are special, and stored in totals, not results
+        $assesseddate = make_datetime(parse_date($this->variables[$item->name]));
       }
       else
       {
-	// Now store each result
-	$query = "INSERT INTO assessmentresults VALUES(" .
-	  $this->cassessment_id . ", " .
-	  $this->assessed_id . ", " .
-	  make_null($item['name']) . ", " .
-	  ($this->variables[$item['name']] == "0" ? "0" : 
-	   make_null($this->variables[$item['name']])) . ")";
-	mysql_query($query)
-	  or print_mysql_error2("Unable to insert result.", $query);
+        // Now store each result
+        $fields = array();
+        $fields['regime_id'] = $this->regime_id;
+        $fields['assessed_id'] = $this->assessed_id;
+        $fields['name'] = $item->name;
+        $fields['contents'] = $this->variables[$item->name];
+
+        AssessmentResult::insert($fields);
       }
     }
     $this->assesseddate = $assesseddate;
-    $this->saveTotals();
+    $this->save_totals();
   }
 
-
-  
-
-  function saveStructure()
+  function get_error()
   {
+    return $this->error;
   }
 
-  function getError()
-    {
-      return $this->error;
-    }
+  function get_regime_id()
+  {
+    return $this->regime_id;
+  }
 
-  function getCassessment_id()
-    {
-      return $this->cassessment_id;
-    }
+  function get_value($key)
+  {
+    return $this->variables[$key];
+  }
 
-  function getValue($key)
-    {
-      return $this->variables[$key];
-    }
-
-  function obtainVariables()
+  function obtain_variables()
   {
     $user_input = FALSE;
     // First try to obtain user specified data in the $_REQUEST
@@ -226,222 +212,98 @@ class AssessmentCombined
     // Run through the structure to see what we need
     foreach($this->structure as $item)
     {
-      $this->variables[$item['name']] = $_REQUEST[$item['name']];
-      if(!empty($_REQUEST[$item['name']])) $user_input = TRUE;
+      $this->variables[$item->name] = $_REQUEST[$item->name];
+      if(!empty($_REQUEST[$item->name])) $user_input = TRUE;
     }
 
     // No user input, so we get from the database. There's one exception...
     // we don't show data on industrial reports to students
-    if(!$user_input && !(is_student() && $this->assessment_regime_data['assessor']=='industrial'))
+    if(!$user_input && !(User::is_student() && $this->assessment_regime_data->assessor=='industrial'))
     {
-      // Ok, we have to try and retrieve from the database
-      $sql = "select * from assessmentresults WHERE " .
-	"cassessment_id=" . $this->cassessment_id . " and " .
-	"assessed_id=" . $this->assessed_id;
+      require_once("model/AssessmentResult.class.php");
 
-      $result = mysql_query($sql)
-	or print_mysql_error2("Unable to obtain assessment results", $sql);
+      $results = AssessmentResult::get_all("where regime_id=" . $this->regime_id . " and assessed_id = " . $this->assessed_id);
 
-      while($row = mysql_fetch_array($result))
+      foreach($results as $result)
       {
-	$this->variables[$row['name']] = $row['contents'];
+        $this->variables[$result->name] = $result->contents;
       }
-      mysql_free_result($result);
 
       // Annoyingly, assessed date is stored elsewhere
       foreach($this->structure as $item)
       {
-	if($item['type']=='assesseddate')
-	{
-	  if($this->assessment_results['assessed_unix'])
-	  {
-	    $this->variables[$item['name']] = 
-	      date("d/m/Y", $this->assessment_results['assessed_unix']);
-	  }
-	}
+        if($item->type == 'assesseddate')
+        {
+          // Needs work!
+          if($this->assessment_results['assessed_unix'])
+          {
+            $this->variables[$item->name] = 
+              date("d/m/Y", $this->assessment_results['assessed_unix']);
+          }
+        }
       }
     }
-    $this->loadTotals();
-  }
-
-/**
- **	@function check_required_variables
- **	Performs validation of all variables based on an assessment structure.
- **	@param $structure The assessment structure returned by obtain_required_variables
- **	@return An error string that will be empty if there are no errors.
- **
- */
-  function checkVariables()
-  {
-    global $log;	// Access to logging
-
-    foreach($this->structure as $item)
-    {
-      $name  = $item['name'];
-      $human = $item['section'];
-      $value = $this->variables[$name];
-      if(!isset($this->variables[$name]))
-      {
-	if($item['type'] == 'checkbox')
-	{
-	  // We still need to validate it, it might be compulsory
-	  $this->error .= $this->validateVariable($item, $value);	
-	}
-	else
-	{
-	  // A missing variable is serious, possibly even a security breach
-	  $this->error .= "! Missing variable " . htmlspecialchars($item['name']) .
-	    ", report to Webmaster<BR>\n";
-	  $log['security']->LogPrint("missing variable in script");
-	}
-      }
-      else
-      {
-	// The variable is inbound, we must validate it
-	$this->error .= $this->validateVariable($item, $value);
-      }
-    }
-    return($error); 
+    $this->load_totals();
   }
 
   /**
-  **	@function validate_variable
-  **	Checks an individual assessment variable for validity.
-  **	@param $item is a row from the assessmentstructure table for this data
-  **	@param $value is the inbound value for this item
-  **	@return An error string that will be empty if there are no errors.
+  * Performs validation of all variables based on an assessment structure.
+  * @return An error string that will be empty if there are no errors.
   */
-  function validateVariable($item, $value)
-    {
-      $error = "";
-      if($item['type']=='assesseddate' || $item['type']=='date') 
-      {
-	if(!(($item['type'] == 'date') && empty($value)))
-	{
-          if(empty($value))
-          {
-            // This needs recoded...
-          }
-          else
-          {
-	    $date = parse_date($value);
-	    if(!checkdate($date['month'], $date['day'], $date['year']))
-	    {
-	      $error .= htmlspecialchars($item['human']) . " is invalid.<BR>\n";
-	    }
-          }
-	}
-      }
-      $error .= $this->validateVariableMinimum($item, $value);
-      $error .= $this->validateVariableMaximum($item, $value);
-      $error .= $this->validateVariableOptions($item, $value);
-
-      return($error);
-    }
-
-
-/**
-**	checks an inbound assessment variable against options.
-**	@param item is a row from assessmentstructure
-**	@param value is the value entered by the user
-**	@returns any error that occurred, or an empty variable
-*/
-function validateVariableOptions($item, $value)
-{
-  $error = "";
-  if(strstr($item['options'], "compulsory"))
+  function check_variables()
   {
-    if($value != "0")
+    global $waf;
+    $this->error = array();
+
+    foreach($this->structure as $item)
     {
-      if(empty($value) || $value="")
+      $name  = $item->name;
+      $human = $item->section;
+      $value = $this->variables[$name];
+      if(!isset($this->variables[$name]))
       {
-        $error = htmlspecialchars($item['human']) .
-                 " cannot by empty<BR>\n";
+        if($item->type == 'checkbox')
+        {
+          // We still need to validate it, it might be compulsory
+          array_merge($this->error, $item->validate_variable($value));
+        }
+        else
+        {
+          // A missing variable is serious, possibly even a security breach
+          $waf->security_log("missing variable" . $item->name .  " in script");
+        }
+      }
+      else
+      {
+        // The variable is inbound, we must validate it
+        array_merge($this->error, $item->validate_variable($value));
       }
     }
+    return($this->error);
   }
-  return($error);
-}
 
 
-/**
-**	checks an inbound assessment variable against a minimum.
-**	@param item is a row from assessmentstructure
-**	@param value is the value entered by the user
-**	@returns any error that occurred, or an empty variable
-*/
-function validateVariableMinimum($item, $value)
-{
-  $error = "";
-  if(!empty($item['min']))
+  /**
+  * indicates an error in a given variable
+  *
+  * @param string $name the variable to check
+  * @return an error indicator if appropriate, otherwise an empty string
+  */
+  function flag_error($name)
   {
-    if($item['type'] == 'textual')
+    foreach($this->structure as $item)
     {
-      if(strlen($value) < $item['min'])
+      if($item->name == $name)
       {
-        $error = htmlspecialchars($item['human']) .
-                 " must have a length greater than " . $item['min'] . "<br />\n";
+        if(count($item->validate_variable($this->variables[$name]))) return "<span class=\"error\">**</span>";
+        else return "";
       }
     }
-    if($item['type'] == 'numeric')
-    {
-      if($value < $item['min'])
-      {
-        $error = htmlspecialchars($item['human']) .
-                 " cannot have a value less than " . $item['min'] . "<br />\n";
-      }
-    }
+    return "";
   }
-  return($error);
-}
 
 
-/**
-**	checks an inbound assessment variable against a maximum.
-**	@param item is a row from assessmentstructure
-**	@param value is the value entered by the user
-**	@returns any error that occurred, or an empty variable
-*/
-function validateVariableMaximum($item, $value)
-{
-  $error = "";
-  if(!empty($item['max']))
-  {
-    if($item['type'] == 'textual')
-    {
-      if(strlen($value) > $item['max'])
-      {
-        $error = htmlspecialchars($item['human']) .
-                 " must have a length less than " . $item['max'] . "<br />\n";
-      }
-    }
-    if($item['type'] == 'numeric')
-    {
-      if($value > $item['max'])
-      {
-        $error = htmlspecialchars($item['human']) .
-                 " cannot have a value more than " . $item['max'] . "<br />\n";
-      }
-    }
-  }
-  return($error);
-}
-
-function flagVariable($name)
-{
-  foreach($this->structure as $item)
-  {
-    if($item['name'] == $name)
-    {
-      if($this->validateVariable($item, $this->variables[$name])) 
-	return "<span class=\"error\">**</span>";
-    }
-  }
-//  return FALSE;
-}
-
-
-function displayTemplate()
+  function displayTemplate()
   { 
     global $smarty;
 
