@@ -84,12 +84,6 @@ class StudentImport
     return($student);
   }
 
-  function import_via_file($programme_id, $year, $status, $onlyyear, $password, $test, $csvmapping_id)
-  {
-    StudentImport::import_csv($_FILES['userfile']['tmp_name'], $programme_id, $year, $status, $onlyear, $password, $test, $csvmapping_id);
-    unlink($_FILES['userfile']['tmp_name']);
-  }
-
   /**
   * attempts to automatically determine the most relevant CSV mapping for a file
   *
@@ -137,7 +131,7 @@ class StudentImport
   }
 
 
-  function import_csv($filename, $programme_id, $year, $status, $onlyear, $password, $test, $csvmapping_id)
+  function import_csv($filename, $programme_id, $year, $status, $onlyyear, $password, $test, $csvmapping_id)
   {
     // This is the pattern OPUS expects at the end of a mapping
     $standard_pattern =       "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
@@ -181,7 +175,7 @@ class StudentImport
       preg_match($standard_pattern, $line, $matches);
 
       $student = array();
-      $student['year']            = $matches[1];
+      $student['year_on_course']  = $matches[1];
       $student['reg_number']      = $matches[2];
       $student['person_title']    = $matches[3];
       $student['first_name']      = $matches[4];
@@ -194,6 +188,10 @@ class StudentImport
       {
         // Already exists
         $student['result'] = "Exists";
+      }
+      elseif(strlen($student['programme_code']) && ($programme->srs_ident != $student['programme_code']))
+      {
+        $student['result'] = "Invalid Programme";
       }
       elseif(strlen($onlyyear) && $student['year'] != $onlyyear)
       {
@@ -212,10 +210,18 @@ class StudentImport
     $waf->assign("year", $year);
     $waf->assign("onlyyear", $onlyyear);
     $waf->assign("status", $status);
-    $waf->assign("csvmapping", $csvmapping->name);
+    $waf->assign("csvmapping", $csvmap);
+    $waf->assign("filename", $_FILES['userfile']['tmp_name']);
     $waf->assign("rejected_lines", $rejected_lines);
     $waf->assign("excluded_lines", $excluded_lines);
-    if($test) $waf->assign("action_links", array(array('cancel', 'section=configuration&function=import_data')));
+    if($test)
+    {
+      $waf->assign("action_links", array(array('cancel', 'section=configuration&function=import_data')));
+    }
+    else
+    {
+      unlink($filename);
+    }
   }
 
   function add_student($student_array, $programme_id, $status, $year)

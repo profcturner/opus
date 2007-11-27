@@ -133,6 +133,7 @@
     if(!Policy::check_default_policy("school", "list")) $waf->halt("error:policy:permissions");
 
     $faculty_id = (int) WA::request("id", true);
+    $_SESSION['faculty_id'] = $faculty_id;
 
     require_once("model/Faculty.class.php");
     $faculty = Faculty::load_by_id($faculty_id);
@@ -159,7 +160,9 @@
   {
     if(!Policy::check_default_policy("school", "create")) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "School", "section=configuration&function=manage_schools", "add_school");
+    $faculty_id = (int) $_SESSION['faculty_id'];
+
+    add_object_do($waf, $user, "School", "section=configuration&function=manage_schools&id=$faculty_id", "add_school");
   }
 
   function edit_school(&$waf, &$user) 
@@ -175,7 +178,9 @@
   {
     if(!Policy::check_default_policy("school", "edit")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "School", "section=configuration&function=manage_schools", "edit_school");
+    $faculty_id = (int) $_SESSION['faculty_id'];
+
+    edit_object_do($waf, $user, "School", "section=configuration&function=manage_schools&id=$faculty_id", "edit_school");
   }
 
   function remove_school(&$waf, &$user) 
@@ -189,7 +194,9 @@
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "School", "section=configuration&function=manage_schools");
+    $faculty_id = (int) $_SESSION['faculty_id'];
+
+    remove_object_do($waf, $user, "School", "section=configuration&function=manage_schools&id=$faculty_id");
   }
 
   // Faculty Admins
@@ -423,6 +430,7 @@
     add_navigation_history($waf, "Programmes");
 
     $school_id = (int) WA::request("id", true);
+    $_SESSION['school_id'] = $school_id;
 
     require_once("model/School.class.php");
     $school = School::load_by_id($school_id);
@@ -452,7 +460,9 @@
   {
     if(!Policy::check_default_policy("programme", "create")) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes", "add_programme");
+    $school_id = (int) $_SESSION['school_id'];
+
+    add_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes&id=$school_id", "add_programme");
   }
 
   function edit_programme(&$waf, &$user) 
@@ -468,7 +478,9 @@
   {
     if(!Policy::check_default_policy("programme", "edit")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes", "edit_programme");
+    $school_id = (int) $_SESSION['school_id'];
+
+    edit_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes&id=$school_id", "edit_programme");
   }
 
   function remove_programme(&$waf, &$user) 
@@ -482,7 +494,9 @@
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes");
+    $school_id = (int) $_SESSION['school_id'];
+
+    remove_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes&id=$school_id");
   }
 
   // Assessmentgroups
@@ -907,9 +921,9 @@
     $csvmapping_id  = (int) $_REQUEST['csv_mapping'];
 
     require_once("model/StudentImport.class.php");
-    if(isset($_FILES['userfile']))
+    if(strlen($_FILES['userfile']['tmp_name']))
     {
-      StudentImport::import_via_file($programme_id, $year, $status, $onlyyear, $password, $test, $csv_mapping);
+      StudentImport::import_csv($_FILES['userfile']['tmp_name'], $programme_id, $year, $status, $onlyyear, $password, $test, $csvmapping_id);
     }
     else
     {

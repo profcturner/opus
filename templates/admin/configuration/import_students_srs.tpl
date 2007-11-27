@@ -1,17 +1,15 @@
 {* Smarty *}
 {* Displays the result of an import from SRS *}
+{* Actually, using it for files now too! *}
 
 <h3>{$programme->name|escape:"htmlall"} ({$programme->srs_ident|escape:"htmlall"})</h3>
 
 {if $test}
 <div id="warning">{#test_on#}</div>
 {/if}
-{*
-<div id="action_area">
-  Actions
-    <span id="action_button"><a href="?section=configuration&function=import_data">cancel</a></span>
-</div>
-*}
+{if $csvmapping}
+Format: {$csvmapping->name|escape:"htmlall"}
+{/if}
 <div id="table_list">
 {section name=student loop=$students}
 {if $smarty.section.student.first}
@@ -22,6 +20,8 @@
   <input type="hidden" name="year" value="{$year}" />
   <input type="hidden" name="onlyyear" value="{$onlyyear}" />
   <input type="hidden" name="status" value="{$status}" />
+  <input type="hidden" name="csvmapping_id" value="{$csvmapping_id}" />
+  <input type="hidden" name="filename" value="{$filename}" />
   <table>
     <tr><th>Name</th><th>Registration Number</th><th>Year</th><th>Email</th><th>Result</th></tr>
 {/if}
@@ -35,7 +35,10 @@
     </tr>
 {if $smarty.section.student.last}
   </table>
-    {if $test}<input class="button" type="submit" value="confirm" />{/if}
+    {if $test}
+      {if $csvmapping}<p>Re-run this process with the test option de-selected</p>
+      {else}<input class="button" type="submit" value="confirm" />{/if}
+    {/if}
 </form>
 {/if}
 {sectionelse}
