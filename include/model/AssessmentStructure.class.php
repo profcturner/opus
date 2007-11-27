@@ -184,14 +184,14 @@ class AssessmentStructure extends DTO_AssessmentStructure
       {
         if(strlen($value) < $this->min)
         {
-          array_push($error, $this->human . " must have a length greater than " . $this->min;
+          array_push($error, $this->human . " must have a length greater than " . $this->min);
         }
       }
       if($this->type == 'numeric')
       {
         if($value < $this->min)
         {
-          array_push($error, $this->human . " cannot have a value less than " . $this->min;
+          array_push($error, $this->human . " cannot have a value less than " . $this->min);
         }
       }
     }
@@ -213,14 +213,14 @@ class AssessmentStructure extends DTO_AssessmentStructure
       {
         if(strlen($value) > $this->max)
         {
-          array_push($error, $this->human) . " must have a length less than " . $this->max;
+          array_push($error, $this->human . " must have a length less than " . $this->max);
         }
       }
       if($this->type == 'numeric')
       {
         if($value > $this->max)
         {
-          array_push($error, $this->human . " cannot have a value more than " . $this->max;
+          array_push($error, $this->human . " cannot have a value more than " . $this->max);
         }
       }
     }
@@ -248,7 +248,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
           $date = parse_date($value);
           if(!checkdate($date['month'], $date['day'], $date['year']))
           {
-            array_push($error, $this->human . " is invalid.";
+            array_push($error, $this->human . " is invalid.");
           }
         }
       }

@@ -64,12 +64,16 @@ class Student extends DTO_Student
 
   function load_by_user_id($user_id)
   {
+    return(Student::load_by_id(Student::get_id_from_user_id($user_id)));
+  }
+
+  function get_id_from_user_id($user_id)
+  {
     $user_id = (int) $user_id; // security
 
     $student = new Student;
-    $student->_load_where("where user_id = $user_id");
-    return($student);
-
+    $id = $student->_get_fields("id", "where user_id = $user_id");
+    return($id);
   }
 
   function load_by_id($id) 
@@ -284,7 +288,7 @@ class Student extends DTO_Student
   }
 
 
-  function get_assessment_regime($user_id)
+  function get_assessment_regime($user_id, &$aggregate_total, &$weighting_total)
   {
     // This will store the items
     $regime_items = array();

@@ -188,7 +188,7 @@
 
     $student = Student::load_by_id($id);
     $assessment_group_id = Student::get_assessment_group_id($student->user_id);
-    $regime_items = Student::get_assessment_regime($student->user_id);
+    $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
     require_once("model/Placement.class.php");
     $placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart");
     $placement_fields = array(
@@ -203,6 +203,8 @@
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $student->user_id);
+    $waf->assign("aggregate_total", $aggregate_total);
+    $waf->assign("weighting_total", $weighting_total);
     $waf->assign("placements", $placements);
     $waf->assign("placement_fields", $placement_fields);
     $waf->assign("placement_options", $placement_options);
@@ -1207,7 +1209,7 @@
     $assessed_id = (int) WA::request("assessed_id");
 
     require_once("model/Student.class.php");
-    $student = Student::load_by_id($assessed_id);
+    $student = Student::load_by_user_id($assessed_id);
     require_once("model/AssessmentRegime.class.php");
     $regime_item = AssessmentRegime::load_by_id($regime_id);
     // Now get the assessment itself
