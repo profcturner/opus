@@ -344,7 +344,7 @@ class Student extends DTO_Student
       else
       {
         $percentage = sprintf("%.02f", $percentage);
-        $aggregate = sprintf("%.02f", $percentage * $row['weighting']);
+        $aggregate = sprintf("%.02f", $percentage * $regime_items[$loop]->weighting);
         $aggregate_total += $aggregate;
         $percentage .= "%";
         $aggregate .= "%";
