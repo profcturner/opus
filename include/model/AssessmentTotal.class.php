@@ -53,13 +53,13 @@ class AssessmentTotal extends DTO_AssessmentTotal
     $assessmenttotal = new AssessmentTotal;
     $assessmenttotal->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $assessmenttotal = AssessmentTotal::load_by_id($fields[id]);
     $assessmenttotal->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -69,7 +69,7 @@ class AssessmentTotal extends DTO_AssessmentTotal
     $assessmenttotal->id = $id;
     return $assessmenttotal->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -82,7 +82,7 @@ class AssessmentTotal extends DTO_AssessmentTotal
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
     $assessmenttotal = new AssessmentTotal;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -103,13 +103,13 @@ class AssessmentTotal extends DTO_AssessmentTotal
 
 
   function remove($id=0) 
-  {  
+  {
     $assessmenttotal = new AssessmentTotal;
     $assessmenttotal->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $assessmenttotal = new AssessmentTotal;
     return  $assessmenttotal->_get_fieldnames($include_id); 
   }
@@ -117,7 +117,8 @@ class AssessmentTotal extends DTO_AssessmentTotal
   function load_where($where_clause)
   {
     $assessmenttotal = new AssessmentTotal;
-    return $assessmenttotal->_load_where($where_clause);
+    $assessmenttotal->_load_where($where_clause);
+    return($assessmenttotal);
   }
 
   function request_field_values($include_id = false) 
