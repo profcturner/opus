@@ -196,15 +196,14 @@ class Application extends DTO_Application
     return $application_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $application = new Application;
     $application->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $application = new Application;
     return  $application->_get_fieldnames($include_id); 
   }

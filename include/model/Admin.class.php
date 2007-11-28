@@ -263,13 +263,14 @@ class Admin extends DTO_Admin
   */
   function get_all($where_clause="", $order_by="", $page=0, $end=0) 
   {
+    global $config;
     $admin = new Admin;
 
     if($end != 0) return($admin->_get_all($where_clause, $order_by, $page, $end));
     if ($page <> 0) 
     {
-        $start = ($page-1)*ROWS_PER_PAGE;
-        $limit = ROWS_PER_PAGE;
+        $start = ($page-1)*$config['opus']['rows_per_page'];
+        $limit = $config['opus']['rows_per_page'];
         $admins = $admin->_get_all($where_clause, $order_by, $start, $limit);
     }
     else 

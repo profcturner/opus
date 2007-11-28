@@ -62,6 +62,26 @@ class DTO_Admin extends DTO
     $this->_policy_id = Policy::get_name($this->policy_id);
   }
 
+  function _count($where_clause="")
+  {
+    global $waf;
+
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare("SELECT COUNT(*) FROM `admin` left join user on admin.user_id = user.id $where_clause;");
+      $sql->execute();
+
+      $results_row = $sql->fetch(PDO::FETCH_NUM);
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, "Admin", "_count($where_clause)");
+    }
+    return $results_row[0];
+  }
+
   function _get_all($where_clause="", $order_by="order by user.lastname", $start=0, $limit=MAX_ROWS_RETURNED, $parse = False) 
   {
     global $waf;

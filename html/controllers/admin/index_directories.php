@@ -209,7 +209,7 @@
     $waf->assign("placement_fields", $placement_fields);
     $waf->assign("placement_options", $placement_options);
 
-    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("manage applications", "section=directories&function=manage_applications")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
+    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("manage applications", "section=directories&function=manage_applications&page=")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   function edit_student_do(&$waf, &$user) 
@@ -614,11 +614,12 @@
   function manage_applications(&$waf, $user, $title)
   {
     $student_id = (int) WA::request("student_id", true);
+    $page = (int) WA::request("page", true);
 
     if(!Policy::is_auth_for_student($student_id, "student", "viewCompanies")) $waf->halt("error:policy:permissions");
 
 
-    manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application'), array('remove','remove_application'), array('place','add_placement')), "get_all", "where student_id=$student_id", "admin:directories:student_directory:manage_applications");
+    manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application'), array('remove','remove_application'), array('place','add_placement')), "get_all", array("where student_id=$student_id", "", $page), "admin:directories:student_directory:manage_applications");
   }
 
   /**
@@ -1133,7 +1134,11 @@
   {
     require_once("model/Admin.class.php");
 
-    $admin_objects = Admin::get_all("where user_type = 'admin'");
+    $page = WA::request("page", true);
+
+    $admin_objects = Admin::get_all("where user_type = 'admin'", "", $page);
+    $object_num = Admin::count("where user_type = 'admin'");
+
     $root_objects  = Admin::get_all("where user_type = 'root'");
 
     $admin_headings = Admin::get_admin_list_headings();
@@ -1147,6 +1152,7 @@
     $waf->assign("root_objects", $root_objects);
     $waf->assign("actions", $actions);
     $waf->assign("action_links", array(array("add", "section=directories&function=add_admin")));
+    $waf->assign("object_num", $object_num);
 
     $waf->display("main.tpl", "admin:directories:admin_directory:manage_admins", "admin/directories/list_admins.tpl");
   }
