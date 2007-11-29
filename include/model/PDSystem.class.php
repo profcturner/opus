@@ -19,28 +19,37 @@ class PDSystem
   /**
   * runs a webservice and obtains the results
   *
-  * @param string $service_name the service provided by the WS layer
+  * @param string $section_name the section in which this service is found in the API
+  * @param string $service_name the service provided by the API layer
   * @param string $input a standard URL style string encoding variable to pass in
   * @param string $format is the format return that is expected
   *
-  * @return a SimpleXML object containing all the templates
+  * @return data encapulates as PHP arrays or XML dependant on mode called.
   */
-  function get_data($service_name, $input, $format = 'PHP')
+  function get_data($section_name, $service_name, $input, $format = 'PHP')
   {
     global $config_sensitive;
     global $waf;
 
     // Perform a preg security check on $service_name
+    if(!preg_match("/^[A-Za-x_?&]+$/", $section_name))
+    {
+      $waf->security_log("attempt to use invalid PDS service [$section_name]");
+      $waf->log("invalid PDS service [$section_name]");
+      $waf->halt("error:pdsystem:invalid_section");
+    }
+
     if(!preg_match("/^[A-Za-x_?&]+$/", $service_name))
     {
       $waf->security_log("attempt to use invalid PDS service [$service_name]");
       $waf->log("invalid PDS service [$service_name]");
+      $waf->halt("error:pdsystem:invalid_service");
     }
 
     $empty_result = array();
     if($format == 'XML') $empty_result = "";
 
-    $waf->log("requesting service $service_name from PDSystem", PEAR_LOG_DEBUG, 'debug');
+    $waf->log("requesting service $section_name:$service_name from PDSystem", PEAR_LOG_DEBUG, 'debug');
     if(empty($config_sensitive['pds']['url']))
     {
       $waf->log("links to the pdsystem are not enabled, check your configuration", PEAR_LOG_DEBUG, 'debug');
@@ -50,7 +59,7 @@ class PDSystem
     $input .= "username=" . $config_sensitive['pds']['username'] .
       "&password=" . $config_sensitive['pds']['password'];
 
-    $url = $config_sensitive['pds']['url'] . "/pdp/controller.php?function=$service_name&$input";
+    $url = $config_sensitive['pds']['url'] . "/pds/?section=$section_name&function=$service_name&$input";
 
     $data = @file_get_contents($url);
     if($format == 'XML')
@@ -66,7 +75,7 @@ class PDSystem
     }
     else
     {
-      return($data);
+      return(unserialize($data));
     }
   }
 
@@ -197,34 +206,33 @@ class PDSystem
   */
   function fetch_cv($student_id, $template_id)
   {
-    global $conf;
+    global $config_sensitive;
+    global $waf;
+
     global $log;
 
     // The PDSystem uses student numbers more directly
-    $student_reg = get_login_name($student_id);
-  
-    $url = $conf['pdp']['host'] . "/pdp/controller.php?" .
-      "function=get_pdf_cv&template_id=$template_id" .
+    require_once("model/Student.class.php");
+    $student = Student::load_by_user_id($student_id);
+    $student_reg = $student->reg_number;
+
+    $url = $config_sensitive['pds']['url'] . "/pds/?" .
+      "section=cv&function=get_pdf_cv&template_id=$template_id" .
       "&reg_number=$student_reg&" .
-      "username=" . $conf['pdp']['user'] . "&password=" . $conf['pdp']['pass'];
-  
-    //$log['security']->LogPrint("Fetching file $url");
+      "username=" . $config_sensitive['pds']['username'] . "&password=" . $config_sensitive['pds']['password'];
+
     $file = @file_get_contents($url);
-  
+
     if($file == FALSE)
     {
-      $log['debug']->LogPrint("Warning! Unable to acquire CV from PDSystem");
-      print_menu("");
-      die_gracefully("The PMS was unable to acquire the CV from the PDP system.");
+      $waf->log("Unable to acquire template CV from PDSystem");
+      $waf->halt("error:pdsystem:no_cv");
     }
 
     if(substr($file, 0, 4) !=  "%PDF")
     {
-      print_menu("");
-      $log['debug']->LogPrint("Warning! Unable to acquire CV from PDSystem, something came but was invalid (not a PDF)");
-
-      output_help("PDSCVFetchFailure");
-      die_gracefully("The PMS was unable to acquire a valid CV from the PDP system.<BR>It may be that a central University System is offline.<h4>warning</h4>");
+      $waf->log("Unable to acquire template CV from PDSystem, something came but was invalid (not a PDF)");
+      $waf->halt("error:pdsystem:invalid_cv");
     }
     return $file;
   }

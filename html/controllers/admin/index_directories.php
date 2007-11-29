@@ -1003,7 +1003,7 @@
     $sort = WA::request("sort", true);
     $schools = WA::request("schools", true);
 
-    if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:staffs:invalid_search");
+    if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:staff:invalid_search");
 
     $form_options['search'] = $search;
     $form_options['sort'] = $sort;
