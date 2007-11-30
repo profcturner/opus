@@ -1,5 +1,5 @@
--- The upgrade from OPUS 3.3.x to 4.0.0 is profound at the database level
--- and for the first time ever consists of two parts.
+-- The upgrade of schema and data from OPUS 3.3.x to 4.0 is the most complex yet.
+-- TAKE A BACKUP WITH MYSQLDUMP!
 
 -- new service table --
 
@@ -10,6 +10,7 @@ create table service
   id int unsigned not null auto_increment primary key
 );
 
+-- new application is stopped --
 insert into service values('stopped', '4.0.0', 1);
 
 -- placement --
@@ -44,7 +45,7 @@ alter table policy add column faculty set('create','edit','archive','list') afte
 alter table vacancyactivity add column id int unsigned not null auto_increment primary key;
 
 -- companyactivity --
--- long ago, OPUS referred to what are now acivity types as vacancy types --
+-- long ago, OPUS referred to what are now activity types as vacancy types --
 
 rename table companyvacancy to companyactivity;
 alter table companyactivity change column vacancy_id activity_id int unsigned;
@@ -82,7 +83,7 @@ update vacancy set vacancy_type=1;
 rename table companies to company;
 alter table company change column company_id id int unsigned not null auto_increment;
 
--- companycontact --
+-- companycontact -- this will be remapped later, since contact_id is not the user_id of the contacts in 3.3.x --
 
 alter table companycontact add column id int unsigned not null auto_increment primary key;
 alter table companycontact change column status status enum('normal','restricted','primary', 'archived') not null;
@@ -119,8 +120,11 @@ alter table assessmentresult add column id int unsigned not null auto_increment 
 -- assessmentstructure --
 
 alter table assessmentstructure add column id int unsigned not null auto_increment primary key;
-alter table assessmentstructure change column options options enum('compulsory', 'optional') not null;
--- TODO: WARNINGS AFTER THIS ONE! --
+alter table assessmentstructure add column temp enum('compulsory', 'optional') not null;
+update assessmentstructure set temp='optional';
+update assessmentstructure set temp='compulsory' where options='compulsory';
+alter table assessmentstructure drop column options;
+alter table assessmentstructure change column temp options enum('compulsory', 'optional') not null;
 
 -- CV groups --
 
@@ -137,7 +141,9 @@ alter table programme change column course_name name tinytext not null;
 alter table programme change column status status enum('active', 'archive') not null;
 alter table programme change column course_id id int unsigned auto_increment not null;
 alter table programme add column cvgroup_id int unsigned;
--- TODO: cvgroup information needs copied --
+
+-- cvgroup information needs copied --
+update programme, cvgroupcourse set programme.cvgroup_id = cvgroupcourse.group_id where programme.id = cvgroupcourse.course_id;
 
 -- schools --
 
@@ -146,7 +152,6 @@ alter table school change column school_id id int unsigned not null auto_increme
 alter table school change column school_name name tinytext not null;
 alter table school add column srs_ident tinytext null after www;
 alter table school add column faculty_id int unsigned not null after status;
---WARNING! CHECK THIS
 alter table school change column status status enum('active', 'archive') not null;
 -- need a sensible default faculty for schools --
 update school set faculty_id=1;
@@ -191,7 +196,6 @@ alter table application add column portfolio_hash tinytext after portfolio_sourc
 alter table application add column status_modified datetime after status;
 alter table application add column id int unsigned not null auto_increment primary key;
 
-
 -- resources --
 
 rename table resources to resource;
@@ -219,8 +223,10 @@ alter table language add column ident varchar(10) not null after name;
 
 rename table mime_types to mimetype;
 alter table mimetype change column mime_id id int unsigned not null auto_increment;
-alter table mimetype change column flags uploadable enum('yes', 'no') not null;
--- WARNING ON THIS ONE --
+alter table mimetype add column uploadable enum('yes', 'no') not null;
+update mimetype set uploadable='no';
+update mimetype set uploadable='yes' where flags='uploadable';
+alter table mimetype drop column flags;
 
 -- help --
 -- this is moving to the new XML framework long used for vacancies and companies --
@@ -258,10 +264,9 @@ create table csvmapping
   id int unsigned not null auto_increment primary key
 );
 
--- University of Ulster examples --
+-- University of Ulster examples -- should be harmless to have these for other institutions, and they'll help explain the idea --
 
 INSERT INTO `csvmapping` VALUES ('University of Ulster Module List','/^\"(.*)\",\"(.*)\",\"(.*), (.*) (.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/','\"${1}\",\"${2}\",\"${5}\",\"${4}\",\"${3}\",\"${11}\",\"${6}\",\"\"','',1),('University of Ulster Programme List','/^\"(.*)\",\"(.*)\",\"(.*), (.*) (.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/','\"${1}\",\"${2}\",\"${5}\",\"${4}\",\"${3}\",\"${11}\",\"\",\"\"','',2);
-
 
 -- NOW MAJOR CHANGES - USER TABLES --
 
@@ -317,5 +322,78 @@ create table admin
 alter table staff add column id int unsigned auto_increment primary key;
 alter table staff change column status status enum('active', 'archive');
 
+-- add some relevant indices --
+alter table student add index user_id (user_id);
+alter table admin add index user_id (user_id);
+alter table contact add index user_id (user_id);
+alter table staff add index user_id (user_id);
+create index username on user (username(15));
+create index name on company (name(10));
+create index description on vacancy (description(10));
 
 
+-- complex queries to move data between tables --
+
+-- old student data migratation -- data moves from cv_pdetails to student and user --
+update user, cv_pdetails set user.salutation = cv_pdetails.title, user.firstname = cv_pdetails.firstname, user.lastname = cv_pdetails.surname, user.reg_number = user.username, user.email = cv_pdetails.email where user.id = cv_pdetails.id;
+update student, cv_pdetails set student.programme_id = cv_pdetails.course where student.user_id = cv_pdetails.id;
+
+-- admin migration -- move some data into user, and some into the new admin table (not admin_s_) --
+update user, admins set user.salutation = admins.title, user.firstname = admins.firstname, user.lastname = admins.surname, user.email = admins.email, user.reg_number = concat('e', admins.staffno) where admins.user_id = user.id;
+insert into admin (position, voice, fax, signature, policy_id, user_id) select position, voice, fax, signature, policy_id, user_id from admins;
+
+-- staff migration -- move some data into user --
+update user, staff set user.salutation = staff.title, user.firstname = staff.firstname, user.lastname = staff.surname, user.reg_number = concat('e', staff.staffno) where user.id=staff.user_id;
+
+-- contact_id in this table used to be the id from the contact, not user table --
+update companycontact, contacts set companycontact.contact_id = contacts.user_id where companycontact.contact_id = contacts.contact_id;
+update user, contacts set user.salutation = contacts.title, user.firstname = contacts.firstname, user.lastname = contacts.surname, user.email = contacts.email where user.id = contacts.user_id;
+insert into contact (position, voice, fax, user_id) select position, voice, fax, user_id from contacts;
+
+-- supervisors need more data copied in --
+update user, placement set user.salutation = supervisor_title, user.firstname = supervisor_firstname, user.lastname = supervisor_lastname, user.email = supervisor_email where user.username = CONCAT('supervisor_', placement.id);
+
+-- information about academic tutors is now in the student table --
+update student, staffstudent set student.academic_user_id = staffstudent.staff_id where student.user_id = staffstudent.student_id; 
+
+-- we should now be safe to remove columns, and add others --
+-- staff table -- drop columns moves to user, add some more --
+alter table staff drop column initials;
+alter table staff drop column title;
+alter table staff drop column firstname;
+alter table staff drop column surname;
+alter table staff drop column department;
+alter table staff drop column staffno;
+alter table staff drop column email;
+alter table staff add column postcode tinytext not null after address;
+
+-- add some more help --
+
+insert into help (language_id, lookup, channel_id, auth, description, contents) values(1,'RootManageCSVMapping',0,'admin','More detailed help on how to set up a CSV Mapping','<p>\r\nCSV Mappings are usually a way of mapping your own University format CSV files to a &quot;standard&quot; format used by OPUS. Note however, that your original file format can really be any text file which has one student per line. It\'s just as practical to use TSV or similar formats.­</p>\r\n  <p> To set up a mapping, you will need to understand <a target=\"blank\" href=\"http://www.php.net/manual/en/reference.pcre.pattern.syntax.php\">regular expressions</a>, as used by the <a target=\"blank\" href=\"http://www.php.net/manual/en/function.preg-replace.php\">preg_replace</a> function in PHP. If you don\'t, it is strongly recommended you file a service ticket or ask a member of IT staff to help you set this up; regular expressions are a relatively complex concept if your format requires anything but the simplest manipulation.\r\n    <br /></p>\r\n  <p>OPUS expects the replacement line to map to the following:</p>\r\n  <p>&quot;year_of_study&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;student_reg_number&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;title&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;firstname&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;lastname&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;email&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;programme_code&quot;,\r\n    \r\n    \r\n    \r\n    \r\n    <br />&quot;disability_code&quot;\r\n    \r\n    \r\n    \r\n    \r\n    \r\n    <br /></p>\r\n  <p>&nbsp;</p>\r\n  <p>all on one line. Note that if you don\'t have information about one of these, you should include the quotes with no content &quot;&quot;. This functionality is on this menu since errors here will generate errors in the student import functionality. </p>');
+
+-- change some help --
+
+update help set description="Welcome message for Root Users", contents = '<p>\r\nWelcome. You are a super-admin user on this system (root user). This user is unconstrained by the policy system, and can perform almost any action within OPUS, including unwise ones. You should not use a user of this power without appropriate training.</p>\r\n  <p>Above, you will see you main menu, which you will use to manipulate OPUS. The sections are:</p>\r\n  <ul>\r\n    <li><strong>home</strong> which contains this page, an ability to look at company activity and change your password;</li>\r\n    <li><strong>directories</strong> which will be the main menu you use day-to-day to work with students, companies and vacancies;</li>\r\n    <li><strong>information</strong> which is used to look as status and get reports;</li>\r\n    <li><strong>configuration</strong> which will be needed to set up OPUS and modify it\'s behaviour;</li>\r\n    <li><strong>advanced</strong> contains more configuration options usually only needed to larger OPUS systems;</li>\r\n    <li><strong>superuser</strong> contains options to maintain OPUS and sensitive configuration.</li>\r\n  </ul>From time to time other menus will appear as you manipulate objects, most notably students and companies, to help you deal with these. Also a <strong>recent</strong> menu will appear to allow you to more rapidly get back to objects you have been working with in this session.\r\n  <br />' where lookup="RootHome";
+
+update help set description="Welcome message for Admin Users", contents = '<p>\r\nWelcome. You are an administrator user on this system. This user is constrained by a security policy, and additionally may only be able to interact with given programmes and schools. Contact a super-administrator if you feel you do not have the access you need.</p>\r\n  <p>Above, you will see you main menu, which you will use to manipulate OPUS. The sections are:</p>\r\n  <ul>\r\n    <li><strong>home</strong> which contains this page, an ability to look at company activity and change your password;</li>\r\n    <li><strong>directories</strong> which will be the main menu you use day-to-day to work with students, companies and vacancies;</li>\r\n    <li><strong>information</strong> which is used to look as status and get reports;</li>\r\n    <li><strong>configuration</strong> which will be needed to set up OPUS and modify it\'s behaviour;</li>\r\n    <li><strong>advanced</strong> contains more configuration options usually only needed to larger OPUS systems;</li>\r\n    </ul>From time to time other menus will appear as you manipulate objects, most notably students and companies, to help you deal with these. Also a <strong>recent</strong> menu will appear to allow you to more rapidly get back to objects you have been working with in this session.\r\n  <br />' where lookup="AdminHome";
+
+-- lots of tables are now obselete, or unused, get rid --
+
+-- drop table admins;
+-- drop table contacts;
+-- drop table ocvcomponent;
+-- drop table ocvfield;
+-- drop table ocvstudent2template;
+-- drop table ocvstudentdata;
+-- drop table ocvtemplate;
+-- drop table ocvtemplatedescription;
+-- drop table cv_pdetails;
+-- drop table cv_edetails;
+-- drop table cv_cdetails;
+-- drop table cv_edetails;
+-- drop table cv_odetails;
+-- drop table cv_pdetails;
+-- drop table cv_results;
+-- drop table cv_work;
+-- drop table staffstudent;
+-- drop table cvgroupcourse;
