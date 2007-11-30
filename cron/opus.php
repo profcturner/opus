@@ -218,12 +218,4 @@ function get_academic_year()
   return($year);
 }
 
-function upgrade_3_to_4()
-{
-  require_once("model/SQLPatch.class.php");
-
-  $sql_patch = new SQLPatch;
-  $sql_patch->upgrade_3_to_4();
-}
-
 ?>

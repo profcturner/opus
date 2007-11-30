@@ -90,16 +90,18 @@ class DTO_Contact extends DTO
     require_once("model/CompanyContact.class.php");
 
     $con = $waf->connections[$this->_handle]->con;
-
+    $object_array = array();
     try
     {
-      $sql = $con->prepare("select contact_id from contact left join companycontact on contact.user_id = companycontact.contact_id where company_id=?");
+      $sql = $con->prepare("select contact_id, status from contact left join companycontact on contact.user_id = companycontact.contact_id left join user on contact.user_id = user.id where company_id=? order by status, lastname");
       $sql->execute(array($company_id));
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
         $contact_id = $results_row["contact_id"];
-        $object_array[] = $this->load_by_user_id($contact_id);
+        $contact = $this->load_by_user_id($contact_id);
+        $contact->status = $results_row['status'];
+        array_push($object_array, $contact);
       }
     }
     catch (PDOException $e)

@@ -258,6 +258,18 @@ class Contact extends DTO_Contact
     }
     return($lookups);
   }
+
+  function get_user_id($id)
+  {
+    $id = (int) $id;
+    $contact = new Contact;
+    return($contact->_get_fields("user_id", "where id=$id"));
+  }
+
+  function get_name($id)
+  {
+    return(User::get_name(Contact::get_user_id($id)));
+  }
 }
 
 ?>

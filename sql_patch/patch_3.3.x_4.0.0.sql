@@ -86,7 +86,7 @@ alter table company change column company_id id int unsigned not null auto_incre
 -- companycontact -- this will be remapped later, since contact_id is not the user_id of the contacts in 3.3.x --
 
 alter table companycontact add column id int unsigned not null auto_increment primary key;
-alter table companycontact change column status status enum('normal','restricted','primary', 'archived') not null;
+alter table companycontact change column status status enum('primary','normal','restricted','archived') not null;
 
 -- assessmentgroup --
 

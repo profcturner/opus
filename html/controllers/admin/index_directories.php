@@ -912,16 +912,17 @@
         'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
         'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
         'email'=>array('type'=>'email','size'=>40, 'header'=>true),
-        'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
+        'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone'),
+        'status'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Status')
       );
-      $actions = array(array('edit', 'edit_contact'));
+      $actions = array(array('edit', 'edit_contact'), array('status', 'edit_contact_status'));
 
       $waf->assign("headings", $headings);
       $waf->assign("objects", $objects);
       $waf->assign("actions", $actions);
       $waf->assign("action_links", array(array("Add", "section=directories&function=add_contact")));
     }
-    $waf->display("main.tpl", "admin:directories:contact_directory:search_contacts", "list.tpl");
+    $waf->display("main.tpl", "admin:directories:contact_directory:company_contacts", "list.tpl");
   }
 
   function add_contact(&$waf, &$user) 
@@ -940,6 +941,27 @@
     add_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "add_contact");
   }
 
+  function edit_contact_status(&$waf)
+  {
+    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Contact.class.php");
+    require_once("model/CompanyContact.class.php");
+    $id = WA::request("id");
+    $companycontact = CompanyContact::load_by_contact_id(Contact::get_user_id($id));
+    // Naughty tweak...
+    $_REQUEST['id'] = $companycontact->id;
+
+    edit_object($waf, $user, "CompanyContact", array("confirm", "directories", "edit_contact_status_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact_status");
+  }
+
+  function edit_contact_status_do(&$waf, &$user) 
+  {
+    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
+
+    edit_object_do($waf, $user, "CompanyContact", "section=directories&function=manage_contacts", "edit_contact_status");
+  }
+
   function edit_contact(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
@@ -947,8 +969,10 @@
     require_once("model/Contact.class.php");
     $id = WA::request("id");
     $contact = Contact::load_by_id($id);
+    $changes = WA::request("changes");
+    $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact");
+    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts"), array("reset password", "section=directories&function=reset_password&user_id=" . $contact->user_id)), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact", "admin/directories/edit_contact.tpl");
   }
 
   function edit_contact_do(&$waf, &$user) 
@@ -1179,8 +1203,11 @@
     require_once("model/Staff.class.php");
     $id = WA::request("id");
     $staff = Staff::load_by_id($id);
+    $changes = WA::request("changes");
 
-    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff");
+    $waf->assign("changes", $changes);
+
+    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
   }
 
   function edit_staff_do(&$waf, &$user) 
@@ -1254,8 +1281,10 @@
     if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
 
     $admin = Admin::load_by_id($id);
+    $changes = WA::request("changes");
+    $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin");
+    edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel","section=directories&function=manage_admins"), array("reset password", "section=directories&function=reset_password&user_id=" . $admin->user_id)), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin", "admin/directories/edit_admin.tpl");
   }
 
   function edit_admin_do(&$waf, &$user) 

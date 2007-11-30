@@ -22,6 +22,7 @@ class CompanyContact extends DTO_CompanyContact
 
   // Is this needed?
   static $_field_defs = array(
+    'status'=>array('type'=>'list','list'=>array('primary'=>'Primary', 'normal'=>'Normal', 'restricted'=>'Restricted', 'archive'=>'Archive'))
   );
 
   function __construct() 
@@ -45,18 +46,34 @@ class CompanyContact extends DTO_CompanyContact
     return $companycontact;
   }
 
+  /**
+  * loads a companycontact record given a user_id for a contact
+  *
+  * @param int $user_id the id from the user table for the contact
+  * @return the companycontact record
+  */
+  function load_by_contact_id($user_id)
+  {
+    $user_id = (int) $user_id;
+    $companycontact = new CompanyContact;
+    $companycontact->_load_where("where contact_id=$user_id");
+    return $companycontact;
+  }
+
   function insert($fields) 
   {
     $companycontact = new CompanyContact;
     $companycontact->_insert($fields);
   }
-  
+
   function update($fields) 
   {
+    unset($fields['company_id']);
+    unset($fields['contact_id']);
     $companycontact = CompanyContact::load_by_id($fields[id]);
     $companycontact->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -66,7 +83,7 @@ class CompanyContact extends DTO_CompanyContact
     $companycontact->id = $id;
     return $companycontact->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -79,7 +96,7 @@ class CompanyContact extends DTO_CompanyContact
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
   {
     $companycontact = new CompanyContact;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -98,31 +115,29 @@ class CompanyContact extends DTO_CompanyContact
     return $companycontact_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $companycontact = new CompanyContact;
     $companycontact->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $companycontact = new CompanyContact;
     return  $companycontact->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = CompanyContact::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
-
   }
 }
 ?>
