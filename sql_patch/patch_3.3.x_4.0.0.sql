@@ -67,8 +67,8 @@ create table vacancytype
 );
 
 insert into vacancytype values("One Year, Full Time", 10, NULL, 1);
-insert into vacancytype values("Summer Job", NULL, 20, 2);
-insert into vacancytype values("Graduate Job", NULL, 30, 3);
+insert into vacancytype values("Summer Job", 20, NULL, 2);
+insert into vacancytype values("Graduate Job", 30, NULL, 3);
 
 -- vacancies --
 

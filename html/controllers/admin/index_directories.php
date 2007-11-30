@@ -376,7 +376,7 @@
 
     $id = WA::request("id");
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
   }
 
   function edit_company_do(&$waf, &$user) 
@@ -434,10 +434,12 @@
   function manage_vacancies(&$waf, $user, $title)
   {
     $company_id = (int) WA::request("company_id", true);
+    $page = (int) WA::request("page", true);
 
     require_once("model/Vacancy.class.php");
-    $objects = Vacancy::get_all("where company_id=$company_id", "order by year(jobstart), status");
+    $objects = Vacancy::get_all("where company_id=$company_id", "order by year(jobstart) DESC, status, description", $page);
     require_once("model/Application.class.php");
+    $object_num = Vacancy::count("where company_id=$company_id");
     for($loop = 0; $loop < count($objects); $loop++)
     {
       $objects[$loop]->startyear = substr($objects[$loop]->jobstart, 0, 4);
@@ -456,6 +458,7 @@
 
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
+    $waf->assign("object_num", $object_num);
     $waf->assign("actions", $actions);
     $waf->assign("action_links", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
 

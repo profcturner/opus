@@ -195,11 +195,12 @@ class Vacancy extends DTO_Vacancy
 
   function get_all($where_clause="", $order_by="ORDER BY description, locality", $page=0)
   {
+    global $config;
     $vacancy = new Vacancy;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $vacancys = $vacancy->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $vacancys = $vacancy->_get_all($where_clause, $order_by, 0, 1000);
