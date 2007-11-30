@@ -39,6 +39,7 @@ function nav_admin()
       array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
       array("academic staff","directories","staff_directory","staff_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
+      array("supervisors", "directories", "supervisor_directory", "supervisor_directory"),
       array("administrators", "directories", "manage_admins", "manage_admins")
     ), 
     "information"=>array
@@ -57,7 +58,6 @@ function nav_admin()
       array("Assessment groups", "configuration", "manage_assessmentgroups", "manage_assessmentgroups"),
       array("manage help", "configuration", "manage_help", "manage_help"),
       array("import data", "configuration", "import_data", "import_data"),
-
     ),
     "advanced"=>array
     (

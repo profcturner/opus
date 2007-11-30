@@ -969,6 +969,79 @@
     remove_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts");
   }
 
+  // Supervisors
+
+  function supervisor_directory(&$waf)
+  {
+    if(!Policy::check_default_policy("supervisor", "list")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("supervisor_directory_form");
+
+    $waf->assign("form_options", $form_options);
+
+    $letters = array();
+    for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
+    $waf->assign("letters", $letters);
+
+    $waf->display("main.tpl", "admin:directories:supervisor_directory:supervisor_directory", "admin/directories/supervisor_directory.tpl");
+  }
+
+  function search_supervisors(&$waf)
+  {
+    if(!Policy::check_default_policy("supervisor", "list")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Supervisor.class.php");
+    $search = WA::request("search");
+
+    if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:supervisors:invalid_search");
+
+    $form_options['search'] = $search;
+
+    require_once("model/Preference.class.php");
+    Preference::set_preference("supervisor_directory_form", $form_options);
+
+    if(empty($search))
+    {
+      $where_clause = "";
+    }
+    else
+    {
+      $where_clause = "where (lastname like '%$search%' OR firstname like '%$search%')";
+    }
+
+    $objects = Supervisor::get_all($where_clause);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:supervisor_directory:search_supervisors", "admin/directories/search_supervisors.tpl");
+  }
+
+  function simple_search_supervisors(&$waf)
+  {
+    if(!Policy::check_default_policy("supervisor", "list")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Supervisor.class.php");
+    $initial = WA::request("initial");
+
+    if(!preg_match('/^[A-Za-z0-9]$/', $initial)) $waf->halt("error:supervisors:invalid_search");
+
+    $where_clause = "where (lastname like '$initial%')";
+
+    $objects = Supervisor::get_all($where_clause);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:supervisor_directory:search_supervisors", "admin/directories/search_supervisors.tpl");
+
+  }
+
+  function supervisor_resetpassword(&$waf)
+  {
+  }
+
+  function supervisor_student(&$waf)
+  {
+  }
+
   // Staff
 
   function staff_directory(&$waf)
@@ -1369,13 +1442,15 @@
   {
     $user_id = (int) WA::request("user_id");
     $error_function = WA::request("error_function");
+    $done_function = WA::request("done_function");
 
     require_once("model/User.class.php");
     $success = User::reset_password($user_id);
 
     if($success || empty($error_function))
     {
-      header("location:" . $_SERVER['HTTP_REFERER'] . "&changes=true");
+      if(!empty($done_function)) goto("directories", "$done_function");
+      else header("location:" . $_SERVER['HTTP_REFERER'] . "&changes=true");
     }
     else
     {

@@ -200,7 +200,7 @@ class Automail extends DTO_Automail
     $mail_object->send();
 
     $waf->log("Auto email $lookup sent from " . $automail->fromh . 
-                            " to " . $automail->toh, PEAR_LOG_NOTICE, 'general');
+                            " to " . $automail->toh, PEAR_LOG_NOTICE);
   }
 
 

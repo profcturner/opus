@@ -81,7 +81,9 @@
     if(!Policy::check_default_policy("faculty", "list")) $waf->halt("error:policy:permissions");
     set_navigation_history($waf, "Faculties");
 
-    manage_objects($waf, $user, "Faculty", array(array("add","section=configuration&function=add_faculty")), array(array('admins', 'manage_facultyadmins'), array('schools', 'manage_schools'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", "", "admin:configuration:organisation_details:manage_faculties");
+    $page = WA::request("page", true);
+
+    manage_objects($waf, $user, "Faculty", array(array("add","section=configuration&function=add_faculty")), array(array('admins', 'manage_facultyadmins'), array('schools', 'manage_schools'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", array("", "", $page), "admin:configuration:organisation_details:manage_faculties");
   }
 
   function add_faculty(&$waf, &$user) 
@@ -132,6 +134,8 @@
   {
     if(!Policy::check_default_policy("school", "list")) $waf->halt("error:policy:permissions");
 
+    $page = WA::request("page", true);
+
     $faculty_id = (int) WA::request("id", true);
     $_SESSION['faculty_id'] = $faculty_id;
 
@@ -140,7 +144,7 @@
 
     add_navigation_history($waf, $faculty->name);
 
-    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", "where faculty_id=$faculty_id", "admin:configuration:organisation_details:manage_schools");
+    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", array("where faculty_id=$faculty_id", "", $page), "admin:configuration:organisation_details:manage_schools");
   }
 
   function add_school(&$waf, &$user) 
@@ -429,6 +433,8 @@
 
     add_navigation_history($waf, "Programmes");
 
+    $page = WA::request("page", true);
+
     $school_id = (int) WA::request("id", true);
     $_SESSION['school_id'] = $school_id;
 
@@ -438,7 +444,7 @@
     add_navigation_history($waf, $school->name);
 
 
-    manage_objects($waf, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('assessment', 'manage_assessmentgroupprogrammes'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", "where school_id=$school_id", "admin:configuration:organisation_details:manage_programmes");
+    manage_objects($waf, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('assessment', 'manage_assessmentgroupprogrammes'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", array("where school_id=$school_id", "", $page), "admin:configuration:organisation_details:manage_programmes");
   }
 
   function add_programme(&$waf, &$user) 

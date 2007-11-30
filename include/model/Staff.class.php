@@ -237,7 +237,7 @@ class Staff extends DTO_Staff
     $objects[0] = "no tutor is selected";
     foreach($staff as $staff_member)
     {
-      $objects[$staff_member->id] = $staff_member->real_name;
+      $objects[$staff_member->user_id] = $staff_member->real_name;
     }
     return($objects);
   }

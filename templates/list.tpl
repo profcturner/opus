@@ -1,7 +1,8 @@
 <div id="table_list">
 {if !$ROWS_PER_PAGE}
-{assign var='ROWS_PER_PAGE' value='20'}
+{assign var='ROWS_PER_PAGE' value=$config.opus.rows_per_page}
 {/if}
+{if !$nopage}
 {if $object_num > $ROWS_PER_PAGE}
 {math assign=pages equation="ceil((x/y)+1)" x=$object_num y=$ROWS_PER_PAGE}
 {math assign=start_obj equation="(p-1)*n" n=$ROWS_PER_PAGE p=$page|default:1}
@@ -10,6 +11,7 @@ pages
 {if $page == $smarty.section.myLoop.index}<strong>{$smarty.section.myLoop.index}</strong>&nbsp;{else}<a href="{$SCRIPT_NAME}?section={$section}&function={$smarty.request.function}&page={$smarty.section.myLoop.index}">{$smarty.section.myLoop.index}</a>&nbsp;{/if}
 {/section}
 {/if}
+{/if} {* nopage *}
 {if $objects}
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>
@@ -20,7 +22,7 @@ pages
     <th class="action">{$actions[action][0]|capitalize}</th>
 {/section}
   </tr>
-{section loop=$objects name=object max=$ROWS_PER_PAGE}
+{section loop=$objects name=object }
   <tr class="{cycle values="dark_row,light_row"}">
 {foreach from=$headings key=key item=def}
     {if $def.header == true}
