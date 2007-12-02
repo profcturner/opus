@@ -8,15 +8,15 @@
 {/if}
 
 <h2>
-{$regime_item->student_description|escape:"htmlall"}
+{$assessment->regime->student_description|escape:"htmlall"}
 </h2>
 <h3>
-{$assessed_user->real_name|escape:"htmlall"}
+{$assessment->assessed_name|escape:"htmlall"}
 </h3>
 
 {* If we are submitting, and errors occured, warn the user *}
 {*
-{if $assessment->getError() && $mode=="AssessmentSubmitResults"}
+{if $assessment->get_error() && $mode=="AssessmentSubmitResults"}
 <div class="warning">
 <h2>Errors occurred</h2>
 <p align="center">See the <a href="#errors">bottom</a> of the 
@@ -27,43 +27,43 @@ the data can be submitted.</p>
 
 
 {* If results exist, give a summary *}
-{if $assessment_total->created}
+{if $assessment->assessment_results->created}
 <h3 align="center">Assessment Information</h3>
 <p align="center">This assessment has  been carried out.<br />
 {* if we have specific marks, give that information *}
-{if $assessment_total->percentage}
+{if $assessment->assessment_results->percentage}
 The mark was
-{$assessment_total->mark}
+{$assessment->assessment_results->mark}
  out of
-{$assessment_total->outof}
+{$assessment->assessment_results->outof}
  which is
-{$assessment_total->percentage}%.
+{$assessment_assessment_results->percentage}%.
 <br/>
 {#provisional_results#}
 {/if} {* specific marks *}
 </p>
 
-<table align="center">
+<table>
 <tr>
 <th>Assessment Date</th><td>
-{$assessment_total->assessed}
+{$assessment->assessment_results->assessed}
 </td>
 </tr>
 <tr>
 <th>Recorded Date</th><td>
-{$assessment_total->created}
+{$assessment->assessment_results->created}
 </td>
 </tr>
-{if $assessment_total->modified}
+{if $assessment->assessment_results->modified}
 <tr>
 <th>Modified Date</th><td>
-{$assessment_total->modified}
+{$assessment->assessment_results->modified}
 </td>
 </tr>
 {/if}
 <tr>
 <th>Assessed by</th><td>
-{$assessor->real_name|escape:"htmlall"}
+{$assessment->assessor_name|escape:"htmlall"}
 </td>
 </tr>
 </table>
@@ -72,9 +72,10 @@ The mark was
 
 {* Common information required in all forms *}
 
-{*
-<form method="post" action="{$conf.scripts.user.assessment}">
-<input type="hidden" name="mode" value="AssessmentSubmitResults">
-<input type="hidden" name="cassessment_id" value="{$assessment->getCassessment_id()}">
-<input type="hidden" name="assessed_id" value="{$assessment->assessed_id}">
-*}
+<form method="post">
+<input type="hidden" name="section" value="{$target_section}" />
+<input type="hidden" name="function" value="edit_assessment_do" />
+<input type="hidden" name="regime_id" value="{$assessment->regime->id}" />
+<input type="hidden" name="mode" value="AssessmentSubmitResults" />
+<input type="hidden" name="assessed_id" value="{$assessment->assessed_id}" />
+

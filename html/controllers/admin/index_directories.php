@@ -1319,6 +1319,7 @@
     // and for whom
     $assessed_id = (int) WA::request("assessed_id");
 
+/*
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id($assessed_id);
     require_once("model/AssessmentRegime.class.php");
@@ -1348,7 +1349,10 @@
     $waf->assign("assessment_total", $assessment_total[0]);
     $waf->assign("assessment_results", $assessment_results);
     $waf->assign("regime_item", $regime_item);
-
+*/
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
+    $waf->assign("assessment", $assessment);
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 

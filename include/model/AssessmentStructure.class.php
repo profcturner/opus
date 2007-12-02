@@ -154,7 +154,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
   * @return any error that occurred, or an empty variable
   * @todo needs to use a template for error text.
   */
-  function validate_options($value)
+  function validate_variable_options($value)
   {
     $error = array();
     if(strstr($this->options, "compulsory"))

@@ -145,31 +145,35 @@ class AssessmentRegime extends DTO_AssessmentRegime
     return $assessmentregime_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $assessmentregime = new AssessmentRegime;
     $assessmentregime->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $assessmentregime = new AssessmentRegime;
     return  $assessmentregime->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = AssessmentRegime::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
+  }
 
+  function get_name($id)
+  {
+    $id = (int) $id;
+    $assessmentregime = new AssessmentRegime;
+    return($assessmentregime->_get_fields("student_description", "where id=$id"));
   }
 }
 ?>

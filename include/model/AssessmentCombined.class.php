@@ -6,6 +6,7 @@ class AssessmentCombined
   var $variables; // The variables submitted by the user
   var $error;     // Error information
   var $regime_id;
+  var $regime;
   var $assessment_id;
   var $assessed_id;
   var $assessed_name;
@@ -13,7 +14,6 @@ class AssessmentCombined
   var $assessor_name;
   var $assessment_results;
   var $assessed_date;
-  var $assessment_regime_data;
   var $assessment_table_data;
 
   function __construct($regime_id, $assessed_id, $assessor_id)
@@ -28,14 +28,16 @@ class AssessmentCombined
     require_once("model/Assessment.class.php");
     require_once("model/AssessmentStructure.class.php");
     $this->assessed_name = User::get_name($this->assessed_id);
+    $this->assessor_name = User::get_name($this->assessor_id);
 
     // Make sure the error value is empty
     $this->error = "";
 
     $this->regime = AssessmentRegime::load_by_id($regime_id);
-    $this->assessment = Assessment::load_by_id($this->regime->id);
+    $this->assessment_id = $this->regime->assessment_id;
+    $this->assessment = Assessment::load_by_id($this->assessment_id);
 
-    $this->load_structure($this->regime->id);
+    $this->load_structure($this->assessment_id);
     $this->load_totals();
 
   }
@@ -57,21 +59,12 @@ class AssessmentCombined
   {
     require_once("model/AssessmentTotal.class.php");
 
-    $sql = "select *, UNIX_TIMESTAMP(created) as created_unix, " .
-      "UNIX_TIMESTAMP(assessed) as assessed_unix from assessmenttotals where " .
-      "assessed_id=" . $this->assessed_id . " and " .
-      "cassessment_id=" . $this->cassessment_id;
-
-    $result = mysql_query($sql)
-      or print_mysql_error2("Unable to obtain assessment results", $sql);
-
-    $this->assessment_results = mysql_fetch_array($result);
+    $this->assessment_results = AssessmentTotal::get_totals_with_stamps($this->assessed_id, $this->regime_id);
     if(!empty($this->assessment_results))
     {
-      $this->assessment_results['assessor_name'] = 
-	get_user_name($this->assessment_results['assessor_id']);
+      $this->assessor_id = $this->assessment_results['assessor_id'];
+      $this->assessor_name = User::get_name($this->assessor_id);
     }
-    mysql_free_result($result);
   }
 
   function save_totals()
@@ -99,42 +92,36 @@ class AssessmentCombined
     }
     else $percentage = 'NULL';
 
+    // Put it in the database
+    require_once("model/User.class.php");
+    require_once("model/AssessmentTotal.class.php");
     $now = date("YmdHis");
     $present = FALSE;
+    $fields = array();
+    $fields['regime_id']   = $this->regime_id;
+    $fields['assessed_id'] = $this->assessed_id;
+    $fields['assessor_id'] = $this->assessor_id;
+    $fields['mark'] = $total;
+    $fields['outof'] = $max;
+    $fields['percentage'] = $percentage;
+    $fields['assessed'] = $this->assessed_date;
+
+    $assessed_name = $this->assessed_name;
+    $assessor_name = $this->assessor_name;
+    $assessment_name = $this->regime->student_description;
     if(empty($this->assessment_results))
     {
-      $query = "INSERT INTO assessmenttotals VALUES(" .
-	$this->cassessment_id . ", " .
-	$this->assessed_id . ", " .
-	$this->assessor_id . ", '', " .
-	"$total, $max, $percentage, $now, NULL, " .
-	$this->assesseddate. ")";
-      mysql_query($query)
-	or print_mysql_error2("Unable to insert new assessment total.", $query);
-      $log['admin']->LogPrint("Assessment " .
-			      $this->cassessment_id . " assessed " . 
-			      $this->assessed_id . " assessor " .
-			      $this->assessor_id . " percentage $percentage");
+      $fields['created'] = $now;
+      $fields['modified'] = NULL;
+      AssessmentTotal::insert($fields);
+      $waf->log("assessment $assessment_name filed by $assessor_name for $assessed_name ($percentage%)");
     }
     else
     {
-      $query = "UPDATE assessmenttotals SET " .
-	"assessor_id=" . $this->assessor_id . ", " .
-	"mark=$total, outof=$max, percentage=$percentage, modified=$now, " .
-	"assessed=" . $this->assesseddate .
-	" where cassessment_id=" . $this->cassessment_id . " and " .
-	"assessed_id=" . $this->assessed_id;
-      mysql_query($query)
-	or print_mysql_error2("Unable to update assessment total.", $query);
-
-      $log['admin']->LogPrint("Assessment (update)" .
-			      $this->cassessment_id . " assessed " . 
-			      $this->assessed_id . " assessor " .
-			      $this->assessor_id . " percentage $percentage");
-
-
+      $fields['modified'] = $now;
+      AssessmentTotal::update($fields);
+      $waf->log("assessment $assessment_name updated by $assessor_name for $assessed_name ($percentage%)");
     }
-    $this->loadTotals();
   }
 
 
@@ -152,11 +139,10 @@ class AssessmentCombined
       // We allow a 24 hour grace period for assessments to be altered,
       // after that, no luck... except for admins...
       $seconds = $unixnow - $this->assessment_results['created_unix'];
-      if(!is_admin() && ($seconds > (60*60*24)))
+      if(!User::is_admin() && ($seconds > (60*60*24)))
       {
-	$this->error = "Assessments can only be modified for up to 24 hours after their " .
-	  "initial creation. This assessment is now locked, and cannot be edited.";
-	return;
+        $this->error = "Assessments can only be modified for up to 24 hours after their initial creation. This assessment is now locked, and cannot be edited.";
+        return;
       }
     }
 
@@ -309,9 +295,6 @@ class AssessmentCombined
 
     $smarty->display($this->assessment_table_data['template_filename']);
   }
-
-
-
 };
 
 ?>

@@ -39,6 +39,12 @@ class AssessmentTotal extends DTO_AssessmentTotal
     return(self::$_field_defs);
   }
 
+  function get_totals_with_stamps($assessed_id, $regime_id)
+  {
+    $assessmenttotal = new AssessmentTotal;
+    return($assessmenttotal->_get_totals_with_stamps($assessed_id, $regime_id));
+  }
+
 
   function load_by_id($id) 
   {
@@ -82,14 +88,7 @@ class AssessmentTotal extends DTO_AssessmentTotal
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
     $assessmenttotal = new AssessmentTotal;
-
-    if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
-      $assessmenttotals = $assessmenttotal->_get_all($where_clause, $order_by, $start, $limit);
-    } else {
-      $assessmenttotals = $assessmenttotal->_get_all($where_clause, $order_by, 0, 1000);
-    }
+    $assessmenttotals = $assessmenttotal->_get_all($where_clause, $order_by, 0, 1000);
     return $assessmenttotals;
   }
 
