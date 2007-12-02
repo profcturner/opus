@@ -6,15 +6,14 @@
 {* Note the use of get_value and flag_error to *}
 {* bring in assessment specific material *}
 <p>
-For the following categories, employ the following marking scheme.
-<table>
-<tr><td>5. Outstanding</td><td>4. Excellent</td></tr>
-<tr><td>3. Very Good</td><td>2. Good</td></tr>
-<tr><td>1. Poor</td><td>0. Weak</td></tr></TABLE>
-<P ALIGN=\"CENTER\"><strong>Warning: The system distinguishes between 0. (Weak) and
+For the following categories, the following marking scheme is employed.<br />
+<em>5. Outstanding, 4. Excellent, 3. Very Good, 2. Good, 1. Poor, 0. Weak</em>
+</p>
+
+<p><strong>Warning: The system distinguishes between 0. (Weak) and
 blank fields. A blank field is taken to be non applicable to the student and the
 category will not be counted. Therefore only leave a field blank if it is not
-applicable.</b></p>
+applicable.</strong></p>
 
 <div id="table_manage">
 <table cols="3">
