@@ -31,6 +31,8 @@ class Resource extends DTO_Resource
   var $downloaded = 0;   // The last download timestamp
   var $uploader;         // The user_id of the uploader
   var $status = "";      // Various status fields
+  var $company_id = 0;   // Company this is linked to (if any)
+  var $vacancy_id = 0;   // Vacancy this is linked to (if any)
 
   static $_field_defs = array(
     'file_upload'=>array('type'=>'file'),

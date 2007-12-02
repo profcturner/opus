@@ -1415,14 +1415,15 @@
 
   // Company / Vacancy resources
 
-  function manage_resources(&$waf, $user, $title)
+  function manage_company_resources(&$waf, $user, $title)
   {
     $company_id = (int) WA::request("company_id");
+    $page = (int) WA::request("page", true);
 
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=configuration&function=add_resource&company_id=$company_id")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all_by_company", array($company_id), "admin:configuration:resources:manage_resources");
+    manage_objects($waf, $user, "Resource", array(array("add","section=configuration&function=add_resource&company_id=$company_id")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources");
   }
 
   function add_resource(&$waf, &$user) 

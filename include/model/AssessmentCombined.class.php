@@ -39,6 +39,7 @@ class AssessmentCombined
 
     $this->load_structure($this->assessment_id);
     $this->load_totals();
+    $this->obtain_variables();
 
   }
 
@@ -157,7 +158,7 @@ class AssessmentCombined
       if($item->type == 'assesseddate')
       {
         // assessed dates are special, and stored in totals, not results
-        $assesseddate = make_datetime(parse_date($this->variables[$item->name]));
+        $assesseddate = make_datetime(AssessmentStructure::parse_date($this->variables[$item->name]));
       }
       else
       {

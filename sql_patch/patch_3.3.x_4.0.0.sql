@@ -200,6 +200,10 @@ alter table application add column id int unsigned not null auto_increment prima
 
 rename table resources to resource;
 alter table resource change column resource_id id int unsigned auto_increment;
+alter table resource add column company_id int unsigned NULL after status;
+alter table resource add column vacancy_id int unsigned NULL after company_id;
+update resource, resourcelink set resource.company_id = resourcelink.company_id, resource.vacancy_id = resourcelink.vacancy_id where resource.id = resourcelink.resource_id;
+drop table resourcelink;
 
 -- channels --
 

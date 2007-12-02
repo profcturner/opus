@@ -245,7 +245,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
         }
         else
         {
-          $date = parse_date($value);
+          $date = AssessmentStructure::parse_date($value);
           if(!checkdate($date['month'], $date['day'], $date['year']))
           {
             array_push($error, $this->human . " is invalid.");
@@ -258,6 +258,16 @@ class AssessmentStructure extends DTO_AssessmentStructure
     array_merge($error, $this->validate_variable_options($value));
 
     return($error);
+  }
+
+  function parse_date($textdate)
+  {
+    $parts = explode("/", $textdate);
+    $date['day'] = $parts[0];
+    $date['month'] = $parts[1];
+    $date['year'] = $parts[2];
+
+    return($date);
   }
 
 
