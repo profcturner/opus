@@ -107,6 +107,15 @@ alter table assessment drop column submission_url;
 alter table assessment drop column results_url;
 alter table assessment change column assessment_id id int unsigned not null auto_increment;
 
+update assessment set student_description="First Visit", template_filename='assessment/uu/first_visit_nomark.tpl' where id = 1;
+update assessment set student_description="Technical Report", template_filename='assessment/uu/technical_report.tpl' where id = 2;
+update assessment set student_description="Final Visit", template_filename='assessment/uu/final_visit.tpl' where id = 3;
+update assessment set student_description="Final Report", template_filename='assessment/uu/placement_report.tpl' where id = 5;
+update assessment set student_description="Supervisor's Report", template_filename='assessment/uu/industrial_report.tpl' where id = 6;
+update assessment set student_description="Presentation", template_filename='assessment/uu/presentation.tpl' where id = 7;
+update assessment set student_description="Health & Safety", template_filename='assessment/uu/student_healthsafety.tpl' where id = 8;
+update assessment set student_description="First Visit", template_filename='assessment/uu/first_visit.tpl' where id = 9;
+
 -- assessmenttotal --
 
 rename table assessmenttotals to assessmenttotal;

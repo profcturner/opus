@@ -27,47 +27,36 @@ the data can be submitted.</p>
 
 
 {* If results exist, give a summary *}
-{if $assessment->assessment_results->created}
-<h3 align="center">Assessment Information</h3>
-<p align="center">This assessment has  been carried out.<br />
-{* if we have specific marks, give that information *}
-{if $assessment->assessment_results->percentage}
-The mark was
-{$assessment->assessment_results->mark}
- out of
-{$assessment->assessment_results->outof}
- which is
-{$assessment_assessment_results->percentage}%.
-<br/>
-{#provisional_results#}
-{/if} {* specific marks *}
-</p>
-
+{if $assessment->assessment_results.created}
+<p><strong>This assessment has  been carried out.</strong>
+<div id="table_list">
 <table>
 <tr>
-<th>Assessment Date</th><td>
-{$assessment->assessment_results->assessed}
-</td>
+  <th>Assessment Date</th>
+  <th>Recorded Date</th>
+  {if $assessment->assessment_results.modified}
+  <th>Modified Date</th>
+  {/if}
+  <th>Assessed by</th>
+  {if $assessment->assessment_results.percentage != 0}
+  <th>Result</th>
+  {/if}
 </tr>
 <tr>
-<th>Recorded Date</th><td>
-{$assessment->assessment_results->created}
-</td>
-</tr>
-{if $assessment->assessment_results->modified}
-<tr>
-<th>Modified Date</th><td>
-{$assessment->assessment_results->modified}
-</td>
-</tr>
-{/if}
-<tr>
-<th>Assessed by</th><td>
-{$assessment->assessor_name|escape:"htmlall"}
-</td>
+  <td>{$assessment->assessment_results.assessed}</td>
+  <td>{$assessment->assessment_results.created}</td>
+  {if $assessment->assessment_results.modified}
+  <td>{$assessment->assessment_results.modified}</td>
+  {/if}
+  <td>{$assessment->assessor_name|escape:"htmlall"}</td>
+  {if $assessment->assessment_results.percentage != 0}
+  <td>{$assessment->assessment_results.percentage}% ({$assessment->assessment_results.mark}/{$assessment->assessment_results.outof})</td>
+  {/if}
 </tr>
 </table>
-<br />
+</div>
+{#provisional_results#}
+</p>
 {/if} {* if results exist end *}
 
 {* Common information required in all forms *}
