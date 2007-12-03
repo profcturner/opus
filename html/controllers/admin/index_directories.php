@@ -686,6 +686,10 @@
   function manage_applicants(&$waf, $user, $title)
   {
     $vacancy_id = (int) WA::request("id");
+    require_once("model/Vacancy.class.php");
+
+    $vacancy = Vacancy::load_by_id($vacancy_id);
+    $waf->log("applicants for vacancy " . $vacancy->description . "(" . $vacancy->_company_id . ") viewed");
 
     require_once("model/Application.class.php");
     $possible_status = array('unseen','seen','invited to interview','missed interview','offered','unsuccessful');
@@ -703,6 +707,9 @@
     $old_status = WA::request("old_status");
     $send = WA::request("send");
     $id = (int) WA::request("id");
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id();
+    $waf->assign("vacancy", $vacancy);
 
     // Array of student ids for which status is changed
     $status_changes = array();
@@ -714,16 +721,19 @@
     // Check if CVs were requested
     if(!empty($send))
     {
+      require_once("model/CVCombined.class.php");
       // Send CVs via email
       foreach($send as $student_id)
       {
-
+        // Send me the combined CV
+        CVCombined::email_cv($student_id, User::get_id(), $id);
       }
     }
 
     // Check if changes were made to status, if so offer up a dialog
     if(count($status_changes))
     {
+      $waf->log("status changes were made to applicants on vacancy " . Vacancy::get_name($id));
       $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/message_applicants.tpl");
     }
     else

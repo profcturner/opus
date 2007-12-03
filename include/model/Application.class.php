@@ -86,7 +86,7 @@ class Application extends DTO_Application
       $fields['modified'] = date("YmdHis");
     }
 
-    $application = Application::load_by_id($fields[id]);
+    $application = Application::load_by_id($fields["id"]);
     $application->_update($fields);
   }
 
@@ -219,5 +219,35 @@ class Application extends DTO_Application
     }
     return $nvp_array;
   }
+
+  function get_id_for_vacancy($vacancy_id, $student_id)
+  {
+    $vacancy_id = (int) $vacancy_id;
+    $student_id = (int) $student_id;
+    $application = new Application;
+    $id = $application->_get_fields("where vacancy_id = $vacancy_id and student_id = $student_id");
+    return($id);
+  }
+
+  /**
+  * labels an application as seen, only if it is currently unseen
+  *
+  * @param int $application_id the id from the application table
+  */
+  function ensure_seen($application_id)
+  {
+    $application = Application::load_by_id($application_id);
+    if($application->id)
+    {
+      if($application->status == 'unseen')
+      {
+        $fields['status'] = 'seen';
+        $fields['status_modified'] = date("YmdHis");
+        $fields['id'] = $application->id;
+        Application::update($fields);
+      }
+    }
+  }
+
 }
 ?>

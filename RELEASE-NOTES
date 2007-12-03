@@ -39,7 +39,7 @@ attractive. Nevertheless, there are some minor changes to note.
   large which can be useful for faculty staff and staff from central departments.
 
 * CVs, now when "viewed" either directly, or with emails, are registered as
-  seem (closes bug #202). They will also be cached in the OPUS database,
+  seen (closes bug #202). They will also be cached in the OPUS database,
   making some operations quicker. It will be possible for companies to select
   a number of CVs (many at a time) that will be subsequently emailed to them.
   (closes wishlist bug #175).
@@ -67,7 +67,7 @@ attractive. Nevertheless, there are some minor changes to note.
   found in time. (closes wishlist bug #214).
 
 * Vacancies will now have a type associated with them, which can be arbitrarily
-  configured by administrators. There might be for example "One Year Sandwick",
+  configured by administrators. There might be for example "One Year Sandwich",
   "one month", "summer placement", "graduate" and placement teams will be
   able to decide which types are suitable for their groups to meet assessment
   criteria. (closes wishlist bug #213)

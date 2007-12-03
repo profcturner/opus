@@ -1,4 +1,26 @@
 <?php
+/**
+* Encapulates many classes that handle assessments into one unit
+* @package OPUS
+*/
+
+/**
+* Encapulates many classes that handle assessments into one unit
+*
+* In order to allow easy creation of assessment templates, a single assessment object
+* is made available to extract information about the assessment. This is that object.
+* It gathers together totals, results, weighting and more.
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @see Assessment.class.php
+* @see AssessmentRegime.class.php
+* @see AssessmentStructure.class.php
+* @see AssessmentTotal.class.php
+* @see AssessmentResult.class.php
+* @package OPUS
+*
+*/
 
 class AssessmentCombined
 {
