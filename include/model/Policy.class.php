@@ -65,75 +65,6 @@ class Policy extends DTO_Policy
     return(self::$_field_defs);
   }
 
-/*
-  function is_auth_for_course($course_id, $category, $permission)
-  {
-    // root users have automatic access by definition
-    if(User::is_root()) return(TRUE);
-  
-    // Well, the user better be an admin or...
-    if(!is_admin())
-    {
-      // ... a course director!
-      if(!is_staff()) return(FALSE);
-      if(!is_course_director()) return(FALSE);
-    }
-  
-    // Ok, now down to basics... Check the major loaded policy
-    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return(FALSE);
-  
-    // special check for course director
-    if(is_staff())
-    {
-      $query = "SELECT * FROM coursedirectors WHERE staff_id=" . $_SESSION['user']['id'] .
-              " AND course_id=$course_id";
-      $result = mysql_query($query)
-        or print_mysql_error2("Unable to check course director policy", $query);
-  
-      // Determine if the course is specified
-      if(!mysql_num_rows($result)) $decision = FALSE;
-      else
-      {
-        // It is, so check for any overriding local policy
-        $decision = TRUE;
-        $row = mysql_fetch_array($result);
-        if(!empty($row["policy_id"]))
-        {
-          $policy = load_policy($row["policy_id"]);
-          $decision = check_policy($policy, $category, $permission);
-        }
-      }
-      mysql_free_result($result);
-      return($decision);
-    }
-  
-    // Ok, this is an admin user...
-    // Finally, check that we are specified for the course and there is
-    // no overriding policy in the course
-    $query = "SELECT * FROM admincourse WHERE admin_id=" . $_SESSION['user']['id'] .
-            " AND course_id=$course_id";
-    $result = mysql_query($query)
-      or print_mysql_error2("Unable to check admin course policy", $query);
-  
-    // Determine if the course is specified
-    if(!mysql_num_rows($result)) $decision = FALSE;
-    else
-    {
-      // It is, so check for any overriding local policy
-      $decision = TRUE;
-      $row = mysql_fetch_array($result);
-      if(!empty($row["policy_id"]))
-      {
-        $policy = load_policy($row["policy_id"]);
-        $decision = check_policy($policy, $category, $permission);
-      }
-    }
-    mysql_free_result($result);
-  
-    return($decision);
-  }
-*/
-
   function load_by_id($id) 
   {
     $policy = new Policy;
@@ -373,7 +304,7 @@ class Policy extends DTO_Policy
     if(!User::is_admin()) return false;
 
     // Ok, now down to basics... Check the major loaded policy
-    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+    if(!Policy::check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
 
     if(empty($faculty_id)) return false;
     // Finally, check that we are specified for the faculty and there is
@@ -419,7 +350,7 @@ class Policy extends DTO_Policy
     if(!User::is_admin()) return false;
 
     // Ok, now down to basics... Check the major loaded policy
-    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+    if(!Policy::check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
 
     if(empty($school_id)) return false;
     // Finally, check that we are specified for the school and there is
@@ -465,7 +396,7 @@ class Policy extends DTO_Policy
     if(!User::is_admin()) return false;
 
     // Ok, now down to basics... Check the major loaded policy
-    if(!check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
+    if(!Policy::check_policy($_SESSION['user']['policy'], $category, $permission)) return false;
 
     if(empty($programme_id)) return false;
     // Finally, check that we are specified for the programme and there is
