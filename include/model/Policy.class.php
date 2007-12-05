@@ -250,6 +250,7 @@ class Policy extends DTO_Policy
         $waf->log("no policy for admin user");
         $waf->halt("error:policy:no_policy");
       }
+      $_SESSION['user']['policy'] = Policy::load_by_id($policy_id);
 
       if($admin->inst_admin == 'yes')
       {
@@ -262,7 +263,6 @@ class Policy extends DTO_Policy
       // Need to think about this one... for course directors
       return false;
     }
-    $_SESSION['user']['policy'] = Policy::load_by_id($policy_id);
     return(true);
   }
 

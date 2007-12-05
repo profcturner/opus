@@ -161,6 +161,8 @@ function load_user($username)
     Preference::load_all($user->reg_number);
 
     $_SESSION['lastitems'] = new Lastitems(10);
+    require_once("model/Policy.class.php");
+    Policy::load_default_policy();
   }
 
   $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
