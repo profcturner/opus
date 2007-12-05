@@ -50,6 +50,13 @@ class ProgrammeAdmin extends DTO_ProgrammeAdmin
     return $programmeadmin;
   }
 
+  function load_where($where_clause) 
+  {
+    $programmeadmin = new ProgrammeAdmin;
+    $programmeadmin->_load_where($where_clause);
+    return $programmeadmin;
+  }
+
   function insert($fields) 
   {
     $programmeadmin = new ProgrammeAdmin;

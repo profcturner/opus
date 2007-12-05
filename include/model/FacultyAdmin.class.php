@@ -50,6 +50,13 @@ class FacultyAdmin extends DTO_FacultyAdmin
     return $facultyadmin;
   }
 
+  function load_where($where_clause)
+  {
+    $facultyadmin = new FacultyAdmin;
+    $facultyadmin->_load_where($where_clause);
+    return $facultyadmin;
+  }
+
   function insert($fields) 
   {
     $facultyadmin = new FacultyAdmin;

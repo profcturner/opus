@@ -42,6 +42,7 @@ function main()
 
   // We need requires for any session contained objects before the session starts
   require_once("model/Lastitems.class.php");
+  require_once("model/Policy.class.php"); // Not happy to have to read this for all classes
 
   // Initialise the Web Application Framework
   global $waf;
@@ -161,15 +162,13 @@ function load_user($username)
     Preference::load_all($user->reg_number);
 
     $_SESSION['lastitems'] = new Lastitems(10);
+    $_SESSION['waf']['user'] = $waf->user;
     require_once("model/Policy.class.php");
     Policy::load_default_policy();
   }
-
   $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
-  $_SESSION['waf']['user'] = $waf->user;
   User::update($fields);
   drop_cookie();
-  $waf->assign("cookie", $_COOKIE);
 }
 
 function drop_cookie()

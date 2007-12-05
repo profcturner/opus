@@ -155,10 +155,14 @@ class Programme extends DTO_Programme
     return $nvp_array;
   }
 
-  function get_all_organisation()
+  function get_all_organisation($filter = true)
   {
     require_once("model/Faculty.class.php");
     require_once("model/School.class.php");
+
+    // See if we should see everything
+    if(!$filter) $auth_institution = true;
+    else $auth_institution = Policy::is_auth_for_institution('student', 'list');
 
     $final_array = array();
     // First we need an array of faculties
@@ -166,15 +170,29 @@ class Programme extends DTO_Programme
     // Which we will augment with an array of schools
     foreach($faculties as $faculty_id => $faculty_name)
     {
+      if($auth_institution) $auth_faculty = true;
+      else $auth_faculty = Policy::is_auth_for_faculty($faculty_id, 'student', 'list');
+
       // Get the school information
       $schools = School::get_id_and_field("name", "where faculty_id=" . $faculty_id);
       $school_array = array();
       foreach($schools as $school_id => $school_name)
       {
+        if($auth_faculty) $auth_school = true;
+        else $auth_school = Policy::is_auth_for_school($school_id, 'student', 'list');
+
         // Augment information with programmes
-        $school['programmes'] = Programme::get_id_and_description("where school_id=" . $school_id);
+        $programmes = Programme::get_id_and_description("where school_id=" . $school_id);
         $school['id'] = $school_id;
         $school['name'] = $school_name;
+        if(!$auth_school)
+        {
+          foreach($programmes as $programme_id => $program_description)
+          {
+            if(!Policy::is_auth_for_programme($programme_id, 'student', 'list')) unset($programmes[$programme_id]);
+          }
+        }
+        $school['programmes'] = $programmes;
         // Only add the school if some programmes are present
         if(count($school['programmes'])) array_push($school_array, $school);
       }
@@ -182,7 +200,7 @@ class Programme extends DTO_Programme
       $faculty['name'] = $faculty_name;
       $faculty['schools'] = $school_array;
       // Only add the faculty if there are schools present
-      if(count($faculty['schools'])) array_push($final_array, $faculty);
+      if(count($faculty['schools']) && $auth_school) array_push($final_array, $faculty);
     }
     return($final_array);
   }

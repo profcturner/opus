@@ -181,8 +181,9 @@ class Policy extends DTO_Policy
         $waf->log("no policy for admin user");
         $waf->halt("error:policy:no_policy");
       }
-      $_SESSION['user']['policy'] = Policy::load_by_id($policy_id);
-
+      $policy = Policy::load_by_id($policy_id);
+      $_SESSION['user']['policy'] = $policy;
+      $waf->log("security policy " . $policy->name . " loaded", PEAR_LOG_DEBUG);
       if($admin->inst_admin == 'yes')
       {
         $_SESSION['user']['policy']['institutional_admin'] = true;
@@ -273,7 +274,7 @@ class Policy extends DTO_Policy
     // Well, the user better be an admin then..
     if(!User::is_admin()) return false;
 
-    if($_SESSION['user']['policy']['institutional_admin'])
+    if($_SESSION['user']['policy']->institutional_admin)
     {
       return(Policy::check_default_policy($category, $permission));
     }
@@ -312,7 +313,7 @@ class Policy extends DTO_Policy
 
     require_once("model/FacultyAdmin.class.php");
     $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
-    $facultyadmin = SchoolAdmin::load_where("where faculty_id=$faculty_id and admin_id=$admin_id");
+    $facultyadmin = FacultyAdmin::load_where("where faculty_id=$faculty_id and admin_id=$admin_id");
 
     // Determine if the faculty is specified
     if(!$facultyadmin->id) $decision = false;
@@ -404,7 +405,7 @@ class Policy extends DTO_Policy
 
     require_once("model/ProgrammeAdmin.class.php");
     $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
-    $programmeadmin = SchoolAdmin::load_where("where programme_id=$programme_id and admin_id=$admin_id");
+    $programmeadmin = ProgrammeAdmin::load_where("where programme_id=$programme_id and admin_id=$admin_id");
 
     // Determine if the programme is specified
     if(!$programmeadmin->id) $decision = false;
