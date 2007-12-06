@@ -200,7 +200,7 @@ class Programme extends DTO_Programme
       $faculty['name'] = $faculty_name;
       $faculty['schools'] = $school_array;
       // Only add the faculty if there are schools present
-      if(count($faculty['schools']) && $auth_school) array_push($final_array, $faculty);
+      if(count($faculty['schools'])) array_push($final_array, $faculty);
     }
     return($final_array);
   }

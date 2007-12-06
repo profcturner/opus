@@ -312,13 +312,15 @@ class Policy extends DTO_Policy
     // no overriding policy in the faculty
 
     require_once("model/FacultyAdmin.class.php");
-    $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
+    $admin_id = User::get_id();
     $facultyadmin = FacultyAdmin::load_where("where faculty_id=$faculty_id and admin_id=$admin_id");
 
     // Determine if the faculty is specified
     if(!$facultyadmin->id) $decision = false;
     else
     {
+      // If the policy_id is 0, then there is no local override and so we say OK
+      if($facultyadmin->policy_id == 0) return(true);
       // It is, so check for any overriding local policy
       $decision = true;
       $policy = Policy::load_by_id($facultyadmin->policy_id);
@@ -358,13 +360,15 @@ class Policy extends DTO_Policy
     // no overriding policy in the school
 
     require_once("model/SchoolAdmin.class.php");
-    $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
+    $admin_id = User::get_id();
     $schooladmin = SchoolAdmin::load_where("where school_id=$school_id and admin_id=$admin_id");
 
     // Determine if the school is specified
     if(!$schooladmin->id) $decision = false;
     else
     {
+      // If the policy_id is 0, then there is no local override and so we say OK
+      if($schooladmin->policy_id == 0) return(true);
       // It is, so check for any overriding local policy
       $decision = true;
       $policy = Policy::load_by_id($schooladmin->policy_id);
@@ -404,13 +408,15 @@ class Policy extends DTO_Policy
     // no overriding policy in the programme
 
     require_once("model/ProgrammeAdmin.class.php");
-    $admin_id = User::get_id(); // todo, possible conflict user_id, admin_id
+    $admin_id = User::get_id();
     $programmeadmin = ProgrammeAdmin::load_where("where programme_id=$programme_id and admin_id=$admin_id");
 
     // Determine if the programme is specified
     if(!$programmeadmin->id) $decision = false;
     else
     {
+      // If the policy_id is 0, then there is no local override and so we say OK
+      if($programmeadmin->policy_id == 0) return(true);
       // It is, so check for any overriding local policy
       $decision = true;
       $policy = Policy::load_by_id($programmeadmin->policy_id);
