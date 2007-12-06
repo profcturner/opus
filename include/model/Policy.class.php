@@ -235,7 +235,7 @@ class Policy extends DTO_Policy
     if(User::is_root()) return true;
 
     // Check for institutional permission
-    if(Policy::is_auth_for_university($category, $permission)) return true;
+    if(Policy::is_auth_for_institution($category, $permission)) return true;
 
     // Get the programme id, and other unit ids
     // if undefined, only root users can deal with them
