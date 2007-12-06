@@ -334,6 +334,13 @@ class Admin extends DTO_Admin
     $admin->_remove_where("WHERE id=$id");
   }
 
+  function get_user_id($id)
+  {
+    $id = (int) $id; // Security
+    $admin = new Admin;
+    return($admin->_get_fields("user_id","where id='$id'"));
+  }
+
   function get_user_id_and_name($where_clause="")
   {
     $admin = new Admin;

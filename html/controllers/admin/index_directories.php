@@ -1010,7 +1010,7 @@
 
   function supervisor_directory(&$waf)
   {
-    if(!Policy::check_default_policy("supervisor", "list")) $waf->halt("error:policy:permissions");
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
 
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("supervisor_directory_form");
@@ -1026,7 +1026,7 @@
 
   function search_supervisors(&$waf)
   {
-    if(!Policy::check_default_policy("supervisor", "list")) $waf->halt("error:policy:permissions");
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
 
     require_once("model/Supervisor.class.php");
     $search = WA::request("search");
@@ -1055,7 +1055,7 @@
 
   function simple_search_supervisors(&$waf)
   {
-    if(!Policy::check_default_policy("supervisor", "list")) $waf->halt("error:policy:permissions");
+    if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
 
     require_once("model/Supervisor.class.php");
     $initial = WA::request("initial");
@@ -1288,7 +1288,7 @@
   {
     require_once("model/Admin.class.php");
     $id = WA::request("id");
-    if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
+    if(!User::is_root() && (Admin::get_user_id($id) != User::get_id()))  $waf->halt("error:policy:permissions");
 
     $admin = Admin::load_by_id($id);
     $changes = WA::request("changes");
@@ -1300,7 +1300,7 @@
   function edit_admin_do(&$waf, &$user) 
   {
     $id = WA::request("id");
-    if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
+    if(!User::is_root() && (Admin::get_user_id($id) != User::get_id()))  $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "edit_admin");
   }

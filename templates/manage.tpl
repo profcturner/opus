@@ -126,7 +126,7 @@
 {elseif $mode == "add"}
 
       {if $def.type == "text"}
-        <input type="text" name="{$header}" size="{$def.size|default:40}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
+        <input type="text" name="{$header}" size="{$def.size|default:40}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header|escape:"htmlall"}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
       {elseif $def.type == "email"}
         <input type="text" name="{$header}" size="{$def.size|default:60}" style="color:#000099;" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
       {elseif $def.type == "url"}

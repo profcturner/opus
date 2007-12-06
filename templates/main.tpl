@@ -73,7 +73,7 @@
 {if $config[opus][cleanurls]}
           <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="{$sec[0][1]}/{$sec[0][3]}">{$sec_name|capitalize}</a>
 {else}        
-          <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="?section={$sec[0][1]}&function={$sec[0][3]}&page=">{$sec_name|capitalize}</a>
+          <a title="click to access section: {$sec_name|capitalize}" {if $sec[0][4]}class="{$sec[0][4]}"{else}class="{if $section == "$sec[0][1]"}current{/if}{if $smarty.foreach.sec_loop.first}first{/if}"{/if} href="?section={$sec[0][1]}&function={$sec[0][3]}&page=1">{$sec_name|capitalize}</a>
 {if $sec_name != "logout"}
           <ul>
 {section loop=$sec name="subsec"}

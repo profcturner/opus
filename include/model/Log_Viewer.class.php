@@ -34,7 +34,12 @@ class Log_Viewer
     require_once("model/Policy.class.php");
     if(!Policy::check_default_policy("log", $logname))
     {
-      $waf->halt("error:policy:no_permission");
+      // The user will be trapped here, so we default back to something that should be safe
+      require_once("model/Preference.class.php");
+      $form_options = Preference::get_preference("log_viewer_form");
+      $form_options['logfile'] = 'general';
+      Preference::set_preference("log_viewer_form", $form_options);
+      $waf->halt("error:policy:permission");
     }
 
     $waf->assign("selected_log", $logname);
