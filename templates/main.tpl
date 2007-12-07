@@ -2,13 +2,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 {if $refresh}
-  <meta http-equiv="Refresh" content="{$refresh}">
+  <meta http-equiv="Refresh" content="{$refresh}" />
 {/if}
   <title>{$config.opus.title_short}{if $section} | {$section|capitalize}{/if}{if #page_title#} | {#page_title#|capitalize}{/if}</title>
-  <link REL="stylesheet" href="{$config.opus.url}/css/default.css" type="text/css">
-  <link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css">
+  <link REL="stylesheet" href="{$config.opus.url}/css/default.css" type="text/css" />
+  <link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css" />
   <style type="text/css"> @import url("{$config.opus.url}/css/local.css");</style>
   <style type="text/css"> @import url("{$config.opus.url}/css/{$currentgroup}/local.css");</style>
   <!--[if gt IE 5.0]><![if lt IE 7]>
@@ -78,7 +78,7 @@
           <ul>
 {section loop=$sec name="subsec"}
             <li> 
-              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if}{if $sec[subsec][4]}href="{$sec[subsec][4]}">{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=">{/if}{$sec[subsec][0]|capitalize}</a>
+              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if}{if $sec[subsec][4]}href="{$sec[subsec][4]}">{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1">{/if}{$sec[subsec][0]|capitalize}</a>
             </li>
 {/section}
           </ul>
@@ -98,7 +98,7 @@
 {if $config[opus][cleanurls]} 
           <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{#application_url#}{$sec[subsec][1]}/{$sec[subsec][3]}">{$sec[subsec][0]|capitalize}</a>
 {else}
-         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} sjsj="{$sec[subsec][4]}"{if $sec[subsec][4]}href="{$sec[subsec][4]}"{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=">{$sec[subsec][0]|capitalize}{/if}</a>
+         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} {if $sec[subsec][4]}href="{$sec[subsec][4]}"{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1">{$sec[subsec][0]|capitalize}{/if}</a>
 {/if} 
         </li>
 {/section}

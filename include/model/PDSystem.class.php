@@ -8,6 +8,8 @@
 /**
 * PDSystem integration and support
 *
+* This class handles all links to the PDSystem, including caching of data.
+*
 * @author Colin Turner <c.turner@ulster.ac.uk>
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
 * @package OPUS
@@ -25,6 +27,7 @@ class PDSystem
   * @param string $format is the format return that is expected
   *
   * @return data encapulates as PHP arrays or XML dependant on mode called.
+  * @todo I suspect the XML functionality is broken, but since v4 will not use it, this is not a priority
   */
   function get_data($section_name, $service_name, $input, $format = 'PHP')
   {
@@ -94,7 +97,7 @@ class PDSystem
   */
   function get_cv_templates()
   {
-    return(PDSystem::get_data("get_cv_template_list", "", "XML"));
+    return(PDSystem::get_data("cv", "get_cv_template_list"));
   }
 
 
@@ -112,7 +115,7 @@ class PDSystem
 
     $reg_number = User::get_reg_number($student_id);
 
-    return(PDSystem::get_data("get_cv_status", "reg_number=$reg_number&", "XML"));
+    return(PDSystem::get_data("cv", "get_cv_status", "reg_number=$reg_number&"));
   }
   
   /**
@@ -130,13 +133,13 @@ class PDSystem
   function get_valid_templates($student_id)
   {
     global $log;
-  
+
     // The PDSystem uses student numbers more directly
     $student_reg = get_login_name($student_id);
-  
+
     // Fetch all possible templates
     $templates = PDSystem::get_cv_templates();
-  
+
     // Fetch CV status for this student
     $cv_status = PDSystem::get_cv_status($student_id);
 
@@ -170,29 +173,12 @@ class PDSystem
   function get_archived_cvs($student_id)
   {
     global $conf;
-    global $log;
-    global $page; // We might create a page
-  
+    global $waf;
+
     // The PDSystem uses student numbers more directly
-    $student_reg = get_login_name($student_id);
-  
-    $url = $conf['pdp']['host'] . "/pdp/controller.php?" .
-      "function=get_archived_cvs" .
-      "&reg_number=$student_reg" .
-      "&username=" . $conf['pdp']['user'] . "&password=" . $conf['pdp']['pass'];
-  
-    //$log['security']->LogPrint("Fetching file $url");
-    $file = @file_get_contents($url);
-  
-    if($file == FALSE)
-    {
-      $page = new HTMLOPUS("Error");
-      $log['debug']->LogPrint("Warning! PDP_get_archived_cvs failed to access the PDSystem");
-      die_gracefully("The PMS was unable to acquire the CV archive list from the PDP system.");
-    }
-  
-    $archived_cvs = simplexml_load_string($file);
-    return($archived_cvs);
+    $student_reg = User::get_reg_number($student_id);
+
+    return(PDSystem::get_data("cv", "get_cv_template_list", "reg_number=$student_reg"));
   }
 
   /**

@@ -1320,51 +1320,39 @@
   }
 
   // Assessments
+
+  /**
+  * show an assessment for viewing or editing
+  */
   function edit_assessment(&$waf, &$user)
   {
-    if(!User::is_root()) $waf->halt("error:policy:permissions");
+    // Note security is handled internally by the AssessmentCombined object
 
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("id");
     // and for whom
     $assessed_id = (int) WA::request("assessed_id");
-
-/*
-    require_once("model/Student.class.php");
-    $student = Student::load_by_user_id($assessed_id);
-    require_once("model/AssessmentRegime.class.php");
-    $regime_item = AssessmentRegime::load_by_id($regime_id);
-    // Now get the assessment itself
-    require_once("model/Assessment.class.php");
-    $assessment = Assessment::load_by_id($regime_item->assessment_id);
-    // and its structure
-    require_once("model/AssessmentStructure.class.php");
-    $assessment_structure = AssessmentStructure::get_all("where assessment_id=" . $regime_item->assessment_id);
-    // And any results (todo)
-    require_once("model/AssessmentTotal.class.php");
-    $assessment_total = AssessmentTotal::get_all("where regime_id=$regime_id and assessed_id=$assessed_id");
-    if($assessment_total[0]->assessor_id)
-    {
-      require_once("model/User.class.php");
-      $assessor = User::load_by_id($assessor);
-    }
-    require_once("model/AssessmentResult.class.php");
-    $assessment_results = AssessmentResult::get_all("where regime_id=$regime_id and assessed_id=$assessed_id");
-
-    // Assign this all to Smarty
-    $waf->assign("assessed_user", $student);
-    $waf->assign("assessor", $assessor);
-    $waf->assign("assessment", $assessment);
-    $waf->assign("assessment_structure", $assessment_structure);
-    $waf->assign("assessment_total", $assessment_total[0]);
-    $waf->assign("assessment_results", $assessment_results);
-    $waf->assign("regime_item", $regime_item);
-*/
     require_once("model/AssessmentCombined.class.php");
     $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
     $waf->assign("assessment", $assessment);
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
+
+  /**
+  * process inbound assessment information
+  */
+  function edit_assessment_do(&$waf, &$user)
+  {
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("regime_id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id(), true); // try to save
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+  }
+
 
   // Notes
 

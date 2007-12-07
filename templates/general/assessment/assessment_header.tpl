@@ -1,11 +1,16 @@
 {* Smarty *}
 {* assessment/assessment_header.tpl *}
 
-{if !$canEdit}
+{* If we are submitting, and errors occured, warn the user *}
+{if $assessment->get_error()}
 <div id="warning">
-{#cannot_edit#}
+{#errors_occurred#}
+<br /><br />
+{foreach from=$assessment->get_error() item=error_line}
+{$error_line}<br />
+{/foreach}
 </div>
-{/if}
+{/if} {* on error *}
 
 <h2>
 {$assessment->regime->student_description|escape:"htmlall"}
@@ -13,18 +18,6 @@
 <h3>
 {$assessment->assessed_name|escape:"htmlall"}
 </h3>
-
-{* If we are submitting, and errors occured, warn the user *}
-{*
-{if $assessment->get_error() && $mode=="AssessmentSubmitResults"}
-<div class="warning">
-<h2>Errors occurred</h2>
-<p align="center">See the <a href="#errors">bottom</a> of the 
-page for more detail. These errors must be corrected before 
-the data can be submitted.</p>
-</div>
-{/if}*} {* on error *}
-
 
 {* If results exist, give a summary *}
 {if $assessment->assessment_results.created}
@@ -62,9 +55,8 @@ the data can be submitted.</p>
 {* Common information required in all forms *}
 
 <form method="post">
-<input type="hidden" name="section" value="{$target_section}" />
+<input type="hidden" name="section" value="{$section}" />
 <input type="hidden" name="function" value="edit_assessment_do" />
 <input type="hidden" name="regime_id" value="{$assessment->regime->id}" />
-<input type="hidden" name="mode" value="AssessmentSubmitResults" />
 <input type="hidden" name="assessed_id" value="{$assessment->assessed_id}" />
 

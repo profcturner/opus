@@ -47,13 +47,13 @@ class AssessmentResult extends DTO_AssessmentResult
     $assessmentresult = new AssessmentResult;
     $assessmentresult->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $assessmentresult = AssessmentResult::load_by_id($fields[id]);
     $assessmentresult->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -63,7 +63,7 @@ class AssessmentResult extends DTO_AssessmentResult
     $assessmentresult->id = $id;
     return $assessmentresult->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -76,7 +76,7 @@ class AssessmentResult extends DTO_AssessmentResult
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
     $assessmentresult = new AssessmentResult;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -97,9 +97,15 @@ class AssessmentResult extends DTO_AssessmentResult
 
 
   function remove($id=0) 
-  {  
+  {
     $assessmentresult = new AssessmentResult;
     $assessmentresult->_remove_where("WHERE id=$id");
+  }
+
+  function remove_where($where_clause="where id=0")
+  {
+    $assessmentresult = new AssessmentResult;
+    $assessmentresult->_remove_where($where_clause);
   }
 
   function get_fields($include_id = false) 

@@ -72,13 +72,13 @@ class AssessmentStructure extends DTO_AssessmentStructure
     $assessmentstructure = new AssessmentStructure;
     $assessmentstructure->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $assessmentstructure = AssessmentStructure::load_by_id($fields[id]);
     $assessmentstructure->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -88,7 +88,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
     $assessmentstructure->id = $id;
     return $assessmentstructure->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -121,31 +121,28 @@ class AssessmentStructure extends DTO_AssessmentStructure
     return $assessmentstructure_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $assessmentstructure = new AssessmentStructure;
     $assessmentstructure->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $assessmentstructure = new AssessmentStructure;
     return  $assessmentstructure->_get_fieldnames($include_id); 
   }
-  function request_field_values($include_id = false) 
+
+  function request_field_values($include_id = false)
   {
     $fieldnames = AssessmentStructure::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
-
   }
 
   /**
@@ -224,6 +221,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
         }
       }
     }
+    //if(count($error)) print_r($error);
     return($error);
   }
 
@@ -253,9 +251,10 @@ class AssessmentStructure extends DTO_AssessmentStructure
         }
       }
     }
-    array_merge($error, $this->validate_variable_minimum($value));
-    array_merge($error, $this->validate_variable_maximum($value));
-    array_merge($error, $this->validate_variable_options($value));
+
+    $error = array_merge($error, $this->validate_variable_minimum($value));
+    $error = array_merge($error, $this->validate_variable_maximum($value));
+    $error = array_merge($error, $this->validate_variable_options($value));
 
     return($error);
   }

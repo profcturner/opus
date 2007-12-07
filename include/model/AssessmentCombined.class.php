@@ -37,8 +37,11 @@ class AssessmentCombined
   var $assessment_results;
   var $assessed_date;
   var $assessment_table_data;
+  var $can_view;
+  var $can_edit;
+  var $save;
 
-  function __construct($regime_id, $assessed_id, $assessor_id)
+  function __construct($regime_id, $assessed_id, $assessor_id, $save = false)
   {
     // A unique value for how an assessment is used
     $this->regime_id   = $regime_id;
@@ -62,8 +65,56 @@ class AssessmentCombined
     $this->load_structure($this->assessment_id);
     $this->load_totals();
     $this->obtain_variables();
-
+    $this->get_permissions();
+    $this->save = $save;
+    if($save){
+      $this->check_variables();
+      $this->save_results();
+      $this->load_totals();
+    }
   }
+
+  private function get_permissions()
+  {
+    // Failsafe
+    $this->can_view = false;
+    $this->can_edit = false;
+
+    if(User::is_admin())
+    {
+      AssessmentCombined::get_admin_permissions();
+    }
+    if(User::is_student())
+    {
+      AssessmentCombined::get_student_permissions();
+    }
+    if(User::is_supervisor())
+    {
+      AssessmentCombined::get_supervisor_permissions();
+    }
+    if(User::is_staff())
+    {
+      AssessmentCombined::get_staff_permissions();
+    }
+  }
+
+  private function get_admin_permissions()
+  {
+    $this->can_view = Policy::is_auth_for_student($this->assessed, "student", "viewAssessment");
+    $this->can_edit = Policy::is_auth_for_student($this->assessed, "student", "editAssessment");
+  }
+
+  private function get_student_permissions()
+  {
+    // Usually they can view
+    $this->can_view = true;
+    if($this->assessed_id != User::get_id()) $this->can_view = false; // should never happen, but in case
+
+    // Usually they cannot edit
+    $this->can_edit = false;
+    if($this->regime->assessor == 'student') $this->can_edit = true;
+  }
+
 
   function load_structure($assessment_id)
   {
@@ -102,11 +153,11 @@ class AssessmentCombined
     {
       if($item->weighting != 0)
       {
-	if($this->variables[$item->name] != "")
-	{
-	  $total += ($this->variables[$item->name] * $item->weighting);
-	  $max   += ($item->max * $item->weighting);
-	}
+        if($this->variables[$item->name] != "")
+        {
+          $total += ($this->variables[$item->name] * $item->weighting);
+          $max   += ($item->max * $item->weighting);
+        }
       }
     }
     if($max)
@@ -120,20 +171,20 @@ class AssessmentCombined
     require_once("model/AssessmentTotal.class.php");
     $now = date("YmdHis");
     $present = FALSE;
-    $fields = array();
-    $fields['regime_id']   = $this->regime_id;
-    $fields['assessed_id'] = $this->assessed_id;
-    $fields['assessor_id'] = $this->assessor_id;
-    $fields['mark'] = $total;
-    $fields['outof'] = $max;
-    $fields['percentage'] = $percentage;
-    $fields['assessed'] = $this->assessed_date;
 
     $assessed_name = $this->assessed_name;
     $assessor_name = $this->assessor_name;
     $assessment_name = $this->regime->student_description;
     if(empty($this->assessment_results))
     {
+      $fields = array();
+      $fields['regime_id']   = $this->regime_id;
+      $fields['assessed_id'] = $this->assessed_id;
+      $fields['assessor_id'] = $this->assessor_id;
+      $fields['mark'] = $total;
+      $fields['outof'] = $max;
+      $fields['percentage'] = $percentage;
+      $fields['assessed'] = $this->assessed_date;
       $fields['created'] = $now;
       $fields['modified'] = NULL;
       AssessmentTotal::insert($fields);
@@ -141,8 +192,13 @@ class AssessmentCombined
     }
     else
     {
-      $fields['modified'] = $now;
-      AssessmentTotal::update($fields);
+      $assessmenttotal = AssessmentTotal::load_where("where assessed_id=" . $this->assessed_id . " and regime_id= " . $this->regime_id);
+      $assessmenttotal->assessor_id = $this->assessor_id;
+      $assessmenttotal->mark = $total;
+      $assessmenttotal->outof = $max;
+      $assessmenttotal->percentage = $percentage;
+      $assessmenttotal->modified = $now;
+      $assessmenttotal->_update();
       $waf->log("assessment $assessment_name updated by $assessor_name for $assessed_name ($percentage%)");
     }
   }
@@ -170,17 +226,18 @@ class AssessmentCombined
     }
 
     // Delete any existing results
-    AssessmentResult::remove("where regime_id = " . $this->regime_id . " and assessed_id = " . $this->assessed_id);
+    require_once("model/AssessmentResult.class.php");
+    AssessmentResult::remove_where("where regime_id = " . $this->regime_id . " and assessed_id = " . $this->assessed_id);
 
     // Assessement date defaults to now if we don't get something more
     // appropriate
-    $assesseddate = $now;
+    $this->assessed_date = $now;
     foreach($this->structure as $item)
     {
       if($item->type == 'assesseddate')
       {
         // assessed dates are special, and stored in totals, not results
-        $assesseddate = make_datetime(AssessmentStructure::parse_date($this->variables[$item->name]));
+        $this->assessed_date = AssessmentCombined::make_datetime(AssessmentStructure::parse_date($this->variables[$item->name]));
       }
       else
       {
@@ -194,8 +251,13 @@ class AssessmentCombined
         AssessmentResult::insert($fields);
       }
     }
-    $this->assesseddate = $assesseddate;
     $this->save_totals();
+  }
+
+  function make_datetime($date)
+  {
+    $datetime = sprintf("%04s%02s%02s120000", $date['year'], $date['month'], $date['day']);
+    return($datetime);
   }
 
   function get_error()
@@ -274,7 +336,7 @@ class AssessmentCombined
         if($item->type == 'checkbox')
         {
           // We still need to validate it, it might be compulsory
-          array_merge($this->error, $item->validate_variable($value));
+          $this->error = array_merge($this->error, $item->validate_variable($value));
         }
         else
         {
@@ -284,8 +346,7 @@ class AssessmentCombined
       }
       else
       {
-        // The variable is inbound, we must validate it
-        array_merge($this->error, $item->validate_variable($value));
+        $this->error = array_merge($this->error, $item->validate_variable($value));
       }
     }
     return($this->error);
@@ -300,11 +361,20 @@ class AssessmentCombined
   */
   function flag_error($name)
   {
+    global $config;
+
+    if(!$this->save) return ""; // Not trying to save yet.
+
     foreach($this->structure as $item)
     {
       if($item->name == $name)
       {
-        if(count($item->validate_variable($this->variables[$name]))) return "<span class=\"error\">**</span>";
+        if(count($item->validate_variable($this->variables[$name])))
+        {
+          if(isset($config['waf']['validation_image_fail']))
+            return ("<img src=\"" . $config['waf']['validation_image_fail'] . "\" alt=\"error\" />&nbsp;");
+          else return "<span class=\"assessment_error\">**</span>";
+        }
         else return "";
       }
     }

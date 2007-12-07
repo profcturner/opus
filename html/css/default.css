@@ -951,3 +951,7 @@ td.vacancy_description {
     text-align: right;
     color: gray;
 }
+
+.assessment_error {
+  color: red;
+}
