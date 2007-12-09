@@ -51,14 +51,12 @@ function nav_staff()
       $student_name=>array
       (
         array("edit", "student", "edit_student", "edit_student"),
-        array("home", "student", "placement_home", "placement_home"),
-        array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
-        array("applications", "student", "manage_applications", "manage_applications"),
         array("assessment", "student", "view_assessments", "view_assessments"),
         array("notes", "student", "list_notes", "list_notes"),
         array("drop", "student", "drop_student", "drop_student")
       )
     );
+    $basic_nav = array_merge_recursive($basic_nav, $student_nav);
   }
 
   // Finally add the recent items

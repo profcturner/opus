@@ -16,7 +16,27 @@
   */
   function home(&$waf)
   {
-    $waf->display("main.tpl", "staff:home:home:home", "staff/home/home.tpl");
+    //$waf->display("main.tpl", "staff:home:home:home", "staff/home/home.tpl");
+    $page = (int) WA::request("page", true);
+
+    $alt_headings = array
+    (
+      'real_name'=>array('type'=>'text', 'size'=>30, 'header'=>true, 'title'=>'Name'),
+      'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year', 'header'=>true),
+    );
+    $waf->assign("alt_headings", $alt_headings);
+
+    manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
+  }
+
+  function edit_student(&$waf)
+  {
+    // Pick up the student
+    $id = (int) WA::request("id");
+    $_SESSION['student_id'] = $id;
+
+    // Jump to the context menu
+    goto("student", "edit_student");
   }
 
   /**

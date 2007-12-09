@@ -168,12 +168,13 @@ class Student extends DTO_Student
 
   function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0) 
   {
+    global $config;
     $student = new Student;
 
     if ($page <> 0) 
     {
-        $start = ($page-1)*ROWS_PER_PAGE;
-        $limit = ROWS_PER_PAGE;
+        $start = ($page-1)*$config['opus']['rows_per_page'];
+        $limit = $config['opus']['rows_per_page'];
         $students = $student->_get_all($where_clause, $order_by, $start, $limit);
     }
     else 
@@ -250,6 +251,18 @@ class Student extends DTO_Student
     $user_id = (int) $user_id; // Security
     $student = new Student;
     return($student->_get_fields("programme_id","where user_id='$user_id'"));
+  }
+
+  /**
+  * gets the academic tutor id
+  *
+  * @param int $user_id the id from the <strong>user</strong> table
+  */
+  function get_academic_user_id($user_id)
+  {
+    $user_id = (int) $user_id; // Security
+    $student = new Student;
+    return($student->_get_fields("academic_user_id","where user_id='$user_id'"));
   }
 
   /**
