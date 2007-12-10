@@ -563,16 +563,19 @@
   {
     if(!Policy::check_default_policy("assessmentgroup", "list")) $waf->halt("error:policy:permissions");
 
-    $group_id = (int) WA::request('id', true);
+    $page = (int) WA::request("page", true);
+    $group_id = (int) WA::request('group_id');
+    if(empty($group_id)) $group_id = (int) WA::request('id');
+    $_SESSION['group_id'] = $group_id;
 
-    manage_objects($waf, $user, "AssessmentRegime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", "where group_id=$group_id", "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
+    manage_objects($waf, $user, "AssessmentRegime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", array("where group_id=$group_id", "ORDER BY student_description", $page), "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
   }
 
   function add_assessmentregime(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    $group_id = (int) WA::request('id', true);
+    $group_id = (int) WA::request('group_id', true);
 
     add_object($waf, $user, "AssessmentRegime", array("add", "configuration", "add_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:add_assessmentregime");
   }
@@ -580,15 +583,15 @@
   function add_assessmentregime_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
+    $group_id = (int) WA::request('group_id', true);
 
-    add_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes", "add_assessmentregime");
+    add_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes&id={$group_id}", "add_assessmentregime");
   }
 
   function edit_assessmentregime(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
-
-    $group_id = (int) WA::request('id', true);
+    $group_id = (int) WA::request('group_id', true);
 
     edit_object($waf, $user, "AssessmentRegime", array("confirm", "configuration", "edit_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), array(array("user_id",$user["user_id"]), array("group_id", $group_id)), "admin:configuration:manage_assessmentgroups:edit_assessmentregime");
   }
@@ -596,22 +599,24 @@
   function edit_assessmentregime_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
+    $group_id = (int) WA::request('group_id', true);
 
-    edit_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes", "edit_assessmentregime");
+    edit_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes&id={$group_id}", "edit_assessmentregime");
   }
 
   function remove_assessmentregime(&$waf, &$user) 
   {
-    $group_id = (int) WA::request('id', true);
+    $group_id = (int) WA::request('group_id', true);
 
-    remove_object($waf, $user, "AssessmentRegime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentregime");
+    remove_object($waf, $user, "AssessmentRegime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes&id={$group_id}")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentregime");
   }
 
   function remove_assessmentregime_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
+    $group_id = (int) WA::request('group_id', true);
 
-    remove_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes");
+    remove_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes&id={$group_id}");
   }
 
   // AssessmentGroupProgrammes
