@@ -21,12 +21,13 @@
   {
     $id = $_SESSION['student_id'];
 
+    // Get the student
     $student = Student::load_by_id($id);
 
-    $assessment_group_id = Student::get_assessment_group_id($student->user_id);
+    //$assessment_group_id = Student::get_assessment_group_id($student->user_id);
     $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
     require_once("model/Placement.class.php");
-    echo "debug " . $student->user_id;
+
     $placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart desc");
     $placement_fields = array(
        'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
@@ -34,10 +35,33 @@
        'jobstart'=>array('type'=>'text', 'size'=>20, 'title'=>'Start','header'=>true),
        'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
     );
-    $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'));
+    $placement_options = array();
 
-    $waf->assign("object", $student);
-    $waf->assign("changes", WA::request("changes"));
+    // Some more information about the most recent placement...
+    if(count($placements)) // Should *always* be true!*
+    {
+      // Get the associated company and vacancy records
+      require_once("model/Company.class.php");
+      $vacancy = Company::load_by_id($placements[0]->company_id);
+      require_once("model/Vacancy.class.php");
+      $vacancy = Vacancy::load_by_id($placements[0]->vacancy_id);
+
+      // Get a contact, for preference, get the one for the vacancy
+      require_once("model/Contact.class.php");
+      if($vacancy->contact_id) $contact = Contact::load_by_user_id($vacancy->contact_id);
+      else
+      {
+        $contacts = Contact::get_all_by_company($placements[0]->company_id);
+        $contact = $contacts[0]; // Will be a primary if one exists
+      }
+
+      $waf->assign("company", $company);
+      $waf->assign("vacancy", $vacancy);
+      $waf->assign("contact", $contact);
+    }
+
+    $waf->assign("student", $student);
+    $waf->assign("mode", "view");
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $student->user_id);
@@ -47,7 +71,7 @@
     $waf->assign("placement_fields", $placement_fields);
     $waf->assign("placement_options", $placement_options);
 
-    $waf->display("main.tpl", "student:myplacement:home:home", "staff/student/edit_student.tpl");
+    $waf->display("main.tpl", "staff:student:edit_student:edit_student", "staff/student/edit_student.tpl");
   }
 
   function view_assessments(&$waf)
