@@ -358,8 +358,11 @@ insert into admin (position, voice, fax, signature, policy_id, user_id) select p
 -- staff migration -- move some data into user --
 update user, staff set user.salutation = staff.title, user.firstname = staff.firstname, user.lastname = staff.surname, user.reg_number = concat('e', staff.staffno) where user.id=staff.user_id;
 
--- contact_id in this table used to be the id from the contact, not user table --
+-- contact_id in these tables used to be the id from the contact, not user table --
 update companycontact, contacts set companycontact.contact_id = contacts.user_id where companycontact.contact_id = contacts.contact_id;
+update vacancy, contacts set vacancy.contact_id = contacts.user_id where vacancy.contact_id = contacts.contact_id;
+
+-- and now move date to the user and new contact table --
 update user, contacts set user.salutation = contacts.title, user.firstname = contacts.firstname, user.lastname = contacts.surname, user.email = contacts.email where user.id = contacts.user_id;
 insert into contact (position, voice, fax, user_id) select position, voice, fax, user_id from contacts;
 
