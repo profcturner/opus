@@ -40,6 +40,8 @@ class AssessmentCombined
   var $can_view;
   var $can_edit;
   var $save;
+  var $early;
+  var $late;
 
   function __construct($regime_id, $assessed_id, $assessor_id, $save = false)
   {
@@ -57,6 +59,8 @@ class AssessmentCombined
 
     // Make sure the error value is empty
     $this->error = "";
+    $this->early = "";
+    $this->late = "";
 
     $this->regime = AssessmentRegime::load_by_id($regime_id);
     $this->assessment_id = $this->regime->assessment_id;
@@ -67,10 +71,19 @@ class AssessmentCombined
     $this->obtain_variables();
     $this->get_permissions();
     $this->save = $save;
-    if($save){
+    if($save)
+    {
+      // Validate, try to save and reload
       $this->check_variables();
       $this->save_results();
       $this->load_totals();
+    }
+    if(empty($this->assessment_results))
+    {
+      // No data yet, check punctuality
+      $punctuality = $this->regime->get_punctuality($this->assessed_id);
+      if($punctuality == 'early') $this->early = true;
+      if($punctuality == 'late') $this->late = true;
     }
   }
 

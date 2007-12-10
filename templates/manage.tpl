@@ -91,6 +91,8 @@
 {* loop through each field of the object *}
 
 {foreach from=$headings key=header item=def}
+{counter assign=tabindex print=false}
+{if $def.type != "hidden" AND !$def.hidden}
   <tr>
     <td class="property">{if $def.title}{$def.title}{else}{$header|replace:"_":" "|capitalize}{/if}</td>
 
@@ -256,17 +258,18 @@
 {/if}
     </td>
   </tr>
+{/if}
 {/foreach}
 
 {if $action_button}
 
   <tr>
-    <td colspan="{if $mode == add || $mode == edit}3{else}2{/if}" class="button"><input type="submit" class="submit" value="{$action_button[0]}" /><input type="hidden" name="section" value="{$action_button[1]}" /><input type="hidden" name="function" value="{$action_button[2]}" /><input type="hidden" name="id" value="{$object->id}" /></td>
+    <td colspan="{if $mode == add || $mode == edit}3{else}2{/if}" class="button"><input tabindex={$tabindex} type="submit" class="submit" value="{$action_button[0]}" /><input tabindex={$tabindex} type="hidden" name="section" value="{$action_button[1]}" /><input tabindex={$tabindex} type="hidden" name="function" value="{$action_button[2]}" /><input tabindex={$tabindex} type="hidden" name="id" value="{$object->id}" /></td>
   </tr>
 {/if}
 </table>
 {section loop=$hidden_values name=hidden_value}
-<input type="hidden" name="{$hidden_values[hidden_value][0]}" value="{$hidden_values[hidden_value][1]}" />
+<input tabindex={$tabindex} type="hidden" name="{$hidden_values[hidden_value][0]}" value="{$hidden_values[hidden_value][1]}" />
 {/section}
 </form>
 </div>

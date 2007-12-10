@@ -48,10 +48,13 @@
   {
     $id = $_SESSION['student_id'];
 
+    $student_user_id = Student::get_user_id($id);
     require_once("model/Student.class.php");
-    $regime_items = Student::get_assessment_regime($id);
+    $regime_items = Student::get_assessment_regime($student_user_id,  &$aggregate_total, &$weighting_total);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $id);
+    $waf->assign("aggregate_total", $aggregate_total);
+    $waf->assign("weighting_total", $weighting_total);
 
     $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
   }

@@ -254,6 +254,18 @@ class Student extends DTO_Student
   }
 
   /**
+  * gets the placement year
+  *
+  * @param int $user_id the id from the <strong>user</strong> table
+  */
+  function get_placement_year($user_id)
+  {
+    $user_id = (int) $user_id; // Security
+    $student = new Student;
+    return($student->_get_fields("placement_year","where user_id='$user_id'"));
+  }
+
+  /**
   * gets the academic tutor id
   *
   * @param int $user_id the id from the <strong>user</strong> table

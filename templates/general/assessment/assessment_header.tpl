@@ -12,6 +12,19 @@
 </div>
 {/if} {* on error *}
 
+{if $assessment->early}
+<div id="warning">
+{#early_assessment#}
+</div>
+{/if}
+
+{if $assessment->late}
+<div id="warning">
+{#late_assessment#}
+</div>
+{/if}
+
+
 <h2>
 {$assessment->regime->student_description|escape:"htmlall"}
 </h2>

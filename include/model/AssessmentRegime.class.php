@@ -25,10 +25,11 @@ class AssessmentRegime extends DTO_AssessmentRegime
     'assessment_id'=>array('type'=>'lookup', 'object'=>'assessment', 'value'=>'description', 'title'=>'Assessment', 'size'=>20, 'var'=>'assessments'),
     'student_description'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Student Description', 'header'=>true, 'mandatory'=>true),
     'weighting'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4, 'header'=>true, 'mandatory'=>true),
-    'assessor'=>array('type'=>'list', 'list'=>array('academic','industrial','student','other'), 'header'=>true),
+    'assessor'=>array('type'=>'list', 'list'=>array('academic'=>'Academic Tutor','industrial'=>'Workplace Supervisor','student'=>'Student (Self)','other'=>'Other'), 'header'=>true),
     'year'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4),
-    'start'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4),
-    'end'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4),
+    'start'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4, 'validation'=>'(^$)|(^[0-9][0-9][0-9][0-9]$)', 'validation_message'=>'must take the form MMDD'),
+    'end'=>array('type'=>'text', 'size'=>4, 'maxsize'=>4, 'validation'=>'(^$)|(^[0-9][0-9][0-9][0-9]$)', 'validation_message'=>'must take the form MMDD'),
+    'group_id'=>array('type'=>'hidden'),
     'outcomes'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>50)
   );
 
@@ -87,13 +88,16 @@ class AssessmentRegime extends DTO_AssessmentRegime
 
   function get_all($where_clause="", $order_by="ORDER BY student_description", $page=0)
   {
+    global $config;
     $assessmentregime = new AssessmentRegime;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $assessmentregimes = $assessmentregime->_get_all($where_clause, $order_by, $start, $limit);
-    } else {
+    }
+    else
+    {
       $assessmentregimes = $assessmentregime->_get_all($where_clause, $order_by, 0, 1000);
     }
     return $assessmentregimes;
@@ -117,23 +121,87 @@ class AssessmentRegime extends DTO_AssessmentRegime
     $year1 = $regime_item1->year;
     $year2 = $regime_item2->year;
 
-    $end1 = $regime_item1->end;
-    $end2 = $regime_item2->end;
+    $days_end1 = AssessmentRegime::get_days_into_year($regime_item1->end);
+    $days_end2 = AssessmentRegime::get_days_into_year($regime_item2->end);
 
-    // Calculate how far this is from the start of the academic
-    // year (using a crude estimate in days).
-    if($end1 == 0) return -1;
-    if($end2 == 0) return 1;
+    $days_end1 += ($year1 * 365);
+    $days_end2 += ($year2 * 365);
 
-    // Dates are MMDD
-    // e.g. 1001 first visit, 0131 final visit
+    return($days_end1 - $days_end2);
+  }
 
-    if($end1 < $yearstart) $year1++;
-    if($end2 < $yearstart) $year2++;
+  function get_days_into_year($mmdd)
+  {
+    global $config;
+    $yearstart = $config['opus']['yearstart'];
+    if(empty($yearstart)) $yearstart="0930";
 
-    if($year2 > $year1) return -1;
-    if($year1 < $year2) return 1;
-    return($end1 - $end2);
+    $mm = (int) substr($yearstart, 0, 2);
+    $dd = (int) substr($yearstart, 2, 2);
+
+    $academic_start = mktime(0, 0, 0, $mm, $dd, 1970);
+    $year_end = mktime(0, 0, 0, 12, 31, 1970);
+
+    $mm = (int) substr($mmdd, 0, 2);
+    $dd = (int) substr($mmdd, 2, 2);
+    $test_value = mktime(0, 0, 0, $mm, $dd, 1970);
+
+    if((int) $mmdd > (int) $yearstart)
+    {
+      // Simple case, after "start" before calendar end
+      $seconds = ($test_value - $academic_start);
+    }
+    else
+    {
+      $seconds = $test_value + ($year_end - $academic_start);
+    }
+
+    $days = $seconds / (60*60*24);
+
+    return($days);
+  }
+
+  function get_punctuality($assessed_id)
+  {
+    global $config;
+    $yearstart = $config['opus']['yearstart'];
+    if(empty($yearstart)) $yearstart="0930";
+
+    require_once("model/Student.class.php");
+    $placement_year = Student::get_placement_year($assessed_id);
+    $current_year = get_academic_year();
+
+    echo "placement year $placement_year, current_year $current_year, to be done " . $this->year . "<br />\n";
+    // Check years
+    $year_difference = $current_year - $placement_year;
+    if($year_difference < $this->year)
+    {
+      return("early");
+    }
+    elseif($year_difference > $this->year)
+    {
+      return("late");
+    }
+    // Ok, the year is OK...
+    $mmdd = date("md");
+    $days = AssessmentRegime::get_days_into_year($mmdd);
+    $start = $this->start;
+    $end = $this->end;
+    $start_days = AssessmentRegime::get_days_into_year($start);
+    $end_days = AssessmentRegime::get_days_into_year($end);
+
+    //echo "now $mmdd, start $start, end $end<br />";
+
+    if($mmdd > $yearstart) $mmdd -= $yearstart;
+    if($start > $yearstart) $start -= $yearstart;
+    if($end > $yearstart) $end -= $yearstart;
+
+    echo "now $days, start $start_days, end $end_days<br />";
+
+    if($mmdd > $end) return("late");
+    if($mmdd < $start) return("early");
+
+    return("");
   }
 
 
@@ -168,6 +236,7 @@ class AssessmentRegime extends DTO_AssessmentRegime
     }
     return $nvp_array;
   }
+
 
   function get_name($id)
   {

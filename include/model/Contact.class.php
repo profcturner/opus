@@ -248,15 +248,16 @@ class Contact extends DTO_Contact
   function lookup_contacts_for_company()
   {
     $company_id = WA::request("company_id");
+    if(empty($company_id)) $company_id = $_SESSION['company_id'];
     $contacts = Contact::get_all_by_company($company_id);
-    if(!count($contacts)) $contacts = array();
 
     $lookups = array();
     foreach($contacts as $contact)
     {
-      $lookups[$contact->id] = $lookups[$contact->real_name];
+      $lookups[$contact->user_id] = $contact->real_name;
     }
     return($lookups);
+
   }
 
   function get_user_id($id)
