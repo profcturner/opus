@@ -161,6 +161,13 @@ class AssessmentRegime extends DTO_AssessmentRegime
     return($days);
   }
 
+  /**
+  * determines if an assessment is late or early
+  *
+  * @param int $assessed_id id from the user table for the student being assessed
+  * @return nothing, or a string with "early" or "late"
+  * @todo refine this to return a number of days out.
+  */
   function get_punctuality($assessed_id)
   {
     global $config;
@@ -171,7 +178,6 @@ class AssessmentRegime extends DTO_AssessmentRegime
     $placement_year = Student::get_placement_year($assessed_id);
     $current_year = get_academic_year();
 
-    echo "placement year $placement_year, current_year $current_year, to be done " . $this->year . "<br />\n";
     // Check years
     $year_difference = $current_year - $placement_year;
     if($year_difference < $this->year)
@@ -196,7 +202,7 @@ class AssessmentRegime extends DTO_AssessmentRegime
     if($start > $yearstart) $start -= $yearstart;
     if($end > $yearstart) $end -= $yearstart;
 
-    echo "now $days, start $start_days, end $end_days<br />";
+    //echo "now $days, start $start_days, end $end_days<br />";
 
     if($mmdd > $end) return("late");
     if($mmdd < $start) return("early");
