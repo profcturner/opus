@@ -20,6 +20,7 @@ function nav_staff()
     "home"=>array
     (
       array("home", "home", "home", "home"),
+      array("my details", "home", "edit_staff", "edit_staff"),
       array("company activity", "home", "company_activity", "company_activity"),
       array("change password", "home", "change_password", "change_password")
     ),

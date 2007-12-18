@@ -247,6 +247,13 @@ class Staff extends DTO_Staff
     return(User::get_name(Staff::get_user_id($id)));
   }
 
+  function get_user_id($id)
+  {
+    $id = (int) $id; // Security
+
+    return(Staff::_get_fields("user_id", "where id='$id'"));
+  }
+
   function get_school_id($id)
   {
     $id = (int) $id; // Security

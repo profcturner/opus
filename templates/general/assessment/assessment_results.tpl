@@ -22,7 +22,7 @@
       <td>{$regime_items[regime_items]->weighting*100}%</td>
       <td>{$regime_items[regime_items]->percentage|escape:"htmlall"}</td>
       <td>{$regime_items[regime_items]->aggregate|escape:"htmlall"}</td>
-     <td class="action"><a href="?section=directories&function=edit_assessment&id={$regime_items[regime_items]->id}&assessed_id={$assessed_id}">view</a></td>
+     <td class="action"><a href="?section={$assessment_section|default:"directories"}&function=edit_assessment&id={$regime_items[regime_items]->id}&assessed_id={$assessed_id}">view</a></td>
     </tr>
 {if $smarty.section.regime_items.last}
     <tr>

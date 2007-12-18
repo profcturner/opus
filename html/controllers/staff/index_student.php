@@ -23,6 +23,9 @@
 
     // Get the student
     $student = Student::load_by_id($id);
+    // And the staff member
+    require_once("model/Staff.class.php");
+    $staff = Staff::load_by_user_id(User::get_id());
 
     //$assessment_group_id = Student::get_assessment_group_id($student->user_id);
     $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
@@ -61,6 +64,8 @@
     }
 
     $waf->assign("student", $student);
+    $waf->assign("staff", $staff);
+    $waf->assign("assessment_section", "student");
     $waf->assign("mode", "view");
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
@@ -84,8 +89,44 @@
     $waf->assign("assessed_id", $id);
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("percentage_total", $percentage_total);
+    $waf->assign("assessment_section", "student");
 
     $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
+  }
+
+  // Assessments
+
+  /**
+  * show an assessment for viewing or editing
+  */
+  function edit_assessment(&$waf, &$user)
+  {
+    // Note security is handled internally by the AssessmentCombined object
+
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("id");
+    // and for whom
+    $assessed_id = (int) Student::get_user_id($_SESSION["student_id"]);
+
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+  }
+
+  /**
+  * process inbound assessment information
+  */
+  function edit_assessment_do(&$waf, &$user)
+  {
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("regime_id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id(), true); // try to save
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
   /**

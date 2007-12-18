@@ -42,6 +42,7 @@ class AssessmentCombined
   var $save;
   var $early;
   var $late;
+  var $time_left;
 
   function __construct($regime_id, $assessed_id, $assessor_id, $save = false)
   {
@@ -70,6 +71,7 @@ class AssessmentCombined
     $this->load_totals();
     $this->obtain_variables();
     $this->get_permissions();
+    $this->time_left = $this->get_time_left();
     $this->save = $save;
     if($save)
     {
@@ -113,8 +115,8 @@ class AssessmentCombined
 
   private function get_admin_permissions()
   {
-    $this->can_view = Policy::is_auth_for_student($this->assessed, "student", "viewAssessment");
-    $this->can_edit = Policy::is_auth_for_student($this->assessed, "student", "editAssessment");
+    $this->can_view = Policy::is_auth_for_student($this->assessed_id, "student", "viewAssessment");
+    $this->can_edit = Policy::is_auth_for_student($this->assessed_id, "student", "editAssessment");
   }
 
   private function get_student_permissions()
@@ -126,6 +128,13 @@ class AssessmentCombined
     // Usually they cannot edit
     $this->can_edit = false;
     if($this->regime->assessor == 'student') $this->can_edit = true;
+  }
+
+  private function get_staff_permissions()
+  {
+    if(Student::get_academic_user_id($this->assessed_id) != User::get_id()) return; // primitive for now, need "other" override soon
+    $this->can_view = true; // Academic tutors can see
+    if($this->regime->assessor == 'academic') $this->can_edit = true;
   }
 
 
@@ -216,6 +225,21 @@ class AssessmentCombined
     }
   }
 
+  function get_time_left()
+  {
+    $now = date("YmdHis");
+    $unixnow = time();
+    $seconds = 0;
+
+    if($this->assessment_results['created_unix'])
+    {
+      // We allow a 24 hour grace period for assessments to be altered,
+      // after that, no luck... except for admins...
+      $seconds = 60*60*24 - ($unixnow - $this->assessment_results['created_unix']);
+      if($seconds < 0) $seconds = 0;
+    }
+    return($seconds);
+  }
 
   function save_results()
   {

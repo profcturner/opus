@@ -29,6 +29,25 @@
     manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
   }
 
+  function edit_staff(&$waf, &$user) 
+  {
+    require_once("model/Staff.class.php");
+    $staff = Staff::load_by_user_id(User::get_id());
+    $_REQUEST['id'] = $staff->id; // Nasty kludge
+
+    edit_object($waf, $user, "Staff", array("confirm", "home", "edit_staff_do"), array(array("cancel","section=home&function=home")), array(array("user_id", $staff->user_id)), "staff:home:edit_staff:edit_staff");
+  }
+
+  function edit_staff_do(&$waf, &$user) 
+  {
+    require_once("model/Staff.class.php");
+    $staff = Staff::load_by_user_id(User::get_id());
+    $_REQUEST['id'] = $staff->id; // Nasty kludge
+
+    edit_object_do($waf, $user, "Staff", "section=home&function=home", "edit_staff");
+  }
+
+
   function edit_student(&$waf)
   {
     // Pick up the student

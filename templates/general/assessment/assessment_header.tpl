@@ -24,6 +24,10 @@
 </div>
 {/if}
 
+{if $assessment->time_left}
+{#not_locked#}
+{/if}
+
 
 <h2>
 {$assessment->regime->student_description|escape:"htmlall"}

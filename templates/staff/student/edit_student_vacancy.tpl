@@ -12,7 +12,7 @@
       {if $vacancy->postcode}{$vacancy->postcode|escape:"htmlall"}<br />{/if}
       {if $vacancy->country}{$vacancy->country|escape:"htmlall"}<br />{/if}
       {if $vacancy->postcode}
-        <a href="http://maps.google.co.uk/maps?saddr=bt37+0qb&daddr={$vacancy->postcode|escape:"url"}" target="blank">(Google Maps)</a>
+        <a href="http://maps.google.co.uk/maps?{if $staff->postcode}saddr={$staff->postcode|escape:"url"}&{/if}daddr={$vacancy->postcode|escape:"url"}" target="blank">(Google Maps)</a>
       {/if}
     </td>
   </tr>
