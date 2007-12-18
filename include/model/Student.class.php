@@ -369,6 +369,13 @@ class Student extends DTO_Student
       {
         $percentage = "--";
         $aggregate = "--";
+        $punctuality = $regime_items[$loop]->get_punctuality($user_id);
+        switch($punctuality)
+        {
+          case "early": $percentage .= " (not due yet)"; break;
+          case "late": $percentage .= " (late)"; break;
+          default: $percentage .= " (due now)"; break;
+        }
       }
       else
       {
@@ -381,6 +388,7 @@ class Student extends DTO_Student
       // Add them to the array
       $regime_items[$loop]->percentage = $percentage;
       $regime_items[$loop]->aggregate = $aggregate;
+
     }
     return($regime_items);
 /*
