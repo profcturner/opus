@@ -36,14 +36,19 @@ class Placement extends DTO_Placement
   static $_field_defs = array(
     'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true),
     //'vacancy_type'=>array('type'=>'lookup', 'object'=>'vacancytype', 'value'=>'name', 'title'=>'Type', 'var'=>'vacancytypes'),
-    'jobstart'=>array('type'=>'date', 'inputstyle'=>'popup', 'required'=>'true'),
-    'jobend'=>array('type'=>'date', 'inputstyle'=>'popup'),
+    'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date'),
+    'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date'),
     'salary'=>array('type'=>'text', 'size'=>6, 'maxsize'=>20),
     'supervisor_title'=>array('type'=>'text', 'size'=>5, 'maxsize'=>100, 'title'=>"Supervisor Title<br /><small>Mr, Dr, etc.</small>", 'mandatory'=>true),
     'supervisor_firstname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor First name"),
     'supervisor_lastname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Last name", 'mandatory'=>true),
     'supervisor_email'=>array('type'=>'email', 'size'=>40, 'maxsize'=>100, 'title'=>"Supervisor Email"),
     'supervisor_voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Phone")
+  );
+
+  static $_field_defs_admin_override = array(
+    'supervisor_title'=>array('type'=>'text', 'size'=>5, 'maxsize'=>100, 'title'=>"Supervisor Title<br /><small>Mr, Dr, etc.</small>"),
+    'supervisor_lastname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Last name")
   );
 
   function __construct() 
@@ -56,6 +61,7 @@ class Placement extends DTO_Placement
   */
   function get_field_defs()
   {
+    if(User::is_admin()) return(array_merge(self::$_field_defs, self::$_field_defs_admin_override));
     return(self::$_field_defs);
   }
 
@@ -73,15 +79,17 @@ class Placement extends DTO_Placement
     // Null some fields if empty
     $fields = Placement::set_empty_to_null($fields);
 
-    $fields['created'] = date("YmdHis");
-    $placement = new Placement;
-    $placement->_insert($fields);
-
+    require_once('model/Student.class.php');
     // Record student as placed
     $student_fields['placement_status'] = 'Placed';
     $student_fields['id'] = $fields['student_id'];
-    require_once('model/Student.class.php');
     Student::update($student_fields);
+
+    // Inbound student_id is not from user table
+    $fields['student_id'] = Student::get_user_id($fields['student_id']);
+    $fields['created'] = date("YmdHis");
+    $placement = new Placement;
+    $placement->_insert($fields);
 
     if(strlen($fields['supervisor_lastname']) && strlen($fields['supervisor_email']))
     {
@@ -105,7 +113,7 @@ class Placement extends DTO_Placement
   */
   function set_empty_to_null($fields)
   {
-    $set_to_null = array("created", "modified");
+    $set_to_null = array("created", "modified", "jobstart");
     foreach($set_to_null as $field)
     {
       if(!strlen($fields[$field])) $fields[$field] = null;

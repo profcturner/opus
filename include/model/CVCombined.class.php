@@ -25,6 +25,17 @@
 
 class CVCombined
 {
+
+  /**
+  */
+  function fetch_cvs_for_student($student_id)
+  {
+    // Get internal CVs
+
+    // Get PDS CVs
+
+
+  }
   /**
   * email a CV from a student to a given recipient
   *

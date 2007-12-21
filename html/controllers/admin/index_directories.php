@@ -751,6 +751,7 @@
   function add_placement(&$waf, &$user)
   {
     $application_id = (int) WA::request("id");
+    if(!$application_id) $application_id = (int) WA::request("application_id");
 
     require_once("model/Application.class.php");
     $application = Application::load_by_id($application_id);
@@ -759,19 +760,21 @@
 
     if(!Policy::is_auth_for_student($application->student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
-    // Set up some fields from the vacancy
-    $nvp_array['jobstart'] = $vacancy->jobstart;
-    $nvp_array['jobend'] = $vacancy->jobend;
-    $nvp_array['position'] = $vacancy->description;
-    $nvp_array['salary'] = $vacancy->salary;
+    // Get any existing data
+    $nvp_array = $waf->get_template_vars("nvp_array");
+    if(empty($nvp_array['jobstart'])) $nvp_array['jobstart'] = $vacancy->jobstart;
+    if(empty($nvp_array['jobend'])) $nvp_array['jobend'] = $vacancy->jobend;
+    if(empty($nvp_array['position'])) $nvp_array['position'] = $vacancy->description;
+    if(empty($nvp_array['salary'])) $nvp_array['salary'] = $vacancy->salary;
     $waf->assign("nvp_array", $nvp_array);
 
-    add_object($waf, $user, "Placement", array("add", "directories", "add_placement_do"), array(array("cancel","section=directories&function=edit_student&id=" . $application->student_id)), array(array("company_id", $application->company_id), array("vacancy_id", $application->vacancy_id), array("student_id", $application->student_id)), "admin:directories:student_directory:add_placement");
+    add_object($waf, $user, "Placement", array("add", "directories", "add_placement_do"), array(array("cancel","section=directories&function=edit_student&id=" . $application->student_id)), array(array("company_id", $application->company_id), array("vacancy_id", $application->vacancy_id), array("student_id", $application->student_id), array("application_id", $application_id)), "admin:directories:student_directory:add_placement");
   }
 
   function add_placement_do(&$waf, &$user) 
   {
     $student_id = (int) WA::request("student_id", true);
+    $application_id = (int) WA::request("application_id", true);
 
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
