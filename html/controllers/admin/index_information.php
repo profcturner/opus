@@ -35,9 +35,22 @@
     $opus->display("main.tpl", "admin:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
-  function list_reports(&$opus, $user, $title)
+  function list_reports(&$waf, $user, $title)
   {
-    $opus->display("main.tpl", "admin:information:list_reports:list_reports", "admin/information/list_reports.tpl");
+    require_once("model/Report.class.php");
+    $reports = Report::get_reports();
+    $waf->assign("reports", $reports);
+    $waf->display("main.tpl", "admin:information:list_reports:list_reports", "admin/information/list_reports.tpl");
+  }
+
+  function report_input(&$waf)
+  {
+    require_once("model/Report.class.php");
+    $report = Report::make_object(WA::request("name"));
+//    echo "test";
+// testing...
+    $report->output_data();
+
   }
 
   function view_logs(&$opus, $user, $title)
