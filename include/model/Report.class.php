@@ -35,6 +35,12 @@ class Report
   var $version;
   /** @var string the version number of the report */
 
+  static $output_types = array(
+    'html'=>"Show within OPUS",
+    'csv'=>"Comma Separated Variable (CSV) file",
+    'tsv'=>"Tab Separated Variable (TSV) file"
+  );
+
   static $mime_types = array(
     'html'=>'text/html',
     'csv'=>'text/csv',
@@ -54,12 +60,13 @@ class Report
     $this->input_stages = 0;
     $this->current_stage = 0;
     $this->available_formats = array("html");
-    $this->output_format = "tsv";
+    $this->output_format = "html";
   }
 
   /**
   * get an array of the available reports
-  * @todo insert config for directory
+  *
+  * these are plugin classes found in the include/model/reports directory
   */
   function get_reports()
   {
@@ -115,17 +122,50 @@ class Report
   }
 
   /**
-  * calls the next input stage function for this report
+  * calls a given input stage (data acquisition)
+  * @param int $input_stage the number of the stage of data acquisition
+  * @todo need to check against available_formats
   */
-  function input()
+  function input($input_stage)
   {
-    if($this->current_stage < $this->input_stages)
+    global $waf;
+
+    // Load what already exists
+    require_once("model/Preference.class.php");
+    $report_options = Preference::get_preference("report:" . $this->unique_name);
+
+    $waf->assign("input_stages", $this->input_stages);
+    $waf->assign("input_stage", $input_stage);
+    $waf->assign("report_options", $report_options);
+
+    // Need to check against available_formats
+    $waf->assign("formats", self::$output_types);
+
+    if(method_exists($this, "input_stage_$input_stage"))
     {
-      $stage = ++$this->current_stage;
-      if(method_exists($this, "input_stage_$stage"))
-      {
-        call_user_func(array($this, "input_stage_$stage"));
-      }
+      call_user_func(array($this, "input_stage_$input_stage"));
+    }
+    else
+    {
+      $waf->halt("error:report:bad_stage");
+    }
+  }
+
+  /**
+  * calls a given input stage processing
+  * @param int $input_stage the number of the stage of data acquisition
+  */
+  function input_do($input_stage)
+  {
+    global $waf;
+
+    if(method_exists($this, "input_stage_do_$input_stage"))
+    {
+      call_user_func(array($this, "input_stage_do_$input_stage"));
+    }
+    else
+    {
+      $waf->halt("error:report:bad_stage");
     }
   }
 
@@ -155,7 +195,7 @@ class Report
     }
     else
     {
-      $waf->display("main.tpl", "admin:information:list_reports:list_reports", $template);
+      $waf->display("main.tpl", "admin:information:list_reports:report_output", $template);
     }
   }
 
@@ -167,6 +207,11 @@ class Report
     return array('unique_name' => $this->unique_name, 'human_name' => $this->human_name, 'description' => $this->description, 'version' => $this->version);
   }
 
+  /**
+  * instantiates an object based on the unique name
+  * @param string $unique_name the unique name of the report class
+  * @see $unique_name
+  */
   function make_object($unique_name)
   {
     global $waf;

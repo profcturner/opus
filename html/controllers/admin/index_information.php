@@ -47,10 +47,18 @@
   {
     require_once("model/Report.class.php");
     $report = Report::make_object(WA::request("name"));
-//    echo "test";
-// testing...
-    $report->output_data();
+    $input_stage = (int) WA::request("input_stage");
 
+    $report->input($input_stage);
+  }
+
+  function report_input_do(&$waf)
+  {
+    require_once("model/Report.class.php");
+    $report = Report::make_object(WA::request("name"));
+    $input_stage = (int) WA::request("input_stage");
+
+    $report->input_do($input_stage);
   }
 
   function view_logs(&$opus, $user, $title)
