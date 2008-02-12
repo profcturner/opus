@@ -89,13 +89,11 @@ class Placement extends DTO_Placement
     $fields['student_id'] = Student::get_user_id($fields['student_id']);
     $fields['created'] = date("YmdHis");
     $placement = new Placement;
-    $placement->_insert($fields);
+    $id = $placement->_insert($fields);
 
-    if(strlen($fields['supervisor_lastname']) && strlen($fields['supervisor_email']))
-    {
-      // Enough to trigger a supervisor creation
-    }
-
+    // See if the supervisor needs created / updated
+    require_once("model/Supervisor.class.php");
+    Supervisor::update_from_placement($id, $fields);
   }
 
   function update($fields) 
@@ -106,6 +104,10 @@ class Placement extends DTO_Placement
 
     $placement = Placement::load_by_id($fields[id]);
     $placement->_update($fields);
+
+    // See if the supervisor needs created / updated
+    require_once("model/Supervisor.class.php");
+    Supervisor::update_from_placement($fields['id'], $fields);
   }
 
   /**
@@ -138,6 +140,16 @@ class Placement extends DTO_Placement
   {
     $placement = new Placement;
     return $placement->_count($where_clause);
+  }
+
+  function get_most_recent($student_user_id)
+  {
+    $student_user_id = (int) $student_user_id;
+    $placement = new Placement;
+
+    $placements = $placement->_get_all("where student_id=$student_user_id", "order by jobstart DESC", 0, 1);
+    if(count($placements)) return($placements[0]);
+    else return(false);
   }
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)

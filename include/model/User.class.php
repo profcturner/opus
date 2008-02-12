@@ -173,12 +173,12 @@ Class User extends DTO_User
     return $user->_count($where);
   }
 
-  function reset_password($id = 0)
+  function reset_password($id = 0, $allow_other_user = false)
   {
     if($id == 0) return(false);
     global $waf;
     // Non admins can only do this for themselves
-    if(!User::is_admin())
+    if(!User::is_admin() && !allow_other_user)
     {
       $id = User::get_id();
     }

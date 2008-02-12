@@ -79,7 +79,7 @@ class studentbroadsheet extends Report
     $output_format = WA::request("output_format");
     $extras = WA::request("extras");
     if(empty($extras)) $extras = array();
-    $assessmentgroup = WA::request("assessmentgroup");
+    $assessment_group = WA::request("assessment_group");
     $year = WA::request("year");
 
     if(!in_array($output_format, $this->available_formats))
@@ -96,7 +96,7 @@ class studentbroadsheet extends Report
     // Change and save options
     $report_options['output_format'] = $output_format;
     $report_options['extras'] = $extras;
-    $report_options['assessmentgroup'] = $assessmentgroup;
+    $report_options['assessment_group'] = $assessment_group;
     $report_options['year'] = $year;
     return($report_options);
   }
@@ -106,6 +106,7 @@ class studentbroadsheet extends Report
   */
   function get_header($report_options)
   {
+//    print_r($report_options);
     $extras = $report_options['extras'];
     if(empty($extras)) $extras = array();
 
@@ -122,7 +123,7 @@ class studentbroadsheet extends Report
     if(in_array("company_info", $extras)) $header = array_merge($header, $header_company_extra);
     if(in_array("vacancy_info", $extras)) $header = array_merge($header, $header_vacancy_extra);
     if(in_array("supervisor_info", $extras)) $header = array_merge($header, $header_supervisor_extra);
-    if(in_array("assessment_info", $extras)) $header = array_merge($header, assessment_title_row($group_id));
+    if(in_array("assessment_info", $extras)) $header = array_merge($header, $this->get_header_assessment($report_options['assessment_group']));
 
     return($header);
   }
@@ -134,17 +135,27 @@ class studentbroadsheet extends Report
   {
     $extras = $report_options['extras'];
     if(empty($extras)) $extras = array();
-    $year = $report_options['year'];
+    $year = (int) $report_options['year'];
+    $group_id = (int) $report_options['assessment_group'];
 
 
     require_once("model/Staff.class.php");
     require_once("model/Programme.class.php");
+    require_once("model/Placement.class.php");
+    require_once("model/AssessmentGroupProgramme.class.php");
 
-    $programmes = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // Temporary for testing
+    $programmes = AssessmentGroupProgramme::get_all_programmes($group_id, $year); //array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // Temporary for testing
     require_once("model/Student.class.php");
 
     $inital_students = Student::get_all_extended("", $year, $programmes, "placement_status", array());
     $new_students = array();
+
+    // Will we need assessment info?
+    if(in_array("assessment_info", $extras))
+    {
+      require_once("model/AssessmentRegime.class.php");
+      $assessmentregimes = AssessmentRegime::get_all("where group_id=$group_id", "order by year, end, start");
+    }
 
     foreach($inital_students as $student)
     {
@@ -153,11 +164,104 @@ class studentbroadsheet extends Report
 
       // extras as needed
       if(in_array("disability_info", $extras)) $new_student = array_merge($new_student, array($student['disability_code']));
-
+      if(count($extras)) // crude for now
+      {
+        $placement = Placement::get_most_recent($student['user_id']);
+      }
+      if(in_array("company_info", $extras)) $new_student = array_merge($new_student, $this->get_body_company($placement));
+      if(in_array("vacancy_info", $extras)) $new_student = array_merge($new_student, $this->get_body_vacancy($placement));
+      if(in_array("supervisor_info", $extras)) $new_student = array_merge($new_student, $this->get_body_supervisor($placement));
+      if(in_array("assessment_info", $extras)) $new_student = array_merge($new_student, $this->get_body_assessment($assessmentregimes, $student['user_id']));
 
       array_push($new_students, $new_student);
     }
     return $new_students;
+  }
+
+  private function get_header_assessment($group_id)
+  {
+    $group_id = (int) $group_id; // security
+
+    $titles = array();
+    $count = 0;
+
+    require_once("model/AssessmentRegime.class.php");
+    $assessmentregimes = AssessmentRegime::get_all("where group_id=$group_id", "order by year, end, start");
+
+    foreach($assessmentregimes as $assessmentregime)
+    {
+      $titles[$count++] = $assessmentregime->student_description;
+      $titles[$count++] = 'Weighting';
+    }
+    $titles[$count++] = 'Total';
+    return($titles);
+  }
+
+  private function get_body_assessment($assessmentregimes, $student_user_id)
+  {
+    $assresults = array();
+    $count = 0;
+    $total = 0;
+
+    require_once("model/AssessmentTotal.class.php");
+
+    // Step through in the same order every time
+    foreach($assessmentregimes as $assessmentregime)
+    {
+      // Fetch total information for this...
+      $total_info = AssessmentTotal::get_totals_with_stamps($student_user_id, $assessmentregime->id);
+
+      if($total_info['id']) // We have real total data
+      {
+        if($total_info['percentage'] == NULL) $total_info['percentage'] = "0";
+        $assresults[$count++] = $total_info['percentage'];
+      }
+      else
+      {
+        $assresults[$count++] = "";
+      }
+      $assresults[$count++] = $assessmentregime->weighting;
+      $total += ($total_info['percentage'] * $assessmentregime->weighting);
+    }
+    $assresults[$count++] = $total;
+    return($assresults);
+  }
+
+
+  private function get_body_company($placement)
+  {
+    if($placement == false)
+    {
+      return array("", "", "", "", "", "", "", "", "", "", "");
+    }
+    require_once("model/Company.class.php");
+    $company = Company::load_by_id($placement->company_id);
+    require_once("model/Contact.class.php");
+    $contacts = Contact::get_all_by_company($placement->company_id);
+
+    return array($company->name, $company->address1, $company->address2, $company->address3, $company->town, $company->locality, $company->country, $company->postcode, $contacts[0]->salutation, $contacts[0]->firstname, $contacts[0]->lastname);
+  }
+
+  private function get_body_vacancy($placement)
+  {
+    if($placement == false)
+    {
+      return array("", "", "", "", "", "", "", "");
+    }
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id($placement->vacancy_id);
+    return array($vacancy->description, $vacancy->address1, $vacancy->address2, $vacancy->address3, $vacancy->town, $vacancy->locality, $vacancy->country, $vacancy->postcode);
+  }
+
+  private function get_body_supervisor($placement)
+  {
+    if($placement == false)
+    {
+      return array("", "", "", "");
+    }
+    require_once("model/Supervisor.class.php");
+    $supervisor = Supervisor::load_by_placement_id($placement->id, false); // Don't halt on error, this call seems slow for this purpose
+    return array($supervisor->salutation, $supervisor->firstname, $supervisor->lastname, $supervisor->email);
   }
 
 }

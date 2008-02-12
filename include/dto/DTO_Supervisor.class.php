@@ -25,7 +25,7 @@ class DTO_Supervisor extends DTO_NoData
     parent::__construct($handle);
   }
 
-  function _load_by_placement_id($id=0)
+  function _load_by_placement_id($id=0, $halt_on_error = true)
   {
     global $waf;
 
@@ -51,7 +51,16 @@ class DTO_Supervisor extends DTO_NoData
     $username = "supervisor_$id";
     $user = new User;
     $success = $user->_load_where("where username='$username' and user_type='supervisor'");
-    if(!$success) $waf->halt("error:invalid:supervisor");
+    if(!$success)
+    {
+      //if($halt_on_error) $waf->halt("error:invalid:supervisor");
+      //else
+      {
+        $this->user_id = 0;
+        return false;
+      }
+    }
+
     $fields = $user->_get_fieldnames(false);
 
     foreach($fields as $field)
@@ -59,6 +68,7 @@ class DTO_Supervisor extends DTO_NoData
       $this->$field = $user->$field;
     }
     $this->user_id = $user->id;
+    return true;
   }
 
   function _load_by_user_id($user_id=0)

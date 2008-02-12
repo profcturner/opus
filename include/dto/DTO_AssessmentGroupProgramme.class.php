@@ -26,6 +26,7 @@ class DTO_AssessmentGroupProgramme extends DTO
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    $programmes = array();
     try
     {
       $sql = $con->prepare("select * from assessmentgroupprogramme where group_id = ?");
@@ -33,14 +34,33 @@ class DTO_AssessmentGroupProgramme extends DTO
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
-
+        if(($results_row['startyear'] <= $year) && ($year <= $results_row['endyear']))
+        {
+          array_push($programmes, $results_row['programme_id']);
+          continue; // Don't check more cases
+        }
+        if(($results_row['startyear'] <= $year) && empty($results_row['endyear']))
+        {
+          array_push($programmes, $results_row['programme_id']);
+          continue; // Don't check more cases
+        }
+        if(empty($results_row['startyear']) && ($year <= $results_row['endyear']))
+        {
+          array_push($programmes, $results_row['programme_id']);
+          continue; // Don't check more cases
+        }
+        if(empty($results_row['startyear']) && empty($results_row['endyear']))
+        {
+          array_push($programmes, $results_row['programme_id']);
+          continue; // Don't check more cases
+        }
       }
     }
     catch (PDOException $e)
     {
       $this->_log_sql_error($e, "AssessmentGroupProgramme", "_get_all_programmes($group_id, $year)");
     }
-    return $object_array;
+    return $programmes;
   }
 }
 

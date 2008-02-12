@@ -116,10 +116,10 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
     return $assessmentgroupprogramme_array;
   }
 
-  function get_all_programmes($group_id)
+  function get_all_programmes($group_id, $year)
   {
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
-    return($assessmentgroupprogramme->_get_all_programmes($group_id));
+    return($assessmentgroupprogramme->_get_all_programmes($group_id, $year));
   }
 
   function remove_by_group($group_id=0) 
