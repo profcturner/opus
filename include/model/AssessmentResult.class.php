@@ -117,7 +117,8 @@ class AssessmentResult extends DTO_AssessmentResult
   function load_where($where_clause)
   {
     $assessmentresult = new AssessmentResult;
-    return $assessmentresult->_load_where($where_clause);
+    $assessmentresult->_load_where($where_clause);
+    return($assessmentresult);
   }
 
   function request_field_values($include_id = false) 

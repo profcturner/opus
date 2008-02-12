@@ -210,8 +210,9 @@ class Report
       }
       else
       {
+        $this->input_stage = $input_stage + 1;
         // Move to next input stage
-        $this->input(++$this->input_stage);
+        $this->input($this->input_stage);
       }
     }
     else
