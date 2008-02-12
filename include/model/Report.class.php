@@ -64,6 +64,37 @@ class Report
   }
 
   /**
+  * load the report options
+  *
+  * to persist options between stages and more, the preference system is used, this
+  * should also allow for forms to have "sticky" values between uses. In the future
+  * we will enable custom options to be saved.
+  * @param string $custom the custom name under which to save these options (optional)
+  * @return the array of options that exists now
+  * @see Preference.class.php
+  */
+  function load_options($custom = "")
+  {
+    require_once("model/Preference.class.php");
+    $report_options = Preference::get_preference("report:$custom:" . $this->unique_name);
+    return($report_options);
+  }
+
+  /**
+  * save the report options
+  *
+  * @param array $report_options the options to save
+  * @param string $custom the custom name under which to save these options (optional)
+  * @see load_options
+  * @see Preference.class.php
+  */
+  function save_options($report_options, $custom = "")
+  {
+    require_once("model/Preference.class.php");
+    Preference::set_preference("report:$custom:" . $this->unique_name, $report_options);
+  }
+
+  /**
   * get an array of the available reports
   *
   * these are plugin classes found in the include/model/reports directory
@@ -112,6 +143,8 @@ class Report
         array_push($report_list, $object->get_description());
         $objects_added++;
       }
+      // Sort the entries, I'm sure this is overkill, revisit sometime.
+      usort($report_list, array("Report", "compare_description"));
     }
     catch (RuntimeException $e)
     {
@@ -130,12 +163,14 @@ class Report
   {
     global $waf;
 
+    $input_stage = (int) $input_stage; // security
+
     // Load what already exists
-    require_once("model/Preference.class.php");
-    $report_options = Preference::get_preference("report:" . $this->unique_name);
+    $report_options = $this->load_options();
 
     $waf->assign("input_stages", $this->input_stages);
     $waf->assign("input_stage", $input_stage);
+    $waf->assign("unique_name", $this->unique_name);
     $waf->assign("report_options", $report_options);
 
     // Need to check against available_formats
@@ -143,7 +178,7 @@ class Report
 
     if(method_exists($this, "input_stage_$input_stage"))
     {
-      call_user_func(array($this, "input_stage_$input_stage"));
+      call_user_func(array($this, "input_stage_$input_stage"), $report_options);
     }
     else
     {
@@ -159,9 +194,25 @@ class Report
   {
     global $waf;
 
+    $input_stage = (int) $input_stage; // security
+
+    // Load what already exists
+    $report_options = $this->load_options();
+
     if(method_exists($this, "input_stage_do_$input_stage"))
     {
-      call_user_func(array($this, "input_stage_do_$input_stage"));
+      $report_options = call_user_func(array($this, "input_stage_do_$input_stage"), $report_options);
+      $this->save_options($report_options); // Save any changes in options
+      if($input_stage == $this->input_stages)
+      {
+        // Nothing left to to, output
+        $this->output_data();
+      }
+      else
+      {
+        // Move to next input stage
+        $this->input(++$this->input_stage);
+      }
     }
     else
     {
@@ -176,10 +227,13 @@ class Report
   {
     global $waf;
 
+    // Get any options
+    $report_options = $this->load_options();
+
     // Ensure this is available
     $waf->assign("report", $this);
-    $waf->assign("header", $this->get_header());
-    $waf->assign("body", $this->get_body());
+    $waf->assign("header", $this->get_header($report_options));
+    $waf->assign("body", $this->get_body($report_options));
     $waf->assign("tab", "\t");
 
     $format = $this->output_format;
@@ -205,6 +259,11 @@ class Report
   function get_description()
   {
     return array('unique_name' => $this->unique_name, 'human_name' => $this->human_name, 'description' => $this->description, 'version' => $this->version);
+  }
+
+  private function compare_description($desc1, $desc2)
+  {
+    return(strcmp($desc1['human_name'], $desc2['human_name']));
   }
 
   /**

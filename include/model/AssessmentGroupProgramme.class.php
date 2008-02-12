@@ -98,7 +98,7 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
   function get_all($where_clause="", $order_by="ORDER BY programme_id, startyear, endyear", $page=0)
   {
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
-    
+
     if ($page <> 0) {
       $start = ($page-1)*ROWS_PER_PAGE;
       $limit = ROWS_PER_PAGE;
@@ -114,6 +114,12 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
     $assessmentgroupprogramme = new AssessmentGroupProgramme;
     $assessmentgroupprogramme_array = $assessmentgroupprogramme->_get_id_and_field($fieldname, $where_clause);
     return $assessmentgroupprogramme_array;
+  }
+
+  function get_all_programmes($group_id)
+  {
+    $assessmentgroupprogramme = new AssessmentGroupProgramme;
+    return($assessmentgroupprogramme->_get_all_programmes($group_id));
   }
 
   function remove_by_group($group_id=0) 

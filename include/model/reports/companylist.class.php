@@ -45,7 +45,7 @@ class companylist extends Report
   *
   * this is called by the parent class, so the name is important
   */
-  function input_stage_1()
+  function input_stage_1($report_options)
   {
     global $waf;
 
@@ -60,7 +60,7 @@ class companylist extends Report
   * this is called by the parent class, so the name is important
   * @todo can some of this move to the parent class?
   */
-  function input_stage_do_1()
+  function input_stage_do_1($report_options)
   {
     global $waf;
 
@@ -76,28 +76,22 @@ class companylist extends Report
       $this->output_format = $output_format;
     }
 
-    // Save preferences for next time
-    require_once("model/Preference.class.php");
-    $report_options = array();
     $report_options['output_format'] = $output_format;
-    Preference::set_preference("report:" . $this->unique_name, $report_options);
-
-    // Enough, we don't have more questions...
-    $this->output_data();
+    return($report_options);
   }
 
   /**
   * returns header columns in a single dimensional array
   */
-  function get_header()
+  function get_header($report_options)
   {
-    return(array("name", "locality"));
+    return(array("name", "address1", "address2", "address3", "locality"));
   }
 
   /**
   * returns the body of the report in a multidimensional array (rows and columns)
   */
-  function get_body()
+  function get_body($report_options)
   {
     $results = array();
 
@@ -109,7 +103,7 @@ class companylist extends Report
 
     foreach($companies as $company)
     {
-      array_push($results, array($company->name, $company->locality));
+      array_push($results, array($company->name, $company->address1, $company->address2, $company->address3, $company->locality));
     }
     return $results;
   }
