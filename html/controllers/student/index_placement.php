@@ -43,7 +43,8 @@
 
   function list_applications(&$opus, $user, $title)
   {
-    manage_objects($opus, $user, "Application", array(), array(array('view', 'view_application')), "get_all", "", "student:placement:list_applications:list_applications");
+    $student_id = User::get_id();
+    manage_objects($opus, $user, "Application", array(), array(array('view', 'view_application')), "get_all", array("WHERE `student_id`=$student_id", "", $page, True), "student:placement:list_applications:list_applications");
   }
 
 
@@ -99,7 +100,7 @@
 
   function list_resources(&$opus, $user, $title)
   {
-    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", "", "student:placement:list_resources:list_resources");
+    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("WHERE `company_id` is null or `company_id` = 0", "order by channel_id, description", $page, True), "student:placement:list_resources:list_resources");
   }
 
   function view_resource(&$opus, $user, $title)
