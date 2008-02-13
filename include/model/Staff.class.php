@@ -166,13 +166,14 @@ class Staff extends DTO_Staff
 
   function get_all($where_clause="", $order_by="", $page=0, $end=0) 
   {
+    global $config;
     $staff = new Staff;
 
     if($end != 0) return($staff->_get_all($where_clause, $order_by, $page, $end));
     if ($page <> 0) 
     {
-        $start = ($page-1)*ROWS_PER_PAGE;
-        $limit = ROWS_PER_PAGE;
+        $start = ($page-1)*$config['opus']['rows_per_page'];
+        $limit = $config['opus']['rows_per_page'];
         $staffs = $staff->_get_all($where_clause, $order_by, $start, $limit);
     }
     else 

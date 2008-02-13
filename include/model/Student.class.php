@@ -391,15 +391,24 @@ class Student extends DTO_Student
 
     }
     return($regime_items);
-/*
-    // Custom sort
-    usort($regime_items, "assessment_date_compare");
-  
-    $smarty->assign("student_id", $student_id);
-    $smarty->assign("regime_items", $regime_items);
-    $smarty->assign("aggregate_total", $aggregate_total);
-    $smarty->assign("weighting_total", $weighting_total);
-    $smarty->display("assessment/assessment_results.tpl");*/
+  }
+
+  function get_other_assessors($user_id)
+  {
+    // This will store the items
+    $regime_items = array();
+
+    // Determine the students assessmentgroup
+    $assessmentgroup_id = Student::get_assessment_group_id($user_id);
+
+    // Get the regime items
+    require_once("model/AssessmentRegime.class.php");
+    $regime_items = AssessmentRegime::get_all("where assessor='other' and group_id=$assessmentgroup_id");
+
+    // Sort these appropriately
+    usort($regime_items, array("AssessmentRegime", "assessment_date_compare"));
+
+    return($regime_items);
   }
 
   function get_last_application_time($id)

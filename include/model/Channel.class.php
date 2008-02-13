@@ -85,11 +85,12 @@ class Channel extends DTO_Channel
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
+    global $config;
     $channel = new Channel;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $channels = $channel->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $channels = $channel->_get_all($where_clause, $order_by, 0, 1000);

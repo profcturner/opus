@@ -190,13 +190,14 @@ class Contact extends DTO_Contact
 
   function get_all($where_clause="", $order_by="", $page=0, $end=0) 
   {
+    global $config;
     $contact = new Contact;
 
     if($end != 0) return($contact->_get_all($where_clause, $order_by, $page, $end));
     if ($page <> 0) 
     {
-        $start = ($page-1)*ROWS_PER_PAGE;
-        $limit = ROWS_PER_PAGE;
+        $start = ($page-1)*$config['opus']['rows_per_page'];
+        $limit = $config['opus']['rows_per_page'];
         $contacts = $contact->_get_all($where_clause, $order_by, $start, $limit);
     }
     else 

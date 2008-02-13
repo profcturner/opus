@@ -84,11 +84,12 @@ class ChannelAssociation extends DTO_ChannelAssociation
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
   {
+    global $config;
     $channelassociation = new ChannelAssociation;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $channelassociations = $channelassociation->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $channelassociations = $channelassociation->_get_all($where_clause, $order_by, 0, 1000);
@@ -227,7 +228,7 @@ class ChannelAssociation extends DTO_ChannelAssociation
     // For students, ask what the assessmentgroup is
     if(User::is_student($user_id))
     {
-      return(Student::get_assessmentgroup($user_id) == $group_id);
+      return(Student::get_assessment_group_id($user_id) == $group_id);
     }
     // For others, take each programme and look at it...
     require_once("model/AssessmentGroupProgramme.class.php");

@@ -84,11 +84,12 @@ class Assessment extends DTO_Assessment
 
   function get_all($where_clause="", $order_by="ORDER BY description", $page=0)
   {
+    global $config;
     $assessment = new Assessment;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $assessments = $assessment->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $assessments = $assessment->_get_all($where_clause, $order_by, 0, 1000);

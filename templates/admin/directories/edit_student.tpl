@@ -20,3 +20,27 @@
 
 <h3>Assessment</h3>
 {include file="general/assessment/assessment_results.tpl"}
+
+{section name=others loop=$other_items}
+{if $smarty.section.others.first}
+<h3>Configure Other Assessors</h3>
+<div id="table_manage">
+<form>
+  <table>
+    <tr>
+      <td colspan="2" class="button"><input type="submit" class="submit" value="confirm"/></td>
+    </tr>
+{/if}
+    <tr>
+      <td class="property">{$other_items[others]->student_description}</td>
+      <td>test</td>
+    </tr>
+{if $smarty.section.others.last}
+    <tr>
+      <td colspan="2" class="button"><input type="submit" class="submit" value="confirm"/></td>
+    </tr>
+  </table>
+</form>
+</div>
+{/if}
+{/section}

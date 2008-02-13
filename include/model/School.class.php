@@ -84,11 +84,12 @@ class School extends DTO_School
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
+    global $config;
     $school = new School;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $schools = $school->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $schools = $school->_get_all($where_clause, $order_by, 0, 1000);

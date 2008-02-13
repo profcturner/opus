@@ -38,4 +38,5 @@
 {sectionelse}
 {#no_assessment_schedule#}
 {/section}
+</div>
 <!-- Assessment Matrix ends -->

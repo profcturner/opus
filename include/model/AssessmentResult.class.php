@@ -75,11 +75,12 @@ class AssessmentResult extends DTO_AssessmentResult
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page=0)
   {
+    global $config;
     $assessmentresult = new AssessmentResult;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $assessmentresults = $assessmentresult->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $assessmentresults = $assessmentresult->_get_all($where_clause, $order_by, 0, 1000);

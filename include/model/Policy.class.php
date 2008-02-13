@@ -106,11 +106,12 @@ class Policy extends DTO_Policy
 
   function get_all($where_clause="", $order_by="ORDER BY priority DESC, name", $page=0)
   {
+    global $config;
     $policy = new Policy;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $policys = $policy->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $policys = $policy->_get_all($where_clause, $order_by, 0, 1000);

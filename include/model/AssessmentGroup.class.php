@@ -74,11 +74,12 @@ class AssessmentGroup extends DTO_AssessmentGroup
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
   {
+    global $config;
     $assessmentgroup = new AssessmentGroup;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $assessmentgroups = $assessmentgroup->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $assessmentgroups = $assessmentgroup->_get_all($where_clause, $order_by, 0, 1000);

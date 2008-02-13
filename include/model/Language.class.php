@@ -83,11 +83,12 @@ class Language extends DTO_Language
 
   function get_all($where_clause="", $order_by="ORDER BY name", $page=0)
   {
+    global $config;
     $language = new Language;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $languages = $language->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $languages = $language->_get_all($where_clause, $order_by, 0, 1000);

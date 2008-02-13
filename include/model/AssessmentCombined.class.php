@@ -75,10 +75,17 @@ class AssessmentCombined
     $this->save = $save;
     if($save)
     {
-      // Validate, try to save and reload
-      $this->check_variables();
-      $this->save_results();
-      $this->load_totals();
+      if($this->can_edit)
+      {
+        // Validate, try to save and reload
+        $this->check_variables();
+        $this->save_results();
+        $this->load_totals();
+      }
+      else
+      {
+        $this->error = array("You do not have permission to edit this assessment.");
+      }
     }
     if(empty($this->assessment_results))
     {

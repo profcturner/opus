@@ -105,11 +105,12 @@ class CV extends DTO_CV
 
   function get_all($where_clause="", $order_by="ORDER BY id", $page = 0, $parse = False)
   {
+    global $config;
     $cv = new CV;
 
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];
+      $limit = $config['opus']['rows_per_page'];
       $cvs = $cv->_get_all($where_clause, $order_by, $start, $limit, $parse);
     } else {
       $cvs = $cv->_get_all($where_clause, $order_by, 0, 1000, $parse);

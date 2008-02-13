@@ -47,6 +47,56 @@
   }
 
 
+  // Assessments
+
+  /**
+  * show an assessment for viewing or editing
+  */
+  function edit_assessment(&$waf, &$user)
+  {
+    // Note security is handled internally by the AssessmentCombined object
+
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+  }
+
+  /**
+  * process inbound assessment information
+  */
+  function edit_assessment_do(&$waf, &$user)
+  {
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("regime_id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id(), true); // try to save
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+  }
+
+
+
+  function list_assessments(&$waf)
+  {
+    $student_user_id = User::get_id();
+    require_once("model/Student.class.php");
+    $regime_items = Student::get_assessment_regime($student_user_id,  &$aggregate_total, &$weighting_total);
+    $waf->assign("assessment_section", "placement");
+    $waf->assign("regime_items", $regime_items);
+    $waf->assign("assessed_id", $student_user_id);
+    $waf->assign("aggregate_total", $aggregate_total);
+    $waf->assign("weighting_total", $weighting_total);
+
+    $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
+  }
+
   function list_resources(&$opus, $user, $title)
   {
     manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", "", "student:placement:list_resources:list_resources");

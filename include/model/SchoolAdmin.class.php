@@ -88,11 +88,12 @@ require_once("dto/DTO_SchoolAdmin.class.php");
 
   function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
   {
+    global $config;
     $schooladmin = new SchoolAdmin;
-    
+
     if ($page <> 0) {
-      $start = ($page-1)*ROWS_PER_PAGE;
-      $limit = ROWS_PER_PAGE;
+      $start = ($page-1)*$config['opus']['rows_per_page'];;
+      $limit = $config['opus']['rows_per_page'];;
       $schooladmins = $schooladmin->_get_all($where_clause, $order_by, $start, $limit);
     } else {
       $schooladmins = $schooladmin->_get_all($where_clause, $order_by, 0, 1000);

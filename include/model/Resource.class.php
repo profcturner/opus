@@ -219,17 +219,9 @@ class Resource extends DTO_Resource
     {
       if(!Channel::user_in_channel($resource->channel_id)) continue;
       if(!User::check_auth($resource->auth)) continue;
+      array_push($valid_resources, $resource);
     }
-    /*
-    if ($page <> 0) {
-      $start = ($page-1)*$config['opus']['rows_per_page'];
-      $limit = $config['opus']['rows_per_page'];
-      $resources = $resource->_get_all($where_clause, $order_by, $start, $limit);
-    } else {
-      $resources = $resource->_get_all($where_clause, $order_by, 0, 1000);
-    }
-    */
-    return $resources;
+    return $valid_resources;
   }
 
   function get_all_by_company($company_id)

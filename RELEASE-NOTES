@@ -14,9 +14,9 @@ For most users of the system, the changes will appear to be mainly visual.
 User interfaces should be more consistent and simple, and more visually
 attractive. Nevertheless, there are some minor changes to note.
 
-* OPUS now has a system of preferences for each user. Most of these are
+* OPUS now has a system of preferences for each user. Some of these are
   accessible from the "preferences" option in the top right of the screen.
-  Some, however, are automatically used and saved. For example, now OPUS
+  Most, however, are automatically used and saved. For example, now OPUS
   remembers all your settings in the main, and complex, search forms, and
   will continue to use those settings when you return to the form in the
   same session. If you correctly logout (using the option in the top right
@@ -46,7 +46,9 @@ attractive. Nevertheless, there are some minor changes to note.
 
 * Reports will all be moved into one section in the Information menu, making
   the various reports possible easier to see (although they have always been
-  there). Expect more improvements in the 4.x lifecycle. (Closes bug #167).
+  there). They are more consistent in their use, remember last settings, and
+  can all be exported as inline HTML, CSV or TSV. Expect more improvements 
+  in the 4.x lifecycle. (Closes bug #167).
 
 * Supervisors now have their own directory which simplifies searching for them
   and shows the student they are associated with (closes bug #131).
@@ -94,10 +96,8 @@ yet. However there are some points to note.
   database layer supported by PDO (including Oracle and Postgresql). It should
   also close some issues (bug # 194).
 
-* The database is so radically changed that the upgrade procedure is slightly more
-  complex that usual, consisting of an initial SQL patch, a PHP script to migrate
-  data, and finishing with another upgrade patch. Read the instructions in the
-  sql_patch directory very carefully if you are upgrading from 3.x.
+* The database is radically changed, and though a single SQL patch file can be
+  used, a backup is strongly advised before hand. Use mysqldump.
 
 * The configuration file for OPUS is very much more simple, but radically
   different from previous versions. You should check the whole configuration file
@@ -109,6 +109,9 @@ yet. However there are some points to note.
   framework. There is a directory, include/auth.d which holds "plugins" for
   authentication. The README file in that directory will explain how to enable
   various authentication sources, and how to write your own plugins.
+
+* Reports are also using a more flexible plugin system. See the README file in
+  include/model/reports for more details.
 
 * The cron framework for version 4 is no longer standalone code, but uses the same
   model business logic layer. It can also provide some useful command line tools for
