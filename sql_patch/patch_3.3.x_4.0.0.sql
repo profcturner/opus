@@ -135,6 +135,11 @@ update assessmentstructure set temp='compulsory' where options='compulsory';
 alter table assessmentstructure drop column options;
 alter table assessmentstructure change column temp options enum('compulsory', 'optional') not null;
 
+-- assessmentother --
+
+alter table assessorother change column cassessment_id regime_id int unsigned not null;
+alter table assessorother add column id int unsigned auto_increment primary key;
+
 -- CV groups --
 
 rename table cvgroups to cvgroup;

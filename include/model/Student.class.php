@@ -346,7 +346,16 @@ class Student extends DTO_Student
       $weighting_total += $regime_items[$loop]->weighting;
 
       // Try to determine the assessor
-      /* this needs to go in the template"
+      if($regime_items[$loop]->assessor == 'other')
+      {
+        require_once("model/AssessorOther.class.php");
+        $assessorother = AssessorOther::load_where("where assessed_id=$user_id and regime_id=" . $regime_items[$loop]->id);
+        if($assessorother->id) // valid return
+        {
+          $regime_items[$loop]->assessor = User::get_name($assessorother->assessor_id);
+        }
+      }
+      /* this needs to go in the template
       if($row['assessor']=="student") $assessor = "Self Assessment";
       if($row['assessor']=="academic") $assessor = "Academic Tutor";
       if($row['assessor']=="industrial") $assessor = "Industrial Supervisor";
@@ -396,7 +405,7 @@ class Student extends DTO_Student
   function get_other_assessors($user_id)
   {
     // This will store the items
-    $regime_items = array();
+    $final_items = array();
 
     // Determine the students assessmentgroup
     $assessmentgroup_id = Student::get_assessment_group_id($user_id);
@@ -405,10 +414,19 @@ class Student extends DTO_Student
     require_once("model/AssessmentRegime.class.php");
     $regime_items = AssessmentRegime::get_all("where assessor='other' and group_id=$assessmentgroup_id");
 
-    // Sort these appropriately
-    usort($regime_items, array("AssessmentRegime", "assessment_date_compare"));
+    // Augment
+    foreach($regime_items as $item)
+    {
+      require_once("model/AssessorOther.class.php");
+      $assessorother = AssessorOther::load_where("where assessed_id=$user_id and regime_id=" . $item->id);
+      $item->assessor_id = $assessorother->assessor_id;
+      array_push($final_items, $item);
+    }
 
-    return($regime_items);
+    // Sort these appropriately
+    usort($final_items, array("AssessmentRegime", "assessment_date_compare"));
+
+    return($final_items);
   }
 
   function get_last_application_time($id)

@@ -139,9 +139,26 @@ class AssessmentCombined
 
   private function get_staff_permissions()
   {
-    if(Student::get_academic_user_id($this->assessed_id) != User::get_id()) return; // primitive for now, need "other" override soon
-    $this->can_view = true; // Academic tutors can see
-    if($this->regime->assessor == 'academic') $this->can_edit = true;
+    $academic_tutor = (Student::get_academic_user_id($this->assessed_id) == User::get_id());
+
+    if($academic_tutor)
+    {
+      $this->can_view = true; // Academic tutors can see
+      if($this->regime->assessor == 'academic') $this->can_edit = true;
+    }
+    else
+    {
+      if($this->regime->assessor != 'other') return; // Can't have rights...
+      // Ok, is this staff member the designated "other"?
+      require_once("model/AssessorOther.class.php");
+      $assessorother = AssessorOther::load_where("where assessor=" . User::get_id() . " and assessed_id=" $this->assessed_id . " and regime_id=" . $this->regime->id;
+      if($assessorother->id)
+      {
+        // They are
+        $this->can_view = true;
+        $this->can_edit = false;
+      }
+    }
   }
 
 

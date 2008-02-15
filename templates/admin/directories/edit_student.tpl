@@ -25,7 +25,10 @@
 {if $smarty.section.others.first}
 <h3>Configure Other Assessors</h3>
 <div id="table_manage">
-<form>
+<form method="post">
+  <input type="hidden" name="section" value="directories" />
+  <input type="hidden" name="function" value="edit_assessor_do" />
+  <input type="hidden" name="student_id" value="{$object->id}" />
   <table>
     <tr>
       <td colspan="2" class="button"><input type="submit" class="submit" value="confirm"/></td>
@@ -33,7 +36,11 @@
 {/if}
     <tr>
       <td class="property">{$other_items[others]->student_description}</td>
-      <td>test</td>
+      <td>
+        <select name="tutor_{$other_items[others]->id}">
+          {html_options options=$academic_tutors selected=$other_items[others]->assessor_id}
+        </select>
+      </td>
     </tr>
 {if $smarty.section.others.last}
     <tr>

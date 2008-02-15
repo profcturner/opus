@@ -199,6 +199,8 @@
        'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
     );
     $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'));
+    require_once("model/Staff.class.php");
+    $academic_tutors = Staff::lookup_tutors_by_school(); // this wasn't intended to be called directly, rework...
 
     $waf->assign("changes", WA::request("changes"));
     $waf->assign("assessment_group_id", $assessment_group_id);
@@ -210,17 +212,46 @@
     $waf->assign("placements", $placements);
     $waf->assign("placement_fields", $placement_fields);
     $waf->assign("placement_options", $placement_options);
+    $waf->assign("academic_tutors", $academic_tutors);
 
     edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("manage applications", "section=directories&function=manage_applications&page=")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   function edit_student_do(&$waf, &$user) 
   {
-    $id = WA::request("id");
+    $id = (int) WA::request("id");
 
     if(!Policy::is_auth_for_student($id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "Student", "section=directories&function=edit_student&id=$id&changes=1", "edit_student_real");
+  }
+
+  function edit_assessor_do(&$waf)
+  {
+    $student_id = (int) WA::request("student_id");
+    require_once("model/Student.class.php");
+    $student_user_id = Student::get_user_id($student_id);
+
+    require_once("model/AssessorOther.class.php");
+
+    // Remove current associations
+    AssessorOther::remove_where("where assessed_id=$student_user_id");
+
+    // Write new ones
+    $other_items = Student::get_other_assessors($student_user_id);
+    foreach($other_items as $item)
+    {
+      $assessor_id = (int) WA::request("tutor_" . $item->id);
+      if($assessor_id) // Don't write "no assessor"
+      {
+        $fields['regime_id'] = $item->id;
+        $fields['assessor_id'] = $assessor_id;
+        $fields['assessed_id'] = $student_user_id;
+
+        AssessorOther::insert($fields);
+      }
+    }
+    goto("directories", "edit_student_real&id=$student_id&changes=1");
   }
 
   function remove_student(&$waf, &$user) 

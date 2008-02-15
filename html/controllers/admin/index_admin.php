@@ -112,6 +112,7 @@ function nav_admin()
 
     require_once("model/Company.class.php");
     $company_name = Company::get_name($_SESSION['company_id']);
+    if(!strlen($company_name)) $company_name="company";
 
     $company_nav = array
     (
