@@ -1449,10 +1449,12 @@
 
   // Company / Vacancy resources
 
-  function manage_company_resources(&$waf, $user, $title)
+  function manage_company_resources(&$waf)
   {
     $company_id = (int) WA::request("company_id");
-    $page = (int) WA::request("page", true);
+
+    // Ignore pagination for complex reasons
+    $waf->assign("nopage", true);
 
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');

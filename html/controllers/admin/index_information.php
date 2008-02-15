@@ -11,8 +11,8 @@
   function list_resources(&$opus, $user, $title)
   {
     $opus->assign("nopage", true);
-    //$page = WA::request('page', true);
-    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("where lookup NOT LIKE 'PRIVATE%'"), "admin:information:list_resources:list_resources");
+
+    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("where company_id != 0 and company_id is not null"), "admin:information:list_resources:list_resources");
   }
 
   function view_resource(&$opus, $user, $title)
