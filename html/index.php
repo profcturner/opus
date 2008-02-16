@@ -53,6 +53,8 @@ function main()
 
   // Are there any errors carried in the session? This sometimes repeats the display
   // of an error but it seems a lesser evil than not showing it at all.
+  // Best way to solve this is to create a generic error reporting object that the template
+  // can interact with after the error has been shown.
   if(isset($_SESSION['waf']['SQL_error'])) $waf->assign("SQL_error", $_SESSION['waf']['SQL_error']);
   unset($_SESSION['waf']['SQL_error']);
 
@@ -84,13 +86,18 @@ function main()
     load_user($user['username']);
 
     $currentgroup = $waf->user['opus']['user_type'];
+
+    // When closed, only root users can login
+    if(!$system_status && $currentgroup != "root")
+    {
+      logout($waf);
+      exit;
+    }
     if($currentgroup == "root") $currentgroup="admin";
-    //if (strlen($currentgroup) == 0) $currentgroup = $user[groups][0];
 
     //assignment of user
     $waf->assign_by_ref("user", $waf->user);
     $waf->assign_by_ref("currentgroup", $currentgroup);
-
 
     // Ok, on with the show
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller

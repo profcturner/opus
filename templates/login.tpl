@@ -32,7 +32,7 @@
   <br />
 <table width="700" height="90"  border="0" align="center" cellspacing="0">
  <tr valign="top">
-  <td><div align="left"><img src="{$config.opus.url}/images/institution/{#institution_logo#}" width="250" height="50"></div></td>
+  <td><div align="left"><img src="{#institution_logo#}" width="{#institution_logo_width#}"></div></td>
   <td width="350"><div align="right"><img src="{$config.opus.url}/images/{#application_logo#}" width="115" height="66"></div></td>
  </tr>
 </table><br>
@@ -83,6 +83,7 @@
                       
     <input type="submit" name="Submit" value="{#login_phrase#}" />
     <br><span class='text'>{#link_text_to_password_reset#}</span>
+    {if $opus_closed}<br /><h2>{#opus_closed#}</h2>{/if}
     <br><span class="important">{$error}</span>
       
     </form></td>
