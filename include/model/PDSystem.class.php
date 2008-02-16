@@ -29,7 +29,7 @@ class PDSystem
   * @return data encapulates as PHP arrays or XML dependant on mode called.
   * @todo I suspect the XML functionality is broken, but since v4 will not use it, this is not a priority
   */
-  function get_data($section_name, $service_name, $input = "", $format = 'PHP')
+  function get_data($section_name, $service_name, $input = "", $format = 'XML')
   {
     global $config_sensitive;
     global $waf;
@@ -97,7 +97,7 @@ class PDSystem
   */
   function get_cv_templates()
   {
-    return(PDSystem::get_data("cv", "get_cv_template_list"));
+    return(PDSystem::get_data("cv", "get_cv_template_list", ""));
   }
 
 
