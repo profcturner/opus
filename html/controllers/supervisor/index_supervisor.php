@@ -1,6 +1,6 @@
 <?php
 
-function nav_workplace() 
+function nav_supervisor() 
 {
   return array
   (

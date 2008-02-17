@@ -67,6 +67,12 @@ class Supervisor extends DTO_Supervisor
     return($supervisor);
   }
 
+  function get_supervisee_id($user_id)
+  {
+    $supervisor = Supervisor::load_by_user_id($user_id);
+    return $supervisor->student_user_id;
+  }
+
   function count($where_clause)
   {
     $supervisor = new Supervisor;
