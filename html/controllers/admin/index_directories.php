@@ -435,16 +435,22 @@
 
   function view_company(&$waf, &$user)
   {
-    $id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id");
+    if($_SESSION['company_id'] != $company_id)
+    {
+      // If this company isn't the active one, make it so
+      $company_id = (int) WA::request("company_id", true);
+      goto("directories", "view_company&company_id=$company_id");
+    }
 
-    $action_links = array(array("edit", "section=directories&function=edit_company&id=$id"));
+    $action_links = array(array("edit", "section=directories&function=edit_company&id=$company_id"));
 
     require_once("model/Company.class.php");
-    $company = Company::load_by_id($id);
+    $company = Company::load_by_id($company_id);
 
     // Make "recent" menu entry
     $company_name = $company->name;
-    $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
+    $_SESSION['lastitems']->add_here("c:$company_name", "c:$company_id", "Company: $company_name");
 
     // Some lookups
     require_once("model/Activitytype.class.php");
@@ -454,6 +460,14 @@
       array_push($company_activity_names, Activitytype::get_name($activity_type));
     }
 
+    require_once("model/Resource.class.php");
+    $resources = Resource::get_all("where company_id=$company_id");
+    $resource_headings = Resource::get_field_defs("company");
+    $resource_actions = array(array("view", "view_company_resource", "directories"));
+
+    $waf->assign("resources", $resources);
+    $waf->assign("resource_headings", $resource_headings);
+    $waf->assign("resource_actions", $resource_actions);
     $waf->assign("action_links", $action_links);
     $waf->assign("company", $company);
     $waf->assign("company_activity_names", $company_activity_names);
@@ -466,8 +480,15 @@
   */
   function manage_vacancies(&$waf, $user, $title)
   {
-    $company_id = (int) WA::request("company_id", true);
     $page = (int) WA::request("page", true);
+
+    $company_id = (int) WA::request("company_id");
+    if($company_id && ($_SESSION['company_id'] != $company_id))
+    {
+      // If this company isn't the active one, make it so
+      $company_id = (int) WA::request("company_id", true);
+      goto("directories", "manage_vacancies&company_id=$company_id&page=$page");
+    }
 
     require_once("model/Vacancy.class.php");
     $objects = Vacancy::get_all("where company_id=$company_id", "order by year(jobstart) DESC, status, description", $page);
@@ -637,12 +658,14 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
     $resource_headings = Resource::get_field_defs("company");
+    $resource_actions = array(array("view", "view_company_resource", "directories"));
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
     $waf->assign("company", $company);
     $waf->assign("resources", $resources);
     $waf->assign("resource_headings", $resource_headings);
+    $waf->assign("resource_actions", $resource_actions);
     $waf->assign("vacancy_activity_names", $vacancy_activity_names);
     $waf->assign("company_activity_names", $company_activity_names);
     $waf->assign("show_heading", true);
@@ -951,9 +974,14 @@
   {
     if(!Policy::check_default_policy("contact", "list")) $waf->halt("error:policy:permissions");
 
+    $company_id = (int) WA::request("company_id");
+    if($company_id && ($_SESSION['company_id'] != $company_id))
+    {
+      // If this company isn't the active one, make it so
+      $company_id = (int) WA::request("company_id", true);
+      goto("directories", "manage_contacts&company_id=$company_id");
+    }
     require_once("model/Contact.class.php");
-
-    $company_id = (int) WA::request("company_id", true);
 
     if($company_id)
     {
@@ -1456,6 +1484,12 @@
 
   function manage_company_resources(&$waf)
   {
+    if(empty($_SESSION['company_id']))
+    {
+      // If this company isn't already the active one, make it so
+      $company_id = (int) WA::request("company_id", true);
+      goto("directories", "manage_company_resources&company_id=$company_id");
+    }
     $company_id = (int) WA::request("company_id", true);
 
     // Ignore pagination for complex reasons
@@ -1464,7 +1498,7 @@
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources");
+    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)

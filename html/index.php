@@ -400,7 +400,8 @@ function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl')
  * 
  */
 
-function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl') {
+function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
+{
 
     $object = str_replace(" ", "_", ucwords($object_name));
 

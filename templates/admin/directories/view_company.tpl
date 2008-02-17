@@ -37,4 +37,6 @@
 </div>
 <strong>{#institution#} {#disclaimer#}</strong>
 
-{include file="list.tpl" objects=$resources headings=$resource_headings nopage=true}
+{*todo: needs taken to config file*}
+<h3>Company Resources</h3>
+{include file="list.tpl" objects=$resources headings=$resource_headings actions=$resource_actions nopage=true}
