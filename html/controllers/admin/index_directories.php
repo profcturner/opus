@@ -634,10 +634,15 @@
       array_push($action_links, array("apply with student", "section=directories&function=add_application&id=$id"));
     }
 
+    require_once("model/Resource.class.php");
+    $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
+    $resource_headings = Resource::get_field_defs("company");
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
     $waf->assign("company", $company);
+    $waf->assign("resources", $resources);
+    $waf->assign("resource_headings", $resource_headings);
     $waf->assign("vacancy_activity_names", $vacancy_activity_names);
     $waf->assign("company_activity_names", $company_activity_names);
     $waf->assign("show_heading", true);
@@ -1451,7 +1456,7 @@
 
   function manage_company_resources(&$waf)
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
 
     // Ignore pagination for complex reasons
     $waf->assign("nopage", true);
@@ -1459,20 +1464,28 @@
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources");
+    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources");
+  }
+
+  function view_company_resource(&$waf, &$user)
+  {
+    $id = (int) $_REQUEST["id"];
+    require_once("model/Resource.class.php");
+
+    Resource::view($id); 
   }
 
   function add_company_resource(&$waf, &$user) 
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if(!Policy::check_default_policy("resource", "create")) $waf->halt("error:policy:permissions");
 
-    add_object($waf, $user, "Resource", array("add", "directories", "add_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources")), array(array("company_id", $company_id)), "admin:configuration:resources:add_resource", "manage.tpl", "", "company");
+    add_object($waf, $user, "Resource", array("add", "directories", "add_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources")), array(array("company_id", $company_id), array("lookup", "PRIVATE"), array("auth", "all"), array("channel_id", 0)), "admin:configuration:resources:add_resource", "manage.tpl", "", "company");
   }
 
   function add_company_resource_do(&$waf, &$user) 
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if(!Policy::check_default_policy("resource", "create")) $waf->halt("error:policy:permissions");
     $waf->log("adding new resource");
 
@@ -1481,16 +1494,16 @@
 
   function edit_company_resource(&$waf, &$user) 
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("editing a resource");
 
-    edit_object($waf, $user, "Resource", array("confirm", "directories", "edit_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources")), array(array("company_id", $company_id)), "admin:configuration:resources:edit_resource", "manage.tpl", "", "company");
+    edit_object($waf, $user, "Resource", array("confirm", "directories", "edit_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources")), array(array("company_id", $company_id), array("lookup", "PRIVATE"), array("auth", "all"), array("channel_id", 0)), "admin:configuration:resources:edit_resource", "manage.tpl", "", "company");
   }
 
   function edit_company_resource_do(&$waf, &$user) 
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if(!Policy::check_default_policy("resource", "edit")) $waf->halt("error:policy:permissions");
     $waf->log("editing a resource");
 
@@ -1499,7 +1512,7 @@
 
   function remove_company_resource(&$waf, &$user) 
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if(!Policy::check_default_policy("resource", "delete")) $waf->halt("error:policy:permissions");
     $waf->log("deleting a resource");
 
@@ -1508,7 +1521,7 @@
 
   function remove_company_resource_do(&$waf, &$user) 
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if(!Policy::check_default_policy("resource", "delete")) $waf->halt("error:policy:permissions");
     $waf->log("deleting a resource");
 

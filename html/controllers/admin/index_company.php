@@ -23,6 +23,11 @@
     goto("directories", "view_company&company_id=$id");
   }
 
+  function manage_resources(&$waf)
+  {
+    goto("directories", "manage_company_resources&company_id=" . $_SESSION['company_id']);
+  }
+
   function manage_vacancies(&$waf)
   {
     goto("directories", "manage_vacancies&company_id=" . $_SESSION['company_id']);
