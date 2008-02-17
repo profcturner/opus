@@ -99,6 +99,14 @@ function main()
     $waf->assign_by_ref("user", $waf->user);
     $waf->assign_by_ref("currentgroup", $currentgroup);
 
+    // Is there any redirect, if so, get it, unset it and go there
+    if(isset($_SESSION['redirect']))
+    {
+      $redirect = $_SESSION['redirect'];
+      unset($_SESSION['redirect']);
+      header("Location: $redirect");
+    }
+
     // Ok, on with the show
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
@@ -117,7 +125,8 @@ function main()
   }
   else
   {
-    // Show the login screen
+    // Show the login screen, no valid user, keep any redirected URI
+    $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
     login($waf);
   }
 }
@@ -427,14 +436,13 @@ function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values,
  * @param string $get_all_parameter The get all parameters used to filter the object result set.
  * @param string $config_section The config section to get the page title and tag line from.
  * @param string $list_tpl The list template to be used to render the user display.
- * @param string $subsection
- * @param integer $id
+ * @param string $field_def_param Used to fine tune the field defs returned by the object
  *
  * @uses generate_table
  * 
  */
-
-function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $get_all_method, $get_all_parameter='', $config_section, $list_tpl='list.tpl') {
+function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $get_all_method, $get_all_parameter='', $config_section, $list_tpl='list.tpl', $field_def_param=null)
+{
 
     $object = str_replace(" ", "_", ucwords($object_name));
 
@@ -444,14 +452,17 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     $object_num = $instance->count($get_all_parameter[0]);
 
     $waf->assign("action_links", $action_links);
-    $waf->assign("headings", $instance->get_field_defs());
+    $waf->assign("headings", $instance->get_field_defs($field_def_param));
     $waf->assign("actions", $actions);
 
     $waf->assign("object_num", $object_num);
 
-    if (is_array($get_all_parameter)) { 
+    if (is_array($get_all_parameter))
+    {
       $objects = call_user_func_array(array($object, $get_all_method), $get_all_parameter);
-    } else {
+    }
+    else
+    {
       $objects = call_user_func(array($object, $get_all_method), $get_all_parameter);
     }
     generate_table($waf, $objects, $config_section, $list_tpl);
@@ -470,31 +481,34 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * @param array $hidden_values Hidden values required for the form to work correctly
  * @param string $config_section The config section to get the page title and tag line from.
  * @param string $manage_tpl The manage template to be used to render the form on the user display.
+ * @param array $additional_fields Optional field defs to merge in with existing ones
+ * @param string $field_def_param Used to fine tune the field defs returned by the object
  *
- * 
  */
+function add_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
+{
 
-  function add_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $default=false)
-  {
+  $object = str_replace(" ", "_", ucwords($object_name));
 
-    $object = str_replace(" ", "_", ucwords($object_name));
+  require_once("model/".$object_name.".class.php");
 
-    require_once("model/".$object_name.".class.php");
+  $instance = new $object;
 
-    $instance = new $object;
+  $headings = $instance->get_field_defs($field_def_param);
+  if (is_array($additional_fields)) $headings = array_merge($headings, $additional_fields);
 
-    $waf->assign("action_button", $action_button);
-    $waf->assign("action_links", $action_links);
-    $waf->assign("mode", "add");
-    $waf->assign("object", $instance);
-    $waf->assign("headings", $instance->get_field_defs());
-    assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
-    $waf->assign("hidden_values", $hidden_values);
-    $content = $waf->fetch($manage_tpl);
-    $waf->assign("content", $content);
-    $waf->display("main.tpl", $config_section, $manage_tpl);
+  $waf->assign("action_button", $action_button);
+  $waf->assign("action_links", $action_links);
+  $waf->assign("mode", "add");
+  $waf->assign("object", $instance);
+  $waf->assign("headings", $headings);
+  assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
+  $waf->assign("hidden_values", $hidden_values);
+  $content = $waf->fetch($manage_tpl);
+  $waf->assign("content", $content);
+  $waf->display("main.tpl", $config_section, $manage_tpl);
 
-  }
+}
 
 /**
  * Process the addition of an object.  
@@ -508,35 +522,34 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  *
  * 
  */
+function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
+{
 
-  function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
-  {
+  $object = str_replace(" ", "_", ucwords($object_name));
 
-    $object = str_replace(" ", "_", ucwords($object_name));
+  require_once("model/".$object.".class.php");
 
-    require_once("model/".$object.".class.php");
+  $obj = new $object;
 
-    $obj = new $object;
+  $nvp_array = call_user_func(array($object, "request_field_values"), False);  // false mean no id is requested
+  $validation_messages = $obj->_validate($nvp_array);
 
-    $nvp_array = call_user_func(array($object, "request_field_values"), False);  // false mean no id is requested
-    $validation_messages = $obj->_validate($nvp_array);
+  if (count($validation_messages) == 0) {
+    $response = $obj->insert($nvp_array);
 
-    if (count($validation_messages) == 0) {
-      $response = $obj->insert($nvp_array);
-
-      if (!is_numeric($response)) 
-      {
-        $_SESSION['waf']['error_message'] = $response;
-      }
-
-      header("location: ?$goto"); 
-    } else {
-      if ($goto_error == "") $goto_error = "add_".strtolower($object);
-      $waf->assign("nvp_array", $nvp_array);
-      $waf->assign("validation_messages", $validation_messages);
-      $goto_error($waf, $user);
+    if (!is_numeric($response)) 
+    {
+      $_SESSION['waf']['error_message'] = $response;
     }
+
+    header("location: ?$goto"); 
+  } else {
+    if ($goto_error == "") $goto_error = "add_".strtolower($object);
+    $waf->assign("nvp_array", $nvp_array);
+    $waf->assign("validation_messages", $validation_messages);
+    $goto_error($waf, $user);
   }
+}
 
 /**
  * Edit an object.  This presents an completed form view for the editing of object information.
@@ -551,35 +564,40 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * @param array $hidden_values Hidden values required for the form to work correctly.
  * @param string $config_section The config section to get the page title and tag line from.
  * @param string $manage_tpl The manage template to be used to render the form on the user display.
+ * @param array $additional_fields Optional field defs to merge in with existing ones
+ * @param string $field_def_param Used to fine tune the field defs returned by the object
  *
  * @uses WA::request()
  * 
  */
+function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
+{
 
-  function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
-  {
+  $object = str_replace(" ", "_", ucwords($object_name));  
+  require_once("model/".$object.".class.php");
+  $instance = new $object;
 
-    $object = str_replace(" ", "_", ucwords($object_name));  
-    require_once("model/".$object.".class.php");
-    $instance = new $object;
+  $headings = $instance->get_field_defs($field_def_param);
+  if (is_array($additional_fields)) $headings = array_merge($headings, $additional_fields);
 
-    $id = WA::request("id");
-    $object = call_user_func(array($object, "load_by_id"), $id);
-    $waf->assign("action_button", $action_button);
-    $waf->assign("action_links", $action_links);
-    $waf->assign("mode", "edit");
-    $waf->assign("object", $object);
-    $waf->assign("headings", $instance->get_field_defs());
-    assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
-    $waf->assign("hidden_values", $hidden_values);
-    $content = $waf->fetch($manage_tpl);
-    $waf->assign("content", $content);
-    $waf->display("main.tpl", $config_section, $manage_tpl);
+  $id = WA::request("id");
+  $object = call_user_func(array($object, "load_by_id"), $id);
+  $waf->assign("action_button", $action_button);
+  $waf->assign("action_links", $action_links);
+  $waf->assign("mode", "edit");
+  $waf->assign("object", $object);
+  $waf->assign("headings", $headings);
+  // check for lookups and populate the required smarty objects
+  assign_lookups($waf, $instance);
+  $waf->assign("hidden_values", $hidden_values);
+  $content = $waf->fetch($manage_tpl);
+  $waf->assign("content", $content);
+  $waf->display("main.tpl", $config_section, $manage_tpl);
 
-    // Log view
-    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
-    $waf->log("editing $object_name $human_name");
-  }
+  // Log view
+  if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+  $waf->log("editing $object_name $human_name");
+}
 
 /**
  * Process the edit of an object.  
@@ -593,31 +611,30 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  *
  * 
  */
+function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='') {
 
-  function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='') {
+  $object = str_replace(" ", "_", ucwords($object_name));
+  require_once("model/".$object.".class.php");
 
-    $object = str_replace(" ", "_", ucwords($object_name));
-    require_once("model/".$object.".class.php");
+  $obj = new $object;
+  $nvp_array = call_user_func(array($object, "request_field_values"), True);  // false mean no id is requested
+      $validation_messages = $obj->_validate($nvp_array);
 
-    $obj = new $object;
-    $nvp_array = call_user_func(array($object, "request_field_values"), True);  // false mean no id is requested
-        $validation_messages = $obj->_validate($nvp_array);
-
-    if (count($validation_messages) == 0) {
-      $obj->update($nvp_array);
-      header("location: ?$goto");
-    } else {
-         if ($goto_error == "") $goto_error = "edit_".strtolower($object);
-      $waf->assign("nvp_array", $nvp_array);
-      $waf->assign("validation_messages", $validation_messages);
-      $goto_error($waf, $user);
-    }
-
-    // Log view
-    $id = WA::request("id");
-    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
-    $waf->log("changes made to $object_name $human_name");
+  if (count($validation_messages) == 0) {
+    $obj->update($nvp_array);
+    header("location: ?$goto");
+  } else {
+        if ($goto_error == "") $goto_error = "edit_".strtolower($object);
+    $waf->assign("nvp_array", $nvp_array);
+    $waf->assign("validation_messages", $validation_messages);
+    $goto_error($waf, $user);
   }
+
+  // Log view
+  $id = WA::request("id");
+  if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+  $waf->log("changes made to $object_name $human_name");
+}
 
 /**
  * Remove an object.  This presents summary view of the object to be removed and confirmation button 
@@ -635,33 +652,31 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * @uses WA::request()
  * 
  */
+function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
+{
 
+  $object = str_replace(" ", "_", ucwords($object_name));
 
-  function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
-  {
+  require_once("model/".$object.".class.php");
 
-    $object = str_replace(" ", "_", ucwords($object_name));
+  $instance = new $object;
 
-    require_once("model/".$object.".class.php");
+  $id = WA::request("id");
+  $object = call_user_func_array(array($object, "load_by_id"), array($id, true));
+  $waf->assign("action_button", $action_button);
+  $waf->assign("action_links", $action_links);
+  $waf->assign("mode", "remove");
+  $waf->assign("object", $object);
+  $waf->assign("headings", $instance->get_field_defs());
+  $waf->assign("hidden_values", $hidden_values);
+  $content = $waf->fetch($manage_tpl);
+  $waf->assign("content", $content);
+  $waf->display("main.tpl", $config_section, $manage_tpl);
 
-    $instance = new $object;
-
-    $id = WA::request("id");
-    $object = call_user_func_array(array($object, "load_by_id"), array($id, true));
-    $waf->assign("action_button", $action_button);
-    $waf->assign("action_links", $action_links);
-    $waf->assign("mode", "remove");
-    $waf->assign("object", $object);
-    $waf->assign("headings", $instance->get_field_defs());
-    $waf->assign("hidden_values", $hidden_values);
-    $content = $waf->fetch($manage_tpl);
-    $waf->assign("content", $content);
-    $waf->display("main.tpl", $config_section, $manage_tpl);
-
-    // Log view
-    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
-    $waf->log("possibly removing $object_name $human_name");
-  }
+  // Log view
+  if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+  $waf->log("possibly removing $object_name $human_name");
+}
 
 /**
  * Process the removal of an object.  
@@ -674,23 +689,22 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  *
  * 
  */
+function remove_object_do(&$waf, &$user, $object_name, $goto)
+{
 
+  $object = str_replace(" ", "_", ucwords($object_name));
+  require_once("model/".$object.".class.php");
 
-  function remove_object_do(&$waf, &$user, $object_name, $goto) {
+  $nvp_array = call_user_func(array($object, "request_field_values"), True);  // false mean no id is requested
+  call_user_func(array($object, "remove"), $nvp_array[id]);
 
-    $object = str_replace(" ", "_", ucwords($object_name));
-    require_once("model/".$object.".class.php");
+  // Log view
+  $id = WA::request("id");
+  if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
+  $waf->log("deleting $object_name $human_name");
 
-    $nvp_array = call_user_func(array($object, "request_field_values"), True);  // false mean no id is requested
-    call_user_func(array($object, "remove"), $nvp_array[id]);
-
-    // Log view
-    $id = WA::request("id");
-    if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
-    $waf->log("deleting $object_name $human_name");
-
-    header("location: ?$goto");
-  }
+  header("location: ?$goto");
+}
 
 /**
  * This assigns lookup values to for a lookup property to a Smarty variable called '$field_def[var]'.
@@ -741,89 +755,84 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
   }
 
 /**
- * This generates an assign table, a table that can be used to assign one object to a number of
- * instance of another object, i.e. assign a user to a number of groups.
- * 
- * @param WA &$waf The web application instance object, pass as reference.
- * @param objects $instance An array of object instances.
- *
- * @uses WA::request()
- */
+* This generates an assign table, a table that can be used to assign one object to a number of
+* instance of another object, i.e. assign a user to a number of groups.
+* 
+* @param WA &$waf The web application instance object, pass as reference.
+* @param objects $instance An array of object instances.
+*
+* @uses WA::request()
+*/
 
-  function generate_assign_table(&$waf, $objects, $config_section, $assign_tpl='assign.tpl') 
+function generate_assign_table(&$waf, $objects, $config_section, $assign_tpl='assign.tpl') 
+{
+  $page = WA::request("page", true);
+
+  $pages = array();
+
+  $waf->assign("page", $page);
+  $waf->assign("objects", $objects);
+
+  $waf->display("main.tpl", $config_section, $list_tpl);
+
+  //    $page = WA::request("page");
+  $pages = array();
+
+  $number_of_objects = count($objects);
+
+  for ($i = 1; $i<=$number_of_objects; $i=$i+ROWS_PER_PAGE) 
   {
-
-
-    $page = WA::request("page", true);
-    
-    $pages = array();
-    
-    $waf->assign("page", $page);
-    $waf->assign("objects", $objects);
-
-    $waf->display("main.tpl", $config_section, $list_tpl);
-
-
-
-//    $page = WA::request("page");
-    $pages = array();
-
-    $number_of_objects = count($objects);
-
-    for ($i = 1; $i<=$number_of_objects; $i=$i+ROWS_PER_PAGE) 
-    {
-      $p = (($i-1)/ROWS_PER_PAGE)+1;
-      array_push ($pages, $p);
-    }
-    
-    if (count($pages) == 0) $pages = array(1);
-    $waf->assign("page", $page);
-    $waf->assign("pages", $pages);
-    $waf->assign("objects", $objects);
-
-    $object_list = $waf->fetch("assign_list.tpl");
-    $waf->assign("content", $object_list);
-    $waf->display("main.tpl", $config_section, $assign_tpl);
+    $p = (($i-1)/ROWS_PER_PAGE)+1;
+    array_push ($pages, $p);
   }
-  
-  function assign_objects_do(&$WA) {
 
-  }
+  if (count($pages) == 0) $pages = array(1);
+  $waf->assign("page", $page);
+  $waf->assign("pages", $pages);
+  $waf->assign("objects", $objects);
+
+  $object_list = $waf->fetch("assign_list.tpl");
+  $waf->assign("content", $object_list);
+  $waf->display("main.tpl", $config_section, $assign_tpl);
+}
+
+function assign_objects_do(&$WA) {
+
+}
 
 /**
- * This validates one field of an object.
- *
- * @uses WA::request()
- * @uses DTO::_validation_response() This is inherited by the $object instance
- *
- */
+* This validates one field of an object.
+*
+* @uses WA::request()
+* @uses DTO::_validation_response() This is inherited by the $object instance
+*
+*/
+function validate_field() 
+{
+  $object = WA::request("object");
+  $field = WA::request("field");
+  $value = WA::request("value");
 
-  function validate_field() 
-  {
-    $object = WA::request("object");
-    $field = WA::request("field");
-    $value = WA::request("value");
-    
-    $lookup_name = str_replace("_", " ", $object);
-    $lookup_name = str_replace(" ", "_", ucwords($lookup_name));
-   
-    require_once("model/".$lookup_name.".class.php");
+  $lookup_name = str_replace("_", " ", $object);
+  $lookup_name = str_replace(" ", "_", ucwords($lookup_name));
 
-    $obj = new $lookup_name;
-    echo $obj->_validation_response($field, $value);
+  require_once("model/".$lookup_name.".class.php");
+
+  $obj = new $lookup_name;
+  echo $obj->_validation_response($field, $value);
+}
+
+function get_academic_year()
+{
+  global $config;
+  $yearstart = $config['opus']['yearstart'];
+  if(empty($yearstart)) $yearstart="0930";
+
+  if(empty($year)){
+    if(date("md") < $yearstart) $year = date("Y") - 1;
+    else $year = date("Y");
   }
-
-  function get_academic_year()
-  {
-    global $config;
-    $yearstart = $config['opus']['yearstart'];
-    if(empty($yearstart)) $yearstart="0930";
-
-    if(empty($year)){
-      if(date("md") < $yearstart) $year = date("Y") - 1;
-      else $year = date("Y");
-    }
-    return($year);
-  }
+  return($year);
+}
 
 ?>

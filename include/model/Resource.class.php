@@ -38,7 +38,7 @@ class Resource extends DTO_Resource
     'file_upload'=>array('type'=>'file'),
     'description'=>array('type'=>'text', 'size'=>80, 'maxsize'=>250, 'title'=>'Description', 'header'=>true, 'listclass'=>'resource_description', 'mandatory'=>true),
     'lookup'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Lookup', 'mandatory'=>true),
-    'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'language', 'var'=>'languages'),
+    'language_id'=>array('type'=>'lookup', 'object'=>'language', 'value'=>'name', 'title'=>'Language', 'var'=>'languages'),
     'channel_id'=>array('type'=>'lookup', 'object'=>'channel', 'value'=>'name', 'title'=>'Channel', 'size'=>20, 'var'=>'channels', 'header'=>true),
     'auth'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Authorisation'),
     'filename'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Filename', 'mandatory'=>true),
@@ -54,9 +54,20 @@ class Resource extends DTO_Resource
   /**
   * returns the statically defined field definitions
   */
-  function get_field_defs()
+  function get_field_defs($field_def_param = "null")
   {
-    return(self::$_field_defs);
+    $field_defs = self::$_field_defs;
+
+    // Default
+    if($field_def_param == null) return $field_defs;
+    if($field_def_param == "company")
+    {
+      // Simplify company resources
+      unset($field_defs['lookup']);
+      unset($field_defs['channel_id']);
+      unset($field_defs['auth']);
+    }
+    return($field_defs);
   }
 
   /**
@@ -149,6 +160,13 @@ class Resource extends DTO_Resource
     $fields['uploader'] = $waf->user->id;
     $fields['mime'] = $upload_result['mime_id'];
     $fields['created'] = date("YmdHis");
+
+    if($fields['company_id'])
+    {
+      $fields['channel_id'] = 0; // Global channel
+      $fields['auth'] = "all"; // All users
+      $fields['lookup'] = "PRIVATE";
+    }
     $resource_id = $resource->_insert($fields);
 
     // It went Ok, we need to do the copy
@@ -182,6 +200,13 @@ class Resource extends DTO_Resource
     }
     $resource = Resource::load_by_id($fields[id]);
     $resource->modified = date("YmdHis");
+
+    if($fields['company_id'])
+    {
+      $fields['channel_id'] = 0; // Global channel
+      $fields['auth'] = "all"; // All users
+      $fields['lookup'] = "PRIVATE";
+    }
     $resource->_update($fields);
   }
 
