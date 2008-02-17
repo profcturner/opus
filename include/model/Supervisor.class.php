@@ -129,11 +129,12 @@ class Supervisor extends DTO_Supervisor
     // Mapping to user table
     $user_fields = array();
 
-    $user_fields['salutation'] = $fields['supervisor_salutation'];
+    $user_fields['salutation'] = $fields['supervisor_title'];
     $user_fields['firstname'] = $fields['supervisor_firstname'];
     $user_fields['lastname'] = $fields['supervisor_lastname'];
     $user_fields['email'] = $fields['supervisor_email'];
     $user_fields['username'] = "supervisor_" . $placement_id;
+    $user_fields['user_type'] = "supervisor";
 
     // Try to load any existing supervisor
     $supervisor = Supervisor::load_by_placement_id($placement_id, false);
