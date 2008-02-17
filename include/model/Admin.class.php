@@ -64,6 +64,11 @@ class Admin extends DTO_Admin
     'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
   );
 
+  static $_root_extra_defs = array
+  (
+    'reg_number'=>array('type'=>'text', size=>'20', 'mandatory'=>true)
+  );
+
   /**
   * @var static array of which field_defs are stored elsewhere
   * @see $_field_defs
@@ -72,6 +77,11 @@ class Admin extends DTO_Admin
   static $_extended_fields = array
   (
     'salutation','firstname','lastname','email'
+  );
+
+  static $_root_extra_extended = array
+  (
+    'reg_number'
   );
 
   /**
@@ -89,7 +99,8 @@ class Admin extends DTO_Admin
   */
   function get_field_defs()
   {
-    return self::$_field_defs;
+    if(!User::is_root()) return self::$_field_defs;
+    else return array_merge(self::$_field_defs, self::$_root_extra_defs);
   }
 
   /**
@@ -99,7 +110,8 @@ class Admin extends DTO_Admin
   */
   function get_extended_fields()
   {
-    return self::$_extended_fields;
+    if(!User::is_root()) return self::$_extended_fields;
+    else return array_merge(self::$_extended_fields, self::$_root_extra_extended);
   }
 
   /**
@@ -186,8 +198,10 @@ class Admin extends DTO_Admin
         unset($fields[$key]);
       }
     }
-    // Insert user data first, adding anything else we need
+    // Only root users should insert, but just in case...potential security issue
+    if(!User::is_root()) unset($user_fields['reg_number']);
 
+    // Insert user data first, adding anything else we need
     $user_fields['user_type'] = 'admin';
     $user_id = User::insert($user_fields);
 
@@ -234,6 +248,7 @@ class Admin extends DTO_Admin
         unset($fields[$key]);
       }
     }
+    if(!User::is_root()) unset($user_fields['reg_number']);
     // Insert user data first, adding anything else we need
     $user_fields['id'] = $fields['user_id'];
     User::update($user_fields);

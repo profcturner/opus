@@ -66,6 +66,9 @@ class Application extends DTO_Application
     // Null some fields if empty
     $fields = Application::set_empty_to_null($fields);
 
+    // Record who made the initial application (student or admin really)
+    $fields['addedby'] = User::get_id();
+
     $fields['created'] = date("YmdHis");
     $fields['status'] = "unseen";
     $application = new Application;

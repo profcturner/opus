@@ -68,6 +68,7 @@
 
 {/if}
 
+{* Display any validation errors from a previous failed submission *}
 {foreach from=$validation_messages item=validation name=validation}
 {if $smarty.foreach.validation.first}
 <div id="warning">
@@ -83,11 +84,11 @@
 <form method="POST" ENCTYPE="multipart/form-data" action="" name="mainform">
 <table cellpadding="0" cellspacing="0" border="0">
 {if $action_button}
-
   <tr>
     <td colspan="{if $mode == add || $mode == edit}3{else}2{/if}" class="button"><input type="submit" class="submit" value="{$action_button[0]}" /><input type="hidden" name="section" value="{$action_button[1]}" /><input type="hidden" name="function" value="{$action_button[2]}" /><input type="hidden" name="id" value="{$object->id}" /></td>
   </tr>
 {/if}
+
 {* loop through each field of the object *}
 
 {foreach from=$headings key=header item=def}
@@ -105,7 +106,9 @@
     <td {if $def.mandatory}id="mandatory"{/if}>
 {if $mode == "view" || $mode == "remove"}
 
-      {if $def.type == "lookup"}
+			{if $def.nonedit AND $def.type == "url"}
+        <a href="{if $object->_url}{$object->_url}{else}{$object->$header}{/if}">{if $object->_url}{$object->_url}{else}{$object->$header}{/if}</a>
+      {elseif $def.type == "lookup"}
         {eval assign=header2 var="_$header"}
         {$object->$header2}
       {elseif $def.type == "email"}
@@ -123,7 +126,6 @@
       {else}
         {$object->$header|nl2br}
       {/if}
-
 
 {elseif $mode == "add"}
 
@@ -203,7 +205,6 @@
         <input type="text" name="{$header}" size="{$def.size|default:50}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
       {/if}
 
-
 {elseif $mode == "edit"}
 
       {if $def.type == "text"}
@@ -217,12 +218,12 @@
       <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" style="color:#000099;" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
       {elseif $def.type == "currency"}
       &pound; <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header|string_format:'%.2f'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
-{elseif $def.type == "percentage"}
-            <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header|string_format:'%.2f'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> %
+      {elseif $def.type == "percentage"}
+        <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header|string_format:'%.2f'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> %
       {elseif $def.type == "numeric"}
-      <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
-         {elseif $def.type == "duration"}
-         <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>&nbsp;{$def.scale}
+        <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>
+      {elseif $def.type == "duration"}
+        <input type="text" name="{$header}" size="{$def.size|default:60}" id="{$header}_{$object->id}"  value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/>&nbsp;{$def.scale}
       {elseif $def.type == "timestamp"}
         <input type="hidden" name="{$header}" value="{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}"/>{$nvp_array[$header]|default:$object->$header} [This will update automatically]
       {elseif $def.type == "createtimestamp"}
@@ -294,12 +295,19 @@
 {/foreach}
 
 {if $action_button}
-
   <tr>
     <td colspan="{if $mode == add || $mode == edit}3{else}2{/if}" class="button"><input tabindex={$tabindex} type="submit" class="submit" value="{$action_button[0]}" /><input tabindex={$tabindex} type="hidden" name="section" value="{$action_button[1]}" /><input tabindex={$tabindex} type="hidden" name="function" value="{$action_button[2]}" /><input tabindex={$tabindex} type="hidden" name="id" value="{$object->id}" /></td>
   </tr>
 {/if}
 </table>
+
+{* Get the hidden values *}
+{foreach from=$headings key=header item=def}
+{if $def.type == "hidden" OR $def.hidden}
+  <input type="hidden" name="{$header}" value="{$nvp_array[$header]|default:$object->$header}" />
+{/if}
+{/foreach}
+
 {section loop=$hidden_values name=hidden_value}
 <input tabindex={$tabindex} type="hidden" name="{$hidden_values[hidden_value][0]}" value="{$hidden_values[hidden_value][1]}" />
 {/section}
