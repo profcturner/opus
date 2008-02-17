@@ -150,7 +150,7 @@ class Supervisor extends DTO_Supervisor
     }
     else
     {
-      $user_fields['id'] = $supervisor->user_id;
+      $user_fields['user_id'] = $supervisor->user_id;
       Supervisor::update($user_fields);
       // Ok, so the user already exists, has the email changed to a non null address?
       if(strlen($user_fields['email']) && $user_fields['email'] != $supervisor->email)
