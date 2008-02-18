@@ -251,16 +251,17 @@ class Staff extends DTO_Staff
   function get_user_id($id)
   {
     $id = (int) $id; // Security
+    $staff = new Staff;
 
-    return(Staff::_get_fields("user_id", "where id='$id'"));
+    return($staff->_get_fields("user_id", "where id='$id'"));
   }
 
-  function get_school_id($id)
+  function get_school_id($user_id)
   {
-    $id = (int) $id; // Security
+    $user_id = (int) $user_id; // Security
+    $staff = new Staff;
 
-    $data = Staff::get_id_and_field("school_id","where id='$id'");
-    return($data[$id]);
+    return($staff->_get_fields("school_id","where user_id='$user_id'"));
   }
 }
 

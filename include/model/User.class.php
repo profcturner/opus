@@ -468,7 +468,7 @@ Class User extends DTO_User
   {
     $id = (int) $id; // Security
 
-    $data = User::get_user_type("user_type","where id='$id'");
+    $data = User::get_id_and_field("user_type","where id='$id'");
     return($data[$id]);
   }
 
@@ -490,6 +490,7 @@ Class User extends DTO_User
   */
   function check_auth($auth_line, $user_id = 0)
   {
+    $auth_line = strtolower($auth_line);
     if($user_id == 0)
     {
       $current_user_type = $_SESSION['waf']['user']['opus']['user_type'];
