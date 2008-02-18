@@ -3,6 +3,8 @@
 {$help_prompter->display("SupervisorHome")}
 
 <br />
+<h3>{#placement_details#}</h3>
+{include file="manage.tpl" mode="edit" object=$placement headings=$placement_headings action_button=$placement_action}
 <h3>{#academic_tutor#}</h3>
 {if $academic->id}
 {include file="manage.tpl" mode="view" object=$academic headings=$academic_headings}

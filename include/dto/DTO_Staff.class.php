@@ -38,6 +38,9 @@ class DTO_Staff extends DTO
     {
       $this->$field = $user->$field;
     }
+
+    require_once("model/School.class.php");
+    $this->_school_id = School::get_name($this->school_id);
   }
 
   function _load_by_user_id($user_id=0)
@@ -53,6 +56,9 @@ class DTO_Staff extends DTO
     {
       $this->$field = $user->$field;
     }
+
+    require_once("model/School.class.php");
+    $this->_school_id = School::get_name($this->school_id);
   }
 
   function _get_all($where_clause="", $order_by="order by user.lastname", $start=0, $limit=MAX_ROWS_RETURNED, $parse = False) 

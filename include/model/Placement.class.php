@@ -46,12 +46,26 @@ class Placement extends DTO_Placement
     'supervisor_voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Phone"),
     'company_id'=>array('type'=>'hidden'),
     'vacancy_id'=>array('type'=>'hidden'),
+    'student_id'=>array('type'=>'hidden')
   );
 
   static $_field_defs_admin_override = array(
     'supervisor_title'=>array('type'=>'text', 'size'=>5, 'maxsize'=>100, 'title'=>"Supervisor Title<br /><small>Mr, Dr, etc.</small>"),
     'supervisor_lastname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor Last name")
   );
+
+  static $_field_defs_supervisor_override = array(
+    'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true, 'readonly'=>'true'),
+    'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date', 'readonly'=>'true'),
+    'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date', 'readonly'=>'true'),
+  );
+
+  static $_field_defs_studen_override = array(
+    'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true, 'readonly'=>'true'),
+    'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date', 'readonly'=>'true'),
+    'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date', 'readonly'=>'true'),
+  );
+
 
   function __construct() 
   {
@@ -64,6 +78,8 @@ class Placement extends DTO_Placement
   function get_field_defs()
   {
     if(User::is_admin()) return(array_merge(self::$_field_defs, self::$_field_defs_admin_override));
+    if(User::is_supervisor()) return(array_merge(self::$_field_defs, self::$_field_defs_supervisor_override));
+    if(User::is_student()) return(array_merge(self::$_field_defs, self::$_field_defs_student_override));
     return(self::$_field_defs);
   }
 
@@ -100,6 +116,13 @@ class Placement extends DTO_Placement
 
   function update($fields) 
   {
+    // Some fields cannot be reset by non admins
+    if(!User::is_admin())
+    {
+      unset($fields['jobstart']);
+      unset($fields['jobend']);
+      unset($fields['position']);
+    }
     // Null some fields if empty
     $fields = Placement::set_empty_to_null($fields);
     $fields['modified'] = date("YmdHis");

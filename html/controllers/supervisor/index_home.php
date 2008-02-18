@@ -27,16 +27,30 @@
     $placement_id = $matches[1];
     require_once("model/Placement.class.php");
     $placement = Placement::load_by_id($placement_id);
+    $placement_headings = Placement::get_field_defs();
 
     // And finally any academic tutor
     $academic_id = Student::get_academic_user_id($student_user_id);
     require_once("model/Staff.class.php");
     $academic = Staff::load_by_user_id($academic_id);
+    $academic_headings = array
+    (
+      'real_name'=>array('type'=>'text', 'size'=>50, 'title'=>'Name'),
+      'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'size'=>20, 'var'=>'schools'),
+      'position'=>array('type'=>'text','size'=>50,'header'=>true),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true, 'mandatory'=>true),
+      'voice'=>array('type'=>'text','size'=>40),
+      'room'=>array('type'=>'text', 'size'=>10, 'header'=>true),
+      'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
+      'postcode'=>array('type'=>'text', 'size'=>10),
+    );
 
     $waf->assign("student", $student);
     $waf->assign("placement", $placement);
+    $waf->assign("placement_headings", $placement_headings);
+    $waf->assign("placement_action", array("confirm", "home", "edit_placement_do"));
     $waf->assign("academic", $academic);
-    $waf->assign("academic_headings", Staff::get_field_defs());
+    $waf->assign("academic_headings", $academic_headings);
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $student->user_id);
@@ -159,6 +173,28 @@
     $waf->assign("assessment", $assessment);
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
+
+  function edit_placement_do(&$waf, &$user) 
+  {
+    require_once("model/Supervisor.class.php");
+
+    if(!(preg_match("/^supervisor_([0-9]+)$/", $waf->user['username'], $matches)))
+    {
+      $waf->halt("error:supervisor:invalid_username");
+    }
+    $placement_id = $matches[1];
+    $id = (int) WA::request("id");
+    if($id != $placement_id) $waf->halt("error:supervisor:bad_placement_id");
+
+    $student_id = (int) WA::request("student_id");
+    if(Supervisor::get_supervisee_id(User::get_id()) != $student_id)
+    {
+      $waf->halt("error:supervisor:bad_student_id");
+    }
+
+    edit_object_do($waf, $user, "Placement", "section=home&function=home", "home");
+  }
+
 
 
 
