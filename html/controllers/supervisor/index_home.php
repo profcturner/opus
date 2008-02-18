@@ -36,6 +36,7 @@
     $waf->assign("student", $student);
     $waf->assign("placement", $placement);
     $waf->assign("academic", $academic);
+    $waf->assign("academic_headings", Staff::get_field_defs());
     $waf->assign("assessment_group_id", $assessment_group_id);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $student->user_id);
