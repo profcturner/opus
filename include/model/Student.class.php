@@ -316,7 +316,7 @@ class Student extends DTO_Student
   function get_assessment_regime($user_id, &$aggregate_total, &$weighting_total)
   {
     // This will store the items
-    $regime_items = array();
+    $final_items = array();
 
     // Determine the students assessmentgroup
     $assessmentgroup_id = Student::get_assessment_group_id($user_id);
@@ -332,27 +332,26 @@ class Student extends DTO_Student
     $weighting_total = 0;
     $aggregate_total = 0;
 
-    for($loop = 0; $loop < count($regime_items); $loop++)
+    foreach($regime_items as $regime_item)
     {
       // Supervisor's don't see other assessments
-      if(User::is_supervisor() && $regime_items[$loop]->assessor != 'industrial')
+      if(User::is_supervisor() && ($regime_item->assessor != 'industrial'))
       {
-        unset($regime_items[$loop]);
         continue;
       }
       // Do we want hidden stuff for students anymore?
 
       // Collect the weight as we go...
-      $weighting_total += $regime_items[$loop]->weighting;
+      $weighting_total += $regime_item->weighting;
 
       // Try to determine the assessor
-      if($regime_items[$loop]->assessor == 'other')
+      if($regime_item->assessor == 'other')
       {
         require_once("model/AssessorOther.class.php");
-        $assessorother = AssessorOther::load_where("where assessed_id=$user_id and regime_id=" . $regime_items[$loop]->id);
+        $assessorother = AssessorOther::load_where("where assessed_id=$user_id and regime_id=" . $regime_item->id);
         if($assessorother->id) // valid return
         {
-          $regime_items[$loop]->assessor = User::get_name($assessorother->assessor_id);
+          $regime_item->assessor = User::get_name($assessorother->assessor_id);
         }
       }
       /* this needs to go in the template
@@ -371,14 +370,14 @@ class Student extends DTO_Student
 
       // Get the results if possible
       require_once("model/AssessmentTotal.class.php");
-      $results = AssessmentTotal::load_where("where regime_id = " . $regime_items[$loop]->id . " and assessed_id=$user_id");
+      $results = AssessmentTotal::load_where("where regime_id = " . $regime_item->id . " and assessed_id=$user_id");
 
       $percentage = $results->percentage;
       if(empty($percentage))
       {
         $percentage = "--";
         $aggregate = "--";
-        $punctuality = $regime_items[$loop]->get_punctuality($user_id);
+        $punctuality = $regime_item->get_punctuality($user_id);
         switch($punctuality)
         {
           case "early": $percentage .= " (not due yet)"; break;
@@ -389,17 +388,17 @@ class Student extends DTO_Student
       else
       {
         $percentage = sprintf("%.02f", $percentage);
-        $aggregate = sprintf("%.02f", $percentage * $regime_items[$loop]->weighting);
+        $aggregate = sprintf("%.02f", $percentage * $regime_item->weighting);
         $aggregate_total += $aggregate;
         $percentage .= "%";
         $aggregate .= "%";
       }
       // Add them to the array
-      $regime_items[$loop]->percentage = $percentage;
-      $regime_items[$loop]->aggregate = $aggregate;
-
+      $regime_item->percentage = $percentage;
+      $regime_item->aggregate = $aggregate;
+      array_push($final_items, $regime_item);
     }
-    return($regime_items);
+    return($final_items);
   }
 
   function get_other_assessors($user_id)

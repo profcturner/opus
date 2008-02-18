@@ -161,6 +161,21 @@ class AssessmentCombined
     }
   }
 
+  private function get_supervisor_permissions()
+  {
+    require_once("model/Supervisor.class.php");
+    // You need to be the supervisor of the student in question
+    if(Supervisor::get_supervisee_id(User::get_id()) != $this->assessed_id) return;
+
+    if($this->regime->assessor == 'industrial')
+    {
+      $this->can_view = true;
+      $this->can_edit = true;
+    }
+
+    // Other assessments are out of bounds...
+  }
+
 
   function load_structure($assessment_id)
   {
