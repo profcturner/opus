@@ -230,6 +230,10 @@ rename table channelassociations to channelassociation;
 alter table automail add column id int unsigned auto_increment primary key;
 alter table automail change column language language_id int unsigned;
 
+insert into `automail` (language_id, lookup, fromh, toh, cch, bcch, subject, description, contents) values(1,'PhoneHome_Install','%afirstname% %asurname% <%aemail%>','opus-stats@ulster.ac.uk','','','New OPUS installation','This is used to send an email to UU upon installation, only with your permission','New OPUS install\r\n\r\ninstitution: %conf_institution%\r\nurl: %conf_website%\r\nversion: %conf_version%\r\n');
+insert into `automail` (language_id, lookup, fromh, toh, cch, bcch, subject, description, contents) values(1,'PhoneHome_Periodic','%afirstname% %asurname% <%aemail%>','opus-stats@ulster.ac.uk','','','OPUS Periodic Statistics','Non confidential information, send periodically with your consent, to the University of Ulster','institution: %conf_institution%\r\nurl: %conf_website%\r\nversion: %conf_version%\r\n\r\nstudents: %custom_students%\r\nroots: %custom_roots%\r\nadmins: %custom_admins%\r\ncontacts: %custom_contacts%\r\nstaff: %custom_staff%\r\nsupervisors: %custom_supervisors%\r\ncompanies: %custom_companies%\r\nvacancies: %custom_vacancies%\r\n');
+
+
 -- languages --
 
 rename table languages to language;
