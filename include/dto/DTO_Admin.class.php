@@ -141,7 +141,7 @@ class DTO_Admin extends DTO
     try
     {
       $query = "select admin_id, $tablename.policy_id as level_policy_id from admin left join $tablename on admin.user_id = $tablename.admin_id left join user on admin.user_id = user.id left join policy on policy.id = $tablename.policy_id where $level" . "_id=?";
-      if($help_directory) $query .= " and admin.help_directory = 'yes'";
+      if($help_directory) $query .= " and admin.help_directory != 'no'";
       $query .= " order by policy.priority, user.lastname"; // needs to be improved
       $sql = $con->prepare($query);
       $sql->execute(array($level_id));
