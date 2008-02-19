@@ -1318,10 +1318,10 @@
 
     $page = WA::request("page", true);
 
-    $admin_objects = Admin::get_all("where user_type = 'admin'", "", $page);
+    $admin_objects = Admin::get_all("where user_type = 'admin'", "order by lastname", $page);
     $object_num = Admin::count("where user_type = 'admin'");
 
-    $root_objects  = Admin::get_all("where user_type = 'root'");
+    $root_objects  = Admin::get_all("where user_type = 'root'", "order by lastname");
 
     $admin_headings = Admin::get_admin_list_headings();
     $root_headings = Admin::get_root_list_headings();

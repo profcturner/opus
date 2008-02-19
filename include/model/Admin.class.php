@@ -276,7 +276,7 @@ class Admin extends DTO_Admin
   * the underlying function joins the admin and user tables, so fields
   * from either can be used in the where_clause
   */
-  function get_all($where_clause="", $order_by="", $page=0, $end=0) 
+  function get_all($where_clause="", $order_by="order by lastname", $page=0, $end=0) 
   {
     global $config;
     $admin = new Admin;
