@@ -105,11 +105,13 @@
     }
 
     $root_admins = HelpDirectory::get_root_admins();
+    $inst_admins = HelpDirectory::get_institutional_admins();
 
     $admin_headings = Admin::get_admin_list_headings();
     $root_headings = Admin::get_root_list_headings();
 
     $waf->assign("root_admins", $root_admins);
+    $waf->assign("inst_admins", $inst_admins);
     $waf->assign("specific_admins", $specific_admins);
     $waf->assign("admin_headings", $admin_headings);
     $waf->assign("root_headings", $root_headings);

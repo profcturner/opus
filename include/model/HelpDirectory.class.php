@@ -33,6 +33,12 @@ class HelpDirectory
     return($admins);
   }
 
+  function get_institutional_admins()
+  {
+    require_once("model/Admin.class.php");
+    return(Admin::get_all_by_institution(true));
+  }
+
   function get_student_admins($student_user_id)
   {
     require_once("model/Admin.class.php");

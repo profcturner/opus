@@ -295,6 +295,14 @@ class Admin extends DTO_Admin
     return $admins;
   }
 
+  function get_all_by_institution($help_directory = false)
+  {
+    $where_clause = "where admin.inst_admin = 'yes'";
+    if($help_directory) $where_clause .= " and help_directory='yes'";
+
+    return(Admin::get_all($where_clause));
+  }
+
   function get_all_by_faculty($faculty_id, $help_directory = false)
   {
     $admin = new Admin;
