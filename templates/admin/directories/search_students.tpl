@@ -44,7 +44,7 @@ function toggleAll(checked)
         <td>{$students[students].placement_year|default:#unknown#|escape:"htmlall"}</td>
         <td>{$students[students].placement_status|escape:"htmlall"}</td>
         <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="">CV</a></td>
-        <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="">help</a></td>
+        <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="?section=information&function=help_directory&student_id={$students[students].user_id}">help</a></td>
         <td {if $show_timelines}rowspan="2"{/if} class="action"><a href="?section=directories&function=edit_student&id={$students[students].id}">edit</a></td>
       </tr>
       {if $show_timelines}

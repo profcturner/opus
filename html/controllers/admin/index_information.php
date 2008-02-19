@@ -99,6 +99,7 @@
     {
       require_once("model/Student.class.php");
       $student = Student::load_by_id($student_id);
+      $specific_admins = HelpDirectory::get_student_admins($student_id);
       $waf->assign("student_id", $student_id);
       $waf->assign("student", $student);
     }
@@ -109,6 +110,7 @@
     $root_headings = Admin::get_root_list_headings();
 
     $waf->assign("root_admins", $root_admins);
+    $waf->assign("specific_admins", $specific_admins);
     $waf->assign("admin_headings", $admin_headings);
     $waf->assign("root_headings", $root_headings);
 

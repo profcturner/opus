@@ -113,22 +113,22 @@ class DTO_Admin extends DTO
     return $object_array; 
   }
 
-  function _get_all_by_faculty($faculty_id)
+  function _get_all_by_faculty($faculty_id, $help_directory = false)
   {
-    return($this->_get_all_by_level("faculty", $faculty_id));
+    return($this->_get_all_by_level("faculty", $faculty_id, $help_directory));
   }
 
-  function _get_all_by_school($school_id)
+  function _get_all_by_school($school_id, $help_directory = false)
   {
-    return($this->_get_all_by_level("school", $school_id));
+    return($this->_get_all_by_level("school", $school_id, $help_directory));
   }
 
-  function _get_all_by_programme($programme_id)
+  function _get_all_by_programme($programme_id, $help_directory = false)
   {
-    return($this->_get_all_by_level("programme", $programme_id));
+    return($this->_get_all_by_level("programme", $programme_id, $help_directory));
   }
 
-  function _get_all_by_level($level, $level_id = 0)
+  function _get_all_by_level($level, $level_id = 0, $help_directory = false)
   {
     global $waf;
 
@@ -136,10 +136,14 @@ class DTO_Admin extends DTO
 
     $con = $waf->connections[$this->_handle]->con;
 
+    $object_array = array();
     $tablename = $level . "admin";
     try
     {
-      $sql = $con->prepare("select admin_id, $tablename.policy_id as level_policy_id from admin left join $tablename on admin.user_id = $tablename.admin_id where $level" . "_id=?");
+      $query = "select admin_id, $tablename.policy_id as level_policy_id from admin left join $tablename on admin.user_id = $tablename.admin_id left join user on admin.user_id = user.id left join policy on policy.id = $tablename.policy_id where $level" . "_id=?";
+      if($help_directory) $query .= " and admin.help_directory = 'yes'";
+      $query .= " order by policy.priority, user.lastname"; // needs to be improved
+      $sql = $con->prepare($query);
       $sql->execute(array($level_id));
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
