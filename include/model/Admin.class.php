@@ -298,19 +298,19 @@ class Admin extends DTO_Admin
   function get_all_by_faculty($faculty_id, $help_directory = false)
   {
     $admin = new Admin;
-    return $admin->_get_all_by_faculty($faculty_id);
+    return $admin->_get_all_by_faculty($faculty_id, $help_directory);
   }
 
   function get_all_by_school($school_id, $help_directory = false)
   {
     $admin = new Admin;
-    return $admin->_get_all_by_school($school_id);
+    return $admin->_get_all_by_school($school_id, $help_directory);
   }
 
   function get_all_by_programme($programme_id, $help_directory = false)
   {
     $admin = new Admin;
-    return $admin->_get_all_by_programme($programme_id);
+    return $admin->_get_all_by_programme($programme_id, $help_directory);
   }
 
   function get_id_and_field($fieldname, $where_clause="") 
