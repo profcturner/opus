@@ -164,10 +164,11 @@ class Application extends DTO_Application
     foreach($applications as $application)
     {
       // Get the student's details
-      $student = Student::load_by_id($application->student_id);
+      $student = Student::load_by_user_id($application->student_id);
       // Augment the record
       $application->_student_real_name = $student->real_name;
       $application->_student_programme = Programme::get_name($student->programme_id);
+      $application->_student_table_id = $student->id;
 
       if($student->placement_status == 'Required')
       {
@@ -183,8 +184,16 @@ class Application extends DTO_Application
           {
             array_push($placed, $application);
           }
-        // Otherwise, the student is placed elsewhere or has another status
-        array_push($unavailable, $application);
+          else
+          {
+            // Student placed elsewhere
+            array_push($unavailable, $application);
+          }
+        }
+        else
+        {
+          // Otherwise, the student has another status
+          array_push($unavailable, $application);
         }
       }
     }

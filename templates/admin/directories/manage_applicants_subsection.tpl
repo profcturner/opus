@@ -11,6 +11,7 @@
     <th>Status</th>
     <th class="action">CV</th>
     <th class="action">Letter</th>
+    <th class="action">Help</th>
     <th class="action">Edit</th>
   </tr>
   {section name=applications loop=$applications}
@@ -22,7 +23,8 @@
     <td>{html_options name="status["|cat:$applications[applications]->student_id|cat:"]" values=$status_values output=$status_values selected=$applications[applications]->status}<input type="hidden" name="old_status[{$applications[applications]->student_id}]" value={$applications[applications]->status} /></td>
     <td class="action"><a href="">cv</a></td>
     <td class="action">{if $applications[applications]->letter}<a href="">letter</a>{else}letter{/if}</td>
-    <td class="action"><a href="?section=directories&function=edit_student&id={$applications[applications]->student_id}">edit</a></td>
+    <td class="action"><a href="?section=information&function=help_directory&student_id={$applications[applications]->_student_table_id}">help</a></td>
+    <td class="action"><a href="?section=directories&function=edit_student&id={$applications[applications]->_student_table_id}">edit</a></td>
   </tr>
   {/section}
 </table>
