@@ -122,6 +122,18 @@ class Service extends DTO_Service
     }
   }
 
+  function start()
+  {
+    $fields['status'] = 'started';
+    Service::update($fields);
+  }
+
+  function stop()
+  {
+    $fields['status'] = 'stopped';
+    Service::update($fields);
+  }
+
 }
 
 ?>

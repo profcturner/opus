@@ -138,7 +138,7 @@ class studentbroadsheet extends Report
     $year = (int) $report_options['year'];
     $group_id = (int) $report_options['assessment_group'];
 
-
+    require_once("model/Policy.class.php");
     require_once("model/Staff.class.php");
     require_once("model/Programme.class.php");
     require_once("model/Placement.class.php");
@@ -159,6 +159,8 @@ class studentbroadsheet extends Report
 
     foreach($inital_students as $student)
     {
+      // Skip students we should not see!
+      if(!Policy::is_auth_for_student($student['user_id'], "student", "viewStatus")) continue;
       $programme = Programme::load_by_id($student['programme_id']);
       $new_student = array($student['placement_status'], $student['lastname'], $student['salutation'], $student['firstname'], $student['reg_number'], $student['email'], $programme->srs_ident, $programme->name, User::get_name($student['academic_user_id']));
 

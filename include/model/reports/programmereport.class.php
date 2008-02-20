@@ -97,6 +97,7 @@ class programmereport extends Report
 
   /**
   * returns the body of the report in a multidimensional array (rows and columns)
+  * @todo we should really remove programmes for which no students will appear due to policy issues
   */
   function get_body($report_options)
   {
@@ -118,6 +119,7 @@ class programmereport extends Report
 
   function get_body_programme($programme_id, $year)
   {
+    require_once("model/Policy.class.php");
     require_once("model/Programme.class.php");
     require_once("model/Student.class.php");
 
@@ -128,7 +130,9 @@ class programmereport extends Report
 
     foreach($students as $student)
     {
-      //if(!is_auth_for_student($row['id_number'], "student", "viewStatus")) continue;
+      // Skip students we should not see!
+      if(!Policy::is_auth_for_student($student['user_id'], "student", "viewStatus")) continue;
+
       $status[str_replace(" ", "", $student['placement_status'])]++; // this array will be associative by status codes
       if($student['placement_status'] == 'Placed')
       {

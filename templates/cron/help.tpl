@@ -14,3 +14,6 @@ where function is one of
   phone_home_periodic   send non confidential item counts to UU for analysis
   update_perl_config    rewrite the perl configuration needed for some other tasks
   update_timelines      update timelines for the current, previous and next year
+  start                 start OPUS
+  stop                  stop OPUS (only root users can log in)
+

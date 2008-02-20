@@ -238,6 +238,7 @@ class Policy extends DTO_Policy
     // Check for institutional permission
     if(Policy::is_auth_for_institution($category, $permission)) return true;
 
+    require_once("model/Student.class.php");
     // Get the programme id, and other unit ids
     // if undefined, only root users can deal with them
     require_once("model/Programme.class.php");

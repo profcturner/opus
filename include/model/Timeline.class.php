@@ -201,7 +201,7 @@ class Timeline extends DTO_Timeline
         $key = $data['key'];
         // Is it up-to-date?
         $last_application = Student::get_last_application_time($student_id);
-        if(($last_application > $data['value']) || ($data['value'] = '0000-00-00 00:00:00'))
+        if(($last_application > $data['value']) || ($data['value'] == '0000-00-00 00:00:00'))
         {
           // No, so modify image
           Timeline::modify_image($student_id, $data['key']);
@@ -247,6 +247,7 @@ class Timeline extends DTO_Timeline
     if($image)
     {
       $timeline = Timeline::load_by_id($timeline_id);
+      $fields['id'] = $timeline_id;
       $fields['last_updated'] = date("YmdHis");
       $fields['image'] = $image;
       $timeline->update($fields);

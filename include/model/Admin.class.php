@@ -341,7 +341,7 @@ class Admin extends DTO_Admin
     $nvp_array = array();
     foreach ($fieldnames as $fn) 
     {
-        $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
+      $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
     }
     return $nvp_array;
   }
@@ -369,6 +369,7 @@ class Admin extends DTO_Admin
     $admin = new Admin;
     return($admin->_get_user_id_and_name($where_clause));
   }
+
 }
 
 ?>

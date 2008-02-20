@@ -142,6 +142,7 @@ class assessmentbreakdown extends Report
   */
   function get_body($report_options)
   {
+    require_once("model/Policy.class.php");
     $results = array();
 
     // Boringly, get the same thing for now
@@ -170,7 +171,7 @@ class assessmentbreakdown extends Report
     // Ok, now for each get their records
     foreach($students as $student)
     {
-      array_push($results, $this->get_body_student_results($student, $assessment_structure, $assessment_regime_id));
+      if(Policy::is_auth_for_student($student['user_id'], "student", "viewAssessments")) array_push($results, $this->get_body_student_results($student, $assessment_structure, $assessment_regime_id));
     }
     return($results);
   }
