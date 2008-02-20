@@ -149,6 +149,7 @@ function phone_home_periodic(&$waf, $parameters)
   PhoneHome::send_periodic();
 }
 
+/*
 function create_admin(&$waf, $parameters)
 {
   require_once("model/Admin.class.php");
@@ -161,6 +162,21 @@ function create_admin(&$waf, $parameters)
   $fields['lastname'] = "User";
   print_r($fields);
   Admin::insert($fields);
+}
+*/
+
+function start()
+{
+  require_once("model/Service.class.php");
+
+  Service::start();
+}
+
+function stop()
+{
+  require_once("model/Service.class.php");
+
+  Service::stop();
 }
 
 function update_timelines()
@@ -201,7 +217,7 @@ function update_perl_config()
   fwrite($fp, "\$db_dsn='dbi:" . $config_sensitive['opus']['database']['dsn'] . "';\n");
   fwrite($fp, "\$db_username='" . $config_sensitive['opus']['database']['username'] . "';\n");
   fwrite($fp, "\$db_password='" . $config_sensitive['opus']['database']['password'] . "';\n");
-  fwrite($fp, "# end of file\n");
+  fwrite($fp, "\nreturn 1;\n# end of file\n");
   fclose($fp);
 }
 
