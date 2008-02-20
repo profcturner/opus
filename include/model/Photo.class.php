@@ -22,14 +22,14 @@ class Photo
   *
   * if no photo is available, a suitable blank will be sent
   *
-  * @param int $user_id
+  * @param int $username the username, used as the filename stub
   */
-  function display_photo($user_id, $fullsize = false)
+  function display_photo($username, $fullsize = false)
   {
     global $waf;
     global $config;
 
-    $user_id = (int) $user_id;
+    if(!preg_match("/^[A-Za-z0-9]+$/", $username)) $waf->halt("error:photo:invalid_username");
 
     header("Content-type: application/jpeg");
     if($fullsize)
@@ -37,8 +37,8 @@ class Photo
     else
       header("Content-Disposition: inline; filename=photo.jpeg");
 
-    $fullsize_name = $config['opus']['paths']['photos'] . $user_id . ".jpg";
-    $thumb_name = $config['opus']['paths']['photos'] . $user_id . "_thumb.jpg";
+    $fullsize_name = $config['opus']['paths']['photos'] . $username . ".jpg";
+    $thumb_name = $config['opus']['paths']['photos'] . $username . "_thumb.jpg";
 
     if($fullsize)
     {
@@ -59,7 +59,7 @@ class Photo
       if(!file_exists($thumb_name))
       {
         // No thumbnail, try to create it first
-        Photo::create_thumbnail($user_id);
+        Photo::create_thumbnail($username);
       }
       // Still not there?
       if(!file_exists($thumb_name))
@@ -86,15 +86,15 @@ class Photo
     imeagedestroy($image);
   }
 
-  function create_thumbnail($user_id)
+  function create_thumbnail($username)
   {
     global $waf;
     global $config;
 
-    $user_id = (int) $user_id;
+    if(!preg_match("/^[A-Za-z0-9]+$/", $username)) $waf->halt("error:photo:invalid_username");
 
-    $fullsize_name = $config['opus']['paths']['photos'] . $user_id . ".jpg";
-    $thumb_name = $config['opus']['paths']['photos'] . $user_id . "_thumb.jpg";
+    $fullsize_name = $config['opus']['paths']['photos'] . $username . ".jpg";
+    $thumb_name = $config['opus']['paths']['photos'] . $username . "_thumb.jpg";
 
     if(!file_exists($fullsize_name)) return; // Missing, no big deal
     if(!is_readable($fullsize_name))
