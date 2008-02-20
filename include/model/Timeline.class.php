@@ -172,7 +172,7 @@ class Timeline extends DTO_Timeline
     Timeline::update_year($year + 1);
   }
 
-  function update_year($year)
+  function update_year($year, $check_applications = true)
   {
     global $waf;
 
@@ -189,7 +189,7 @@ class Timeline extends DTO_Timeline
       // For each student, get the user_id
       $user_id = $row["user_id"];
 
-      $last_updated = Timeline::get_id_and_field("last_updated", "where student_id=$student_id");
+      $last_updated = Timeline::get_lastupdated($student_id);
       if(!$last_updated)
       {
         // No image exists in the database, add one...
@@ -197,11 +197,17 @@ class Timeline extends DTO_Timeline
       }
       else
       {
+        $valid = true;
         $data = each($last_updated);
         $key = $data['key'];
         // Is it up-to-date?
-        $last_application = Student::get_last_application_time($student_id);
-        if(($last_application > $data['value']) || ($data['value'] == '0000-00-00 00:00:00'))
+        if($check_applications)
+        {
+          $last_application = Student::get_last_application_time($student_id);
+          if($last_application > $data['value']) $valid = false;
+        }
+        if($data['value'] == '0000-00-00 00:00:00') $valid = false;
+        if(!$valid)
         {
           // No, so modify image
           Timeline::modify_image($student_id, $data['key']);
@@ -288,6 +294,12 @@ class Timeline extends DTO_Timeline
     $timeline->_load_where("where student_id = $student_id");
     $timeline->last_updated = 0;
     $timeline->_update();
+  }
+
+  function get_lastupdated($student_id)
+  {
+    $timeline = new Timeline;
+    return($timeline->get_fields('last_updated', "where student_id=" . (int) $student_id));
   }
 }
 ?>
