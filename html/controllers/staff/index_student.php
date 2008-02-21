@@ -138,4 +138,10 @@
     goto("home", "home");
   }
 
+  function list_notes(&$waf)
+  {
+    goto("home", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);
+  }
+
+
 ?>

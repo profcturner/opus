@@ -98,7 +98,7 @@
     if($student_id)
     {
       require_once("model/Student.class.php");
-      $student = Student::load_by_id($student_id);
+      $student = Student::load_by_user_id($student_id);
       $specific_admins = HelpDirectory::get_student_admins($student_id);
       $waf->assign("student_id", $student_id);
       $waf->assign("student", $student);

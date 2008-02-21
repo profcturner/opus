@@ -35,8 +35,7 @@ function nav_staff()
     ), 
     "information"=>array
     (
-      array("resources", "information", "list_resources", "list_resources"),
-      array("help directory", "information", "help_directory", "help_directory")
+      array("resources", "information", "list_resources", "list_resources")
     )
   );
 

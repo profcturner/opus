@@ -193,4 +193,62 @@
     $waf->display("main.tpl", "staff:home:company_activity:company_activity", "staff/home/company_activity.tpl");
   }
 
+  // Notes
+
+  /**
+  * lists all notes associated with a given item
+  */
+  function list_notes(&$waf, &$user)
+  {
+    $object_type = WA::request("object_type");
+    $object_id = (int) WA::request("object_id");
+
+    $action_links = array(array("add", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id"));
+    require_once("model/Note.class.php");
+    $notes = Note::get_all_by_links($object_type, $object_id);
+    $waf->assign("notes", $notes);
+    $waf->assign("action_links", $action_links);
+
+    $waf->display("main.tpl", "admin:directories:list_notes:list_notes", "admin/directories/search_notes.tpl");
+  }
+
+  /**
+  * views a specific note
+  * @todo show other linked items
+  * @todo modify referer code to allow cleanurls
+  */
+  function view_note(&$waf, &$user)
+  {
+    $note_id = (int) WA::request("id");
+
+    // Because notes are accessed from all over the place, we don't know where
+    // to go back to. So, try and get the referring URL
+    if(preg_match("/^.*?(section=.*)$/", $_SERVER['HTTP_REFERER'], $matches))
+    {
+      $action_links = array(array("back", $matches[1]));
+      $waf->assign("action_links", $action_links);
+    }
+    require_once("model/Note.class.php");
+    require_once("model/Notelink.class.php");
+
+    $note = Note::load_by_id($note_id);
+    $note_links = Notelink::get_all("where note_id=$note_id");
+
+    $waf->assign("note", $note);
+    $waf->assign("note_links", $note_links);
+
+    $waf->display("main.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+  }
+
+  function add_note(&$waf, &$user) 
+  {
+    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:list_notes:add_note");
+  }
+
+  function add_note_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "Note", "section=directories&function=manage_admins", "add_admin");
+  }
+
+
 ?>
