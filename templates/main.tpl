@@ -150,6 +150,7 @@ Actions
     <a href="?section=information&function=copyright">{#copyright#}</a> |
     <a href="?section=information&function=privacy">{#privacy#}</a> |
     <a href="?section=information&function=terms_conditions">{#terms_conditions#}</a> |
+    <a href="?section=information&function=about">{#about#}</a> |
     <a href="http://foss.ulster.ac.uk/support/?func=additem&group=opus">{#get_support#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus">{#report_a_bug#}</a>
     {if $config.opus.benchmarking}| <small>Compile Time: {$benchmark->elapsed()|string_format:"%.2f"} seconds</small>{/if}

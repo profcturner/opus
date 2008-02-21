@@ -175,4 +175,11 @@
     $waf->display("main.tpl", "admin:information:system_status:system_status", "admin/information/system_status.tpl");
   }
 
+  function about(&$waf)
+  {
+    $waf->assign("show_banners", true);
+    $waf->assign("ulster_logo", true);
+    $waf->display("bounded.tpl", "general:information:information:about", "general/information/about.tpl");
+  }
+
 ?>

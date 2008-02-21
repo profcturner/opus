@@ -300,12 +300,13 @@ function error(&$waf)
  * @param array $user
  */
 
-function about(&$waf, $user) 
+/*function about(&$waf, $user) 
 {
   $content = $waf->fetch("about.tpl");
   $waf->assign("content", $content);
   $waf->display("main.tpl");
 }
+*/
 
 /**
  * Sets the navigational history back to the current requested uri.

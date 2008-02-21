@@ -34,4 +34,12 @@
     $opus->display("main.tpl", "supervisor:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
+  function about(&$waf)
+  {
+    $waf->assign("show_banners", true);
+    $waf->assign("ulster_logo", true);
+    $waf->display("bounded.tpl", "general:information:information:about", "general/information/about.tpl");
+  }
+
+
 ?>
