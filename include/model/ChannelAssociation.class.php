@@ -255,7 +255,7 @@ class ChannelAssociation extends DTO_ChannelAssociation
     foreach($links as $link)
     {
       $company_id = $link->company_id;
-      if(CompanyActivity::count("where company_id=$company_id and activity=$activity_id")) return true;
+      if(CompanyActivity::count("where company_id=$company_id and activity_id=$activity_id")) return true;
     }
     return false;
   }
