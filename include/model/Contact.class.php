@@ -261,6 +261,19 @@ class Contact extends DTO_Contact
 
   }
 
+  function get_companies_for_contact($contact_user_id)
+  {
+    $return_array = array();
+
+    $contact_user_id = (int) $contact_user_id;
+
+    require_once("model/CompanyContact.class.php");
+    require_once("model/Company.class.php");
+    $companycontact = CompanyContact::get_all("where contact_id=$contact_user_id");
+
+    $return_array[$companycontact->company_id] = Company::get_name($companycontact->company_id);
+  }
+
   function get_user_id($id)
   {
     $id = (int) $id;

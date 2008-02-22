@@ -16,7 +16,7 @@
 * @return a multidimensinal array that defines menu structure
 *
 */
-function nav_admin() 
+function nav_company() 
 {
   $basic_nav = array
   (
@@ -38,6 +38,18 @@ function nav_admin()
     )
   );
 
+  if(!isset($_SESSION['company_id']))
+  {
+    // No company being tracked, fetch the first one
+    require_once("model/Contact.class.php");
+    $companies = Contact::get_companies_for_contact(User::get_id());
+    if(count($companies)) // This should always be true!
+    {
+      $first_company = each($companies);
+      $_SESSION['company_id'] = $first_company['key'];
+    }
+  }
+
   // If a company is being dealt with, add a dynamic menu
   if(isset($_SESSION['company_id']))
   {
@@ -50,13 +62,13 @@ function nav_admin()
     (
       $company_name=>array
       (
-        array("edit", "company", "edit_company", "edit_company"),
-        array("view", "company", "view_company", "view_company"),
-        array("vacancies", "company", "manage_vacancies", "manage_vacancies"),
-        array("contacts", "company", "manage_contacts", "manage_contacts"),
-        array("resources", "company", "manage_company_resources", "manage_company_resources"),
-        array("notes", "company", "list_notes", "list_notes"),
-        array("drop", "company", "drop_company", "drop_company")
+        array("edit", "my_company", "edit_company", "edit_company"),
+        array("view", "my_company", "view_company", "view_company"),
+        array("vacancies", "my_company", "manage_vacancies", "manage_vacancies"),
+        array("contacts", "my_company", "manage_contacts", "manage_contacts"),
+        array("resources", "my_company", "manage_company_resources", "manage_company_resources"),
+        array("notes", "my_company", "list_notes", "list_notes"),
+        array("drop", "my_company", "drop_company", "drop_company")
       )
     );
   }
