@@ -14,7 +14,7 @@
     require_once("model/Contact.class.php");
     $companies = Contact::get_companies_for_contact(User::get_id());
 
-    $waf->display("main.tpl", "company:home:home:home", "company/home/home.tpl");
+    $waf->display("main.tpl", "contact:home:home:home", "contact/home/home.tpl");
   }
 
   /**
