@@ -93,7 +93,7 @@ class CompanyContact extends DTO_CompanyContact
     return $companycontact->_count($where_clause);
   }
 
-  function get_all($where_clause="", $order_by="ORDER BY priority", $page=0)
+  function get_all($where_clause="", $order_by="ORDER BY status", $page=0)
   {
     global $config;
     $companycontact = new CompanyContact;
