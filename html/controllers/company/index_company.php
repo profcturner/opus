@@ -75,7 +75,7 @@ function nav_company()
 
   if(isset($_SESSION['company_id']))
   {
-    $nav = array_merge_recursive($nav, $company_nav);
+    $nav = array_merge_recursive($basic_nav, $company_nav);
   }
 
   // Finally add the recent items
