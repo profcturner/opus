@@ -121,6 +121,7 @@ class CVCombined
 
   /**
   * email a CV from a student to a given recipient
+  * @todo INCOMPLETE
   *
   */
   function email_cv($student_id, $recipient_id, $vacancy_id = 0)
@@ -135,13 +136,16 @@ class CVCombined
     // Now fetch the raw data
     $cv_blob = CVCombined::get_cv_blob($application->cv_ident);
 
-    // Now the email address
+    // Now the email address and other things
     require_once("model/User.class.php");
     $recipient = User::load_by_id($recipient_id);
+    $student_name = User::get_name($student_id);
 
     // Finally package it up
     require_once("model/OPUSMail.class.php");
-    $mail = new OPUSMail($recipient->email, $recipi
+    $mail = new OPUSMail($recipient->email, "CV: $student_name", $body, "", $recipient->email);
+    $mail->add_direct_attachment($cv_blob, $cv_mime_type);
+    $mail->send();
 
   }
 

@@ -54,6 +54,7 @@ function nav_admin()
         array("view", "company", "view_company", "view_company"),
         array("vacancies", "company", "manage_vacancies", "manage_vacancies"),
         array("contacts", "company", "manage_contacts", "manage_contacts"),
+        array("resources", "company", "manage_company_resources", "manage_company_resources"),
         array("notes", "company", "list_notes", "list_notes"),
         array("drop", "company", "drop_company", "drop_company")
       )

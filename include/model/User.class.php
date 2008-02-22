@@ -298,6 +298,17 @@ Class User extends DTO_User
     return $user;
   }
 
+  function load_by_reg_number($reg_number)
+  {
+    $user = new User;
+    $user->reg_number = $reg_number;
+    $user->_load_by_field('reg_number');
+    // Return false is no user was found
+    if(!strlen($user->user_type)) return false;
+    return $user;
+  }
+
+
   function make_username($fields)
   {
     // $title is not used - at least for now...
