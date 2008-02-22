@@ -22,8 +22,8 @@
     </table>
   </div>
   {/if}
-{sectionelse}
+{foreachelse}
   {#no_companies#}
-{/section}
+{/foreach}
 
 
