@@ -137,6 +137,15 @@ class Programme extends DTO_Programme
     $programme->_remove_where("WHERE id=$id");
   }
 
+  function get_cv_group_id($programme_id)
+  {
+    $programme_id = (int) $programme_id;
+
+    $programme = new Programme;
+    return $programme->_get_fields("cvgroup_id", "where id=$programme_id");
+
+  }
+
   function get_fields($include_id = false) 
   {
     $programme = new Programme;

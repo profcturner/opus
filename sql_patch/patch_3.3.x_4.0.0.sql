@@ -203,12 +203,20 @@ create table facultyadmin
 -- companystudent -> applications --
 
 rename table companystudent to application;
-alter table application add column cv_source enum('none', 'internal', 'pds_template', 'pds_custom') after modified;
-alter table application change column prefcvt cv_id int unsigned null;
-alter table application add column portfolio_source enum('none', 'pds') after archive_mime_type;
-alter table application add column portfolio_hash tinytext after portfolio_source;
+alter table application add column cv_ident tinytext not null after modified;
+update application set cv_ident = concat('pdsystem:template:', prefcvt) where archive_hash is null;
+update application set cv_ident = concat('pdsystem:hash:', archive_hash) where archive_hash is not null;
+alter table application drop column prefcvt;
+alter table application add column portfolio_ident tinytext not null after archive_mime_type;
 alter table application add column status_modified datetime after status;
 alter table application add column id int unsigned not null auto_increment primary key;
+
+-- cv approval --
+
+rename table cv_approval to cvapproval;
+alter table cvapproval add column cv_ident tinytext not null after student_id;
+update cvapproval set cv_ident = concat('pdsystem:template:', template_id);
+alter table cvapproval drop column template_id;
 
 -- resources --
 

@@ -109,31 +109,34 @@ class CVGroup extends DTO_CVGroup
     return $cvgroup_array;
   }
 
-
   function remove($id=0) 
-  {  
+  {
     $cvgroup = new CVGroup;
     $cvgroup->_remove_where("WHERE id=$id");
   }
 
   function get_fields($include_id = false) 
-  {  
+  {
     $cvgroup = new CVGroup;
     return  $cvgroup->_get_fieldnames($include_id); 
   }
+
   function request_field_values($include_id = false) 
   {
     $fieldnames = CVGroup::get_fields($include_id);
     $nvp_array = array();
- 
-    foreach ($fieldnames as $fn) {
- 
+
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
-
     return $nvp_array;
+  }
 
+  function check_permission($group_id, $permission)
+  {
+    $cvgroup = CVGroup::load_by_id($group_id);
+    return(in_array($permission, $cvgroup->permissions));
   }
 }
 ?>

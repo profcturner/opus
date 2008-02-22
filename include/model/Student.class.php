@@ -277,6 +277,21 @@ class Student extends DTO_Student
     return($student->_get_fields("academic_user_id","where user_id='$user_id'"));
   }
 
+
+  /**
+  * gets the cv group id
+  *
+  * @param int $user_id the id from the <strong>user</strong> table
+  */
+  function get_cv_group_id($user_id)
+  {
+    require_once("model/Programme.class.php");
+    $programme_id = Student::get_programme_id($user_id);
+    $group_id = Programme::get_cv_group_id($programme_id);
+
+    return($group_id);
+  }
+
   /**
   * gets the assessment group id
   *

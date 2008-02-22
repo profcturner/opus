@@ -47,13 +47,13 @@ class CVGroupTemplate extends DTO_CVGroupTemplate
     $cvgrouptemplate = new CVGroupTemplate;
     $cvgrouptemplate->_insert($fields);
   }
-  
+
   function update($fields) 
   {
     $cvgrouptemplate = CVGroupTemplate::load_by_id($fields[id]);
     $cvgrouptemplate->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -63,7 +63,7 @@ class CVGroupTemplate extends DTO_CVGroupTemplate
     $cvgrouptemplate->id = $id;
     return $cvgrouptemplate->_exists();
   }
-  
+
   /**
   * Wasteful
   */
@@ -86,6 +86,19 @@ class CVGroupTemplate extends DTO_CVGroupTemplate
       $cvgrouptemplates = $cvgrouptemplate->_get_all($where_clause, $order_by, 0, 1000);
     }
     return $cvgrouptemplates;
+  }
+
+  function get_templates_permissions_by_group($group_id)
+  {
+    $final_array = array();
+    $group_id = (int) $group_id;
+
+    $cvgrouptemplates = CVGroupTemplate::get_all("where group_id=$group_id");
+    foreach($cvgrouptemplates as $cvgrouptemplate)
+    {
+      $final_array[$cvgrouptemplate->template_id] = explode(",", $cvgrouptemplate->settings);
+    }
+    return($final_array);
   }
 
   function get_id_and_field($fieldname, $where_clause="") 
