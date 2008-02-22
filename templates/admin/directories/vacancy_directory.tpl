@@ -18,8 +18,8 @@ function toggleAll(type, checked)
 
 <div id="table_manage">
   <form method="post" name="search" action="">
-    <input type="hidden" name="section" value="directories">
-    <input type="hidden" name="function" value="search_vacancies">
+    <input type="hidden" name="section" value="{$section|default:"directories"}" />
+    <input type="hidden" name="function" value="search_vacancies" />
   
     <table class="table_manage">
       <tr>

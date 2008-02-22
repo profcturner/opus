@@ -20,12 +20,9 @@ class Application extends DTO_Application
   var $student_id = 0;         // Student making applications
   var $created = "";           // Initial application timestamp
   var $modified = "";          // Last modification time for application
-  var $cv_source = "";         // Where the CV is coming from (if any)
-  var $cv_id = "";             // Template id for pds_template, or internal id for internal
-  var $archive_hash = "";      // Hash for a pds_custom CV
+  var $cv_ident = "";          // Where the CV is coming from (source:type:id)
   var $archive_mime_type = ""; // Mime type for a custom CV
-  var $portfolio_source = "";  // Where the portfolio comes from (if any)
-  var $portfolio_hash = "";    // Hash of the portfolio
+  var $portfolio_ident = "";  // Where the portfolio comes from (if any)
   var $cover = "";             // Cover letter if any
   var $status = "";            // Status as set by company
   var $lastseen = "";          // When last seen by company

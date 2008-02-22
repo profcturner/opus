@@ -2,9 +2,9 @@
 
 function nav_student() 
 {
-  global $config;
+  global $config_sensitive;
   // This greatly depends on the existance of a PDSystem sister
-  if(empty($config['opus']['pds']['url']))
+  if(empty($config_sensitive['pds']['url']))
   {
     return array
     (
@@ -18,12 +18,14 @@ function nav_student()
       ), 
       "placement"=>array
       (
-        array("Companies & Vacancies", "placement", "list_vacancies", "list_vacancies"),
+        array("Placement Home", "placement", "placement_home", "placement_home"),
+        array("Companies", "placement", "company_directory", "company_directory"),
+        array("Vacancies", "placement", "vacancy_directory", "vacancy_directory"),
         array("Applications", "placement", "list_applications", "list_applications"),
         array("Assessment", "placement", "list_assessments", "list_assessments"),
         array("Resources", "placement", "list_resources", "list_resources"),
-        array("Notes", "placement", "manage_notes", "manage_notes")
-      ) 
+        array("Notes", "placement", "manage_notes", "list_notes")
+      )
     );
   }
   else
@@ -73,16 +75,16 @@ function nav_student()
         array("Applications", "career", "application", "list_applications"),
         array("interviews", "career", "interviews", "list_interviews"),
         array("Personal Statements", "career", "personal statements", "list_personal_statements")
-        
       ), 
       "placement"=>array
       (
         array("Placement Home", "placement", "placement_home", "placement_home"),
-        array("Companies & Vacancies", "placement", "list_vacancies", "list_vacancies"),
+        array("Companies", "placement", "company_directory", "company_directory"),
+        array("Vacancies", "placement", "vacancy_directory", "vacancy_directory"),
         array("Applications", "placement", "list_applications", "list_applications"),
         array("Assessment", "placement", "list_assessments", "list_assessments"),
         array("Resources", "placement", "list_resources", "list_resources"),
-        array("Notes", "placement", "manage_notes", "manage_notes")
+        array("Notes", "placement", "manage_notes", "list_notes")
       ), 
       "portfolios"=>array
       (

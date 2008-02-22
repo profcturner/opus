@@ -26,12 +26,7 @@ class DTO_CV extends DTO
   function _load_by_id($parse = False)
   {
     parent::_load_by_id();
-/*
-    if ($parse)
-    {
-      $this->description = bbparse($this->description);
-    }
-  }*/
+  }
 }
 
 ?>

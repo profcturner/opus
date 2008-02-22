@@ -31,13 +31,13 @@
       <tr>
         <td class="property">CV</td>
         <td>
-          {html_options name="cv_id" options=$cv_templates}
+          {html_options name="cv_ident" options=$cv_list}
         </td>
       </tr>
       <tr>
         <td class="property">e-Portfolio</td>
         <td>
-          {html_options name="portfolio_id" options=$portfolios}
+          {html_options name="portfolio_ident" options=$eportfolio_list}
         </td>
       </tr>
       <tr>

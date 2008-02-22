@@ -135,7 +135,7 @@ class PDSystem
     global $log;
 
     // The PDSystem uses student numbers more directly
-    $student_reg = get_login_name($student_id);
+    $student_reg = User::get_reg_number($student_id);
 
     // Fetch all possible templates
     $templates = PDSystem::get_cv_templates();

@@ -739,6 +739,8 @@
     require_once("model/CVCombined.class.php");
     $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
 
+    $eportfolio_list = array("none:none:none" => 'None Available');
+
     require_once("model/Application.class.php");
     $application = new Application;
 
@@ -752,6 +754,7 @@
 
     $waf->assign("mode", "add");
     $waf->assign("application", $application);
+    $waf->assign("eportfolio_list", $eportfolio_list);
     $waf->assign("cv_list", $cv_list);
     $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
   }

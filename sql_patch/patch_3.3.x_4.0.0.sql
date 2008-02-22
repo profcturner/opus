@@ -220,6 +220,7 @@ alter table application add column cv_ident tinytext not null after modified;
 update application set cv_ident = concat('pdsystem:template:', prefcvt) where archive_hash is null;
 update application set cv_ident = concat('pdsystem:hash:', archive_hash) where archive_hash is not null;
 alter table application drop column prefcvt;
+alter table application drop column archive_hash;
 alter table application add column portfolio_ident tinytext not null after archive_mime_type;
 alter table application add column status_modified datetime after status;
 alter table application add column id int unsigned not null auto_increment primary key;

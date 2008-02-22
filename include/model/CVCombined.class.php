@@ -39,13 +39,15 @@ class CVCombined
   {
     $final_cvs = array();
 
+    return(array("none:none:none"=>"None Available")); // needed until PDS testing is done
+
     $student_id = (int) $student_id; // security
 
     // Get internal CVs
     require_once("model/CV.class.php");
     $internal_cvs = CV::get_all("where user_id=$student_id");
 
-    foreach($internal_cvs)
+    foreach($internal_cvs as $cv)
     {
       $new_cv = "internal:hash:"; // need's the hash
       if($filter && !CVCombined::check_cv_permission($student_id, $new_cv)) continue; // skip this
