@@ -14,9 +14,9 @@
  <tr align="center" valign="middle">
 
   <!-- Border Top -->
-  <td width="20" height="20" align="right" valign="bottom" background="{$config.opus.url}/images/corner1.jpg"></td>
-  <td height="20" background="{$config.opus.url}/images/top.jpg"><div align="center"></div></td>  
-  <td width="20" height="20" align="left" valign="bottom" background="{$config.opus.url}/images/corner2.jpg"></td>
+  <td width="20" height="19" align="right" valign="bottom" background="{$config.opus.url}/images/corner1.jpg"></td>
+  <td height="19" background="{$config.opus.url}/images/top.jpg"><div align="center"></div></td>  
+  <td width="20" height="19" align="left" valign="bottom" background="{$config.opus.url}/images/corner2.jpg"></td>
  </tr>
 
  
@@ -114,9 +114,9 @@
   <td width="20" align="center" valign="middle" background="{$config.opus.url}/images/right.jpg"><div align="center"></div></td>
   </tr>
  <tr align="center" valign="middle">
-  <td width="20" height="20" align="right" valign="bottom" background="{$config.opus.url}/images/corner4.jpg"></td>
-  <td height="20" background="{$config.opus.url}/images/bottom.jpg"><div align="center"></div></td>  
-  <td width="20" height="20" align="left" valign="bottom" background="{$config.opus.url}/images/corner3.jpg"></td>
+  <td width="20" height="18" align="right" valign="bottom" background="{$config.opus.url}/images/corner4.jpg"></td>
+  <td height="18" background="{$config.opus.url}/images/bottom.jpg"><div align="center"></div></td>  
+  <td width="20" height="18" align="left" valign="bottom" background="{$config.opus.url}/images/corner3.jpg"></td>
  </tr>
 </table> 
 </html>
