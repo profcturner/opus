@@ -278,6 +278,22 @@ class Contact extends DTO_Contact
     return($return_array);
   }
 
+  function is_auth_for_company($company_id, $contact_user_id = 0)
+  {
+    $company_id = (int) $company_id;
+
+    if($contact_user_id == 0) $contact_user_id = User::get_id();
+    require_once("model/CompanyContact.class.php");
+    return(CompanyContact::count("where company_id=company_id and contact_id=$contact_user_id"));
+  }
+
+  function is_auth_for_vacancy($vacancy_id, $contact_user_id = 0)
+  {
+    require_once("model/Vacancy.class.php");
+    $company_id = Vacancy::get_company_id($vacancy_id);
+    return(Contact::is_auth_for_company($company_id, $contact_user_id));
+  }
+
   function get_user_id($id)
   {
     $id = (int) $id;

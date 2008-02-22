@@ -54,7 +54,8 @@ class DTO_Note extends DTO
 
       while($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
-        //$object = new $results_row['link_type'];
+        // Check authorization
+        if(!User::check_auth($results_row['auth'])) continue;
 
         $results_row['author_name'] = User::get_name($results_row['author_id']);
         array_push($results_array, $results_row);

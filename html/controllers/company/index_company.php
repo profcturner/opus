@@ -25,12 +25,12 @@ function nav_company()
       array("home", "home", "home", "home"),
       array("change password", "home", "change_password", "change_password")
     ),
-    "directories"=>array
+    /*"directories"=>array
     (
       array("companies", "directories", "company_directory", "company_directory"),
       array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
-    ),
+    ),*/
     "information"=>array
     (
       array("resources", "information", "list_resources", "list_resources"),
@@ -67,8 +67,7 @@ function nav_company()
         array("vacancies", "my_company", "manage_vacancies", "manage_vacancies"),
         array("contacts", "my_company", "manage_contacts", "manage_contacts"),
         array("resources", "my_company", "manage_company_resources", "manage_company_resources"),
-        array("notes", "my_company", "list_notes", "list_notes"),
-        array("drop", "my_company", "drop_company", "drop_company")
+        array("notes", "my_company", "list_notes", "list_notes")
       )
     );
   }
