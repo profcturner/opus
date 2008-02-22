@@ -125,9 +125,26 @@ class CVCombined
   */
   function email_cv($student_id, $recipient_id, $vacancy_id = 0)
   {
+    $student_id = (int) $student_id;
+    $vacancy_id = (int) $vacancy_id;
+
+    // First find what CV was used
+    require_once("model/Application.class.php");
+    $application = Application::load_where("student_id = $student_id and vacancy_id = $vacancy_id");
+
+    // Now fetch the raw data
+    $cv_blob = CVCombined::get_cv_blob($application->cv_ident);
+
+    // Now the email address
+    require_once("model/User.class.php");
+    $recipient = User::load_by_id($recipient_id);
+
+    // Finally package it up
+    require_once("model/OPUSMail.class.php");
+    $mail = new OPUSMail($recipient->email, $recipi
+
   }
-  
-  
+
 };
 
 ?>

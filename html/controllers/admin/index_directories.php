@@ -268,6 +268,45 @@
     remove_object_do($waf, $user, "Student", "section=directories&function=manage_students");
   }
 
+  // CVs
+
+  function display_cv_list(&$waf)
+  {
+    $student_id = (int) WA::request("student_id", true);
+
+    if(!Policy::is_auth_for_student($student_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
+
+    require_once("model/CVCombined.class.php");
+    $cv_list = CVCombined::fetch_cvs_for_student($student_id, false);
+
+    require_once("model/CVApproval.class.php");
+    $cv_approvals = CVApproval::get_all("where student_id = $student_id");
+
+    $waf->display("main.tpl", "admin:directories:student_directory:display_cv_list", "admin/directories/display_cv_list.tpl");
+  }
+
+  function approve_cv(&$waf)
+  {
+    $student_id = (int) WA::request("student_id", true);
+    $cv_ident = WA::request("cv_ident");
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
+    require_once("model/CVApproval.class.php");
+    CVApproval::approve_cv($student_id, $cv_ident);
+  }
+
+  function revoke_cv(&$waf)
+  {
+    $student_id = (int) WA::request("student_id", true);
+    $cv_ident = WA::request("cv_ident");
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+
+    require_once("model/CVApproval.class.php");
+    CVApproval::revoke_cv($student_id, $cv_ident);
+  }
+
   // Timelines
 
   function display_timeline(&$waf, &$user)
@@ -696,10 +735,9 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
 
-    require_once("model/PDSystem.class.php");
-    //$cv_status = PDSystem::get_cv_status($student_id);
-
-    //print_r($cv_status);
+    // Get the available CVs, and *do* filter them
+    require_once("model/CVCombined.class.php");
+    $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
 
     require_once("model/Application.class.php");
     $application = new Application;
@@ -714,6 +752,7 @@
 
     $waf->assign("mode", "add");
     $waf->assign("application", $application);
+    $waf->assign("cv_list", $cv_list);
     $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
   }
 

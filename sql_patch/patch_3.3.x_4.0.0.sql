@@ -13,6 +13,19 @@ create table service
 -- new application is stopped --
 insert into service values('stopped', '4.0.0', 1);
 
+-- cache objects --
+
+create table `cache_object` (
+  `id` int(11) not null auto_increment,
+  `type` text not null,
+  `key` text not null,
+  `cache` longtext not null,
+  `timestamp` varchar(50) default null,
+  `read_count` int(11) not null,
+  `refresh_count` int(11) not null,
+  primary key  (`id`)
+);
+
 -- placement --
 
 alter table placement change column placement_id id int unsigned auto_increment;

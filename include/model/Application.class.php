@@ -61,6 +61,13 @@ class Application extends DTO_Application
     return $application;
   }
 
+  function load_where($where_clause="") 
+  {
+    $application = new Application;
+    $application->_load_where($where_clause);
+    return $application;
+  }
+
   function insert($fields) 
   {
     // Null some fields if empty
