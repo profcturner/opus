@@ -5,7 +5,7 @@
 <br />
 
 <h3>{#your_companies#}</h3>
-{foreach name=companies from=companies key=company_id item=company_name}
+{foreach name=companies from=$companies key=company_id item=company_name}
   {if $smarty.foreach.companies.first}
   <div id="table_list">
     <table cellpadding="0" cellspacing="0" border="0">
