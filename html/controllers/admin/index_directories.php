@@ -747,7 +747,6 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "viewCompanies")) $waf->halt("error:policy:permissions");
 
-    echo $student_id;
     manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application'), array('remove','remove_application'), array('place','add_placement')), "get_all", array("where student_id=$student_id", "", $page), "admin:directories:student_directory:manage_applications");
   }
 
