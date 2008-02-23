@@ -39,20 +39,46 @@ class Cache_Object extends DTO
 
   function if_valid($key)
   {
-    $success = $this->_load_by_field_value("key", $key);
-    if(!$success) return false; // doesn't exist (maybe garbage collection here?)
-    if(time() > ($this->timestamp + $this->_ttl)) return false; // stale
+    if ($this->_ttl == 0) return false; // if ttl is zero return false so that the cache is refreshed immediately
+    $success = $this->load_from_cache($key);
+    if(!$success) return false; // doesn't exist
+    if(time() > (strtotime($this->timestamp) + $this->_ttl)) return false; // stale
     return true;
   }
 
-  function load_from_cache($key)
+  /**
+  * attempts to load data from the cache
+  *
+  * @param string $key the unique key for the cache item
+  * @param boolean $return_stale whether stale data should be returned (defaults to false)
+  *
+  * @return a boolean value for success
+  * @see cache
+  */
+  function load_from_cache($key, $return_stale = false)
   {
-    $this->_load_by_field_value("key", $key);
+    $success = $this->_load_by_field_value("key", $key);
+    if($success)
+    {
+      // Ok, it's in the database, but is it really valid?
+      if(time() > (strtotime($this->timestamp) + $this->_ttl))
+      {
+        // Stale
+        if(!$return_stale) return false;
+      }
+    }
     $this->read_count = $this->read_count + 1;
     $this->_update();
     $this->cache = unserialize($this->cache);
+    return $success;
   }
 
+  /**
+  * updates the data in the cache
+  *
+  * @param string $key the unique key for the cache item
+  * @param mixed $cache the item to place in the cache
+  */
   function update_cache($key, $cache)
   {
     $wscache = new Cache_Object;
@@ -76,7 +102,6 @@ class Cache_Object extends DTO
       $this->_update();
     }
   }
-
 }
 
 ?>

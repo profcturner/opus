@@ -750,8 +750,7 @@
     require_once("model/PDSystem.class.php");
 
     // Get possible PDSystem templates
-    $pdp_templates_object = PDSystem::get_cv_templates();
-    $pdp_templates = $pdp_templates_object->xpath('//template');
+    $pdp_templates = PDSystem::get_cv_templates();
 
     // Get current permissions for this group
     require_once("model/CVGroupTemplate.class.php");
@@ -890,12 +889,12 @@
     remove_object_do($waf, $user, "Help", "section=configuration&function=manage_help");
   }
 
-  function import_data(&$waf, &$user) 
+  function import_data(&$waf, &$user)
   {
     import_students(&$waf, &$user);
   }
 
-  function import_students(&$waf, &$user)
+  function import_students(&$waf)
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
@@ -920,7 +919,7 @@
     $waf->display("main.tpl", "admin:configuration:import_data:import_students", "admin/configuration/import_students_form.tpl");
   }
 
-  function import_students_do(&$waf, &$user) 
+  function import_students_do(&$waf)
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
