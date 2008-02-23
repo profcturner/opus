@@ -521,7 +521,7 @@
   {
     $page = (int) WA::request("page", true);
 
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     if($company_id && ($_SESSION['company_id'] != $company_id))
     {
       // If this company isn't the active one, make it so
