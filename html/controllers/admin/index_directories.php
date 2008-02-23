@@ -164,17 +164,43 @@
     add_object_do($waf, $user, "Student", "section=directories&function=manage_students", "add_student");
   }
 
+  /**
+  * pick up the student into the session so that the context menu appears
+  */
   function edit_student(&$waf, &$user) 
   {
-    // Put student in session to "pick it up"
-    $id = $_SESSION['student_id'] = WA::request("id");
-    $changes = WA::request("changes");
-
-    if(!Policy::is_auth_for_student($id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
-
     require_once("model/Student.class.php");
-    $student_name = Student::get_name($id);
-    $_SESSION['lastitems']->add_here("s:$student_name", "s:$id", "Student: $student_name");
+    // Prefer a passed in student_id, i.e. the id from the user table for the student
+    $student_id = WA::request("student_id");
+    $id = WA::request("id");
+
+    if(!$student_id && !$id)
+    {
+      // No inbound clues, is there a student in the session? If so, use it.
+      $student_id = $_SESSION['student_id'];
+      if(!$student_id) $waf->halt("error:edit_student:no_student");
+    }
+    if($student_id)
+    {
+      $student = Student::load_by_user_id($student_id);
+      $id = $student->id;
+    }
+    else
+    {
+      // We don't have a user id, but the id from the student table
+      $id = WA::request("id");
+      $student = Student::load_by_id($id);
+      $student_id = $student->user_id;
+    }
+    if(!$student->id) $waf->halt("error:edit_student:invalid_student");
+    // Put this in the session for next time
+    $_SESSION['student_id'] = $student_id;
+
+    $changes = WA::request("changes");
+    if(!Policy::is_auth_for_student($student_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
+
+    $student_name = User::get_name($student_id);
+    $_SESSION['lastitems']->add_here("s:$student_name", "s:$student_id", "Student: $student_name");
 
     goto("directories", "edit_student_real&id=$id&changes=$changes");
   }
@@ -721,7 +747,7 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "viewCompanies")) $waf->halt("error:policy:permissions");
 
-
+    echo $student_id;
     manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application'), array('remove','remove_application'), array('place','add_placement')), "get_all", array("where student_id=$student_id", "", $page), "admin:directories:student_directory:manage_applications");
   }
 

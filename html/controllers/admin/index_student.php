@@ -13,8 +13,8 @@
   */
   function edit_student(&$waf)
   {
-    $id = $_SESSION['student_id'];
-    goto("directories", "edit_student&id=$id");
+    $student_id = $_SESSION['student_id'];
+    goto("directories", "edit_student&student_id=$student_id");
   }
 
   /**
@@ -25,7 +25,7 @@
     $student_id = (int) WA::request("student_id", true);
     require_once("model/Student.class.php");
 
-    $student = Student::load_by_id($student_id);
+    $student = Student::load_by_user_id($student_id);
 
     $waf->assign("student", $student);
     $waf->display("main.tpl", "student:myplacement:home:home", "student/home/home.tpl");
@@ -41,22 +41,21 @@
     $student_id = (int) WA::request("student_id", true);
     $page = (int) WA::request("page", true);
 
-    manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application')), "get_all", array("where student_id=$student_id", "order by created", $page), "student:myplacement:manage_applications:manage_applications");
+    manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application')), "get_all", array("where student_id=$student_id", "order by created", $page), "student:placement:list_applications:list_applications");
   }
 
   function view_assessments(&$waf)
   {
-    $id = $_SESSION['student_id'];
+    $student_id = $_SESSION['student_id'];
 
-    $student_user_id = Student::get_user_id($id);
     require_once("model/Student.class.php");
-    $regime_items = Student::get_assessment_regime($student_user_id,  &$aggregate_total, &$weighting_total);
+    $regime_items = Student::get_assessment_regime($student_id,  &$aggregate_total, &$weighting_total);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $id);
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("weighting_total", $weighting_total);
 
-    $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
+    $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
   }
 
   function list_notes(&$waf)

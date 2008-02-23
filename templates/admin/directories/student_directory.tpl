@@ -54,13 +54,13 @@ function toggleByDiv(divid, checked)
       <tr>
         <td class="property">Search For</td>
         <td>
-          <input type="text" name="search" size="20" />
+          <input type="text" name="search" size="20" value="{$form_options.search}" />
         </td>
       </tr>
       <tr>
         <td class="property">For placement in year </td>
         <td>
-          <input type="text" name="year" size="5" />
+          <input type="text" name="year" size="5" value="{$form_options.year}" />
         </td>
       </tr>
       <tr>

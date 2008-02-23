@@ -228,6 +228,10 @@ class Policy extends DTO_Policy
 
   /**
   * Checks for authorisation at the school or course level for a student
+  *
+  * @param int $student_id the id from the <strong>user</strong> table for this student
+  * @param string $category the category of permissions to check
+  * @param string $permission the specific permission to check for
   */
   function is_auth_for_student($student_id, $category, $permission)
   {

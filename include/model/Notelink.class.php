@@ -179,11 +179,8 @@ class Notelink extends DTO_Notelink
     $applications = Application::get_all("where student_id=$student_id");
     foreach($applications as $application)
     {
-      $result_array['Company_' . $company->id] = "Company: " . Company::get_name($application->company_id);
-    }
-    foreach($applications as $application)
-    {
-      $result_array['Vacancy_' . $company->id] = "Vacancy: " . Vacancy::get_name($application->vacancy_id);
+      $result_array['Company_' . $application->company_id] = "Company: " . Company::get_name($application->company_id);
+      $result_array['Vacancy_' . $application->vacancy_id] = "Vacancy: " . Vacancy::get_name($application->vacancy_id);
     }
     return($result_array);
   }

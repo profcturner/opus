@@ -87,7 +87,7 @@ function nav_admin()
   if(isset($_SESSION['student_id']))
   {
     require_once("model/Student.class.php");
-    $student_name = Student::get_name($_SESSION['student_id']);
+    $student_name = User::get_name($_SESSION['student_id']);
     if(!strlen($student_name)) $student_name="student";
 
     $student_nav = array
