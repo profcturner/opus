@@ -46,6 +46,10 @@
     $vacancy_actions = array(array('view', 'view_vacancy', 'placement'));
     $company_actions = array(array('view', 'view_company', 'placement'));
 
+    require_once("model/Student.class.php");
+    $student = Student::load_by_user_id(User::get_id());
+
+    $waf->assign("student", $student);
     $waf->assign("vacancies_created", $vacancies_created);
     $waf->assign("vacancies_modified", $vacancies_modified);
     $waf->assign("companies_created", $companies_created);
@@ -118,12 +122,14 @@
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("weighting_total", $weighting_total);
 
-    $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
+    $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
   }
 
-  function list_resources(&$opus, $user, $title)
+  function list_resources(&$waf)
   {
-    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("WHERE `company_id` is null or `company_id` = 0", "order by channel_id, description", $page, True), "student:placement:list_resources:list_resources");
+    $waf->assign("nopage", true);
+
+    manage_objects($waf, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("WHERE `company_id` is null or `company_id` = 0", "order by channel_id, description", 0), "student:placement:list_resources:list_resources");
   }
 
   function view_resource(&$opus, $user, $title)
@@ -258,7 +264,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=$company_id");
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "directories"));
+    $resource_actions = array(array("view", "view_company_resource", "placement"));
 
     $waf->assign("resources", $resources);
     $waf->assign("resource_headings", $resource_headings);
@@ -269,6 +275,13 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
+  function view_company_resource(&$waf, &$user)
+  {
+    $id = (int) $_REQUEST["id"];
+    require_once("model/Resource.class.php");
+
+    Resource::view($id); 
+  }
 
   function view_vacancy(&$waf, &$user)
   {
@@ -306,7 +319,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "directories"));
+    $resource_actions = array(array("view", "view_company_resource", "placement"));
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);

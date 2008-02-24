@@ -135,7 +135,6 @@ class Note extends DTO_Note
   function request_field_values($include_id = false) 
   {
     $fieldnames = Note::get_fields($include_id);
-    $fieldnames = array_merge($fieldnames, Note::get_extended_fields());
     $nvp_array = array();
 
     foreach ($fieldnames as $fn)

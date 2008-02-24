@@ -168,7 +168,15 @@ class ChannelAssociation extends DTO_ChannelAssociation
       case 'activity':
         return(ChannelAssociation::user_in_channel_association_activity($object_id, $user_id));
         break;
+      case 'user':
+        return(ChannelAssociation::user_in_channel_association_user($object_id, $user_id));
+        break;
     }
+  }
+
+  function user_in_channel_association_user($prospective_id, $user_id)
+  {
+    return($prospective_id == $user_id);
   }
 
   function user_in_channel_association_programme($programme_id, $user_id)

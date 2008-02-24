@@ -58,6 +58,11 @@
     $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
   }
 
+  function list_student_channels(&$waf)
+  {
+    goto("directories", "list_student_channels");
+  }
+
   function list_notes(&$waf)
   {
     goto("directories", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);

@@ -519,6 +519,25 @@
     $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_assessmentgroup", "admin/advanced/add_channelassociation.tpl");
   }
 
+  function add_channelassociation_student(&$waf)
+  {
+    $channel_id = (int) WA::request('id', true);
+
+    if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");
+    if(!Policy::is_auth_for_student($student_user_id, "student", "editStatus"));
+
+    require_once("model/Programme.class.php");
+    $student_user_id = (int) WA::request('student_id');
+    $dummy_id_array[$student_user_id] = User::get_name($student_user_id);
+
+    $waf->assign("channel_id", $channel_id);
+    $waf->assign("permission_array", array('enable'=>'enable', 'disable'=>'disable'));
+    $waf->assign("type_array", array('user'=>'student'));
+    $waf->assign("id_array", $dummy_id_array);
+
+    $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_student", "admin/advanced/add_channelassociation.tpl");
+  }
+
   function add_channelassociation_do(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("channel", "edit")) $waf->halt("error:policy:permissions");

@@ -247,6 +247,8 @@ rename table channels to channel;
 alter table channel change column channel_id id int unsigned auto_increment;
 
 rename table channelassociations to channelassociation;
+alter table channelassociation change column type type set('course','school','assessmentgroup','activity','user') not null;
+
 -- automail --
 
 alter table automail add column id int unsigned auto_increment primary key;

@@ -29,7 +29,7 @@ class Artefact extends DTO_Artefact
   var $thumb = "";
 
   static $_field_defs = array(
-    'type'=>array('type'=>'text', 'size'=>50, 'title'=>'Title', 'header'=>true),
+    'type'=>array('type'=>'text', 'size'=>50, 'title'=>'Type', 'header'=>true),
     'file_name'=>array('type'=>'text', 'size'=>50, 'title'=>'File Name', 'header'=>true),
     'file_size'=>array('type'=>'text', 'size'=>50, 'title'=>'File Size', 'header'=>true),
     'file_type'=>array('type'=>'text', 'size'=>50, 'title'=>'File Type', 'header'=>true),
@@ -53,6 +53,14 @@ class Artefact extends DTO_Artefact
     $artefact = new Artefact;
     $artefact->id = $id;
     $artefact->_load_by_id($parse);
+    return $artefact;
+  }
+
+  function load_by_hash($hash, $parse = False) 
+  {
+    $artefact = new Artefact;
+    $artefact->hash = $hash;
+    $artefact->_load_by_field('hash');
     return $artefact;
   }
 
@@ -98,6 +106,38 @@ class Artefact extends DTO_Artefact
     {
       return "over_quota";
     }
+    
+  }
+
+  function insert_url($fields)
+  {
+    $artefact = new Artefact;
+
+    $user_id = $fields['user_id'];
+    
+    $artefact->user_id = $user_id;
+    $artefact->type = $fields['type'];
+    $artefact->file_name = $fields['url'];
+    $artefact->file_size = '0';
+    $artefact->file_type = 'url';
+    $artefact->description = $fields['description'];
+    $artefact->group = $fields['group'];
+    $artefact->hash = '';
+    $artefact->data = '';
+    $artefact->thumb = '';
+    
+    return $artefact->_insert();
+  }
+  
+  function calc_diskspace_usage($user_id)
+  {
+    $diskusage = 0;
+    $artefacts = Artefact::get_all("WHERE user_id=$user_id");
+    foreach ($artefacts as $artefact)
+    {
+      $diskusage = $diskusage + $artefact->file_size;
+    }
+    return $diskusage;
   }
 
   function update($fields) 
@@ -139,10 +179,10 @@ class Artefact extends DTO_Artefact
     return Artefact::get_all("WHERE user_id=$user_id", "ORDER BY group, file_name", 0, true);
   }
 
-  function get_id_and_field($fieldname) 
+  function get_id_and_field($fieldname, $where_clause="") 
   {
     $artefact = new Artefact;
-    return  $artefact->_get_id_and_field($fieldname);
+    return  $artefact->_get_id_and_field($fieldname, $where_clause);
   }
 
 

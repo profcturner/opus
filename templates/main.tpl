@@ -53,9 +53,9 @@
     <div id="app_tagline">{$config.opus.tagline} {#version#} {$config.opus.version}.{$config.opus.minor_version}.{$config.opus.patch_version}
     </div>
     <div id="mini_menu">
-      <div id="mini_menu_item"><a href="">preferences</a></div>
+      {* Currently off <div id="mini_menu_item"><a href="">preferences</a></div>
       <div id="mini_menu_item"><a href="">print version</a></div> 
-      <div id="mini_menu_item"><a href="">help</a></div>
+      <div id="mini_menu_item"><a href="">help</a></div> *}
     </div>
     <div id="username">{$user.opus.salutation} {$user.opus.firstname} {$user.opus.lastname}</div>
     <div id="groups">

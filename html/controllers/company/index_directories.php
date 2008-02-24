@@ -111,7 +111,7 @@
     require_once("model/Contact.class.php");
     if(!Contact::is_auth_for_company($id)) $waf->die("error:contact:not_your_company");
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "company:my_company:edit_company:edit_company");
   }
 
   function edit_company_do(&$waf, &$user) 
@@ -427,7 +427,7 @@
 
   function manage_contacts(&$waf, $user, $title)
   {
-    $company_id = (int) WA::request("company_id");
+    $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
     if(!Contact::is_auth_for_company($company_id)) $waf->die("error:contact:not_your_company");
 
@@ -448,14 +448,12 @@
         'position'=>array('type'=>'list','size'=>30, 'header'=>true, title=>'Position'),
         'email'=>array('type'=>'email','size'=>40, 'header'=>true),
         'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone'),
-        'status'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Status')
       );
-      $actions = array(array('edit', 'edit_contact'), array('status', 'edit_contact_status'));
+      $actions = array(array('edit', 'edit_contact'));
 
       $waf->assign("headings", $headings);
       $waf->assign("objects", $objects);
       $waf->assign("actions", $actions);
-      $waf->assign("action_links", array(array("Add", "section=directories&function=add_contact")));
     }
     $waf->display("main.tpl", "admin:directories:contact_directory:company_contacts", "list.tpl");
   }
@@ -466,15 +464,21 @@
     require_once("model/Contact.class.php");
     $id = WA::request("id");
     $contact = Contact::load_by_id($id);
+
+    if($contact->user_id != User::get_id()) $waf->halt("error:policy:not_your_account");
     $changes = WA::request("changes");
     $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts"), array("reset password", "section=directories&function=reset_password&user_id=" . $contact->user_id)), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact", "admin/directories/edit_contact.tpl");
+    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact", "admin/directories/edit_contact.tpl");
   }
 
   function edit_contact_do(&$waf, &$user) 
   {
-    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
+    require_once("model/Contact.class.php");
+    $id = WA::request("id");
+    $contact = Contact::load_by_id($id);
+
+    if($contact->user_id != User::get_id()) $waf->halt("error:policy:not_your_account");
 
     edit_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "edit_contact");
   }
@@ -555,7 +559,7 @@
     // Ignore pagination for complex reasons
     $waf->assign("nopage", true);
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources", "list.tpl", "company");
+    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "contact:directories:manage_company_resources:manage_company_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)

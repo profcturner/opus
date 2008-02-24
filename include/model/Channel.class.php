@@ -174,5 +174,34 @@ class Channel extends DTO_Channel
     }
     return($in_channel);
   }
+
+  function get_channels_for_user($user_id)
+  {
+    $result = array();
+
+    $global_channel = new Channel;
+    $global_channel->name = "Global";
+    $global_channel->description = "All users";
+    $global_channel->id = 0;
+    array_push($result, $global_channel);
+    $channels = Channel::get_all();
+
+    foreach($channels as $channel)
+    {
+      if(Channel::user_in_channel($channel->id, $user_id))
+      {
+        array_push($result, $channel);
+      }
+    }
+    return($result);
+  }
+
+  function get_name($id)
+  {
+    if($id == 0) return("Global");
+
+    $channel = Channel::load_by_id($id);
+    return($channel->name . ":" . $channel->description);
+  }
 }
 ?>

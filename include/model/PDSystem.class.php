@@ -34,7 +34,7 @@ class PDSystem
     global $waf;
 
     $format = strtolower($format);
-    if(!in_array($format, array('php', 'xml'))) $waf->halt("error:pdsystem_api:invalid_format");
+    if(!in_array($format, array('php', 'xml', 'raw'))) $waf->halt("error:pdsystem_api:invalid_format");
 
     // Perform a preg security check on $service_name
     if(!preg_match("/^[A-Za-x_?&]+$/", $section_name))
@@ -61,26 +61,30 @@ class PDSystem
       return($empty_result);
     }
 
-    $input .= "mode=$format&username=" . $config_sensitive['pds']['username'] .
+    $input .= "&mode=$format&username=" . $config_sensitive['pds']['username'] .
       "&password=" . $config_sensitive['pds']['password'];
 
     $url = $config_sensitive['pds']['url'] . "?section=$section_name&function=$service_name&$input";
 
     $data = @file_get_contents($url);
-    if($format == 'xml')
+    switch($format)
     {
-      if(substr($data, 0, 5) == "<xmp>")
-      {
-        // Seems to be invalid XML, strip the xmp containers
-        $data = substr($data, 5);
-        // and the end
-        $data = substr($data, 0, strlen($data)-6);
-      }
-      return(simplexml_load_string($data));
-    }
-    else
-    {
-      return(unserialize($data));
+       case 'xml':
+        if(substr($data, 0, 5) == "<xmp>")
+        {
+          // Seems to be invalid XML, strip the xmp containers
+          $data = substr($data, 5);
+          // and the end
+          $data = substr($data, 0, strlen($data)-6);
+        }
+        return(simplexml_load_string($data));
+        break;
+      case 'php':
+        return(unserialize($data));
+        break;
+      case 'raw':
+        return($data);
+        break;
     }
   }
 
@@ -236,43 +240,28 @@ class PDSystem
   /**
   * fetches a specific CV (by template) from the PDSystem
   *
-  * If linkages to the PDSystem are broken it will complain loudly.
-  *
   * @param integer $student_id the user id on OPUS for the student concerned
   * @param integer $template_id the template id to be used (from the PDSystem)
   * @return the actual PDF file as a string 
+  * @todo should we cache this? It's big, and there might be important last minute changes
   */
-  function fetch_cv($student_id, $template_id)
+  function fetch_template_cv($student_id, $template_id)
   {
-    global $config_sensitive;
-    global $waf;
-
-    global $log;
-
     // The PDSystem uses student numbers more directly
-    require_once("model/Student.class.php");
-    $student = Student::load_by_user_id($student_id);
-    $student_reg = $student->reg_number;
+    $student_reg = User::get_reg_number($student_id);
 
-    $url = $config_sensitive['pds']['url'] . "/pds/?" .
-      "section=cv&function=get_pdf_cv&template_id=$template_id" .
-      "&reg_number=$student_reg&" .
-      "username=" . $config_sensitive['pds']['username'] . "&password=" . $config_sensitive['pds']['password'];
+    return(PDSystem::get_data("cv", "get_pdf_cv", "reg_number=$student_reg&template_id=$template_id", "raw"));
+  }
 
-    $file = @file_get_contents($url);
-
-    if($file == FALSE)
-    {
-      $waf->log("Unable to acquire template CV from PDSystem");
-      $waf->halt("error:pdsystem:no_cv");
-    }
-
-    if(substr($file, 0, 4) !=  "%PDF")
-    {
-      $waf->log("Unable to acquire template CV from PDSystem, something came but was invalid (not a PDF)");
-      $waf->halt("error:pdsystem:invalid_cv");
-    }
-    return $file;
+  /**
+  * fetches the contents of a specific hash from the PDSystem
+  *
+  * @param string $hash the hash of the item
+  * @todo should we cache this? It's big, and there might be important last minute changes
+  */
+  function fetch_artefact_hash($hash)
+  {
+    return(PDSystem::get_data("misc", "open_artefact", "hash=$hash", "raw"));
   }
 }
 

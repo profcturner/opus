@@ -3,8 +3,10 @@
 function nav_student() 
 {
   global $config_sensitive;
+
+  $pds_url = $config_sensitive['pds']['url'];
   // This greatly depends on the existance of a PDSystem sister
-  if(empty($config_sensitive['pds']['url']))
+  if(empty($pds_url))
   {
     return array
     (
@@ -34,12 +36,12 @@ function nav_student()
     (
       "home"=>array
       (
-        array("home", "home", "home", "home"), 
-        array("messages", "home", "messages", "list_messages"), 
-        array("calendar", "home", "calendar", "view_calendar"), 
-        array("contacts", "home", "contacts", "list_contacts"), 
-        array("email", "home", "email", "open_email"), 
-        array("artefacts", "home", "artefacts", "list_artefacts")
+        array("home", "home", "home", "home", "$pds_url?section=home&function=home", "test"), 
+        array("messages", "home", "messages", "list_messages", "$pds_url?section=home&function=list_messages"), 
+        array("calendar", "home", "calendar", "view_calendar", "$pds_url?section=home&function=view_calendar"), 
+        array("contacts", "home", "contacts", "list_contacts", "$pds_url?section=home&function=list_contacts"), 
+        array("email", "home", "email", "open_email", "$pds_url?section=home&function=open_email"), 
+        array("artefacts", "home", "artefacts", "list_artefacts", "$pds_url?section=home&function=list_artefacts")
       ), 
       "profile"=>array
       (

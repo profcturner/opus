@@ -195,18 +195,23 @@ class DTO_ChannelAssociation extends DTO
             $results_row['object_name'] = Programme::get_name($results_row['object_id']);
             $results_row['type'] = "programme";
             break;
-          case "school" : // legacy name, programme now...
+          case "school" :
             require_once("model/School.class.php");
             $results_row['object_name'] = School::get_name($results_row['object_id']);
             break;
-          case "assessmentgroup" : // legacy name, programme now...
+          case "assessmentgroup" :
             require_once("model/AssessmentGroup.class.php");
             $results_row['object_name'] = AssessmentGroup::get_name($results_row['object_id']);
             break;
-          case "activity" : // legacy name, programme now...
+          case "activity" :
             require_once("model/Activitytype.class.php");
             $results_row['object_name'] = Activitytype::get_name($results_row['object_id']);
             break;
+          case "user" :
+            require_once("model/User.class.php");
+            $results_row['object_name'] = User::get_name($results_row['object_id']);
+            break;
+
         }
         array_push($object_array, $results_row);
       }

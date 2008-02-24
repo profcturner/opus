@@ -99,6 +99,7 @@ function nav_admin()
         array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
         array("applications", "student", "manage_applications", "manage_applications"),
         array("assessment", "student", "view_assessments", "view_assessments"),
+        array("channels", "student", "list_student_channels", "list_student_channels"),
         array("notes", "student", "list_notes", "list_notes"),
         array("drop", "student", "drop_student", "drop_student")
       )

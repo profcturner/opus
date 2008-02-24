@@ -86,13 +86,18 @@ class Application extends DTO_Application
   function update($fields) 
   {
     // Null some fields if empty
-    $fields = Application::set_empty_to_null($fields);
+    //$fields = Application::set_empty_to_null($fields);
     require_once("model/User.class.php");
     if(User::is_student())
     {
       $fields['modified'] = date("YmdHis");
     }
 
+    // If we change the status, timestamp that
+    if(!empty($fields['status']))
+    {
+      $fields['status_modified'] =  date("YmdHis");
+    }
     $application = Application::load_by_id($fields["id"]);
     $application->_update($fields);
   }
@@ -172,6 +177,7 @@ class Application extends DTO_Application
       // Augment the record
       $application->_student_real_name = $student->real_name;
       $application->_student_programme = Programme::get_name($student->programme_id);
+      $application->_student_email = $student->email;
       $application->_student_table_id = $student->id;
 
       if($student->placement_status == 'Required')
@@ -252,6 +258,8 @@ class Application extends DTO_Application
   */
   function ensure_seen($application_id)
   {
+    if(!User::is_company()) return; // Only company contacts should trigger this
+
     $application = Application::load_by_id($application_id);
     if($application->id)
     {

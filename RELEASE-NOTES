@@ -29,18 +29,13 @@ attractive. Nevertheless, there are some minor changes to note.
   certain circumstances (e.g. when editing a student). Still other 
   improvements have been made (see bug #207, bug #196).
 
-* Students will now be able to record applications they make to special
-  vacancies, these can't be automatically verified but are still useful as
-  a recording tool hopefully. (closes wishlist item bug #199, #105).
-
 * OPUS now knows about Faculties, which should simplify administration of
   big systems. In the past administrators could be allocated to programmes
   or schools, but this is now extended to Faculties and the institution at
   large which can be useful for faculty staff and staff from central departments.
 
 * CVs, now when "viewed" either directly, or with emails, are registered as
-  seen (closes bug #202). They will also be cached in the OPUS database,
-  making some operations quicker. It will be possible for companies to select
+  seen (closes bug #202). It will be possible for companies to select
   a number of CVs (many at a time) that will be subsequently emailed to them.
   (closes wishlist bug #175).
 
