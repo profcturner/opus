@@ -59,6 +59,7 @@ class ldap_uu
         return($auth_user);
       }
     return false;
+    }
   }
 }
 
