@@ -5,6 +5,7 @@ function nav_student()
   global $config_sensitive;
 
   $pds_url = $config_sensitive['pds']['url'];
+  $pds_url = "http://pds.ulster.ac.uk/pds/"; // for now
   // This greatly depends on the existance of a PDSystem sister
   if(empty($pds_url))
   {
