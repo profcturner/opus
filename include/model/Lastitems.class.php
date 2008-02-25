@@ -66,7 +66,7 @@ class Lastitems
     foreach($this->queue as $lastitem)
     {
       array_push($items,
-        array($lastitem->human, "recent", "last_items", "last_items", $lastitem->url));
+        array($lastitem->human, "recent", "last_items", "last_items", "", $lastitem->url));
     }
     $nav = array
     (
