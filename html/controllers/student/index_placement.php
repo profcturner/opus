@@ -359,13 +359,14 @@
     $student = Student::load_by_user_id($student_id);
     if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
 
-    // Get the available CVs, and *do* filter them
+    // Get the available CVs, both good and bad
     require_once("model/CVCombined.class.php");
     $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
     foreach($cv_list as $cv)
     {
       if(!$cv->valid) $invalid++;
     }
+    // Convert the valid ones to a pull down
     $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
 
     $eportfolio_list = array("none:none:none" => 'None Available');
@@ -397,6 +398,20 @@
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id($student_id);
     if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+
+    // Check the proposed CV is valid
+    require_once("model/CVCombined.class.php");
+    if(!CVCombined::check_cv_permission($student_id, WA::request('cv_ident'), &$problem)) $waf->halt("error:student:invalid_cv");
+
+    // Check the vacancy...
+    $vacancy_id = (int) WA::request('vacancy_id');
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id($vacancy_id);
+    if($vacancy->status != 'open') $waf->halt("error:student:vacancy_not_open");
+
+    // Check we haven't already applied
+    require_once("model/Application.class.php");
+    if(Application::count("where vacancy_id=$vacancy_id and student_id=$student_id")) $waf->halt("error:student:cannot_apply_twice");
 
     add_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
   }
