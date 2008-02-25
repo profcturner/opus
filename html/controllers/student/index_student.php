@@ -36,12 +36,12 @@ function nav_student()
     (
       "home"=>array
       (
-        array("home", "home", "home", "home", "", "$pds_url?section=home&function=home"), 
-        array("messages", "home", "messages", "list_messages", "$pds_url?section=home&function=list_messages"), 
-        array("calendar", "home", "calendar", "view_calendar", "$pds_url?section=home&function=view_calendar"), 
-        array("contacts", "home", "contacts", "list_contacts", "$pds_url?section=home&function=list_contacts"), 
-        array("email", "home", "email", "open_email", "$pds_url?section=home&function=open_email"), 
-        array("artefacts", "home", "artefacts", "list_artefacts", "$pds_url?section=home&function=list_artefacts")
+        array("home", "home", "", "", "", "$pds_url?section=home&function=home"), 
+        array("messages", "home", "", "", "", "$pds_url?section=home&function=list_messages"), 
+        array("calendar", "home", "", "", "", "view_calendar", "$pds_url?section=home&function=view_calendar"), 
+        array("contacts", "home", "", "", "", "$pds_url?section=home&function=list_contacts"), 
+        array("email", "home", "", "", "", "$pds_url?section=home&function=open_email"), 
+        array("artefacts", "home", "", "", "", "$pds_url?section=home&function=list_artefacts")
       ), 
       "profile"=>array
       (
