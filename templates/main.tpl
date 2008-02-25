@@ -80,7 +80,7 @@
           <ul>
 {section loop=$sec name="subsec"}
             <li> 
-              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if}{if $sec[subsec][4]}href="{$sec[subsec][4]}">{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1">{/if}{$sec[subsec][0]|capitalize}</a>
+              <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1{/if}">{$sec[subsec][0]|capitalize}</a>
             </li>
 {/section}
           </ul>
@@ -98,9 +98,9 @@
 {section loop=$sec name="subsec"}
         <li> 
 {if $config[opus][cleanurls]} 
-          <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{#application_url#}{$sec[subsec][1]}/{$sec[subsec][3]}">{$sec[subsec][0]|capitalize}</a>
+          <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}{$sec[subsec][1]}/{$sec[subsec][3]}{/if}">{$sec[subsec][0]|capitalize}</a>
 {else}
-         <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} {if $sec[subsec][4]}href="{$sec[subsec][4]}"{else} href="?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1">{$sec[subsec][0]|capitalize}{/if}</a>
+          <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1{/if}">{$sec[subsec][0]|capitalize}</a>
 {/if} 
         </li>
 {/section}
