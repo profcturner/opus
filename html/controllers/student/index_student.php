@@ -37,12 +37,12 @@ function nav_student()
     (
       "home"=>array
       (
-        array("home", "home", "", "", "", "$pds_url?section=home&function=home"), 
-        array("messages", "home", "", "", "", "$pds_url?section=home&function=list_messages"), 
-        array("calendar", "home", "", "", "", "view_calendar", "$pds_url?section=home&function=view_calendar"), 
-        array("contacts", "home", "", "", "", "$pds_url?section=home&function=list_contacts"), 
-        array("email", "home", "", "", "", "$pds_url?section=home&function=open_email"), 
-        array("artefacts", "home", "", "", "", "$pds_url?section=home&function=list_artefacts")
+        array("home", "home", "", "", "", "http://pds.ulster.ac.uk/pds/?section=home&function=home"), 
+        array("messages", "home", "", "", "", "http://pds.ulster.ac.uk/pds/?section=home&function=list_messages"), 
+        array("calendar", "home", "", "", "", "http://pds.ulster.ac.uk/pds/?section=home&function=view_calendar"), 
+        array("contacts", "home", "", "", "", "http://pds.ulster.ac.uk/pds/?section=home&function=list_contacts"), 
+        array("email", "home", "", "", "", "http://pds.ulster.ac.uk/pds/?section=home&function=open_email"), 
+        array("artefacts", "home", "", "", "", "http://pds.ulster.ac.uk/pds/?section=home&function=list_artefacts")
       ), 
       "profile"=>array
       (
