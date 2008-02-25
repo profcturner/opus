@@ -33,7 +33,7 @@
 <table width="700" height="90"  border="0" align="center" cellspacing="0">
  <tr valign="top">
   <td><div align="left"><img src="{#institution_logo#}"></div></td>
-  <td width="350"><div align="right"><img src="{#application_logo#}"></div></td>
+  <td width="350"><div align="right"><img src="{$config.opus.url}/images/{#application_logo#}"></div></td>
  </tr>
 </table><br>
      
