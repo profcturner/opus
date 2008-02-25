@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: text/javascript');
+header('Content-Type: text/javascript; charset=UTF-8');
 
 /**
  * Resize images to a given size, and saving in a new file.
@@ -7,7 +7,7 @@ header('Content-Type: text/javascript');
  * relative to the base_dir given in config.inc.php
  * This is pretty much just thumbs.php with some mods, I'm too lazy to do it properly
  * @author $Author: ray $
- * @version $Id: resizer.php 677 2007-01-19 22:24:36Z ray $
+ * @version $Id: resizer.php 922 2007-12-30 14:35:46Z ray $
  * @package ImageManager
  */
 

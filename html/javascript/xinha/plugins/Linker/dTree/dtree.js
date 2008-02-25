@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/Linker/dTree/dtree.js */
 function Node(id,_2,_3,_4,_5,_6,_7,_8,_9){
 this.id=id;
 this.pid=_2;

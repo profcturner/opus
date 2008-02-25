@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/modules/Dialogs/popupwin.js */
 function PopupWin(_1,_2,_3,_4){
 this.editor=_1;
 this.handler=_3;

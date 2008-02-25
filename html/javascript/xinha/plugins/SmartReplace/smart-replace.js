@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/SmartReplace/smart-replace.js */
 function SmartReplace(_1){
 this.editor=_1;
 var _2=_1.config;
@@ -89,36 +91,41 @@ r.moveStart("character",+1);
 r.text=_11;
 }
 }else{
-if(!sel.isCollapsed){
+var r=_13.createRange(sel);
+if(!r.collapsed){
 _13.insertNodeAtSelection(document.createTextNode(""));
 }
-if(sel.anchorOffset>0){
-sel.extend(sel.anchorNode,sel.anchorOffset-1);
+if(r.startOffset>0){
+r.setStart(r.startContainer,r.startOffset-1);
 }
-if(sel.toString().match(/\S/)){
-sel.collapse(sel.anchorNode,sel.anchorOffset);
+if(r.toString().match(/[^\s\xA0]/)){
+r.collapse(false);
 _13.insertNodeAtSelection(document.createTextNode(_12));
 }else{
-sel.collapse(sel.anchorNode,sel.anchorOffset);
-_13.insertNodeAtSelection(document.createTextNode(_11));
+r.deleteContents();
+_13.insertNodeAtSelection(document.createTextNode(" "+_11));
 }
+_13.getSelection().collapseToEnd();
 }
 };
 SmartReplace.prototype.smartDash=function(){
 var _16=this.editor;
 var sel=this.editor.getSelection();
-if(Xinha.is_ie){
 var r=this.editor.createRange(sel);
+if(Xinha.is_ie){
 r.moveStart("character",-2);
 if(r.text.match(/\s-/)){
 r.text=" "+String.fromCharCode(8211);
 }
 }else{
-sel.extend(sel.anchorNode,sel.anchorOffset-2);
-if(sel.toString().match(/^-/)){
+if(r.startOffset>1){
+r.setStart(r.startContainer,r.startOffset-2);
+}
+if(r.toString().match(/^ -/)){
+r.deleteContents();
 this.editor.insertNodeAtSelection(document.createTextNode(" "+String.fromCharCode(8211)));
 }
-sel.collapse(sel.anchorNode,sel.anchorOffset);
+_16.getSelection().collapseToEnd();
 }
 };
 SmartReplace.prototype.replaceAll=function(){

@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/ImageManager/assets/editorFrame.js */
 var topDoc=window.top.document;
 var t_cx=topDoc.getElementById("cx");
 var t_cy=topDoc.getElementById("cy");

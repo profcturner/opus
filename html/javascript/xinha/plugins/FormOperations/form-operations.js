@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/FormOperations/form-operations.js */
 Xinha.Config.prototype.FormOperations={"multiple_field_format":"php","allow_edit_form":false,"default_form_action":_editor_url+"plugins/FormOperations/formmail.php","default_form_html":Xinha._geturlcontent(_editor_url+"plugins/FormOperations/default_form.html")};
 FormOperations._pluginInfo={name:"FormOperations",version:"1.0",developer:"James Sleeman",developer_url:"http://www.gogo.co.nz/",c_owner:"Gogo Internet Services",license:"htmlArea",sponsor:"Gogo Internet Services",sponsor_url:"http://www.gogo.co.nz/"};
 function FormOperations(_1){

@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/ImageManager/assets/wz_jsgraphics.js */
 var jg_ihtm,jg_ie,jg_dom,jg_n4=(document.layers&&typeof document.classes!="undefined");
 function chkDHTM(x,i){
 x=document.body||null;

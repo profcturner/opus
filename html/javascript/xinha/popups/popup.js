@@ -1,5 +1,9 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/popups/popup.js */
+if(typeof Xinha=="undefined"){
 Xinha=window.opener.Xinha;
-HTMLArea=window.opener.Xinha;
+}
+HTMLArea=Xinha;
 function getAbsolutePos(el){
 var r={x:el.offsetLeft,y:el.offsetTop};
 if(el.offsetParent){
@@ -35,7 +39,9 @@ _d.href=window.opener._editor_url+"skins/"+window.opener._editor_skin+"/skin.css
 _d.rel="stylesheet";
 _c.appendChild(_d);
 }
+if(!window.dialogArguments&&opener.Dialog._arguments){
 window.dialogArguments=opener.Dialog._arguments;
+}
 var _e=Xinha.pageSize(window);
 if(!_b){
 _b={width:_e.x,height:_e.y};

@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/SuperClean/super-clean.js */
 function SuperClean(_1,_2){
 this.editor=_1;
 var _3=this;

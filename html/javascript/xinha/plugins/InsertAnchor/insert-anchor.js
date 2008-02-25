@@ -1,3 +1,5 @@
+/* This compressed file is part of Xinha. For uncompressed sources, forum, and bug reports, go to xinha.org */
+/* The URL of the most recent version of this file is http://svn.xinha.webfactional.com/trunk/plugins/InsertAnchor/insert-anchor.js */
 function InsertAnchor(_1){
 this.editor=_1;
 var _2=_1.config;
@@ -9,68 +11,60 @@ _2.addToolbarElement("insert-anchor","createlink",1);
 }
 InsertAnchor._pluginInfo={name:"InsertAnchor",origin:"version: 1.0, by Andre Rabold, MR Printware GmbH, http://www.mr-printware.de",version:"2.0",developer:"Udo Schmal",developer_url:"http://www.schaffrath-neuemedien.de",c_owner:"Udo Schmal",sponsor:"L.N.Schaffrath NeueMedien",sponsor_url:"http://www.schaffrath-neuemedien.de",license:"htmlArea"};
 InsertAnchor.prototype._lc=function(_5){
-return HTMLArea._lc(_5,"InsertAnchor");
+return Xinha._lc(_5,"InsertAnchor");
 };
 InsertAnchor.prototype.onGenerate=function(){
-var _6="IA-style";
-var _7=this.editor._doc.getElementById(_6);
-if(_7==null){
-_7=this.editor._doc.createElement("link");
-_7.id=_6;
-_7.rel="stylesheet";
-_7.href=_editor_url+"plugins/InsertAnchor/insert-anchor.css";
-this.editor._doc.getElementsByTagName("HEAD")[0].appendChild(_7);
-}
+this.editor.addEditorStylesheet(_editor_url+"plugins/InsertAnchor/insert-anchor.css");
 };
-InsertAnchor.prototype.buttonPress=function(_8){
-var _9=null;
-var _a=_8.getSelectedHTML();
-var _b=_8._getSelection();
-var _c=_8._createRange(_b);
-var a=_8._activeElement(_b);
+InsertAnchor.prototype.buttonPress=function(_6){
+var _7=null;
+var _8=_6.getSelectedHTML();
+var _9=_6._getSelection();
+var _a=_6._createRange(_9);
+var a=_6._activeElement(_9);
 if(!(a!=null&&a.tagName.toLowerCase()=="a")){
-a=_8._getFirstAncestor(_b,"a");
+a=_6._getFirstAncestor(_9,"a");
 }
 if(a!=null&&a.tagName.toLowerCase()=="a"){
-_9={name:a.id};
+_7={name:a.id};
 }else{
-_9={name:""};
+_7={name:""};
 }
-_8._popupDialog("plugin://InsertAnchor/insert_anchor",function(_e){
-if(_e){
-var _f=_e["name"];
-if(_f==""||_f==null){
+_6._popupDialog("plugin://InsertAnchor/insert_anchor",function(_c){
+if(_c){
+var _d=_c["name"];
+if(_d==""||_d==null){
 if(a){
-var _10=a.innerHTML;
+var _e=a.innerHTML;
 a.parentNode.removeChild(a);
-_8.insertHTML(_10);
+_6.insertHTML(_e);
 }
 return;
 }
 try{
-var doc=_8._doc;
+var _f=_6._doc;
 if(!a){
-a=doc.createElement("a");
-a.id=_f;
-a.name=_f;
-a.title=_f;
+a=_f.createElement("a");
+a.id=_d;
+a.name=_d;
+a.title=_d;
 a.className="anchor";
-a.innerHTML=_a;
-if(HTMLArea.is_ie){
-_c.pasteHTML(a.outerHTML);
+a.innerHTML=_8;
+if(Xinha.is_ie){
+_a.pasteHTML(a.outerHTML);
 }else{
-_8.insertNodeAtSelection(a);
+_6.insertNodeAtSelection(a);
 }
 }else{
-a.id=_f;
-a.name=_f;
-a.title=_f;
+a.id=_d;
+a.name=_d;
+a.title=_d;
 a.className="anchor";
 }
 }
 catch(e){
 }
 }
-},_9);
+},_7);
 };
 
