@@ -288,7 +288,7 @@ class Student extends DTO_Student
     require_once("model/Programme.class.php");
     $programme_id = Student::get_programme_id($user_id);
     $group_id = Programme::get_cv_group_id($programme_id);
-
+    if(!$group_id) $group_id=1; // Null means default group
     return($group_id);
   }
 

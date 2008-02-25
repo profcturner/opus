@@ -41,7 +41,9 @@
     $student_id = (int) WA::request("student_id", true);
     $page = (int) WA::request("page", true);
 
-    manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application')), "get_all", array("where student_id=$student_id", "order by created", $page), "student:placement:list_applications:list_applications");
+    goto('directories', 'manage_applications');
+
+    //manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application', 'directories')), "get_all", array("where student_id=$student_id", "order by created", $page), "student:placement:list_applications:list_applications");
   }
 
   function view_assessments(&$waf)
@@ -61,6 +63,11 @@
   function list_student_channels(&$waf)
   {
     goto("directories", "list_student_channels");
+  }
+
+  function list_student_cvs(&$waf)
+  {
+    goto("directories", "list_student_cvs");
   }
 
   function list_notes(&$waf)

@@ -21,14 +21,14 @@ class u3_cookie
     require_once("WA.Cookie.class.php");
 
     // Look for, verify, and decode any PDS cookie
-    $u3cookie = Cookie::read('u3');
+    $u3cookie = Cookie::read('u3ticket');
     if($u3cookie)
     {
       // if the cookie exists, extract the reg_number which is the
       // best candidate for a username
       $auth_user['valid'] = True;
       $auth_user['reg_number'] = $u3cookie['reg_number'];
-      $auth_user['username'] = $u3cookie['reg_number'];
+      $auth_user['username'] = $u3cookie['username'];
 
       return $auth_user;
     }

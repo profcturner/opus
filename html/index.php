@@ -191,13 +191,14 @@ function drop_cookie()
 {
   global $waf;
   $reg_number = $waf->user['opus']['reg_number'];
+  $username = $waf->user['opus']['username'];
 
   if(strlen($reg_number))
   {
     require_once("WA.Cookie.class.php");
     $expiry = time() + 1800;
-    $cookie_value="reg_number=$reg_number&session_id=" . session_id();
-    Cookie::write("OPUSTicket",  $cookie_value, $expiry, '/', 'localhost');
+    $cookie_value="username=$username&reg_number=$reg_number&session_id=" . session_id();
+    Cookie::write("u3ticket",  $cookie_value, $expiry, '/', 'localhost');
   }
 }
 

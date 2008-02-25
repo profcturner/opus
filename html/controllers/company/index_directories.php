@@ -355,6 +355,7 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
   }
 
+  // Manage Applicants
 
   function manage_applicants(&$waf, $user, $title)
   {
@@ -374,24 +375,37 @@
     $waf->assign("available", $all_applications[1]);
     $waf->assign("unavailable", $all_applications[2]);
     $waf->assign("status_values", $possible_status);
+    $waf->assign("vacancy_id", $vacancy_id);
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/manage_applicants.tpl");
   }
 
   function manage_applicants_do(&$waf)
   {
-    $status = WA::request("status"); 
-    $old_status = WA::request("old_status");
-    $send = WA::request("send");
-    $id = (int) WA::request("id");
+    $status = WA::request("status");                // New status array
+    $old_status = WA::request("old_status");        // Original status array
+    $send = WA::request("send");                    // Array of "send" checkboxes
+    $vacancy_id = (int) WA::request("vacancy_id");
     require_once("model/Vacancy.class.php");
-    $vacancy = Vacancy::load_by_id();
+    $vacancy = Vacancy::load_by_id($vacancy_id);
     $waf->assign("vacancy", $vacancy);
+
+    $action_links = array(array("back", "section=directories&function=manage_applicants&id=$vacancy_id"));
 
     // Array of student ids for which status is changed
     $status_changes = array();
     foreach($old_status as $key => $value)
     {
-      if($status[$key] != $value) array_push($status_changes, $key);
+      if($status[$key] != $value)
+      {
+        require_once("model/Application.class.php");
+        $application = Application::load_where("where vacancy_id = $vacancy_id and student_id=" . (int) $key);
+        $fields = array();
+        $fields['id'] = (int) $application->id;
+        $fields['status'] = $status[$key];
+        Application::update($fields);
+        array_push($status_changes, $key);
+        $student_names[$key] = User::get_name($key);
+      }
     }
 
     // Check if CVs were requested
@@ -402,22 +416,87 @@
       foreach($send as $student_id)
       {
         // Send me the combined CV
-        CVCombined::email_cv($student_id, User::get_id(), $id);
+        require_once("model/Application.class.php");
+        $application = Application::load_where("where vacancy_id = $vacancy_id and student_id=" . (int) $key);
+        CVCombined::email_cv_for_application(User::get_id(), $application->id);
       }
     }
 
     // Check if changes were made to status, if so offer up a dialog
     if(count($status_changes))
     {
-      $waf->log("status changes were made to applicants on vacancy " . Vacancy::get_name($id));
-      $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/message_applicants.tpl");
+      $waf->log("status changes were made to applicants on vacancy " . Vacancy::get_name($vacancy_id));
+      $waf->assign("action_links", $action_links);
+      $waf->assign("old_status", $old_status);
+      $waf->assign("student_name", $student_names);
+      $waf->assign("status", $status);
+      $waf->assign("status_changes", $status_changes);
+      $waf->assign("vacancy_id", $vacancy_id);
+      $waf->display("main.tpl", "admin:directories:vacancy_directory:message_applicants", "admin/directories/message_applicants.tpl");
     }
     else
     {
       // No changes, back to same screen
-      goto("directories", "manage_applicants&id=$id");
+      goto("directories", "manage_applicants&id=$vacancy_id");
     }
   }
+
+  function view_cv_by_application(&$waf)
+  {
+    $application_id = WA::request("application_id");
+
+    // security is handled in the model layer
+    require_once("model/CVCombined.class.php");
+    CVCombined::view_cv_for_application($application_id);
+  }
+
+  function view_cover_by_application(&$waf)
+  {
+    require_once("model/CVCombined.class.php");
+    require_once("model/Application.class.php");
+
+    $application_id = WA::request("application_id");
+    $application = Application::load_by_id($application_id);
+
+    $action_links = array(array("fetch cv", "section=directories&function=view_cv_by_application&application_id=$application_id"), array("back to applications", "section=directories&function=manage_applicants&id=" .$application->vacancy_id));
+
+    // Security is same as for CV
+    if(!CVCombined::is_auth_to_view_cv($application->cv_ident, $application->student_id))
+    {
+      $waf->halt("error:cv:not_authorised");
+    }
+    $waf->assign("action_links", $action_links);
+    $waf->assign("letter", $application->cover);
+
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/view_cover_letter.tpl");
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Placements
 

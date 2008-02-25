@@ -26,6 +26,40 @@ create table `cache_object` (
   primary key  (`id`)
 );
 
+-- artefacts --
+
+create table `artefact` (
+  `id` int(10) unsigned not null auto_increment,
+  `group` text not null,
+  `user_id` int(11) not null default '0',
+  `type` varchar(50) not null default '',
+  `file_name` varchar(250) not null default '',
+  `file_size` varchar(250) not null default '',
+  `file_type` varchar(250) not null default '',
+  `data` text not null,
+  `description` varchar(250) not null default '',
+  `hash` varchar(250) not null default '',
+  `thumb` text not null,
+  primary key  (`id`),
+  key `userid` (`user_id`)
+) engine=myisam auto_increment=18602 default charset=latin1;
+
+-- cvs (internal) --
+
+create table `cv` (
+  `id` int(10) unsigned not null auto_increment,
+  `user_id` int(11) not null default '0',
+  `artefact_id` int(10) unsigned not null,
+  `title` text not null,
+  `file_type` varchar(255) not null default '',
+  `created` datetime not null,
+  `modified` datetime not null,
+  `description` text not null,
+  primary key  (`id`),
+  key `userid` (`user_id`)
+) engine=myisam auto_increment=863 default charset=latin1 comment='//cv builder cv archive';
+
+
 -- placement --
 
 alter table placement change column placement_id id int unsigned auto_increment;

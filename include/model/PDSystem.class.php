@@ -126,6 +126,16 @@ class PDSystem
     return($cv_templates);
   }
 
+  function get_template_name($template_id)
+  {
+    $all_templates = PDSystem::get_cv_templates();
+    foreach($all_templates as $template)
+    {
+      if($template['id'] == $template_id) return $template['name'];
+    }
+    return "unknown";
+  }
+
   /**
   * obtains the status of all the CVs for a given student.
   *
@@ -232,8 +242,9 @@ class PDSystem
     {
       // Stale or non existant
       $archived_cvs = PDSystem::get_data("cv", "get_archived_cvs", "reg_number=$student_reg");
-      $archived_cvs_cache->update_cache($key, $cv_templates);
+      $archived_cvs_cache->update_cache($key, $archived_cvs);
     }
+    if(empty($archived_cvs)) return array();
     return($archived_cvs);
   }
 
@@ -262,6 +273,24 @@ class PDSystem
   function fetch_artefact_hash($hash)
   {
     return(PDSystem::get_data("misc", "open_artefact", "hash=$hash", "raw"));
+  }
+
+
+  /**
+  * fetches the mime_type for a given hash
+  *
+  * @param string $hash the hash of the item
+  * @todo should we cache this? It's big, and there might be important last minute changes
+  */
+  function get_artefact_mime_type($student_user_id, $hash)
+  {
+    $archived_cvs = PDSystem::get_archived_cvs($student_user_id);
+    foreach($archived_cvs as $cv)
+    {
+      //print_r($cv);
+      if($cv['_hash'] == $hash) return($cv['_file_type']);
+    }
+    return false;
   }
 }
 

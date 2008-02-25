@@ -68,12 +68,6 @@
     manage_objects($opus, $user, "Vacancy", array(), array(array('view', 'view_vacancy')), "get_all", "", "student:placement:list_vacancies:list_vacancies");
   }
 
-  function list_applications(&$opus, $user, $title)
-  {
-    $student_id = User::get_id();
-    manage_objects($opus, $user, "Application", array(), array(array('view', 'view_application')), "get_all", array("WHERE `student_id`=$student_id", "", $page, True), "student:placement:list_applications:list_applications");
-  }
-
 
   // Assessments
 
@@ -332,6 +326,142 @@
     $waf->assign("show_heading", true);
 
     $waf->display("main.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
+  }
+
+  // Applications
+
+/*
+  function list_applications(&$opus, $user, $title)
+  {
+    $student_id = User::get_id();
+    manage_objects($opus, $user, "Application", array(), array(array('view', 'view_application')), "get_all", array("WHERE `student_id`=$student_id", "", $page, True), "student:placement:list_applications:list_applications");
+  }
+*/
+
+
+  function list_applications(&$waf, $user, $title)
+  {
+    $student_id = User::get_id();
+    $page = (int) WA::request("page", true);
+
+    manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application')), "get_all", array("where student_id=$student_id", "", $page), "student:placement:list_applications:list_applications");
+  }
+
+  /**
+  * tag a student as having applied for a vacancy
+  */
+  function add_application(&$waf, &$user)
+  {
+    $vacancy_id = (int) WA::request("id");
+    $student_id = User::get_id();
+
+    require_once("model/Student.class.php");
+    $student = Student::load_by_user_id($student_id);
+    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+
+    // Get the available CVs, and *do* filter them
+    require_once("model/CVCombined.class.php");
+    $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
+    foreach($cv_list as $cv)
+    {
+      if(!$cv->valid) $invalid++;
+    }
+    $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
+
+    $eportfolio_list = array("none:none:none" => 'None Available');
+
+    require_once("model/Application.class.php");
+    $application = new Application;
+
+    require_once("model/Vacancy.class.php");
+    require_once("model/Company.class.php");
+    $application->student_id = $student_id;
+    $application->vacancy_id = $vacancy_id;
+    $application->company_id = Vacancy::get_company_id($vacancy_id);
+    $application->_vacancy_id = Vacancy::get_name($vacancy_id);
+    $application->_company_id = Company::get_name($application->company_id);
+
+    $waf->assign("mode", "add");
+    $waf->assign("is_student", true);
+    $waf->assign("application", $application);
+    $waf->assign("eportfolio_list", $eportfolio_list);
+    $waf->assign("cv_list", $cv_list);
+    $waf->assign("cv_options", $cv_options);
+    $waf->assign("invalid", $invalid);
+    $waf->display("main.tpl", "student:placement:list_applications:add_application", "admin/directories/edit_application.tpl");
+  }
+
+  function add_application_do(&$waf, &$user) 
+  {
+    $student_id = User::get_id();
+    require_once("model/Student.class.php");
+    $student = Student::load_by_user_id($student_id);
+    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+
+    add_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
+  }
+
+  /**
+  * tag a student as having applied for a vacancy
+  */
+  function edit_application(&$waf, &$user)
+  {
+    $application_id = (int) WA::request("id");
+
+    require_once("model/Application.class.php");
+    $application = Application::load_by_id($application_id);
+    $vacancy_id = $application->vacancy_id;
+    $student_id = $application->student_id;
+
+    if($student_id != User::get_id()) $waf->halt("error:student:not_your_user");
+    require_once("model/Student.class.php");
+    $student = Student::load_by_user_id($student_id);
+    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+
+    // Get the available CVs, and *do* filter them
+    require_once("model/CVCombined.class.php");
+    $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
+    foreach($cv_list as $cv)
+    {
+      if(!$cv->valid) $invalid++;
+    }
+    $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
+
+    $eportfolio_list = array("none:none:none" => 'None Available');
+
+    require_once("model/Vacancy.class.php");
+    require_once("model/Company.class.php");
+    $application->student_id = $student_id;
+    $application->vacancy_id = $vacancy_id;
+    $application->company_id = Vacancy::get_company_id($vacancy_id);
+    $application->_vacancy_id = Vacancy::get_name($vacancy_id);
+    $application->_company_id = Company::get_name($application->company_id);
+
+    $waf->assign("mode", "edit");
+    $waf->assign("is_student", true);
+    $waf->assign("application", $application);
+    $waf->assign("eportfolio_list", $eportfolio_list);
+    $waf->assign("cv_list", $cv_list);
+    $waf->assign("cv_options", $cv_options);
+    $waf->assign("invalid", $invalid);
+    $waf->assign("selected_cv_ident", $application->cv_ident);
+    $waf->display("main.tpl", "student:placement:list_applications:edit_application", "admin/directories/edit_application.tpl");
+  }
+
+  function edit_application_do(&$waf, &$user) 
+  {
+    $application_id = (int) WA::request("id");
+    require_once("model/Application.class.php");
+    $application = Application::load_by_id($application_id);
+
+    $student_id = $application->student_id;
+
+    if($student_id != User::get_id()) $waf->halt("error:student:not_your_user");
+    require_once("model/Student.class.php");
+    $student = Student::load_by_user_id($student_id);
+    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+
+    edit_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
   }
 
   // Notes

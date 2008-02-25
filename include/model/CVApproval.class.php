@@ -131,6 +131,13 @@ class CVApproval extends DTO_CVApproval
     return $nvp_array;
   }
 
+  function check_approval($student_id, $cv_ident)
+  {
+    $student_id = (int) $student_id;
+    if(!preg_match("/^[a-z]+:[a-z]+:[A-Za-z0-9]+$/", $cv_ident)) return false; // silently fail for now
+
+    return(CVApproval::count("where student_id = $student_id and cv_ident = '$cv_ident'"));
+  }
 
   function approve_cv($student_id, $cv_ident)
   {
@@ -148,7 +155,7 @@ class CVApproval extends DTO_CVApproval
   function revoke_cv($student_id, $cv_ident)
   {
     if(!preg_match("/^[a-z]+:[a-z]+:[A-Za-z0-9]+$/", $cv_ident)) return; // silently fail for now
-    CVApproval::remove_where("student = $student_id and cv_ident = '$cv_ident'");
+    CVApproval::remove_where("where student_id = $student_id and cv_ident = '$cv_ident'");
   }
 
 }

@@ -75,6 +75,24 @@ class Application extends DTO_Application
 
     $fields['created'] = date("YmdHis");
     $fields['status'] = "unseen";
+
+    // Work out any mime type we need
+    $cv_ident_parts = explode(":", $fields['cv_ident']);
+    switch($cv_ident_parts[0])
+    {
+      case 'internal':
+        break; // todo
+      case 'pdsystem':
+        switch($cv_ident_parts[1])
+        {
+          case 'hash':
+            require_once("model/PDSystem.class.php");
+            $fields['archive_mime_type'] = PDSystem::get_artefact_mime_type($fields['student_id'], $cv_ident_parts[2]); // needs
+            break;
+        }
+        break;
+    }
+
     $application = new Application;
     $application->_insert($fields);
 
@@ -87,10 +105,30 @@ class Application extends DTO_Application
   {
     // Null some fields if empty
     //$fields = Application::set_empty_to_null($fields);
+    // Some extra fields are being nuked, I don't know why...
+    unset($fields['created']);
+
     require_once("model/User.class.php");
     if(User::is_student())
     {
       $fields['modified'] = date("YmdHis");
+    }
+
+    // Work out any mime type we need
+    $cv_ident_parts = explode(":", $fields['cv_ident']);
+    switch($cv_ident_parts[0])
+    {
+      case 'internal':
+        break; // todo
+      case 'pdsystem':
+        switch($cv_ident_parts[1])
+        {
+          case 'hash':
+            require_once("model/PDSystem.class.php");
+            $fields['archive_mime_type'] = PDSystem::get_artefact_mime_type($fields['student_id'], $cv_ident_parts[2]); // needs
+            break;
+        }
+        break;
     }
 
     // If we change the status, timestamp that
@@ -226,8 +264,10 @@ class Application extends DTO_Application
 
   function get_fields($include_id = false) 
   {
-    $application = new Application;
-    return  $application->_get_fieldnames($include_id); 
+    // Too much erases dates, need to look at this problem
+    $fields = array('company_id', 'vacancy_id', 'student_id', 'cv_ident', 'portfolio_ident', 'cover');
+    if($include_id) $fields = array_merge($fields, array('id'));
+    return $fields; 
   }
 
   function request_field_values($include_id = false) 

@@ -88,7 +88,7 @@ class CVGroupTemplate extends DTO_CVGroupTemplate
     return $cvgrouptemplates;
   }
 
-  function get_templates_permissions_by_group($group_id)
+  function get_template_permissions_by_group($group_id)
   {
     $final_array = array();
     $group_id = (int) $group_id;

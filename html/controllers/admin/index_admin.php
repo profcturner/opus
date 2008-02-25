@@ -97,6 +97,7 @@ function nav_admin()
         array("edit", "student", "edit_student", "edit_student"),
         array("home", "student", "placement_home", "placement_home"),
         array("vacancies", "student", "vacancy_directory", "vacancy_directory"),
+        array("CVs", "student", "list_student_cvs", "list_student_cvs"),
         array("applications", "student", "manage_applications", "manage_applications"),
         array("assessment", "student", "view_assessments", "view_assessments"),
         array("channels", "student", "list_student_channels", "list_student_channels"),

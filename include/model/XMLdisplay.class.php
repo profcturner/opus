@@ -1,5 +1,18 @@
 <?php
 
+/**
+* Handles the output of XHTML used within OPUS
+* @package OPUS
+*/
+
+/**
+* Handles the output of XHTML used within OPUS
+*
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+* @package OPUS
+*
+*/
 class XMLdisplay
 {
   var $xml_output = "";

@@ -71,7 +71,7 @@ class DTO_User extends DTO
 
     try
     {
-      $sql = $con->prepare("SELECT username FROM `user` WHERE username = ? AND password = MD5(?);");
+      $sql = $con->prepare("SELECT username FROM `user` WHERE reg_number = ? AND password = MD5(?);");
       $sql->execute(array($reg_number, $password));
       $results_row = $sql->fetch(PDO::FETCH_ASSOC);
     }
@@ -79,7 +79,7 @@ class DTO_User extends DTO
     {
       $this->_log_sql_error($e, $class, "_reg_number_password()");
     }
-    if ($results_row) return ($results_row->username); else return false;
+    if ($results_row) return ($results_row['username']); else return false;
   }
 }
 

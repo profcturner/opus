@@ -21,7 +21,6 @@ class HelpPrompter
     require_once("model/Preference.class.php");
     $options = Preference::get_preference("help_prompter");
 
-    $options['show_lookups'] = true;
     $output = "";
 
     if(!preg_match("/[A-Za-z0-9]+/", $lookup)) return $output;

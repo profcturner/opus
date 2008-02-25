@@ -57,6 +57,8 @@ class Cache_Object extends DTO
   */
   function load_from_cache($key, $return_stale = false)
   {
+    global $waf;
+
     $success = $this->_load_by_field_value("key", $key);
     if($success)
     {
@@ -64,7 +66,12 @@ class Cache_Object extends DTO
       if(time() > (strtotime($this->timestamp) + $this->_ttl))
       {
         // Stale
+        $waf->log("cache item $key is stale", PEAR_LOG_DEBUG, 'debug');
         if(!$return_stale) return false;
+      }
+      else
+      {
+        $waf->log("cache hit on item $key", PEAR_LOG_DEBUG, 'debug');
       }
     }
     $this->read_count = $this->read_count + 1;
@@ -81,6 +88,9 @@ class Cache_Object extends DTO
   */
   function update_cache($key, $cache)
   {
+    global $waf;
+
+    $waf->log("update cache on key $key", PEAR_LOG_DEBUG, 'debug');
     $wscache = new Cache_Object;
 
     if ($wscache->_count("WHERE `key`=\"$key\"") == 0)

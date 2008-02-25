@@ -315,19 +315,29 @@
 
   // CVs
 
-  function display_cv_list(&$waf)
+  function list_student_cvs(&$waf)
   {
     $student_id = (int) WA::request("student_id", true);
 
     if(!Policy::is_auth_for_student($student_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
 
     require_once("model/CVCombined.class.php");
-    $cv_list = CVCombined::fetch_cvs_for_student($student_id, false);
+    $cvs = CVCombined::fetch_cvs_for_student($student_id);
 
-    require_once("model/CVApproval.class.php");
-    $cv_approvals = CVApproval::get_all("where student_id = $student_id");
+    $waf->assign("student_id", $student_id);
+    $waf->assign("cvs", $cvs);
 
-    $waf->display("main.tpl", "admin:directories:student_directory:display_cv_list", "admin/directories/display_cv_list.tpl");
+    $waf->display("main.tpl", "admin:directories:student_directory:display_cv_list", "admin/directories/list_student_cvs.tpl");
+  }
+
+  function view_cv(&$waf)
+  {
+    $student_id = (int) WA::request("student_id", true);
+    $cv_ident = WA::request("cv_ident");
+
+    // security is handled in the CVCombined object
+    require_once("model/CVCombined.class.php");
+    CVCombined::view_cv($student_id, $cv_ident);
   }
 
   function approve_cv(&$waf)
@@ -339,6 +349,8 @@
 
     require_once("model/CVApproval.class.php");
     CVApproval::approve_cv($student_id, $cv_ident);
+
+    goto("directories", "list_student_cvs");
   }
 
   function revoke_cv(&$waf)
@@ -350,6 +362,8 @@
 
     require_once("model/CVApproval.class.php");
     CVApproval::revoke_cv($student_id, $cv_ident);
+
+    goto("directories", "list_student_cvs");
   }
 
   // Timelines
@@ -782,6 +796,11 @@
     // Get the available CVs, and *do* filter them
     require_once("model/CVCombined.class.php");
     $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
+    foreach($cv_list as $cv)
+    {
+      if(!$cv->valid) $invalid++;
+    }
+    $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
 
     $eportfolio_list = array("none:none:none" => 'None Available');
 
@@ -800,6 +819,8 @@
     $waf->assign("application", $application);
     $waf->assign("eportfolio_list", $eportfolio_list);
     $waf->assign("cv_list", $cv_list);
+    $waf->assign("cv_options", $cv_options);
+    $waf->assign("invalid", $invalid);
     $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
   }
 
@@ -811,6 +832,63 @@
 
     add_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id", "add_application");
   }
+
+  /**
+  * tag a student as having applied for a vacancy
+  */
+  function edit_application(&$waf, &$user)
+  {
+    $application_id = (int) WA::request("id");
+
+    require_once("model/Application.class.php");
+    $application = Application::load_by_id($application_id);
+    $vacancy_id = $application->vacancy_id;
+    $student_id = $application->student_id;
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
+
+    // Get the available CVs, and *do* filter them
+    require_once("model/CVCombined.class.php");
+    $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
+    foreach($cv_list as $cv)
+    {
+      if(!$cv->valid) $invalid++;
+    }
+    $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
+
+    $eportfolio_list = array("none:none:none" => 'None Available');
+
+    require_once("model/Vacancy.class.php");
+    require_once("model/Company.class.php");
+    $application->student_id = $student_id;
+    $application->vacancy_id = $vacancy_id;
+    $application->company_id = Vacancy::get_company_id($vacancy_id);
+    $application->_vacancy_id = Vacancy::get_name($vacancy_id);
+    $application->_company_id = Company::get_name($application->company_id);
+
+    $waf->assign("mode", "edit");
+    $waf->assign("application", $application);
+    $waf->assign("eportfolio_list", $eportfolio_list);
+    $waf->assign("cv_list", $cv_list);
+    $waf->assign("cv_options", $cv_options);
+    $waf->assign("invalid", $invalid);
+    $waf->assign("selected_cv_ident", $application->cv_ident);
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
+  }
+
+  function edit_application_do(&$waf, &$user) 
+  {
+    $application_id = (int) WA::request("id");
+    require_once("model/Application.class.php");
+    $application = Application::load_by_id($application_id);
+
+    $student_id = $application->student_id;
+
+    if(!Policy::is_auth_for_student($student_id, "student", "editCompanies")) $waf->halt("error:policy:permissions");
+
+    edit_object_do($waf, $user, "Application", "section=directories&function=manage_applications&student_id=$student_id", "add_application");
+  }
+
 
   function remove_application(&$waf, &$user) 
   {
@@ -941,9 +1019,6 @@
 
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/view_cover_letter.tpl");
   }
-
-
-
 
   // Placements
 
