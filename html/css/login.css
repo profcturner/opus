@@ -81,7 +81,8 @@ a:active {
   font-style: normal;
   font-weight: bold;
   color: #474748;
-  text-align: left;
+  text-align: right;
+  margin-right:1em;
 }
 .important {
   font-family: Arial, Helvetica, sans-serif;
@@ -95,7 +96,27 @@ a:active {
   color: #FFFFFF;
 }
 .input {
+  font-size: 0.8em;
   text-align: left;
   border: 1px solid red;
-  padding-right: 20px;
+  width:14em;
+}
+.submit {
+  cursor: pointer;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  float:right;
+  text-align:center;
+  margin:0;
+  margin-bottom: 0.1em;
+  color:#0D436F;
+  border: 1px #0D436F dotted;
+  background:#cccccc;
+}
+
+.submit:hover {
+  border: 1px red solid;
+  text-decoration:underline;
 }

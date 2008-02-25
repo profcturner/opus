@@ -14,9 +14,9 @@
  <tr align="center" valign="middle">
 
   <!-- Border Top -->
-  <td width="20" height="19" align="right" valign="bottom" background="{$config.opus.url}/images/corner1.jpg"></td>
-  <td height="19" background="{$config.opus.url}/images/top.jpg"><div align="center"></div></td>  
-  <td width="20" height="19" align="left" valign="bottom" background="{$config.opus.url}/images/corner2.jpg"></td>
+  <td width="20" height="17" align="right" valign="bottom" background="{$config.opus.url}/images/corner1.jpg"></td>
+  <td height="17" background="{$config.opus.url}/images/top.jpg"><div align="center"></div></td>  
+  <td width="20" height="17" align="left" valign="bottom" background="{$config.opus.url}/images/corner2.jpg"></td>
  </tr>
 
  
@@ -32,8 +32,8 @@
   <br />
 <table width="700" height="90"  border="0" align="center" cellspacing="0">
  <tr valign="top">
-  <td><div align="left"><img src="{#institution_logo#}" width="{#institution_logo_width#}"></div></td>
-  <td width="350"><div align="right"><img src="{$config.opus.url}/images/{#application_logo#}" width="115" height="66"></div></td>
+  <td><div align="left"><img src="{#institution_logo#}"></div></td>
+  <td width="350"><div align="right"><img src="{#application_logo#}"></div></td>
  </tr>
 </table><br>
      
@@ -66,22 +66,17 @@
     <input type="hidden" name="referrer_function" value="{$referrer_function}" />
 <table width="300" border="0" cellspacing="0" cellpadding="0">
  <tr>
-  <td width="90"><span class="groups">{#username_text#}</span></td>
-  <td><input type="text" name="username" class="input" /></td>
+  <td width="90"><div class="groups">{#username_text#}</div></td>
+  <td><input type="text" name="username" class="input" size="20"/></td>
  </tr>
  
  <tr>
-  <td>&nbsp;</td>
-  <td>&nbsp;</td>
- </tr>
- 
- <tr>
-  <td width="90"><span class="groups">{#password_text#}</span></td>
-  <td><input type="password" name="password" class="input" /></td>
+  <td width="90"><div class="groups">{#password_text#}</div></td>
+  <td><input type="password" name="password" class="input" size="20"/></td>
   </tr>
 </table><br/>
                       
-    <input type="submit" name="Submit" value="{#login_phrase#}" />
+    <div class="groups"><input class="submit" type="submit" name="Submit" value="{#login_phrase#}" /></div>
     <br><span class='text'>{#link_text_to_password_reset#}</span>
     {if $opus_closed}<br /><h2>{#opus_closed#}</h2>{/if}
     <br><span class="important">{$error}</span>
@@ -97,7 +92,7 @@
  
  <tr bgcolor="#DAF1FC">
   <td valign="top">&nbsp;</td>
-  <td valign="top"><span class='text'>{#login_instructions#}</span></td>
+  <td valign="top"><div class='text'>{#login_instructions#}</div></td>
   <td valign="top">&nbsp;</td>
  </tr>
 
@@ -114,9 +109,9 @@
   <td width="20" align="center" valign="middle" background="{$config.opus.url}/images/right.jpg"><div align="center"></div></td>
   </tr>
  <tr align="center" valign="middle">
-  <td width="20" height="18" align="right" valign="bottom" background="{$config.opus.url}/images/corner4.jpg"></td>
-  <td height="18" background="{$config.opus.url}/images/bottom.jpg"><div align="center"></div></td>  
-  <td width="20" height="18" align="left" valign="bottom" background="{$config.opus.url}/images/corner3.jpg"></td>
+  <td width="20" height="17" align="right" valign="bottom" background="{$config.opus.url}/images/corner4.jpg"></td>
+  <td height="17" background="{$config.opus.url}/images/bottom.jpg"><div align="center"></div></td>  
+  <td width="20" height="17" align="left" valign="bottom" background="{$config.opus.url}/images/corner3.jpg"></td>
  </tr>
 </table> 
 </html>
