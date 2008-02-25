@@ -113,5 +113,5 @@ xinha_init = xinha_init ? xinha_init : function()
   Xinha.startEditors(xinha_editors);
 }
 
-Xinha._addEvent(window,'load', xinha_init); // this executes the xinha_init function on page load 
+//Xinha._addEvent(window,'load', xinha_init); // this executes the xinha_init function on page load 
 // and does not interfere with window.onload properties set by other scripts
