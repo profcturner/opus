@@ -43,7 +43,7 @@
 <script language="JavaScript" type="text/javascript" src="{$config.opus.url}/javascript/xinha/XinhaCore.js"></script>
 <script language="JavaScript" type="text/javascript" src="{$config.opus.url}/javascript/xinha/xinha-opus.js"></script>
 </head>
-<body onload="xinha.init();">
+<body onload="xinha_init();">
 {else}
 </head>
 <body>
