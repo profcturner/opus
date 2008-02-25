@@ -42,16 +42,12 @@
 </script>
 <script language="JavaScript" type="text/javascript" src="{$config.opus.url}/javascript/xinha/XinhaCore.js"></script>
 <script language="JavaScript" type="text/javascript" src="{$config.opus.url}/javascript/xinha/xinha-opus.js"></script>
-{/if}
 </head>
-
-{if $xinha.editor}
 <body onload="xinha.init();">
 {else}
+</head>
 <body>
 {/if}
-
-<body>
 <div id="page_wrapper">
   <div id="header">  {* start of the header div *}
     <div id="app_title">{if $config.opus.logo}<img src="images/{$config.opus.logo}" title="{$config.opus.title}"/>{else}{$config.opus.title}{/if}
