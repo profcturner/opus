@@ -88,6 +88,7 @@ function main()
     load_user($user['username']);
 
     $currentgroup = $waf->user['opus']['user_type'];
+    if(empty($currentgroup)) $currentgroup = "guest"; // Not logged in
 
     // When closed, only root users can login
     if(!$system_status && $currentgroup != "root")
