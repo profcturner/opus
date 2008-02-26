@@ -127,20 +127,22 @@ function main()
   }
   else
   {
+    /*
     $currentgroup = "guest";
 
     // Ok, on with the show
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
+    */
 
-    if(empty($section))
-    {
+    //if(empty($section))
+    //{
       // Show the login screen, no valid user, keep any redirected URI
       $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
       login($waf);
-    }
-    else
-    {
+    //}
+    //else
+    { /*
       // load controllers based on groups and capture the navigational structure
       $nav = $waf->load_group_controller($currentgroup);
       // load controller based on the object being managed
@@ -149,6 +151,7 @@ function main()
       $waf->assign("nav", $nav);
       // call user function
       $waf->call_user_function($user, $section, $function, "home", "error");
+      */
     }
   }
 }
@@ -246,6 +249,8 @@ function drop_cookies()
 
 function destroy_cookies()
 {
+  global $waf;
+  $waf->log("invalidating u3ticket and opusticket", PEAR_LOG_DEBUG, 'debug');
   require_once("WA.Cookie.class.php");
   // destroy the cookies we might have dropped
   Cookie::delete("u3ticket", '/');
@@ -254,11 +259,17 @@ function destroy_cookies()
   $pds_cookie = Cookie::read("pdsticket");
   if($pds_cookie)
   {
+    $waf->log("pdsticket exists", PEAR_LOG_DEBUG, 'debug');
     if($pds_cookie['reg_number'] == $waf->user['opus']['reg_number'])
     {
+      $waf->log("killing pds session", PEAR_LOG_DEBUG, 'debug');
       // PDSystem has a valid cookie for the same user, with the same secret, log them out too...
       require_once("model/PDSystem.class.php");
       PDSystem::kill_session($pds_cookie['session_id']);
+    }
+    else
+    {
+      $waf->log("pds cookie reg_number is " . $pds_cookie['reg_number'] ." but we are " . $waf->user['opus']['reg_number'], PEAR_LOG_DEBUG, 'debug');
     }
   }
 
