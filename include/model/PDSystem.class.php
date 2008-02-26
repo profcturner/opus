@@ -295,7 +295,7 @@ class PDSystem
 
   function kill_session($session_id)
   {
-
+    PDSystem::get_data("misc", "kill_session", "session_id=$session_id");
   }
 }
 

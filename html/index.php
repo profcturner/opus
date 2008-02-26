@@ -88,7 +88,6 @@ function main()
     load_user($user['username']);
 
     $currentgroup = $waf->user['opus']['user_type'];
-    if(empty($currentgroup)) $currentgroup = "guest"; // Not logged in
 
     // When closed, only root users can login
     if(!$system_status && $currentgroup != "root")
@@ -128,9 +127,29 @@ function main()
   }
   else
   {
-    // Show the login screen, no valid user, keep any redirected URI
-    $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
-    login($waf);
+    $currentgroup = "guest";
+
+    // Ok, on with the show
+    $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
+    $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
+
+    if(empty($section))
+    {
+      // Show the login screen, no valid user, keep any redirected URI
+      $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
+      login($waf);
+    }
+    else
+    {
+      // load controllers based on groups and capture the navigational structure
+      $nav = $waf->load_group_controller($currentgroup);
+      // load controller based on the object being managed
+      $waf->load_section_controller($currentgroup,$section);
+      //assignment of nav
+      $waf->assign("nav", $nav);
+      // call user function
+      $waf->call_user_function($user, $section, $function, "home", "error");
+    }
   }
 }
 
@@ -152,7 +171,7 @@ function load_user($username)
     }
     else
     {
-      $waf->log("no user account found for authenticated user");
+      $waf->log("no user account found for authenticated user [$username]");
       $waf->logout_user();
       unset($_SESSION);
       session_destroy();

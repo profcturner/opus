@@ -32,6 +32,20 @@ class u3_cookie
       $auth_user['reg_number'] = $u3cookie['reg_number'];
       $auth_user['username'] = $u3cookie['username'];
 
+      require_once("model/User.class.php");
+      $user = User::load_by_reg_number($auth_user['reg_number']);
+      if($user->id)
+      {
+        // We know this person
+        switch($user->user_type)
+        {
+          // Only two categories for now
+          case student:
+          case staff:
+          $auth_user['username'] = $auth_user['reg_number'];
+          break;
+        }
+      }
       return $auth_user;
     }
     // Otherwise, fail

@@ -56,9 +56,26 @@ Class User extends DTO_User
     parent::__construct();
   }
 
-  function get_field_defs()
+  function get_field_defs($field_def_param = "null")
   {
-    return self::$_field_defs;
+    $field_defs = self::$_field_defs;
+    if($field_def_param == 'application_manage')
+    {
+      return array(
+        'firstname'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'header'=>true),
+        'username'=>array('type'=>'text','size'=>15, 'header'=>true),
+        'last_login_time'=>array('type'=>'datetime','size'=>30, 'header'=>true)
+      );
+    }
+    if($field_def_param == 'application_manage')
+    {
+      return array(
+        'firstname'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'header'=>true),
+        'username'=>array('type'=>'text','size'=>15, 'header'=>true),
+        'last_login_time'=>array('type'=>'datetime','size'=>30, 'header'=>true)
+      );
+    }
+    return $field_defs;
   }
 
   function load_by_id($id) 

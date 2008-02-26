@@ -97,4 +97,20 @@
     remove_object_do($waf, $user, "CSVMapping", "section=superuser&function=manage_csvmappings");
   }
 
+  function manage_api_users(&$waf)
+  {
+    manage_objects($waf, $user, "User", array(array("add","section=superuser&function=add_api_user")), array(array('remove', 'remove_api_user'), array('change password', 'change_api_user_password')), "get_all", array("where user_type='application'", "order by real_name", $page), "admin:superuser:manage_api_users:manage_api_users", "list.tpl", "application");
+  }
+
+  function add_api_user(&$waf, &$user) 
+  {
+    add_object($waf, $user, "User", array("add", "superuser", "add_api_user_do"), array(array("cancel","section=superuser&function=manage_api_users")), array(array("user_type", 'application')), "admin:superuser:manage_api_users:add_api_user", "manage.tpl", "", "application");
+  }
+
+  function add_api_user_do(&$waf, &$user) 
+  {
+    add_object_do($waf, $user, "User", "section=superuser&function=manage_api_users", "add_api_user");
+  }
+
+
 ?>
