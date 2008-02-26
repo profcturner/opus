@@ -144,11 +144,18 @@ function load_user($username)
   $user = User::load_by_username($username);
   if($user == false)
   {
-    $waf->log("no user account found for authenticated user");
-    $waf->logout_user();
-    unset($_SESSION);
-    session_destroy();
-    $waf->halt("error:no_user");
+    if(WA::request("function") == 'logout')
+    {
+      logout();
+    }
+    else
+    {
+      $waf->log("no user account found for authenticated user");
+      $waf->logout_user();
+      unset($_SESSION);
+      session_destroy();
+      $waf->halt("error:no_user");
+    }
   }
 
   $fields['id'] = $user->id;
