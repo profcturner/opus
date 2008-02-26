@@ -292,6 +292,11 @@ class PDSystem
     }
     return false;
   }
+
+  function kill_session($session_id)
+  {
+
+  }
 }
 
 ?>

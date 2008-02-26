@@ -218,6 +218,21 @@ function drop_cookies()
 
 function destroy_cookies()
 {
+  require_once("WA.Cookie.class.php");
+  // destroy the cookies we might have dropped
+  Cookie::delete("u3ticket", '/');
+  Cookie::delete("opusticket", '/');
+
+  $pds_cookie = Cookie::read("pdsticket");
+  if($pds_cookie)
+  {
+    if($pds_cookie['reg_number'] == $waf->user['opus']['reg_number'])
+    {
+      // PDSystem has a valid cookie for the same user, with the same secret, log them out too...
+      require_once("model/PDSystem.class.php");
+      PDSystem::kill_session($pds_cookie['session_id']);
+    }
+  }
 
 }
 

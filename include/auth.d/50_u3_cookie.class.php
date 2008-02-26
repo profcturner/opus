@@ -11,6 +11,7 @@
 * @author Colin Turner <c.turner@ulster.ac.uk>
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
 * @package OPUS
+* @see Cookie.class.php
 *
 */
 
@@ -18,6 +19,7 @@ class u3_cookie
 {
   function waf_authenticate_user($username, $password)
   {
+    global $waf;
     require_once("WA.Cookie.class.php");
 
     // Look for, verify, and decode any PDS cookie
