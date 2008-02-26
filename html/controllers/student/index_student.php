@@ -34,16 +34,17 @@ function nav_student()
   {
     return array
     (
-      "home"=>array
+      "myPDS"=>array
       (
         array("home", "home", "", "", "", "$pds_url?section=home&function=home"), 
         array("messages", "home", "", "", "", "$pds_url?section=home&function=list_messages"), 
         array("calendar", "home", "", "", "", "$pds_url?section=home&function=view_calendar"), 
         array("contacts", "home", "", "", "", "$pds_url?section=home&function=list_contacts"), 
-        array("email", "home", "", "", "", "$pds_url?section=home&function=open_email"), 
-        array("artefacts", "home", "", "", "", "$pds_url?section=home&function=list_artefacts")
+        //array("email", "home", "", "", "", "$pds_url?section=home&function=open_email"), 
+        array("artefact files", "home", "", "", "", "$pds_url?section=home&function=manage_artefact_files"),
+        array("artefact urls", "home", "", "", "", "$pds_url?section=home&function=manage_artefact_urls")
       ), 
-      "profile"=>array
+      "MyProfile"=>array
       (
         array("personal details", "profile", "", "", "", "$pds_url?section=profile&function=view_personal_details"),
         array("qualifications", "profile", "", "", "", "$pds_url?section=profile&function=manage_qualifications"),
@@ -53,7 +54,7 @@ function nav_student()
         array("publications", "profile", "", "", "", "$pds_url?section=profile&function=manage_publications"),
         array("conferences", "profile", "", "", "", "$pds_url?section=profile&function=manage_conferences")
       ), 
-      "programme"=>array
+      "MyProgramme"=>array
       (
         array("team", "programme", "", "", "", "$pds_url?section=programme&function=view_programme_team"),
         array("resources", "programme", "", "", "", "$pds_url?section=programme&function=list_resources"),
@@ -61,7 +62,7 @@ function nav_student()
         array("meetings", "programme", "", "", "", "$pds_url?section=programme&function=list_meetings"),
         array("transcript", "programme", "", "", "", "$pds_url?section=programme&function=view_transcript")
       ), 
-      "development"=>array
+      "MyDevelopment"=>array
       (
         array("skills", "development", "", "", "", "$pds_url?section=development&function=view_skills"),
         array("goals", "development","", "", "", "$pds_url?section=development&function=view_goals"),
@@ -69,7 +70,7 @@ function nav_student()
         array("journals", "development", "", "", "",  "$pds_url?section=development&function=view_journals"),
         array("learning styles", "development", "", "", "",  "$pds_url?section=development&function=view_learning_styles")
       ), 
-      "career"=>array
+      "MyCareer"=>array
       (
         array("CV Builder", "career", "", "", "", "$pds_url?section=career&function=cv_builder"),
         array("CV Store", "career", "", "", "",  "$pds_url?section=career&function=list_stored_cvs"),
@@ -78,7 +79,7 @@ function nav_student()
         array("interviews", "career", "", "", "",  "$pds_url?section=career&function=list_interviews"),
         array("Personal Statements", "career", "", "", "",  "$pds_url?section=career&function=list_personal_statements")
       ), 
-      "placement"=>array
+      "MyPlacement"=>array
       (
         array("Placement Home", "placement", "placement_home", "placement_home"),
         array("Companies", "placement", "company_directory", "company_directory"),
@@ -88,12 +89,13 @@ function nav_student()
         array("Resources", "placement", "list_resources", "list_resources"),
         array("Notes", "placement", "manage_notes", "list_notes")
       ), 
-      "portfolios"=>array
+      "MyPortfolios"=>array
       (
         array("portfolios", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_portfolios"),
         array("shared to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_shared_portfolios"),
         array("submitted to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_submitted_portfolios"),
-        array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_portfolios_from_others")
+        array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_portfolios_from_others"),
+        array("submissions from others", "portfolios", "", "", "", "$pds_url?section=portfolios&function=submitted_portfolios")
       )
     );
   }
