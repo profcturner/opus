@@ -78,6 +78,7 @@ function nav_admin()
     (
       array("services", "superuser", "edit_service", "edit_service"),
       array("Phone Home", "superuser", "edit_phonehome", "edit_phonehome"),
+      array("API users", "superuser", "manage_api_users", "manage_api_users"),
       array("CSV Mapping", "superuser", "manage_csvmappings", "manage_csvmappings"),
       array("PHP info", "superuser", "view_phpinfo", "view_phpinfo")
     )

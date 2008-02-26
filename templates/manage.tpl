@@ -81,7 +81,7 @@
 {/foreach}
 
 <div id="table_manage">
-<form method="POST" ENCTYPE="multipart/form-data" action="" name="mainform">
+<form method="POST" ENCTYPE="multipart/form-data" action="" name="mainform" charset = "ISO-8859-1">
 <table cellpadding="0" cellspacing="0" border="0">
 {if $action_button}
   <tr>

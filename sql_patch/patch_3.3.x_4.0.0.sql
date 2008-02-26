@@ -357,7 +357,7 @@ alter table user change column real_name real_name tinytext;
 alter table user change column id_number id int unsigned not null auto_increment;
 alter table user add column online enum('online', 'idle', 'offline') after last_index;
 alter table user add column reg_number tinytext after user;
-alter table user change column user user_type enum('student','root','company','staff','admin','supervisor') not null;
+alter table user change column user user_type enum('student','root','company','staff','admin','supervisor','application') not null;
 alter table user add column lastname tinytext after user_type;
 alter table user add column firstname tinytext after user_type;
 alter table user add column salutation tinytext after user_type;
