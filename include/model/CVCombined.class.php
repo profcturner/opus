@@ -173,7 +173,7 @@ class CVCombined
             }
             if(in_array("requiresApproval", $template_permissions[$cv_ident_parts[2]]))
             {
-              $approval = CVApproval::get_approval($student_id, $cv_ident);
+              $approval = CVApproval::check_approval($student_id, $cv_ident);
               if(!$approval)
               {
                 $problem = "Approval Required";
