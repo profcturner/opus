@@ -31,7 +31,7 @@ class Note extends DTO_Note
     'auth'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Authorization'),
     'summary'=>array('type'=>'text', 'size'=>60, 'maxsize'=>250, 'title'=>'Summary', 'header'=>true, 'mandatory'=>true),
     'notelinks'=>array('type'=>'lookup', 'object'=>'notelink', 'value'=>'name', 'title'=>'Possible Links', 'var'=>'links', 'lookup_function'=>'get_possible_links', 'multiple'=>true),
-    'comments'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>32000, 'markup'=>'xhtml')
+    'comments'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>70, 'maxsize'=>32000, 'markup'=>'xhtml')
     );
 
   function __construct() 
