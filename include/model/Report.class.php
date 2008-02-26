@@ -245,7 +245,7 @@ class Report
       // We will need a content header here...
       $waf->debugging = false;
       header("Content-type: " . self::$mime_types[$format]);
-      header("Content-Disposition: attachment; filename=\"opus_report.$format\"");
+      header("Content-Disposition: inline; filename=\"opus_report.$format\"");
       $waf->display($template);
     }
     else

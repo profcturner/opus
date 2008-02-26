@@ -296,7 +296,7 @@ class CVCombined
     }
     $waf->log("viewing CV for application by $student_name for $vacancy_name");
     header("Content-type: $cv_mime_type");
-    //header("Content-Disposition: attachment; filename=\"$student_name.$cv_format\"");
+    header("Content-Disposition: inline; filename=\"$student_name.$cv_format\"");
     echo($cv);
     // Make sure this is tagged as seen if need be
     Application::ensure_seen($application_id);
@@ -334,7 +334,7 @@ class CVCombined
     }
     $waf->log("viewing CV for $student_name");
     header("Content-type: $cv_mime_type");
-    header("Content-Disposition: attachment; filename=\"$student_name.$cv_format\"");
+    header("Content-Disposition: inline; filename=\"$student_name.$cv_format\"");
     echo($cv);
     // Make sure this is tagged as seen if need be
     Application::ensure_seen($application_id);
