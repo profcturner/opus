@@ -91,10 +91,10 @@ function nav_student()
       ), 
       "MyPortfolios"=>array
       (
-        array("portfolios", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_portfolios"),
-        array("shared to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_shared_portfolios"),
-        array("submitted to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_submitted_portfolios"),
-        array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=list_portfolios_from_others"),
+        array("portfolios", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_portfolios"),
+        array("shared to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_shares"),
+        array("submitted to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_submissions"),
+        array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=shared_portfolios"),
         array("submissions from others", "portfolios", "", "", "", "$pds_url?section=portfolios&function=submitted_portfolios")
       )
     );
