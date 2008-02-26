@@ -42,4 +42,16 @@ function get_user_status(&$waf)
   }
 }
 
+/**
+* Used by other applications to logout an OPUS user with a given session_id
+*/
+function kill_session(&$waf)
+{
+  $session_id = WA::request("session_id");
+  // Assume this session and destroy it
+  session_id($session_id);
+  unset($_SESSION['user']);
+  @session_destroy();
+}
+
 ?>

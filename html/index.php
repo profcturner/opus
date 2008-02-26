@@ -33,7 +33,6 @@ function main()
   require_once("opus.conf.php");
   require_once("WA.class.php");
 
-
   if($config['opus']['benchmarking'])
   {
     require_once("model/Benchmark.class.php");
@@ -63,6 +62,9 @@ function main()
   $help_prompter = new HelpPrompter;
   $waf->assign_by_ref("help_prompter", $help_prompter);
   $waf->assign_by_ref("benchmark", $benchmark);
+
+  // For debugging
+  $waf->assign_by_ref("aaa_cookies", $_COOKIE);
 
   // Tell UUWAF about our database connections - there are two
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
@@ -184,10 +186,19 @@ function load_user($username)
   }
   $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
   User::update($fields);
-  drop_cookie();
+  drop_cookies();
 }
 
-function drop_cookie()
+/**
+* drops two cookies, one for u3 authentication, another to allow other links apps to logout the user
+*
+* The u3ticket cookie can be used to confirm a valid login, to allow other systems (e.g. PDSystem)
+* to have transparent login. Note that this requires they have the same cookie secret defined in their
+* WAF config.
+*
+* The opusticket allows a logout of another system (e.g. PDSystem) to trigger a logout of opus too.
+*/
+function drop_cookies()
 {
   global $waf;
   $reg_number = $waf->user['opus']['reg_number'];
@@ -197,9 +208,17 @@ function drop_cookie()
   {
     require_once("WA.Cookie.class.php");
     $expiry = time() + 1800;
+    $cookie_value="username=$username&reg_number=$reg_number";
+    Cookie::write("u3ticket",  $cookie_value, $expiry, '/');
+
     $cookie_value="username=$username&reg_number=$reg_number&session_id=" . session_id();
-    Cookie::write("u3ticket",  $cookie_value, $expiry, '/', 'localhost');
+    Cookie::write("opusticket",  $cookie_value, $expiry, '/');
   }
+}
+
+function destroy_cookies()
+{
+
 }
 
 function check_system_status(&$waf)
@@ -274,6 +293,7 @@ function logout(&$waf)
     User::update($fields);
   }
 
+  destroy_cookies();
   $_SESSION["currentgroup"] = "";
   $waf->logout_user();
   unset($_SESSION);
