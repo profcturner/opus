@@ -19,3 +19,14 @@
   {/section}
 </table>
 </div>
+
+{section name=activities loop=$activities}
+{sectionelse}
+{#no_activities_selected#}
+{/section}
+
+{section name=vacancy_types loop=$vacancy_types}
+{sectionelse}
+{#no_vacancies_selected#}
+{/section}
+

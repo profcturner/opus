@@ -433,6 +433,9 @@
     Preference::set_preference("vacancy_directory_form", $form_options);
 
     require_once("model/Vacancy.class.php");
+
+    $waf->assign("activities", $activities);
+    $waf->assign("vacancy_types", $vacancy_types);
     $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options));
     $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "admin/directories/search_vacancies.tpl");
   }
@@ -467,7 +470,8 @@
     Preference::set_preference("company_directory_form", $form_options);
 
     require_once("model/Company.class.php");
-    // A simplification, doesn't honour switches yet...
+
+    $waf->assign("activities", $activities);
     $waf->assign("companies", Company::get_all_extended($search, $activities, $sort));
     $waf->assign("action_links", array(array("add","section=directories&function=add_company")));
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "admin/directories/search_companies.tpl");
