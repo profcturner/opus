@@ -172,7 +172,7 @@ class Timeline extends DTO_Timeline
     Timeline::update_year($year + 1);
   }
 
-  function update_year($year, $check_applications = true)
+  function update_year($year, $check_applications = false)
   {
     global $waf;
 
