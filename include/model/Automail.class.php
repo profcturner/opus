@@ -153,7 +153,8 @@ class Automail extends DTO_Automail
 
     // Defaults from config
     $mailfields["conf_institution"]  =  $config['opus']['institution'];
-    $mailfields["conf_website"]      =  $config['opus']['url'];
+    $mailfields["conf_website"]      =  $config['opus']['official_url'];
+    $mailfields["conf_realurl"]      =  $config['opus']['url'];
     $mailfields["conf_appname"]      =  $config['opus']['title'];
     $mailfields["conf_version"]      =  $config['opus']['version'] . "." . $config['opus']['minor_version'] . "." . $config['opus']['patch_version'];
 
