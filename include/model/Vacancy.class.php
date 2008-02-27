@@ -320,7 +320,7 @@ class Vacancy extends DTO_Vacancy
       $mailfields['custom_vacancydesc'] = $vacancy->description;
       $mailfields['custom_companyname'] = $vacancy->_company_id;
       $mailfields['custom_editurl'] = "?section=directories&function=edit_vacancy&id=" . $vacancy->id;
-      $mailfields['custom_editurl'] = "?section=directories&function=manage_applicants&id=" . $vacancy->id;
+      $mailfields['custom_manageurl'] = "?section=directories&function=manage_applicants&id=" . $vacancy->id;
       $mailfields['custom_applicationcount'] = $application_count;
       $mailfields['rtitle']     = $contact->title;
       $mailfields['rfirstname'] = $contact->firstname;
