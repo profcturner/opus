@@ -1,0 +1,122 @@
+/* CSS Document */
+
+h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  color: #006584;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+h2 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  color: #006584;
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+h3 {
+   color: #000;
+   font-size: small;
+   background-color: transparent;
+   margin: 0px;
+   padding: 3px; 
+   border-top: 0px solid #006584;
+   border-left: 5px solid #006584;
+   margin-bottom: 5px;
+   margin-top: 0px;
+   background-image: url(/opus/images/heading.gif);
+   background-repeat: no-repeat;
+   text-align: left;
+}
+
+
+body {
+  background-color: #ffffff;
+  margin-top: 20px;
+}
+a {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #29768E;
+}
+a:link {
+  text-decoration: none;
+  color: #29768E;
+}
+a:visited {
+  text-decoration: none;
+  color: #29768E;
+}
+a:hover {
+  text-decoration: none;
+  color: #FF6600;
+}
+a:active {
+  text-decoration: none;
+  color: #29768E;
+}
+.titles {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  color: #29768E;
+  font-weight: bold;
+  text-align: left;
+}
+.text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: normal;
+  color: #474748;
+  text-align: left;
+}
+.groups{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: bold;
+  color: #474748;
+  text-align: right;
+  margin-right:1em;
+}
+.important {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: bold;
+  color: #29768E;
+  text-align: left;
+}
+.hr {
+  color: #FFFFFF;
+}
+.input {
+  font-size: 0.8em;
+  text-align: left;
+  border: 1px solid red;
+  width:14em;
+}
+.submit {
+  cursor: pointer;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  float:right;
+  text-align:center;
+  margin:0;
+  margin-bottom: 0.1em;
+  color:#0D436F;
+  border: 1px #0D436F dotted;
+  background:#cccccc;
+}
+
+.submit:hover {
+  border: 1px red solid;
+  text-decoration:underline;
+}
