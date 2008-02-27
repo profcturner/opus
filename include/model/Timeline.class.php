@@ -198,7 +198,7 @@ class Timeline extends DTO_Timeline
       else
       {
         $valid = true;
-        echo $last_updated;
+        print_r($last_updated);
         $data = each($last_updated);
         $key = $data['key'];
         // Is it up-to-date?
