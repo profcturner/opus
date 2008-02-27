@@ -190,6 +190,7 @@ class Timeline extends DTO_Timeline
       $user_id = $row["user_id"];
 
       $last_updated = Timeline::get_lastupdated($student_id);
+      $timeline_id = Timeline::get_timeline_id($student_id); // Not so efficient
       if(!$last_updated)
       {
         // No image exists in the database, add one...
@@ -198,20 +199,17 @@ class Timeline extends DTO_Timeline
       else
       {
         $valid = true;
-        print_r($last_updated);
-        $data = each($last_updated);
-        $key = $data['key'];
         // Is it up-to-date?
         if($check_applications)
         {
           $last_application = Student::get_last_application_time($student_id);
-          if($last_application > $data['value']) $valid = false;
+          if($last_application > $last_updated) $valid = false;
         }
-        if($data['value'] == '0000-00-00 00:00:00') $valid = false;
+        if($last_updated == '0000-00-00 00:00:00') $valid = false;
         if(!$valid)
         {
           // No, so modify image
-          Timeline::modify_image($student_id, $data['key']);
+          Timeline::modify_image($student_id, $timeline_id);
         }
       }
     }
@@ -302,5 +300,12 @@ class Timeline extends DTO_Timeline
     $timeline = new Timeline;
     return($timeline->_get_fields('last_updated', "where student_id=" . (int) $student_id));
   }
+
+  function get_timeline_id($student_id)
+  {
+    $timeline = new Timeline;
+    return($timeline->_get_fields('id', "where student_id=" . (int) $student_id));
+  }
+
 }
 ?>
