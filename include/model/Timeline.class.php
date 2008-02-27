@@ -300,7 +300,7 @@ class Timeline extends DTO_Timeline
   function get_lastupdated($student_id)
   {
     $timeline = new Timeline;
-    return($timeline->get_fields('last_updated', "where student_id=" . (int) $student_id));
+    return($timeline->_get_fields('last_updated', "where student_id=" . (int) $student_id));
   }
 }
 ?>
