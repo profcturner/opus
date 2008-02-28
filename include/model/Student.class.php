@@ -388,7 +388,7 @@ class Student extends DTO_Student
       $results = AssessmentTotal::load_where("where regime_id = " . $regime_item->id . " and assessed_id=$user_id");
 
       $percentage = $results->percentage;
-      if(empty($percentage))
+      if(empty($results->id))
       {
         $percentage = "--";
         $aggregate = "--";
