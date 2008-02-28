@@ -95,10 +95,10 @@ class Faculty extends DTO_Faculty
     return $facultys;
   }
 
-  function get_id_and_field($fieldname, $where_clause="") 
+  function get_id_and_field($fieldname, $where_clause="", $order_by="order by name") 
   {
     $faculty = new Faculty;
-    $faculty_array = $faculty->_get_id_and_field($fieldname, $where_clause);
+    $faculty_array = $faculty->_get_id_and_field($fieldname, $where_clause, $order_by);
     unset($faculty_array[0]);
     return $faculty_array;
   }
