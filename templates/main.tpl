@@ -44,7 +44,7 @@
     mode : "exact",
     elements : "xhtmlArea",
     theme : "advanced",
-    plugins : "safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+    plugins : "safari,pagebreak,style,layer,save,advlink,emotions,iespell,inlinepopups,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
 
     // Theme options
     theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|,formatselect,",
@@ -62,16 +62,8 @@
 
     gecko_spellcheck : true,
 
-    // Drop lists for link/image/media/template dialogs
-    //template_external_list_url : "lists/template_list.js",
-    //external_link_list_url : "lists/link_list.js",
-    //external_image_list_url : "lists/image_list.js",
-    //media_external_list_url : "lists/media_list.js",
-
     // Replace values for the template plugin
     template_replace_values : {
-      username : "Some User",
-      staffid : "991234"
     }
   });
 </script>
