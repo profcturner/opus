@@ -114,8 +114,8 @@ class DTO_Student extends DTO
     global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
+    require_once("model/Policy.class.php");
     if(!preg_match('/^[A-Za-z]$/', $initial)) return array();
-
 
     $full_query = "SELECT user.real_name as real_name, user.email, user.salutation, user.firstname, user.lastname, user.reg_number, user.last_time, student.* FROM student LEFT JOIN user ON student.user_id = user.id where lastname like ? order by lastname";
 
@@ -128,7 +128,7 @@ class DTO_Student extends DTO
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
-          array_push($object_array, $results_row);
+        if(Policy::is_auth_for_student($results_row['user_id'], "student", "list")) array_push($object_array, $results_row);
       }
     }
     catch (PDOException $e)

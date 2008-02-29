@@ -64,6 +64,9 @@
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
 
+  /**
+  * searchs for students by first letter of initial
+  */
   function simple_search_student(&$waf)
   {
     if(!Policy::check_default_policy("student", "list")) $waf->halt("error:policy:permissions");
@@ -205,14 +208,18 @@
     goto("directories", "edit_student_real&id=$id&changes=$changes");
   }
 
+  /**
+  * shows the edit student dialog once the student is in the session
+  */
   function edit_student_real(&$waf, &$user)
   {
     require_once("model/Student.class.php");
+    require_once("model/Policy.class.php");
+
     $id = (int) WA::request("id");
-
-    if(!Policy::is_auth_for_student($id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
-
     $student = Student::load_by_id($id);
+
+    if(!Policy::is_auth_for_student($student->user_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
     $assessment_group_id = Student::get_assessment_group_id($student->user_id);
     $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
     $other_items = Student::get_other_assessors($student->user_id);
@@ -243,11 +250,17 @@
     edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("manage applications", "section=directories&function=manage_applications&page=")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
+  /**
+  * processes changes to a student
+  */
   function edit_student_do(&$waf, &$user) 
   {
     $id = (int) WA::request("id");
+    // Need the id from the user table
+    require_once("model/Student.class.php");
+    $student_id = Student::get_user_id($id);
 
-    if(!Policy::is_auth_for_student($id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "Student", "section=directories&function=edit_student&id=$id&changes=1", "edit_student_real");
   }
