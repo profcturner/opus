@@ -83,7 +83,7 @@ class Photo
     imagestring ($image, 3, 5, 5, "No Photo", $tc);
 
     imagejpeg($image);
-    imeagedestroy($image);
+    imagedestroy($image);
   }
 
   function create_thumbnail($username)
