@@ -26,7 +26,7 @@ class Log_Viewer
   {
     global $waf;
 
-    $this->available_logs = array('general', 'admin', 'debug', 'security', 'panic', 'cron', 'waf_debug');
+    $this->available_logs = array('general', 'admin', 'debug', 'security', 'panic', 'cron', 'waf_debug', 'php_errors');
 
     if($lines == 0) $lines = 100;
     if($logname == "") $logname = 'general';
