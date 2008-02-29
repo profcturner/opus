@@ -34,17 +34,23 @@ class Student extends DTO_Student
     'firstname'=>array('type'=>'text','size'=>30, 'header'=>true),
     'lastname'=>array('type'=>'text','size'=>30, 'header'=>true, 'mandatory'=>true),
     'email'=>array('type'=>'email','size'=>40, 'mandatory'=>true),
- //   'progress'=>array('type'=>'list', 'list'=>array()),
+    'reg_number'=>array('type'=>'text', 'size'=>15, 'readonly'=>true, 'mandatory'=>true),
     'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year', 'mandatory'=>true),
     'placement_status'=>array('type'=>'list', 'list'=>array('Required'=>'Required','Placed'=>'Placed','Exempt Applied'=>'Exempt Applied','Exempt Given'=>'Exempt Given','No Info'=>'No Info','Left Course'=>'Left Course','Suspended'=>'Suspended','To final year'=>'To final year','Not Eligible'=>'Not Eligible')),
     'academic_user_id'=>array('type'=>'lookup', 'object'=>'staff', 'value'=>'dud', 'title'=>'Academic Tutor', 'var'=>'tutors', 'lookup_function'=>'lookup_tutors_by_school'),
     'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
   );
 
+  // Root users can edit reg_numbers
+  static $_root_field_defs_override = array
+  (
+    'reg_number'=>array('type'=>'text', 'size'=>15, 'mandatory'=>true),
+  );
+
   // This defines which ones
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email'
+    'salutation','firstname','lastname','email','reg_number'
   );
 
   function __construct() 
@@ -54,7 +60,12 @@ class Student extends DTO_Student
 
   function get_field_defs()
   {
-    return self::$_field_defs;
+    $field_defs = self::$_field_defs;
+    if(User::is_root())
+    {
+      $field_defs = array_merge($field_defs, self::$_root_field_defs_override);
+    }
+    return $field_defs;
   }
 
   function get_extended_fields()
@@ -129,6 +140,8 @@ class Student extends DTO_Student
       $waf->halt("error:student:user_id_mismatch");
     }
 
+    // Only root users can change reg numbers
+    if(!User::is_root()) unset($fields['reg_number']);
     $extended_fields = Student::get_extended_fields();
     $user_fields = array();
 
