@@ -48,7 +48,7 @@
 
     // Theme options
     theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|,formatselect,",
-    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,link,unlink,cleanup,code,",
+    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,link,unlink,cleanup,code,|,fullscreen",
     theme_advanced_buttons3 : "",
     theme_advanced_buttons4 : "",
     theme_advanced_blockformats : "p,address,pre,h4",
