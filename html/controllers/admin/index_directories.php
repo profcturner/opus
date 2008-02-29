@@ -169,6 +169,10 @@
 
   /**
   * pick up the student into the session so that the context menu appears
+  *
+  * this is a little complex, since it is often handed the id from the student table
+  * as part of the framework, or the student_id (id from the user table) in most of
+  * the other workflow.
   */
   function edit_student(&$waf, &$user) 
   {
@@ -1074,7 +1078,7 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id", "add_placement");
+    add_object_do($waf, $user, "Placement", "section=directories&function=edit_student&student_id=$student_id", "add_placement");
   }
 
   function edit_placement(&$waf, &$user) 
@@ -1092,7 +1096,7 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id", "edit_placement");
+    edit_object_do($waf, $user, "Placement", "section=directories&function=edit_student&student_id=$student_id", "edit_placement");
   }
 
 
