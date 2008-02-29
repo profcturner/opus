@@ -159,7 +159,7 @@ class Timeline extends DTO_Timeline
     imagestring ($image, 3, 5, 5, "No Timeline Available", $tc);
 
     imagejpeg($image);
-    imeagedestroy($image);
+    imagedestroy($image);
   }
 
   function update_all_years()
