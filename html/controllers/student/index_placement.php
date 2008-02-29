@@ -334,14 +334,6 @@
 
   // Applications
 
-/*
-  function list_applications(&$opus, $user, $title)
-  {
-    $student_id = User::get_id();
-    manage_objects($opus, $user, "Application", array(), array(array('view', 'view_application')), "get_all", array("WHERE `student_id`=$student_id", "", $page, True), "student:placement:list_applications:list_applications");
-  }
-*/
-
 
   function list_applications(&$waf, $user, $title)
   {
@@ -368,7 +360,8 @@
     $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
     foreach($cv_list as $cv)
     {
-      if(!$cv->valid) $invalid++;
+      if($cv->valid) $valid++;
+      else $invalid++;
     }
     // Convert the valid ones to a pull down
     $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
@@ -392,6 +385,7 @@
     $waf->assign("eportfolio_list", $eportfolio_list);
     $waf->assign("cv_list", $cv_list);
     $waf->assign("cv_options", $cv_options);
+    $waf->assign("valid", $valid);
     $waf->assign("invalid", $invalid);
     $waf->display("main.tpl", "student:placement:list_applications:add_application", "admin/directories/edit_application.tpl");
   }

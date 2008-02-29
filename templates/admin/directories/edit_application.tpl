@@ -63,6 +63,10 @@
   </table>
 </div>
 
+{if $valid}
+{#valid_cvs#}
+{/if}
+
 {if $invalid}
 {#invalid_cvs#}
 <div id="table_list">

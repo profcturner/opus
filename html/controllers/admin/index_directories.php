@@ -815,7 +815,8 @@
     $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
     foreach($cv_list as $cv)
     {
-      if(!$cv->valid) $invalid++;
+      if($cv->valid) $valid++;
+      else $invalid++;
     }
     $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
 
@@ -837,6 +838,7 @@
     $waf->assign("eportfolio_list", $eportfolio_list);
     $waf->assign("cv_list", $cv_list);
     $waf->assign("cv_options", $cv_options);
+    $waf->assign("valid", $valid);
     $waf->assign("invalid", $invalid);
     $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
   }
