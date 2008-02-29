@@ -169,7 +169,7 @@ function load_user($username)
   {
     if(WA::request("function") == 'logout')
     {
-      logout();
+      logout($waf);
       exit;
     }
     else

@@ -340,7 +340,7 @@
     $student_id = User::get_id();
     $page = (int) WA::request("page", true);
 
-    manage_objects($waf, $user, "Application", array(array("edit student", "section=directories&function=edit_student&id=$student_id")), array(array('edit', 'edit_application')), "get_all", array("where student_id=$student_id", "", $page), "student:placement:list_applications:list_applications");
+    manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application')), "get_all", array("where student_id=$student_id", "", $page), "student:placement:list_applications:list_applications");
   }
 
   /**
@@ -530,7 +530,7 @@
 
   function add_note(&$waf, &$user) 
   {
-    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=placement&function=view_notes")), array(array("user_id",$user["user_id"])), "admin:directories:list_notes:add_note");
+    add_object($waf, $user, "Note", array("add", "placement", "add_note_do"), array(array("cancel","section=placement&function=view_notes")), array(array("user_id",$user["user_id"])), "admin:directories:list_notes:add_note");
   }
 
   function add_note_do(&$waf, &$user) 
