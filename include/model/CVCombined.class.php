@@ -338,6 +338,7 @@ class CVCombined
     header("Content-type: $cv_mime_type");
     header("Content-Disposition: inline; filename=\"$student_name.$cv_format\"");
     echo($cv);
+    require_once("model/Application.class.php");
     // Make sure this is tagged as seen if need be
     Application::ensure_seen($application_id);
   }
