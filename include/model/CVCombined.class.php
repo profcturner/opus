@@ -91,6 +91,7 @@ class CVCombined
       else
       {
         $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, &$problem);
+        $new_cv->problem = $problem;
       }
       $new_cv->approval = CVApproval::check_approval($student_id, $new_cv->cv_ident);
       array_push($final_cvs, $new_cv);
