@@ -84,7 +84,7 @@ alter table policy change column descript name tinytext not null;
 alter table policy change column policy_id id int unsigned not null auto_increment;
 alter table policy change column resources resource set('list','create','edit','delete');
 alter table policy change column course programme set('create','edit','archive','list');
-alter table policy change column log log set('general','security','debug','panic','waf_debug');
+alter table policy change column log log set('general','admin','cron','security','debug','panic','waf_debug','php_error');
 alter table policy add column faculty set('create','edit','archive','list') after log;
 
 -- vacancyactivity --

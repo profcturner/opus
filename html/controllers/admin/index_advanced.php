@@ -90,7 +90,7 @@
     $status_output = $status_possible;
     $status_selected = explode(",", $policy->status);
 
-    $log_possible = array('general','security','debug','panic','waf_debug');
+    $log_possible = array('general','admin','cron','security','debug','panic','waf_debug','php_errors');
     $log_output = $log_possible;
     $log_selected = explode(",", $policy->log);
 
