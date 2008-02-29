@@ -1,0 +1,17 @@
+<VirtualHost *>
+
+  ServerName opus.ulster.ac.uk
+  ServerAdmin root@fs1.ulster.ac.uk
+
+  DocumentRoot /usr/share/opus/html/
+
+  CustomLog /var/log/apache2/opus-access.log combined
+  ErrorLog /var/log/apache2/opus-error.log
+
+  <Directory "/usr/share/opus/html/">
+    Options Indexes FollowSymLinks
+    AllowOverride all
+    RedirectMatch ^/$ http://opus.ulster.ac.uk/opus/
+  </Directory>
+
+</VirtualHost>

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Colin Turner
+# Concept and code very much taken from exim with thanks
+# set this to some other value if you don't want the panic log to be watched
+
+OPUS_WATCH_PANICLOG="yes"
+OPUS_WATCH_PHPERRORS="yes"
+OPUS_EMAIL_RECIPIENT="root"
+
+if [ "$OPUS_WATCH_PANICLOG" = "yes" ]; then
+  if [ -s "/var/log/opus/panic.log" ]; then
+    if [ -x "/usr/local/lib/opus/nonzero_paniclog_hook" ]; then
+      /usr/local/lib/opus/nonzero_paniclog_hook
+    fi
+    printf "opus paniclog /var/log/opus/paniclog on %s has non-zero size" "$(hostname --fqdn)" | mail -s "opus paniclog has non-zero size" $OPUS_EMAIL_RECIPIENT
+  fi
+fi
+
+if [ "$OPUS_WATCH_PHPERRORS" = "yes" ]; then
+  if [ -s "/var/log/opus/php_errors.log" ]; then
+    if [ -x "/usr/local/lib/opus/nonzero_phperrors_hook" ]; then
+      /usr/local/lib/opus/nonzero_phperrors_hook
+    fi
+    printf "opus php error log /var/log/opus/php_errors.log on %s has non-zero size" "$(hostname --fqdn)" | mail -s "opus php errors has non-zero size" $OPUS_EMAIL_RECIPIENT
+  fi
+fi
+
