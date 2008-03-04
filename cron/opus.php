@@ -179,7 +179,7 @@ function stop()
   Service::stop();
 }
 
-function update_timelines()
+function update_timelines($waf, $parameters)
 {
   // Better ensure the configuration is up-to-date
   update_perl_config();
@@ -188,7 +188,17 @@ function update_timelines()
   Timeline::update_all_years();
 }
 
-function expire_vacancies()
+function update_timelines_for_year($waf, $parameters)
+{
+  // Better ensure the configuration is up-to-date
+  update_perl_config();
+
+  require_once("model/Timeline.class.php");
+  // Do a very comprehensive check
+  Timeline::update_year($parameters['year'], true);
+}
+
+function expire_vacancies($waf, $parameters)
 {
   require_once("model/Vacancy.class.php");
   Vacancy::close_expired_vacancies();
