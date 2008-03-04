@@ -321,7 +321,7 @@ sub getDates
 
   # Some is in the user table
   my $sth = $dbh->prepare('select real_name, reg_number from user where id=?');
-  $sth->bind_param(1, $user_id);
+  $sth->bind_param(1, $student_user_id);
   $sth->execute();
   my $real_name;
   my $reg_number;
