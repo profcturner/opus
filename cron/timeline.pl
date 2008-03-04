@@ -335,6 +335,7 @@ sub getDates
   # Now to get the actual application dates
   # Got the student number, find out the times they have made an application
   $sth = $dbh->prepare('select created from application where student_id=?');
+  $sth->bind_param(1, $student_user_id);
   $sth->execute();
   my $date = '';
   $sth->bind_columns(\$date);
