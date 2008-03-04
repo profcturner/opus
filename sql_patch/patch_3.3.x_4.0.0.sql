@@ -71,6 +71,7 @@ rename table notes to note;
 alter table note change column note_id id int unsigned not null auto_increment;
 alter table notelink add column id int unsigned not null auto_increment primary key;
 alter table notelink add column main enum('yes', 'no') after note_id;
+alter table notelink change column link_type link_type enum('Student','Staff','Admin','Company','Contact','Vacancy');
 
 -- timelines --
 

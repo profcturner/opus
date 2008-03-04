@@ -1711,7 +1711,12 @@
 
   function add_note(&$waf, &$user) 
   {
-    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:list_notes:add_note");
+    $object_type = WA::request("object_type");
+    $object_id = WA::request("object_id");
+
+    $mainlink = $object_type . "_" . $object_id;
+
+    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
   }
 
   function add_note_do(&$waf, &$user) 

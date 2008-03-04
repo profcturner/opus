@@ -49,7 +49,7 @@ class DTO_Note extends DTO
     $results_array = array();
     try
     {
-      $sql = $con->prepare("select note.*, notelink.main from note left join notelink on note.id = notelink.note_id where link_type = ? and link_id = ? order by notelink.main DESC, note.date");
+      $sql = $con->prepare("select note.*, notelink.main from note left join notelink on note.id = notelink.note_id where link_type = ? and link_id = ? order by notelink.main DESC, note.date DESC");
       $sql->execute(array($object_type, $object_id));
 
       while($results_row = $sql->fetch(PDO::FETCH_ASSOC))

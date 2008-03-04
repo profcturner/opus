@@ -22,6 +22,8 @@ class Notelink extends DTO_Notelink
   var $note_id = "";        // The id of the note
   var $main = "";           // Is this the primary link?
 
+  var $_human_link_name = ""; // Not in DB, a human representation of a name
+
   static $_field_defs = array(
   );
 
@@ -43,7 +45,33 @@ class Notelink extends DTO_Notelink
     $notelink = new Notelink;
     $notelink->id = $id;
     $notelink->_load_by_id();
+    $notelink->fill_human_link_name();
     return $notelink;
+  }
+
+  function fill_human_link_name()
+  {
+    switch($this->link_type)
+    {
+      case 'Company':
+        require_once("model/Company.class.php");
+        $this->_human_link_name = Company::get_name($this->link_id);
+        break;
+      case 'Vacancy':
+        require_once("model/Vacancy.class.php");
+        $this->_human_link_name = Vacancy::get_name($this->link_id);
+        break;
+      case 'Student':
+      case 'Staff':
+      case 'Admin':
+      case 'Contact':
+        require_once("model/User.class.php");
+        $this->_human_link_name = User::get_name($this->link_id);
+        break;
+      default:
+        $this->_human_link_name = "Unknown";
+        break;
+    }
   }
 
   function insert($fields) 

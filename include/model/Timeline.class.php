@@ -187,14 +187,14 @@ class Timeline extends DTO_Timeline
     {
       // echo " Looking at student $user_id\n";
       // For each student, get the user_id
-      $user_id = $row["user_id"];
+      $student_user_id = Student::get_user_id($student_id);
 
-      $last_updated = Timeline::get_lastupdated($student_id);
-      $timeline_id = Timeline::get_timeline_id($student_id); // Not so efficient
+      $last_updated = Timeline::get_lastupdated($student_user_id);
+      $timeline_id = Timeline::get_timeline_id($student_user_id); // Not so efficient
       if(!$last_updated)
       {
         // No image exists in the database, add one...
-        Timeline::add_image($student_id);
+        Timeline::add_image($student_user_id);
       }
       else
       {
@@ -202,14 +202,14 @@ class Timeline extends DTO_Timeline
         // Is it up-to-date?
         if($check_applications)
         {
-          $last_application = Student::get_last_application_time($student_id);
+          $last_application = Student::get_last_application_time($student_user_id);
           if($last_application > $last_updated) $valid = false;
         }
         if($last_updated == '0000-00-00 00:00:00') $valid = false;
         if(!$valid)
         {
           // No, so modify image
-          Timeline::modify_image($student_id, $timeline_id);
+          Timeline::modify_image($student_user_id, $timeline_id);
         }
       }
     }

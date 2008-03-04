@@ -50,7 +50,7 @@ class Note extends DTO_Note
   // This defines which variables are stored elsewhere
   static $_extended_fields = array
   (
-    'notelinks'
+    'notelinks', 'mainlink'
   );
 
   function load_by_id($id) 
@@ -61,21 +61,40 @@ class Note extends DTO_Note
     return $note;
   }
 
-  function load_by_lookup($lookup, $language_id = 1)
-  {
-    $note = new Note;
-    return($note->_load_by_lookup($lookup, $language_id));
-  }
-
   function insert($fields) 
   {
     $note = new Note;
     // Creation time is NOW.
     $fields['date'] = date("YmdHis");
+    // Author is always logged in user
+    $fields['author_id'] = User::get_id();
+
+    $mainlink = $fields['mainlink'];
     $notelinks = $fields['notelinks'];
+    unset($fields['mainlink']);
     unset($fields['notelinks']);
 
-    $note->_insert($fields);
+    $note_id = $note->_insert($fields);
+
+    // Add the main link
+    require_once("model/Notelink.class.php");
+    $bits = explode("_", $mainlink);
+    $link_fields['link_type'] = $bits[0];
+    $link_fields['link_id'] = $bits[1];
+    $link_fields['main'] = "yes";
+    $link_fields['note_id'] = $note_id;
+    Notelink::insert($link_fields);
+
+    // And secondary ones
+    foreach($notelinks as $notelink)
+    {
+      $bits = explode("_", $notelink);
+      $link_fields['link_type'] = $bits[0];
+      $link_fields['link_id'] = $bits[1];
+      $link_fields['main'] = "no";
+      $link_fields['note_id'] = $note_id;
+      Notelink::insert($link_fields);
+    }
   }
 
 
@@ -131,10 +150,14 @@ class Note extends DTO_Note
     return  $note->_get_fieldnames($include_id); 
   }
 
+  function get_extended_fields()
+  {
+    return(self::$_extended_fields);
+  }
 
   function request_field_values($include_id = false) 
   {
-    $fieldnames = Note::get_fields($include_id);
+    $fieldnames = array_merge(Note::get_fields($include_id), Note::get_extended_fields());
     $nvp_array = array();
 
     foreach ($fieldnames as $fn)
