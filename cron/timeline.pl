@@ -46,7 +46,7 @@ use constant MONTH_TEXT_SPACING => 30;  # This constant determines the minimum
                                         # overwriting another
 
 # Set variables that will be passed to the program
-my $student_id = $ARGV[0];
+my $student_user_id = $ARGV[0];
 
 my @dates = ();
 
@@ -306,13 +306,13 @@ sub getDates
   my $dbh = DBI->connect($opus::db_dsn, $opus::db_username, $opus::db_password, {PrintError=>0, RaiseError=>1});
 
   # Some information is in the student table
-  my $sth = $dbh->prepare('select user_id, placement_status, placement_year from student where id=?');
-  $sth->bind_param(1, $student_id);
+  my $sth = $dbh->prepare('select id, placement_status, placement_year from student where user_id=?');
+  $sth->bind_param(1, $student_user_id);
   $sth->execute();
-  my $user_id;
+  my $student_id;
   my $placement_status;
   my $placement_year;
-  $sth->bind_columns(\$user_id, \$placement_status, \$placement_year);
+  $sth->bind_columns(\$student_id, \$placement_status, \$placement_year);
   unless ($sth->fetch)
   {
       die "$0 could not obtain student data id $student_id\n";
