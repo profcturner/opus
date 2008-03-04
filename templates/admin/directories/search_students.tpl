@@ -6,7 +6,7 @@
 function toggleAll(checked)
 {
   for (i = 0; i < document.student_list.elements.length; i++) {
-    if (document.student_list.elements[i].name.indexOf('students') >= 0) 
+    if (document.student_list.elements[i].name.indexOf('users') >= 0) 
     {
       document.student_list.elements[i].checked = checked;
     }
@@ -22,7 +22,7 @@ function toggleAll(checked)
   <input type="hidden" name="redirect_url" value="section=directories&function=student_directory" />
   <div id="table_list">
   <a href="" onclick="toggleAll(true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-  <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+  <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Deselect all'; return true;">Deselect All</a><br />
     <table cellpadding="0" cellspacing="0" border="0">
       <tr>
         <th>Email</th>
@@ -59,7 +59,7 @@ function toggleAll(checked)
       {/section}
     </table>
   <a href="" onclick="toggleAll(true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-  <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+  <a href="" onclick="toggleAll(false); return false;" onmouseover="status='Deselect all'; return true;">Deselect All</a><br />
   {$student_count} {#matching_students#}
   </div>
   <h3>{#email_students#}</h3>
