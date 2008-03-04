@@ -119,7 +119,7 @@
     require_once("model/Contact.class.php");
     if(!Contact::is_auth_for_company(WA::request('id'))) $waf->die("error:contact:not_your_company");
 
-    edit_object_do($waf, $user, "Company", "section=directories&function=company_directory", "edit_company");
+    edit_object_do($waf, $user, "Company", "section=home&function=home", "edit_company");
   }
 
   function view_company(&$waf, &$user)
