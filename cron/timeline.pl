@@ -315,7 +315,7 @@ sub getDates
   $sth->bind_columns(\$student_id, \$placement_status, \$placement_year);
   unless ($sth->fetch)
   {
-      die "$0 could not obtain student data id $student_id\n";
+      die "$0 could not obtain student data id $student_user_id\n";
   }
   $sth->finish;
 
