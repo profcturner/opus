@@ -194,7 +194,7 @@ class Timeline extends DTO_Timeline
       if(!$last_updated)
       {
         // No image exists in the database, add one...
-        Timeline::add_image($student_user_id);
+        Timeline::add_image($student_id);
       }
       else
       {
@@ -209,7 +209,7 @@ class Timeline extends DTO_Timeline
         if(!$valid)
         {
           // No, so modify image
-          Timeline::modify_image($student_user_id, $timeline_id);
+          Timeline::modify_image($student_id, $timeline_id);
         }
       }
     }
