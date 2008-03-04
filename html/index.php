@@ -7,7 +7,7 @@
  * @package OPUS
  * @author Colin Turner <c.turner@ulster.ac.uk>
  * @author Gordon Crawford <g.crawford@ulster.ac.uk>
- * @copyright Copyright (c) 2007, University of Ulster
+ * @copyright Copyright (c) 2007-2008 Colin Turner, Gordon Crawford and the University of Ulster
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @uses opus.conf.php The main opus configuration file.
  * @uses WA.class.php
@@ -188,6 +188,8 @@ function load_user($username)
   // These actions are done only on initial login
   if(!$waf->user['opus']['user_id'])
   {
+    // change the session id and delete the old session (for fixation attacks) note commit later
+    session_regenerate_id(true);
     $opus_user = array();
     $opus_user['opus']['user_id']     = $user->id;
     $opus_user['opus']['salutation']  = $user->salutation;
@@ -214,6 +216,8 @@ function load_user($username)
     $_SESSION['waf']['user'] = $waf->user;
     require_once("model/Policy.class.php");
     Policy::load_default_policy();
+    // Session serious misbehaves on new id if reloaded too fast (as it will be)
+    session_commit();
   }
   $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
   User::update($fields);
