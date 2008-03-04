@@ -52,7 +52,7 @@ my @dates = ();
 
 # Firstly connect to the database and get all the information on a student
 # by calling the getDates subroutine
-my ($reg_number, $real_name, $placement_year, $placement_status, @dates)=getDates($student_id, @dates);
+my ($reg_number, $real_name, $placement_year, $placement_status, @dates)=getDates($student_user_id, @dates);
 
 # Now a list of all the dates on which the student applied for are in the
 # array @dates, and the variables $reg_number, $real_name,
@@ -298,7 +298,7 @@ sub createTimeline
 # student a blank string will be returned
 sub getDates
 {
-  my $student_id = shift @_;
+  my $student_user_id = shift @_;
   my @dates = @_;
   $dates[0] = \0;
 
