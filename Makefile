@@ -31,15 +31,34 @@ clean:
 # Make development documentation, you will need phpdoc installed
 devdoc:
 	mkdir -p ../phpdoc/
-	phpdoc -d html -d include -t ../phpdoc/ --title "OPUS Development Documentation"
+	phpdoc -d html,include -t ../phpdoc/ -dc OPUS --title "OPUS Development Documentation"
+
 
 #
-# Currently contains commands for making with Debian
+# Currently contains commands for making with Debian primarily, but you can
+# override these paths with the call the make install to override.
 #
-
 debetc=/etc
 debprefix=/usr
 debwww=/var/www
+
+install:
+	# Make main directory and copy in contents
+	mkdir -p ${debprefix}/share/opus
+	cp -rf html ${debprefix}/share/opus
+	cp -rf include ${debprefix}/share/opus
+	cp -rf cron ${debprefix}/share/opus
+	cp -rf templates ${debprefix}/share/opus
+	cp -rf configs ${debprefix}/share/opus
+	mkdir -p ${debprefix}/share/opus/templates_c
+	mkdir -p ${debprefix}/share/opus/templates_cache
+	chown -R www-data:root ${debprefix}/share/opus/
+	chmod -R o-rwx ${debprefix}/share/opus/
+	# Make documentation directory
+	mkdir -p ${debprefix}/share/doc/opus
+	cp -rf sql_patch ${debprefix}/share/doc/opus
+
+
 
 debs: deb-opus, deb-opus-doc
 
