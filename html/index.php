@@ -608,6 +608,7 @@ function add_object(&$waf, &$user, $object_name, $action_button, $action_links, 
  */
 function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
 {
+  global $config;
 
   $object = str_replace(" ", "_", ucwords($object_name));
 
@@ -626,8 +627,10 @@ function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
       $_SESSION['waf']['error_message'] = $response;
     }
 
-    header("location: ?$goto"); 
-  } else {
+    header("location: " . $config['opus']['url'] . "?$goto");
+  }
+  else
+  {
     if ($goto_error == "") $goto_error = "add_".strtolower($object);
     $waf->assign("nvp_array", $nvp_array);
     $waf->assign("validation_messages", $validation_messages);
@@ -695,7 +698,9 @@ function edit_object(&$waf, $user, $object_name, $action_button, $action_links, 
  *
  * 
  */
-function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='') {
+function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
+{
+  global $config;
 
   $object = str_replace(" ", "_", ucwords($object_name));
   require_once("model/".$object.".class.php");
@@ -706,8 +711,10 @@ function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='') {
 
   if (count($validation_messages) == 0) {
     $obj->update($nvp_array);
-    header("location: ?$goto");
-  } else {
+    header("location: " . $config['opus']['url'] . "?$goto");
+  }
+  else
+  {
         if ($goto_error == "") $goto_error = "edit_".strtolower($object);
     $waf->assign("nvp_array", $nvp_array);
     $waf->assign("validation_messages", $validation_messages);
@@ -775,6 +782,7 @@ function remove_object(&$waf, &$user, $object_name, $action_button, $action_link
  */
 function remove_object_do(&$waf, &$user, $object_name, $goto)
 {
+  global $config;
 
   $object = str_replace(" ", "_", ucwords($object_name));
   require_once("model/".$object.".class.php");
@@ -787,7 +795,7 @@ function remove_object_do(&$waf, &$user, $object_name, $goto)
   if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
   $waf->log("deleting $object_name $human_name");
 
-  header("location: ?$goto");
+  header("location: " . $config['opus']['url'] . "?$goto");
 }
 
 /**
