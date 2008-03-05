@@ -95,6 +95,12 @@ function help(&$waf, $parameters)
   $waf->display("cron.tpl", "cron:user_count", "cron/help.tpl");
 }
 
+function check_online_users(&$waf, $parameters)
+{
+  require_once("model/User.class.php");
+  User::check_online_users();
+}
+
 function user_count(&$waf, $parameters)
 {
   require_once("model/User.class.php");

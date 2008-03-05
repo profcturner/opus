@@ -364,6 +364,7 @@ alter table user add column firstname tinytext after user_type;
 alter table user add column salutation tinytext after user_type;
 alter table user add column email tinytext after lastname;
 alter table user add column login_time datetime;
+alter table user add column session_hash tinytext after `online`;
 
 -- students --
 

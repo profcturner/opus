@@ -216,6 +216,7 @@ function load_user($username)
     $_SESSION['waf']['user'] = $waf->user;
     require_once("model/Policy.class.php");
     Policy::load_default_policy();
+    $fields['session_hash'] = md5("sess_" . session_id());
     // Session serious misbehaves on new id if reloaded too fast (as it will be)
     session_commit();
   }

@@ -34,6 +34,7 @@ Class User extends DTO_User
   var $last_time = "";
   var $last_index = "";
   var $online = 'offline';
+  var $session_hash = '';
   var $email = '';
   var $user_type = "";
 
@@ -380,86 +381,61 @@ Class User extends DTO_User
     return(implode("", $password));
   }
 
-
-
-
-
-
-
-
-
-  function load_by_email($email) 
+  function check_online_users()
   {
-    $email = trim($email);	
+    global $waf;
+    // Who is supposedly online?
+    $marked_online = User::get_id_and_field('session_hash', "where online = 'online'");
+
+    // Hashes for active sessions
+    $session_hashes = User::get_active_session_hashes();
+
+    foreach($marked_online as $id => $session_hash)
+    {
+      if(!in_array($session_hash, $session_hashes))
+      {
+        $waf->log("User " . User::get_name($id) . "($id) has no active session, marking as offline");
+        $fields = array();
+        $fields['id'] = $id;
+        $fields['online'] = 'offline';
+        User::update($fields);
+      }
+      else
+      {
+        $waf->log("User " . User::get_name($id) . "($id) has active session");
+      }
+    }
   }
 
-	function get_all_students($order_by="ORDER BY lastname", $page=0) 
-   {
-      return User::get_all("type='student'", $order_by, $page);
-	}
-	
-	function count_types($date="2000-01-01") {
-	
-		$total = User::count();
-		$user_array = User::get_all("login_time > '$date'");
-		
-		$students = 0;
-		$academics = 0;
-		$demo_students = 0;
-		$guests = 0;
-		$others = 0;
-		$total = 0;
-		
-		foreach($user_array as $user) 
+  /**
+  * goes through the session directory making an array of hashes of the filenames
+  */
+  function get_active_session_hashes()
+  {
+    global $waf;
+
+    $waf->log("building hashes of active sessions", PEAR_LOG_DEBUG);
+
+    $session_hashes = array();
+    try
+    {
+      $dir = new DirectoryIterator(session_save_path());
+      foreach($dir as $file)
       {
-			if ($user->type == "guest") $guests++;
-			elseif ($user->type == "academic") $academics++;
-			elseif ($user->type == "demo_student") $demo_students++;
-			elseif ($user->type == "student") $students++;
-			else $others++;
-			$total++;
-		}
-		
-		return array($students,$academics,$demo_students,$guests,$others,$total);
-	
-	}
-	
-	function count_online() {
-	
-		DTO_User::update_status();
-      $total = User::count();
-      $user_array = User::get_all("online = 'yes'");
-      
-      $students = 0;
-      $academics = 0;
-      $demo_students = 0;
-      $guests = 0;
-      $others = 0;
-      $total = 0;
-      $total_online = 0;
-      
-      foreach($user_array as $user) 
-      {
-         if ($user->type == "guest") $guests++;
-         elseif ($user->type == "academic") $academics++;
-         elseif ($user->type == "demo_student") $demo_students++;
-         elseif ($user->type == "student") $students++;
-         else $others++;
-         $total_online++;
+        // Only interested in files
+        if(!$file->isfile()) continue;
+        $filename = $file->getFilename();
+        array_push($session_hashes, md5($filename));
       }
-      
-		return array($students,$academics,$demo_students,$guests,$others,$total_online, $total);
-	}
-	
-	function set_online($reg_number, $status) {
-	
-		$con = new DB_Connection_PDP();
-		$sql = "UPDATE user SET online='".$status."', session='".session_id()."' WHERE reg_number='".$reg_number."';";
-		$con->query($sql);
-		unset($con);
-	
-	}
-	
+      $waf->log(count($session_hashes) . " active sessions counted", PEAR_LOG_DEBUG);
+    }
+    catch (RuntimeException $e)
+    {
+      $waf->log("Error while reading session directory", PEAR_LOG_DEBUG);
+    }
+    return($session_hashes);
+  }
+
   function get_name($id)
   {
     $id = (int) $id; // Security
