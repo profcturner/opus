@@ -44,6 +44,7 @@ class Vacancy extends DTO_Vacancy
     'activity_types'=>array('type'=>'lookup', 'object'=>'activitytype', 'value'=>'name', 'title'=>'Activities', 'var'=>'activitytypes', 'multiple'=>true, 'mandatory'=>true),
     'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date', 'mandatory'=>true),
     'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job Finish Date'),
+    'salary'=>array('type'=>'text', 'size'=>10, 'maxsize'=>20),
     'address1'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 1'),
     'address2'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 2'),
     'address3'=>array('type'=>'text', 'size'=>40, 'maxsize'=>100, 'title'=>'Address 3'),
