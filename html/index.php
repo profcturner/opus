@@ -313,8 +313,10 @@ function nav_default()
  */
 
 function goto($section, $function) 
-{  
-  header("location:?section=$section&function=$function");
+{
+  global $config;
+
+  header("location:" . $config['opus']['url'] . "?section=$section&function=$function");
 }
 
 /**

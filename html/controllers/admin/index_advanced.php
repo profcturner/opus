@@ -188,7 +188,7 @@
     }
 
     Policy::update($fields);
-    header("location: ?section=advanced&function=manage_policies");
+    goto("advanced", "manage_policies");
   }
 
   function add_policy(&$waf, &$user) 
@@ -570,7 +570,7 @@
     require_once('model/ChannelAssociation.class.php');
 
     ChannelAssociation::move_up($channel_id, $id);
-    header("location: ?section=advanced&function=manage_channelassociations&id=$channel_id");
+    goto("advanced", "manage_channelassociations&id=$channel_id");
   }
 
   function move_channelassociation_down(&$waf, &$user)
@@ -584,7 +584,7 @@
     require_once('model/ChannelAssociation.class.php');
 
     ChannelAssociation::move_down($channel_id, $id);
-    header("location: ?section=advanced&function=manage_channelassociations&id=$channel_id");
+    goto("advanced", "manage_channelassociations&id=$channel_id");
   }
 
 
@@ -756,7 +756,7 @@
     require_once('model/AssessmentStructure.class.php');
 
     AssessmentStructure::move_up($assessment_id, $id);
-    header("location: ?section=advanced&function=manage_assessmentstructure&id=$assessment_id");
+    goto("advanced", "manage_assessmentstructure&id=$assessment_id");
   }
 
   function move_assessmentstructure_down(&$waf, &$user)
@@ -770,7 +770,7 @@
     require_once('model/AssessmentStructure.class.php');
 
     AssessmentStructure::move_down($assessment_id, $id);
-    header("location: ?section=advanced&function=manage_assessmentstructure&id=$assessment_id");
+    goto("advanced", "manage_assessmentstructure&id=$assessment_id");
   }
 
 

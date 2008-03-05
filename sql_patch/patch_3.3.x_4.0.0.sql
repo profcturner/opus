@@ -425,7 +425,7 @@ update user, admins set user.salutation = admins.title, user.firstname = admins.
 insert into admin (position, voice, fax, signature, policy_id, user_id) select position, voice, fax, signature, policy_id, user_id from admins;
 
 -- staff migration -- move some data into user --
-update user, staff set user.salutation = staff.title, user.firstname = staff.firstname, user.lastname = staff.surname, user.reg_number = concat('e', staff.staffno) where user.id=staff.user_id;
+update user, staff set user.salutation = staff.title, user.firstname = staff.firstname, user.lastname = staff.surname, user.reg_number = concat('e', staff.staffno) user.email = staff.email where user.id=staff.user_id;
 
 -- contact_id in these tables used to be the id from the contact, not user table --
 update companycontact, contacts set companycontact.contact_id = contacts.user_id where companycontact.contact_id = contacts.contact_id;
