@@ -38,6 +38,7 @@ class Placement extends DTO_Placement
     'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date'),
     'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date'),
     'salary'=>array('type'=>'text', 'size'=>6, 'maxsize'=>20),
+    'voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Placement Phone'),
     'email'=>array('type'=>'email', 'size'=>20, 'maxsize'=>100, 'title'=>'Placement Email'),
     'supervisor_title'=>array('type'=>'text', 'size'=>5, 'maxsize'=>100, 'title'=>"Supervisor Title<br /><small>Mr, Dr, etc.</small>", 'mandatory'=>true),
     'supervisor_firstname'=>array('type'=>'text', 'size'=>20, 'maxsize'=>100, 'title'=>"Supervisor First name"),
