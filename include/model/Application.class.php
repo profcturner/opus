@@ -228,7 +228,7 @@ class Application extends DTO_Application
         {
           // With this company?
           require_once("model/Placement.class.php");
-          if(Placement::count("where vacancy_id=$vacancy_id and student_id=" . $student->id))
+          if(Placement::count("where vacancy_id=$vacancy_id and student_id=" . $student->user_id))
           {
             array_push($placed, $application);
           }
