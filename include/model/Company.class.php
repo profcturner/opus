@@ -216,6 +216,7 @@ class Company extends DTO_Company
     $company = new Company;
     return  $company->_get_fieldnames($include_id); 
   }
+  
   function request_field_values($include_id = false) 
   {
     $fieldnames = Company::get_fields($include_id);
@@ -241,6 +242,20 @@ class Company extends DTO_Company
     else
     {
       echo $xml_parser->xml_output;
+    }
+  }
+
+  function complete_url($url)
+  {
+    if(empty($url)) return $url;
+
+    if(preg_match("/^((http)|(https)|(ftp)).*$/", $url))
+    {
+      return $url; // already fine
+    }
+    else
+    {
+      return("http://$url");
     }
   }
 
