@@ -235,7 +235,7 @@
        'jobstart'=>array('type'=>'text', 'size'=>20, 'title'=>'Start','header'=>true),
        'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
     );
-    $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'));
+    $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'), array('view vacancy', 'view_placement_vacancy'));
     require_once("model/Staff.class.php");
     $academic_tutors = Staff::lookup_tutors_by_school(); // this wasn't intended to be called directly, rework...
 
@@ -1116,6 +1116,15 @@
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id");
+  }
+
+  function view_placement_vacancy(&$waf)
+  {
+    $placement_id = (int) WA::request("id");
+
+    require_once("model/Placement.class.php");
+    $placement = Placement::load_by_id($placement_id);
+    goto('directories', 'view_vacancy&id=' . $placement->vacancy_id);
   }
 
 
