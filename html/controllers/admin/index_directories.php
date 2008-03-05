@@ -235,7 +235,7 @@
        'jobstart'=>array('type'=>'text', 'size'=>20, 'title'=>'Start','header'=>true),
        'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
     );
-    $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'), array('view vacancy', 'view_placement_vacancy'));
+    $placement_options = array(array('edit', 'edit_placement'), array('remove','remove_placement'), array('vacancy', 'view_placement_vacancy'));
     require_once("model/Staff.class.php");
     $academic_tutors = Staff::lookup_tutors_by_school(); // this wasn't intended to be called directly, rework...
 
