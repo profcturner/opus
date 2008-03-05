@@ -92,6 +92,8 @@ class Vacancy extends DTO_Vacancy
 
     require_once("model/VacancyActivity.class.php");
     $vacancy->activity_types = VacancyActivity::get_activity_ids_for_vacancy($vacancy->id);
+    $vacancy->www = Vacancy::complete_url($vacancy->www);
+
     return $vacancy;
   }
 
@@ -334,5 +336,18 @@ class Vacancy extends DTO_Vacancy
     }
   }
 
+  function complete_url($url)
+  {
+    if(empty($url)) return $url;
+
+    if(preg_match("/^((http)|(https)|(ftp)).*$/", $url))
+    {
+      return $url; // already fine
+    }
+    else
+    {
+      return("http://$url");
+    }
+  }
 }
 ?>
