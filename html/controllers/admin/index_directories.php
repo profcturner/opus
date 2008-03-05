@@ -1530,9 +1530,10 @@
 
   function edit_staff_do(&$waf, &$user) 
   {
+    $id = WA::request("id");
     if(!Policy::check_default_policy("staff", "edit")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Staff", "section=directories&function=manage_staff", "edit_staff");
+    edit_object_do($waf, $user, "Staff", "section=directories&function=edit_staff&id=$id&changes=true", "edit_staff");
   }
 
   function remove_staff(&$waf, &$user) 
