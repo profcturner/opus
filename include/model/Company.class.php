@@ -81,6 +81,7 @@ class Company extends DTO_Company
 
     require_once("model/CompanyActivity.class.php");
     $company->activity_types = CompanyActivity::get_activity_ids_for_company($company->id);
+    $company->www = Company::complete_url($company->www);
 
     return $company;
   }
