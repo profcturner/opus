@@ -62,6 +62,8 @@ class Log_Viewer
     }
     $logfile = $waf->log_dir . $logname . ".log";
 
+    $filesize = @filesize($logfile);
+
     $kilobyte = 1024;
     $megabyte = 1024*1024;
     $gigabyte = 1024*1024*1024;
