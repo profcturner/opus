@@ -32,7 +32,7 @@
 <h3>Assessment</h3>
 {include file="general/assessment/assessment_results.tpl"}
 
-<h3>testing</h3>
+<h3>Most Recent Placement</h3>
 
 <table>
   <tr>

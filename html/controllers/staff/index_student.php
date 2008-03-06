@@ -6,6 +6,7 @@
   * @package OPUS
   * @author Colin Turner <c.turner@ulster.ac.uk>
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+  * @todo this controller uses student_id for the student table, not from the user like others
   */
 
   // Ensure, before anything else happens, that we have the rights to this student
@@ -45,7 +46,7 @@
     {
       // Get the associated company and vacancy records
       require_once("model/Company.class.php");
-      $vacancy = Company::load_by_id($placements[0]->company_id);
+      $company = Company::load_by_id($placements[0]->company_id);
       require_once("model/Vacancy.class.php");
       $vacancy = Vacancy::load_by_id($placements[0]->vacancy_id);
 
