@@ -71,7 +71,7 @@ class Log_Viewer
     if((int) ($filesize / $gigabyte))
     {
       $filesize_text = ($filesize / $gigabyte);
-      return("$filesize_text GB");
+      return(sprintf("%.2f GB", $filesize_text));
     }
     if((int) ($filesize / $megabyte))
     {
