@@ -68,17 +68,17 @@ class Log_Viewer
     $megabyte = 1024*1024;
     $gigabyte = 1024*1024*1024;
 
-    if($filesize / $gigabyte)
+    if((int) ($filesize / $gigabyte))
     {
       $filesize_text = ($filesize / $gigabyte);
       return("$filesize_text GB");
     }
-    if($filesize / $megabyte)
+    if((int) ($filesize / $megabyte))
     {
       $filesize_text = ($filesize / $megabyte);
       return("$filesize_text MB");
     }
-    if($filesize / $kilobyte)
+    if((int) ($filesize / $kilobyte))
     {
       $filesize_text = ($filesize / $kilobyte);
       return("$filesize_text kB");
