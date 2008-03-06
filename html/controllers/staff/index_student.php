@@ -84,9 +84,9 @@
     $id = $_SESSION['student_id'];
 
     require_once("model/Student.class.php");
-    $regime_items = Student::get_assessment_regime($id, &$aggregate_total, &$percentage_total);
+    $regime_items = Student::get_assessment_regime(Student::get_user_id($id), &$aggregate_total, &$percentage_total);
     $waf->assign("regime_items", $regime_items);
-    $waf->assign("assessed_id", $id);
+    $waf->assign("assessed_id", Student::get_user_id($id));
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("percentage_total", $percentage_total);
     $waf->assign("assessment_section", "student");
@@ -140,7 +140,9 @@
 
   function list_notes(&$waf)
   {
-    goto("home", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);
+    require_once("model/Student.class.php");
+
+    goto("home", "list_notes&object_type=Student&object_id=" . Student::get_user_id($_SESSION['student_id']));
   }
 
 
