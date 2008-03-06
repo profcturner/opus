@@ -65,7 +65,7 @@
   */
   function change_password(&$waf)
   {
-    $waf->display("main.tpl", "staff:home:change_password:change_password", "general/home/change_password.tpl");
+    $waf->display("main.tpl", "staff:home:change_password:change_password", "admin/home/change_password.tpl");
   }
 
   /**
