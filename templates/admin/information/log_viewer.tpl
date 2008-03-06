@@ -50,4 +50,4 @@ Lines
 
 <span id="button"><input type="submit" value="Show" /></span>
 </form>
-log file is {$log_size} bytes
+log file is {$log_size}

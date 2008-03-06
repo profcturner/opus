@@ -61,7 +61,27 @@ class Log_Viewer
       $waf->halt("error:admin:illegal_log");
     }
     $logfile = $waf->log_dir . $logname . ".log";
-    return(@filesize($logfile));
+
+    $kilobyte = 1024;
+    $megabyte = 1024*1024;
+    $gigabyte = 1024*1024*1024;
+
+    if($filesize / $gigabyte)
+    {
+      $filesize_text = ($filesize / $gigabyte);
+      return("$filesize_text GB");
+    }
+    if($filesize / $megabyte)
+    {
+      $filesize_text = ($filesize / $megabyte);
+      return("$filesize_text MB");
+    }
+    if($filesize / $kilobyte)
+    {
+      $filesize_text = ($filesize / $kilobyte);
+      return("$filesize_text kB");
+    }
+    return("$filesize bytes");
   }
 
   function get_log_content($logname, $search, $lines)
