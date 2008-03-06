@@ -76,12 +76,12 @@ class Log_Viewer
     if((int) ($filesize / $megabyte))
     {
       $filesize_text = ($filesize / $megabyte);
-      return("$filesize_text MB");
+      return(sprintf("%.2f MB", $filesize_text));
     }
     if((int) ($filesize / $kilobyte))
     {
       $filesize_text = ($filesize / $kilobyte);
-      return("$filesize_text kB");
+      return(sprintf("%.2f kB", $filesize_text));
     }
     return("$filesize bytes");
   }
