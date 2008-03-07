@@ -173,6 +173,7 @@ class Resource extends DTO_Resource
     File_Upload::move_file($file_var_name, $config['opus']['paths']['resources'] . $resource_id);
     $waf->log("Resource [" . $fields['description'] . "] added");
 
+    return $resource_id;
   }
 
   /**

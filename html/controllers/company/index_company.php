@@ -20,7 +20,7 @@ function nav_company()
 {
   $nav = array
   (
-    "home"=>array
+    "Home"=>array
     (
       array("home", "home", "home", "home"),
       array("change password", "home", "change_password", "change_password")
@@ -31,7 +31,7 @@ function nav_company()
       array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
     ),*/
-    "information"=>array
+    "Information"=>array
     (
       array("resources", "information", "list_resources", "list_resources"),
       array("help directory", "information", "help_directory", "help_directory")
@@ -53,7 +53,7 @@ function nav_company()
   // If a company is being dealt with, add a dynamic menu
   if(isset($_SESSION['company_id']))
   {
-    $company_name = "company";
+    $company_name = "Company";
 
     require_once("model/Company.class.php");
     $company_name = Company::get_name($_SESSION['company_id']);

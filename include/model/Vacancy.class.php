@@ -122,6 +122,8 @@ class Vacancy extends DTO_Vacancy
 
       VacancyActivity::insert($fields);
     }
+
+    return($vacancy_id);
   }
 
   function update($fields) 

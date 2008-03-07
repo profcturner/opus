@@ -54,7 +54,7 @@ class School extends DTO_School
   function insert($fields) 
   {
     $school = new School;
-    $school->_insert($fields);
+    return($school->_insert($fields));
   }
   
   function update($fields) 

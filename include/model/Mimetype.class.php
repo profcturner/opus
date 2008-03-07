@@ -59,7 +59,7 @@ class Mimetype extends DTO_Mimetype
   function insert($fields) 
   {
     $mimetype = new Mimetype;
-    $mimetype->_insert($fields);
+    return($mimetype->_insert($fields));
   }
   
   function update($fields) 

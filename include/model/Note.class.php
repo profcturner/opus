@@ -95,6 +95,8 @@ class Note extends DTO_Note
       $link_fields['note_id'] = $note_id;
       Notelink::insert($link_fields);
     }
+
+    return($note_id);
   }
 
 

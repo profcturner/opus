@@ -55,7 +55,7 @@ class Channel extends DTO_Channel
   function insert($fields) 
   {
     $channel = new Channel;
-    $channel->_insert($fields);
+    return($channel->_insert($fields));
   }
   
   function update($fields) 

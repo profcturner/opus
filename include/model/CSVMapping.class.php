@@ -61,7 +61,7 @@ class CSVMapping extends DTO_CSVMapping
   function insert($fields) 
   {
     $csvmapping = new CSVMapping;
-    $csvmapping->_insert($fields);
+    return($csvmapping->_insert($fields));
   }
   
   function update($fields) 

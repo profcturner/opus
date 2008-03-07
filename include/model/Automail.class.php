@@ -64,7 +64,7 @@ class Automail extends DTO_Automail
   function insert($fields) 
   {
     $automail = new Automail;
-    $automail->_insert($fields);
+    return($automail->_insert($fields));
   }
   
   function update($fields) 

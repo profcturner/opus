@@ -113,6 +113,7 @@ class Company extends DTO_Company
 
       CompanyActivity::insert($fields);
     }
+    return($company_id);
   }
 
   function update($fields) 

@@ -101,11 +101,11 @@ class Placement extends DTO_Placement
     require_once('model/Student.class.php');
     // Record student as placed
     $student_fields['placement_status'] = 'Placed';
-    $student_fields['id'] = $fields['student_id'];
+    $student_fields['id'] = Student::get_id_from_user_id($fields['student_id']);
     Student::update($student_fields);
 
     // Inbound student_id is not from user table
-    $fields['student_id'] = Student::get_user_id($fields['student_id']);
+    $fields['student_id'] = $fields['student_id'];
     $fields['created'] = date("YmdHis");
     $placement = new Placement;
     $id = $placement->_insert($fields);

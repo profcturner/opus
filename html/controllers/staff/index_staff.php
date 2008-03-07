@@ -17,14 +17,14 @@ function nav_staff()
 {
   $basic_nav = array
   (
-    "home"=>array
+    "Home"=>array
     (
       array("home", "home", "home", "home"),
       array("my details", "home", "edit_staff", "edit_staff"),
       array("company activity", "home", "company_activity", "company_activity"),
       array("change password", "home", "change_password", "change_password")
     ),
-    "directories"=>array
+    "Directories"=>array
     (
       array("students","directories", "student_directory", "student_directory"), 
       array("companies", "directories", "company_directory", "company_directory"),
@@ -33,7 +33,7 @@ function nav_staff()
       array("contacts", "directories", "contact_directory", "contact_directory"),
       array("administrators", "directories", "manage_admins", "manage_admins")
     ), 
-    "information"=>array
+    "Information"=>array
     (
       array("resources", "information", "list_resources", "list_resources")
     )
@@ -44,7 +44,7 @@ function nav_staff()
   {
     require_once("model/Student.class.php");
     $student_name = Student::get_name($_SESSION['student_id']);
-    if(!strlen($student_name)) $student_name="student";
+    if(!strlen($student_name)) $student_name="Student";
 
     $student_nav = array
     (

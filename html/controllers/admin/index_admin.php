@@ -26,13 +26,13 @@ function nav_admin()
 {
   $basic_nav = array
   (
-    "home"=>array
+    "Home"=>array
     (
       array("home", "home", "home", "home"),
       array("company activity", "home", "company_activity", "company_activity"),
       array("change password", "home", "change_password", "change_password")
     ),
-    "directories"=>array
+    "Directories"=>array
     (
       array("students","directories", "student_directory", "student_directory"), 
       array("companies", "directories", "company_directory", "company_directory"),
@@ -42,7 +42,7 @@ function nav_admin()
       array("supervisors", "directories", "supervisor_directory", "supervisor_directory"),
       array("administrators", "directories", "manage_admins", "manage_admins")
     ), 
-    "information"=>array
+    "Information"=>array
     (
       array("resources", "information", "list_resources", "list_resources"),
       array("help directory", "information", "help_directory", "help_directory"), 
@@ -50,7 +50,7 @@ function nav_admin()
       array("system status", "information", "system_status", "system_status"), 
       array("view logs", "information", "view_logs", "view_logs") 
     ),
-    "configuration"=>array
+    "Configuration"=>array
     (
       array("manage resources", "configuration", "resources", "manage_resources"),
       array("organisation details", "configuration", "organisation_details", "organisation_details"),
@@ -59,7 +59,7 @@ function nav_admin()
       array("manage help", "configuration", "manage_help", "manage_help"),
       array("import data", "configuration", "import_data", "import_data"),
     ),
-    "advanced"=>array
+    "Advanced"=>array
     (
       array("assessments", "advanced", "manage_assessments", "manage_assessments"),
       array("activity types", "advanced", "manage_activitytypes", "manage_activitytypes"),
@@ -74,7 +74,7 @@ function nav_admin()
 
   $root_nav = array
   (
-    "superuser"=>array
+    "Superuser"=>array
     (
       array("services", "superuser", "edit_service", "edit_service"),
       array("Phone Home", "superuser", "edit_phonehome", "edit_phonehome"),
@@ -89,7 +89,7 @@ function nav_admin()
   {
     require_once("model/Student.class.php");
     $student_name = User::get_name($_SESSION['student_id']);
-    if(!strlen($student_name)) $student_name="student";
+    if(!strlen($student_name)) $student_name="Student";
 
     $student_nav = array
     (
@@ -111,11 +111,11 @@ function nav_admin()
   // If a company is being dealt with, add a dynamic menu
   if(isset($_SESSION['company_id']))
   {
-    $company_name = "company";
+    $company_name = "Company";
 
     require_once("model/Company.class.php");
     $company_name = Company::get_name($_SESSION['company_id']);
-    if(!strlen($company_name)) $company_name="company";
+    if(!strlen($company_name)) $company_name="Company";
 
     $company_nav = array
     (

@@ -619,14 +619,21 @@ function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
   $nvp_array = call_user_func(array($object, "request_field_values"), False);  // false mean no id is requested
   $validation_messages = $obj->_validate($nvp_array);
 
-  if (count($validation_messages) == 0) {
+  if (count($validation_messages) == 0)
+  {
     $response = $obj->insert($nvp_array);
 
     if (!is_numeric($response)) 
     {
       $_SESSION['waf']['error_message'] = $response;
     }
-
+    else
+    {
+      // Log insert if possible / sensible
+      $id = $response;
+      if(method_exists($obj, "get_name")) $human_name = "(" .$obj->get_name($id) .")";
+      $waf->log("new $object_name added $human_name");
+    }
     header("location: " . $config['opus']['url'] . "?$goto");
   }
   else
@@ -715,13 +722,13 @@ function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
   }
   else
   {
-        if ($goto_error == "") $goto_error = "edit_".strtolower($object);
+    if ($goto_error == "") $goto_error = "edit_".strtolower($object);
     $waf->assign("nvp_array", $nvp_array);
     $waf->assign("validation_messages", $validation_messages);
     $goto_error($waf, $user);
   }
 
-  // Log view
+  // Log edit
   $id = WA::request("id");
   if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
   $waf->log("changes made to $object_name $human_name");

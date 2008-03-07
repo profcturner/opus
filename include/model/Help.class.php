@@ -58,7 +58,7 @@ class Help extends DTO_Help
   function insert($fields) 
   {
     $help = new Help;
-    $help->_insert($fields);
+    return($help->_insert($fields));
   }
   
   function update($fields) 

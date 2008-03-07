@@ -55,7 +55,7 @@ class CVGroup extends DTO_CVGroup
     $fields['permissions'] = implode(",", $fields['permissions']);
 
     $cvgroup = new CVGroup;
-    $cvgroup->_insert($fields);
+    return($cvgroup->_insert($fields));
   }
 
   function update($fields) 

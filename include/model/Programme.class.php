@@ -73,7 +73,7 @@ class Programme extends DTO_Programme
   function insert($fields) 
   {
     $programme = new Programme;
-    $programme->_insert($fields);
+    return($programme->_insert($fields));
   }
   
   function update($fields) 

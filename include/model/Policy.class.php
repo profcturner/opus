@@ -76,7 +76,7 @@ class Policy extends DTO_Policy
   function insert($fields) 
   {
     $policy = new Policy;
-    $policy->_insert($fields);
+    return($policy->_insert($fields));
   }
 
   function update($fields) 

@@ -53,7 +53,7 @@ class Language extends DTO_Language
   function insert($fields) 
   {
     $language = new Language;
-    $language->_insert($fields);
+    return($language->_insert($fields));
   }
   
   function update($fields) 

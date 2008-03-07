@@ -52,15 +52,15 @@ class Faculty extends DTO_Faculty
   function insert($fields) 
   {
     $faculty = new Faculty;
-    $faculty->_insert($fields);
+    return($faculty->_insert($fields));
   }
-  
+
   function update($fields) 
   {
     $faculty = Faculty::load_by_id($fields[id]);
     $faculty->_update($fields);
   }
-  
+
   /**
   * Wasteful
   */
@@ -70,7 +70,7 @@ class Faculty extends DTO_Faculty
     $faculty->id = $id;
     return $faculty->_exists();
   }
-  
+
   /**
   * Wasteful
   */
