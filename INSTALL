@@ -4,6 +4,33 @@ These notes pertain to the the version 4.0 release, and are aimed at first
 time installs. If you are upgrading from 3.x, please read the UPGRADE file
 instead.
 
+0. What should I install on?
+----------------------------
+
+OPUS is entirely free and open source, and so is all the technology it
+requires. The result it you should be able to run it on virtually any OS
+on any underlying technology, be it, Windows, Linux, Unix, Mac OS, on
+32 bit or 64 bit computers.
+
+Having said all that, in *my* opinion, Windows is not the happiest
+environment on which to run a web application, or at least not the
+workstation flavours of Windows. You might find things initially more
+complex to use the application on Windows. You might consider testing
+an initial pilot on a Unix/Linux based machine.
+
+I would recommend Debian GNU/Linux (www.debian.org) which is available
+on over 11 architectures, well security supported and exceptionally stable
+for running servers. You can easily download and install Debian (free of
+charge) on a relatively old machine for testing. Running Debian will make
+the installation *incredibly* simple, since we package for it. We might
+in the future package for other operating systems. If you want to help
+document installation on other platforms, correct errors in this document
+etc. please contact us.
+
+Having said all that, I repeat, OPUS should work on any environment with
+PHP and MySQL.
+
+
 1. Decide whether to install the PDSystem
 -----------------------------------------
 
@@ -15,6 +42,7 @@ use for applications, but the PDSystem still offers a richer functionality
 should you need it. The PDSystem is also free software.
 
 Refer to http://foss.ulster.ac.uk/projects/pdsystem/ for more details.
+
 
 2. Are you running Debian?
 --------------------------
@@ -33,6 +61,7 @@ aptitude install opus
 and skip to step 12 (for the rest of you, seriously consider how easy your
 life could be with Debian, running on an old box).
 
+
 3. Obtain and unpack the UUWAF
 ------------------------------
 
@@ -48,6 +77,7 @@ Find UUWAF (which is free software) at
 
 http://foss.ulster.ac.uk/projects/uuwaf/
 
+
 4. Unpack the OPUS archive
 --------------------------
 
@@ -55,6 +85,7 @@ OK, so if you are reading this, you probably already followed this step.
 Unpack the files to somewhere sensible for your site architecture. For
 example, /usr/share/opus would be a good place for most flavours of Linux
 and maybe some unixes too.
+
 
 5. Ensure requirements are installed and working
 ------------------------------------------------
@@ -84,7 +115,10 @@ you might want to install it on Windows.
 
 The log viewer uses some standard unix commands, which should be available for
 Windows in cygwin, and also available from GNU software anyway. Skip this for
-now if you are unsure.
+now if you are unsure. If you need such programs, you can get them from
+
+http://unxutils.sourceforge.net/
+
 
 6. Get the Web Server to see the pages
 --------------------------------------
@@ -103,6 +137,7 @@ configuration file that can be dropped into your apache conf.d directory, but be
 sure to edit the file for paths. If you choose option a) or b) you will need to
 use another option, like an .htaccess file or equivalent to make your include
 path point at your smarty installation, and the include directory for opus.
+
 
 7. Make the OPUS database(s)
 ----------------------------
@@ -127,6 +162,7 @@ later).
   grant all on preferences.* to opus_user@localhost identified by 'password_here';
   source /usr/share/opus/sql_patch/preferences-schema.sql
 
+
 8. Set up Smarty templating paths
 ---------------------------------
 
@@ -143,11 +179,13 @@ For example
 
 Smarty will then be able to make files in here.
 
+
 9. Set up Log files
 -------------------
 
 Similarly, you need a directory somewhere which is writable by the web server
 to contain the OPUS log files. Create one of your choice.
+
 
 10. Create local configuration file(s)
 --------------------------------------
@@ -198,6 +236,7 @@ Go to the include directory and use config.php.dist as a template for
 config.php (cp config.php.dist config.php), and edit the file appropriately.
 It is reasonably well commented. Debian will do most of this automatically.
 
+
 11. Set up periodic jobs
 ------------------------
 
@@ -216,7 +255,14 @@ ln -s /usr/share/opus/cron/cron.php /usr/sbin/opus
 to allow you to be able to easily run "opus" at the command prompt from
 where ever you are. This tool is used to run the regular jobs.
 
-@todo add full details of setting up cron, and how it's done in windows
+Now copy the opus.cron.d file in the etc directory of the OPUS distribution
+to your own /etc/cron.d/ file if you have one. Otherwise see your system
+manual or email for help.
+
+For windows, you might want to look carefully at the Windows Scheduler
+
+http://www.iopus.com/guides/winscheduler.htm
+
 
 12. Try to login
 ----------------
@@ -229,12 +275,21 @@ OBVIOUSLY IF YOU CAN LOGIN YOU SHOULD CHANGE THIS PASSWORD!
 OPUS will be in a "closed" state to all users but superusers (like you).
 When you are happy, go to the Superuser -> service menu and open the site.
 
+
 13. Phone Home (optional)
 -------------------------
 
-@todo add brief explanation
+When you login for the first time, OPUS will ask you permission to "PhoneHome",
+to report the installation, and again, optionally report totally non
+confidential information about your OPUS install. You don't have to allow this
+but such information would really help us to understand our customer base,
+and we won't ever publish information identified against your institution.
 
 
+14. Open OPUS for business
+--------------------------
 
+Finally, go the service menu under SuperUser and open OPUS for business when
+you want to, it starts off closed to all but superusers like you.
 
 See http://foss.ulster.ac.uk/projects/opus/ for more information.

@@ -1,0 +1,74 @@
+OPUS UPGRADE NOTES
+
+The transition from version 3.x to 4.x is be far the most major yet, and
+we expect it to the most major change ever.
+
+As a result the upgrade is somewhat more tricky, so read this document
+carefully.
+
+1. Prepare a new location for version 4
+---------------------------------------
+
+Since the application is quite different, we recommend a new directory is
+used to unpack the files for version 4. You can call it opus4 for now
+and rename it later.
+
+Unpack the archive into this directory. You should put this somewhere
+sensible, such as /usr/share/opus on a *nix system.
+
+
+2. Close down your 3.x instance
+-------------------------------
+
+To avoid data being changed after backup, it's advisable to close OPUS 3.x.
+You can do this by editing config.php in the include directory so that
+
+// Closed for maintenance
+$conf['closed'] = TRUE;
+
+and save the file. OPUS 3.x will now be closed.
+
+
+3. Backup your database
+-----------------------
+
+This is *extremely* important. The transition is complex, so to ensure all
+data is intact in case of problems, ensure you do the backup. The command
+will be something like
+
+mysqldump -u root -p opus > opus_pre_4_backup.sql
+(type password for mysql root user)
+
+You can of course archive the sql file which should compress very well. e.g.
+
+gzip opus_pre_4_backup.sql
+
+4. Create a preferences database
+--------------------------------
+
+5. Upgrade the OPUS database
+----------------------------
+
+mysql <credentials> <new db> < sql_patch/<blah>.sql
+
+6. Copy all materials stored in the file system rather than the database
+------------------------------------------------------------------------
+
+OPUS : resources, logs
+
+scp -r <old location> <new location>
+
+Rename some opus logs for the new v4 system (access becomes general 
+for example).
+
+7. Check configuration files, that in particular links to other systems 
+are correct. (might be a DNS issue here for testing).
+
+
+7. Log in as root users, check that the above functionality is available.
+
+8. Redirect DNS to the new servers, optionally enable redirects on the 
+old servers
+
+9. After an appropriate time, decommission old servers.
+
