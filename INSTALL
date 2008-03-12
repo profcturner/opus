@@ -1,44 +1,66 @@
 OPUS INSTALLATION NOTES
 
-Here are rough installation notes for OPUS 3.3.0. Remember, one of the major
-things we are working on for version 4.0.0 is an easier installation route.
-Version 4 of both the PDSystem and OPUS are expected late in August or
-early in September.
-
-Sorry about that!
+These notes pertain to the the version 4.0 release, and are aimed at first
+time installs. If you are upgrading from 3.x, please read the UPGRADE file
+instead.
 
 1. Decide whether to install the PDSystem
+-----------------------------------------
 
 The PDSystem, designed to handle students' personal development, is the sister
 application for OPUS. In recent years OPUS has disabled some of its internal
 handling for things like CVs in favour of tight integration of the PDSystem.
-This will change for version 4.0.0. In the meantime, if you really want all
-the clever CV handling you are strongly advised to install the PDSystem also.
+Version 4.0 of OPUS introduces a simple facility to upload CVs that they may
+use for applications, but the PDSystem still offers a richer functionality
+should you need it. The PDSystem is also free software.
+
 Refer to http://foss.ulster.ac.uk/projects/pdsystem/ for more details.
 
 2. Are you running Debian?
+--------------------------
 
 If you are running Debian GNU/Linux this installation will be MUCH more
 automatic, including making the database for you. Add the following line
-to /etc/apt/sources.list
+to /etc/apt/sources.list with your favourite text editor.
 
   deb http://foss.ulster.ac.uk/debian stable main
 
-and then simply run aptitude install opus (or use your favourite package
-management tool). You can then shortcut most of this (but packaging is
-a bit experimental at the moment), except the pear dependencies perhaps.
+and then simply run
 
-3. Unpack the archive
+aptitude install opus
+
+(or use your favourite package management tool). Then answer the questions
+and skip to step 12 (for the rest of you, seriously consider how easy your
+life could be with Debian, running on an old box).
+
+3. Obtain and unpack the UUWAF
+------------------------------
+
+The 4.x generation of OPUS and PDSystem use a lightweight PHP framework to
+build upon, which improves consistency and configurability as well as
+providing full logging support.
+
+If you haven't already, download the framework and extract it somewhere
+sensible, a good choice on most Unix based systems would be /usr/share/uuwaf
+or similar.
+
+Find UUWAF (which is free software) at
+
+http://foss.ulster.ac.uk/projects/uuwaf/
+
+4. Unpack the OPUS archive
+--------------------------
 
 OK, so if you are reading this, you probably already followed this step.
 Unpack the files to somewhere sensible for your site architecture. For
 example, /usr/share/opus would be a good place for most flavours of Linux
 and maybe some unixes too.
 
-4. Ensure requirements are installed and working
+5. Ensure requirements are installed and working
+------------------------------------------------
 
-Do you have a functional web server, with PHP 5 running, as well as a
-MySQL server and so on? Have you downloaded Smarty from
+Do you have a functional web server, with PHP 5.1 or better running, as well as
+a MySQL server and so on? Have you downloaded Smarty from
 
 http://smarty.php.net and installed it somewhere?
 
@@ -47,11 +69,25 @@ document, but there are thousands of help documents on the internet for this.
 
 Install pear (http://pear.php.net) and
 
-  pear install DB
-  pear install Mail
-  pear install Mail_Mime
+  pear install Log
 
-5. Get the Web Server to see the pages
+Many operating systems package these requirements. On Windows you might want to
+consider running the WAMP package, found at http://www.wampserver.com/.
+
+There is no reason why OPUS should not run on any web server that can talk to
+PHP, but Apache might be simplest.
+
+Other tools are required for 100% of the functionality, but you could happily
+survive without them. For example, perl is required to generate timelines.
+Perl is free software and tends to be installed on all unix like platforms but
+you might want to install it on Windows.
+
+The log viewer uses some standard unix commands, which should be available for
+Windows in cygwin, and also available from GNU software anyway. Skip this for
+now if you are unsure.
+
+6. Get the Web Server to see the pages
+--------------------------------------
 
 You want your web server to see the "html" directory in the archive. Here are three
 ways to achieve this:
@@ -67,12 +103,9 @@ configuration file that can be dropped into your apache conf.d directory, but be
 sure to edit the file for paths. If you choose option a) or b) you will need to
 use another option, like an .htaccess file or equivalent to make your include
 path point at your smarty installation, and the include directory for opus.
-MAKE SURE YOUR INCLUDE_PATH DOES *NOT* INCLUDE THE CURRENT DIRECTORY (.), or if
-it does, ensure that this is included last on the include paths.
 
-Also, ensure that register_globals is ON. This will not be needed in version 4.
-
-6. Make the OPUS database
+7. Make the OPUS database(s)
+----------------------------
 
 Use MySQL to create a new database. Details vary but something like:
 
@@ -83,9 +116,19 @@ Use MySQL to create a new database. Details vary but something like:
   source /usr/share/opus/sql_patch/schema.sql
   source /usr/share/opus/sql_patch/data.sql
 
-  amend paths as needed.
+amend paths as needed. You should also create a database for the user
+preferences (these are stored separately to allow other applications to access
+them - you *can* configure OPUS to only use one database if you prefer, see
+later).
 
-7. Set up Smarty templating
+  mysql -u root -p
+  (type password for mysql root user)
+  create database preferences;
+  grant all on preferences.* to opus_user@localhost identified by 'password_here';
+  source /usr/share/opus/sql_patch/preferences-schema.sql
+
+8. Set up Smarty templating paths
+---------------------------------
 
 The templates directory are used by Smarty, you should create
 
@@ -100,24 +143,98 @@ For example
 
 Smarty will then be able to make files in here.
 
-8. Set up Log files
+9. Set up Log files
+-------------------
 
 Similarly, you need a directory somewhere which is writable by the web server
 to contain the OPUS log files. Create one of your choice.
 
-9. Edit the configuration file
+10. Create local configuration file(s)
+--------------------------------------
+
+You are almost there.
+
+Go to where your OPUS files are and go to the include directory. For example
+/usr/share/opus/include/
+
+You will see a file called opus.conf.php.
+
+Don't edit this file, you can, but it will potentially be overwritten by
+upgrades. Instead, create a file called local.conf.php which contains only
+those parts of the main configuration you want to change.
+
+For example, on *nix
+
+cp opus.conf.php local.conf.php
+
+then edit the file to contain the paths of all the things you have done above
+and the usernames and passwords and so on.
+
+Next, go the configs directory for opus, so probably /usr/share/opus/configs
+or similar. Again, you will see a file called lang_en.conf. This contains
+all the text prompts for the system. Once more, don't edit this file, since an
+upgrade will clobber it, but make a file called local_en.conf which contains
+anything you want to override. Fire this up in your favourite text editor.
+
+For example, you probably want this to begin with
+
+-=-
+
+institution="The University of Ulster"
+institution_short="UU"
+# This next logo is unusual, specify either a relative, or absolute URL
+institution_logo="http://fs1.ulster.ac.uk/library/images/uu.jpg"
+# You might need to scale this...
+institution_logo_width="250"
+
+-=-
+
+where you edit this material appropriately for your institution. You can add
+more overrides later should you want to. Only add the bits you want to
+change from the defaults.
+
 
 Go to the include directory and use config.php.dist as a template for
 config.php (cp config.php.dist config.php), and edit the file appropriately.
 It is reasonably well commented. Debian will do most of this automatically.
 
-10. Try to login
+11. Set up periodic jobs
+------------------------
 
-This should create an admin account with username "admin" and password "password".
+To work to the fullest extent, OPUS requires an ability to run regular
+unattended jobs. In UNIX/Linux this is best done with the cron framework.
+
+Again, if you are a debian user this should all already be installed.
+Other users have some more work to do
+
+In the cron directory of the OPUS framework there is a script cron.php
+which is designed to be run from the command line. If you like you could
+create a symlink to it, using something like
+
+ln -s /usr/share/opus/cron/cron.php /usr/sbin/opus
+
+to allow you to be able to easily run "opus" at the command prompt from
+where ever you are. This tool is used to run the regular jobs.
+
+@todo add full details of setting up cron, and how it's done in windows
+
+12. Try to login
+----------------
+
+This should create an admin account with username "admin" and password
+"password".
+
 OBVIOUSLY IF YOU CAN LOGIN YOU SHOULD CHANGE THIS PASSWORD!
 
-This is probably all for now. There should be more to do to enable certain periodic
-cleanup code, but that hasn't been released into the foss server yet and will be
-in 4.0.0 if not before.
+OPUS will be in a "closed" state to all users but superusers (like you).
+When you are happy, go to the Superuser -> service menu and open the site.
 
-See http://foss.ulster.ac.uk/projects/opus/
+13. Phone Home (optional)
+-------------------------
+
+@todo add brief explanation
+
+
+
+
+See http://foss.ulster.ac.uk/projects/opus/ for more information.
