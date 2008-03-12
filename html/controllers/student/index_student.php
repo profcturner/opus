@@ -16,7 +16,7 @@ function nav_student()
       ), 
       "career"=>array
       (
-        array("CV Store", "career", "cv store", "list_stored_cvs"),
+        array("CV Store", "career", "cv store", "manage_cvs"),
       ), 
       "placement"=>array
       (

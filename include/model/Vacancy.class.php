@@ -243,6 +243,10 @@ class Vacancy extends DTO_Vacancy
     foreach ($fieldnames as $fn) {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
     }
+    // Special handling
+    $closedateHour   = WA::request("closedateHour");
+    $closedateMinute = WA::request("closedateMinute");
+    $nvp_array['closedate'] .= " $closedateHour:$closedateMinute:00";
     return $nvp_array;
   }
 

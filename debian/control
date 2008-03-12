@@ -4,21 +4,21 @@ Priority: extra
 Maintainer: Colin Turner <c.turner@ulster.ac.uk>
 Build-Depends: debhelper (>= 5)
 Homepage: http://foss.ulster.ac.uk/projects/opus
-Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewcvs.cgi/?root=opus
+Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/?root=opus
 Vcs-Svn: svn co svn://foss.ulster.ac.uk/svn/opus/trunk
 Standards-Version: 3.7.2
 
 Package: opus
 Architecture: all
-Depends: apache2, php5, php5-cli, libapache2-mod-php5, php5-mysql, smarty, php-pear, debconf, mysql-client, mysql-server
-Recommends: php5-gd, libgd-gd2-perl
+Depends: uuwaf, debconf, dbconfig-common
+Recommends: php5-gd, php5-ldap, libgd-gd2-perl
 Description: On-line Placement University System
  OPUS is a comprehensive web based tool for
  managing all aspects of placement.
 
 Package: opus-doc
 Architecture: all
-Depends: 
+Depends:
 Description: On-line Placement University System
  OPUS is a comprehensive web based tool for
  managing all aspects of placement.

@@ -8,6 +8,10 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
+# source dbconfig-common stuff
+. /usr/share/dbconfig-common/dpkg/postrm.mysql 
+dbc_go opus $@
+
 # summary of how this script can be called:
 #        * <postrm> `remove'
 #        * <postrm> `purge'

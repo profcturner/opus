@@ -3,6 +3,10 @@
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
+# source dbconfig-common stuff
+. /usr/share/dbconfig-common/dpkg/postinst.mysql 
+dbc_go opus $@
+
 # summary of how this script can be called:
 #        * <postinst> `configure' <most-recently-configured-version>
 #        * <old-postinst> `abort-upgrade' <new version>
@@ -163,7 +167,7 @@ if [ "$1" = "configure" ]
 then
   chown www-data:root /var/log/opus
   chmod 770 /var/log/opus
-  if [ ! -e /var/log/opus/access.log ]; then touch /var/log/opus/access.log; chown www-data:root /var/log/opus/access.log; chmod 660 /var/log/opus/access.log; fi
+  if [ ! -e /var/log/opus/general.log ]; then touch /var/log/opus/general.log; chown www-data:root /var/log/opus/general.log; chmod 660 /var/log/opus/general.log; fi
   if [ ! -e /var/log/opus/cron.log ]; then touch /var/log/opus/cron.log; chown www-data:root /var/log/opus/cron.log; chmod 660 /var/log/opus/cron.log; fi
   if [ ! -e /var/log/opus/security.log ]; then touch /var/log/opus/security.log; chown www-data:root /var/log/opus/security.log; chmod 660 /var/log/opus/security.log; fi
   if [ ! -e /var/log/opus/admin.log ]; then touch /var/log/opus/admin.log; chown www-data:root /var/log/opus/admin.log; chmod 660 /var/log/opus/admin.log; fi
@@ -178,8 +182,8 @@ then
   apache2ctl restart
 fi
 
-
-# At some point, we might need to check for a few pear modules (mail ones)
+# Pear modules
+pear -q install log
 
 # Now for debhelper deep magic
 # dh_installdeb will replace this with shell code automatically
