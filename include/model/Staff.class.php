@@ -44,10 +44,20 @@ class Staff extends DTO_Staff
     'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
   );
 
+  static $_root_extra_defs = array
+  (
+    'reg_number'=>array('type'=>'text', size=>'20', 'mandatory'=>true)
+  );
+
   // This defines which ones
   static $_extended_fields = array
   (
     'salutation','firstname','lastname','email'
+  );
+
+  static $_root_extra_extended = array
+  (
+    'reg_number'
   );
 
   function __construct() 
@@ -57,12 +67,14 @@ class Staff extends DTO_Staff
 
   function get_field_defs()
   {
-    return self::$_field_defs;
+    if(!User::is_root()) return self::$_field_defs;
+    else return array_merge(self::$_field_defs, self::$_root_extra_defs);
   }
 
   function get_extended_fields()
   {
-    return self::$_extended_fields;
+    if(!User::is_root()) return self::$_extended_fields;
+    else return array_merge(self::$_extended_fields, self::$_root_extra_extended);
   }
 
   function load_by_id($id) 
@@ -103,6 +115,9 @@ class Staff extends DTO_Staff
         unset($fields[$key]);
       }
     }
+    // potential security issue
+    if(!User::is_root()) unset($user_fields['reg_number']);
+
     // Insert user data first, adding anything else we need
     $user_fields['user_type'] = 'staff';
     $user_id = User::insert($user_fields);
@@ -143,6 +158,7 @@ class Staff extends DTO_Staff
         unset($fields[$key]);
       }
     }
+    if(!User::is_root()) unset($user_fields['reg_number']);
     // Insert user data first, adding anything else we need
     $user_fields['id'] = $fields['user_id'];
     User::update($user_fields);
@@ -234,12 +250,27 @@ class Staff extends DTO_Staff
     $staff = Staff::get_all("where school_id=$school_id", "order by lastname");
     if(!count($staff)) $staff = array();
 
+    $results = array();
+
+    // Get the tutors from the school
     $objects = array();
     $objects[0] = "no tutor is selected";
     foreach($staff as $staff_member)
     {
       $objects[$staff_member->user_id] = $staff_member->real_name;
     }
+    $results['This School'] = $objects;
+
+    // Others
+    $staff = Staff::get_all("where school_id != $school_id", "order by lastname");
+    if(!count($staff)) $staff = array();
+    $objects = array();
+    foreach($staff as $staff_member)
+    {
+      $objects[$staff_member->user_id] = $staff_member->real_name;
+    }
+    $results['Other Schools'] = $objects;
+
     return($objects);
   }
 
