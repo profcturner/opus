@@ -89,7 +89,7 @@ yet. However there are some points to note.
   The benefit of this is that database access is now very normalised, and it is
   in fact probably possible (but untested and not recommended) to move OPUS to any
   database layer supported by PDO (including Oracle and Postgresql). It should
-  also close some issues (bug # 194).
+  also close some issues (bug #194).
 
 * The database is radically changed, and though a single SQL patch file can be
   used, a backup is strongly advised before hand. Use mysqldump.

@@ -30,6 +30,13 @@ OPUS is designed to
 and more.
 
 
+* What if we don't use competitive recruitment?
+-----------------------------------------------
+
+That's only one string of OPUS's bow. All the other features could still help
+you.
+
+
 * Who produces OPUS?
 --------------------
 
@@ -230,4 +237,41 @@ responsible users who exercise care should be OK.
 
 Most administrative users should be ordinary admin accounts which themselves
 have configurable levels of access and control.
+
+
+* Why does OPUS ask to phone home?
+----------------------------------
+
+Good manners. Many products routinely send information, behind your back, to
+their home base. We are asking politely, and will honour your refusal. However
+it would be very useful to know you have installed OPUS and what your system
+is like in very coarse detail.
+
+
+* Why should I allow OPUS to phone home?
+----------------------------------------
+
+Because
+
+  - we don't send confidential information;
+  - you can see the emails yourself if you want;
+  - you can even check the code;
+  - we won't attribute anything against your individual institution;
+  - we want to understand our customers better;
+  - we want to help explain to our management why we are using open source.
+
+In short, it supports our development of OPUS on our own, and your behalf.
+
+
+* Can OPUS produce a new report that has X, Y and Z?
+----------------------------------------------------
+
+Yes, the reports have a plugin architecture, but DO require good knowledge of
+PHP to create.
+
+see include/Model/reports/
+
+for more information. File a wish request in the tracker if you can't do it
+yourself, but if it is complex, and not of interest to us, it might require
+a consultancy agreement for us to write it for you.
 
