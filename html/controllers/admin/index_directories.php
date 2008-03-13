@@ -1559,7 +1559,7 @@
     remove_object_do($waf, $user, "Staff", "section=directories&function=manage_staff");
   }
 
-  function list_students_for_staff(&waf)
+  function list_students_for_staff(&$waf, &$user)
   {
     if(!Policy::check_default_policy("staff", "edit")) $waf->halt("error:policy:permissions");
 
