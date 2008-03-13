@@ -1,0 +1,233 @@
+OPUS FAQ
+
+Our support site can be found at
+
+http://foss.ulster.ac.uk/projects/opus/
+
+* What is OPUS?
+---------------
+
+OPUS is the On-line Placement University System, and is designed to facilitate
+placement operations for a school, college or university.
+
+It allows the following stakeholders access
+
+  - Placement administrators from the university;
+  - Students, who can apply for jobs with CVs, download resources, etc.;
+  - Companies and their HR staff, who can advertise jobs and recruit students;
+  - Workplace supervisors who can assess students and get information;
+  - Academic staff who visit students on placement.
+
+OPUS is designed to 
+
+  - do tedious repetitive tasks for you, to help free up your time for
+    the important tasks;
+  - provide a mechanism for storing placement related information for audit;
+  - give ownership to stakeholders;
+  - greatly speed up the placement process;
+  - provide speedy assessment functionality
+
+and more.
+
+
+* Who produces OPUS?
+--------------------
+
+OPUS originated in the School of Electrical and Mechanical Engineering in the
+University of Ulster as a solution to our problems. It is now a central
+product at Ulster, managed by our Career Development Centre.
+
+Ulster has a very large proportion of programmes of study with placement, so
+OPUS supports our own activity.
+
+
+* Can we get a Demo?
+--------------------
+
+We will soon be starting a sandbox server here at UU to allow you to play with
+the software. We also hope to produce live CDs. In the mean time there are just
+some screenshots, sorry, but you can install and play with it, free of charge
+(see below).
+
+
+* How much does OPUS, and its underlying technology cost?
+---------------------------------------------------------
+
+Nothing, OPUS, and its underlying technologies are free software. Not only are
+they free of charge, but they are free for you to
+
+  - run for any purpose;
+  - modify to your needs;
+  - distribute in original or modified form.
+
+You should read the terms of the LICENSE document for more details.
+
+
+* Ah, so the upgrades are what you are selling?
+-----------------------------------------------
+
+No, upgrades are free of charge.
+
+
+* What do I need to run OPUS?
+-----------------------------
+
+OPUS is a web application, so it needs a functional web server, running with
+
+  - PHP >= 5.1
+  - MySQL >= 4
+
+You also need to obtain some other software, again, all of which is free
+
+  - Smarty Templating System
+  - UUWAF (our framework)
+
+and you might need to obtain
+
+  - Perl
+  - Unix utilities (if you are not running Unix / Linux / Mac OS)
+
+for some none essential functionality.
+
+You can find more details in the INSTALL document. All of this software is
+available free of charge, and much of it is packaged nicely. Note that MySQL
+may not be free (as in money) for you to use if you are running a for-profit
+scheme, but it is cheap, and OPUS should run on alternative databases such
+as PostGreSQL but this is currently untested.
+
+
+* Can I run OPUS on Windows?
+----------------------------
+
+You can run OPUS on any environment for which the software above is available,
+which is almost every system and architecture since it is all open source.
+
+However, Windows, particularly its workstation versions is not, in my opinion,
+the ideal environment for a web application, and various steps in the
+installation might be harder for Windows. If you know what you are doing you
+will have no problems. See the INSTALL guide for more information.
+
+
+* So what OS should I use for OPUS?
+-----------------------------------
+
+OPUS will be easiest to install on a Unix / Linux server, and in particular
+it is trivial to install on Debian GNU/Linux since we package for that OS
+and use it ourselves. On that environment the installation is automated.
+
+Installing Linux based operating systems is now very simple, contrary to
+popular belief, and they are usually not resource hungry. As a consequence
+it is often easy to test an install on an old box. This will probably be much
+more simple than a Windows installation contrary to popular belief.
+
+
+* Does installation require much knowledge?
+-------------------------------------------
+
+On Debian, no. on other systems, a bit. See the INSTALL guide. Remember,
+installation is just a one time job, after that you won't need technical skill.
+If you are a placement practitioner, you might need help from IT staff to
+install OPUS, and as a matter of courtesy, you should inform them that you
+are running a web application on your machine.
+
+
+* Can we get help from you?
+---------------------------
+
+Yes, but please read the INSTALL guide carefully first, then file a support
+ticket at our site.
+
+We can only offer relatively simple help in what is our spare time, complex
+jobs can be undertaken under a consultancy agreement, including installation.
+
+
+* What other help is there?
+---------------------------
+
+Go to our support site, you will find
+
+  - support trackers for requesting help
+  - bug trackers for reporting problems
+  - mailing lists, including
+    * opus-announce (low volume, new releases, you should definitely subscribe if you install OPUS)
+    * opus-users (general discussion and issues)
+    * opus-developers (discussion for developers, but open to all)
+
+
+* I've found a better way to install on X
+------------------------------------------
+* I've fixed a problem with your INSTALL for X
+----------------------------------------------
+
+Great, send us the details on a support ticket (see above) and we'll
+incoporate your fixes.
+
+
+* Will OPUS speak to our student records system (SRS)
+-----------------------------------------------------
+
+OPUS and its sister products do not speak directly to a Student Records System.
+Instead they talk to a web service layer. Example code for this is available on
+our development site at
+
+http://foss.ulster.ac.uk/projects/wservices/
+
+and you can adapt it to talk to any student records system. If you want us to
+do this for you, it might be possible under a consultancy arrangement.
+
+Otherwise we will advise on how you should do it.
+
+
+* Does OPUS really *need* to talk to a student records system?
+--------------------------------------------------------------
+
+No. It will be easier to do certain things with integration however, like mass
+import of students. You can always use the product for now, and think about
+tighter integration later?
+
+
+* How else can we import lots of students?
+------------------------------------------
+
+OPUS can import students from CSV files you will probably be able to export
+easily from student records, you will need to teach it (once) the format of
+your files. Go to Superuser -> CSV Mappings for more detail, or ask us.
+
+
+* Can I configure OPUS to authenticate against LDAP / X / Y?
+------------------------------------------------------------
+
+Yes. OPUS has a system of authentication plugins that tell it how to
+authenticate a user. LDAP is one of the supplied examples. You will need very
+simple PHP scripts to do this, and can find details in
+
+include/auth.d/README
+
+Note that this is NOT required to run OPUS normally, only if you want to
+tailor it this way.
+
+
+* Can I change how OPUS looks?
+------------------------------
+
+Yes, you can change
+
+  - various text prompts (see INSTALL)
+  - larger text explanations (see Help Prompts in the application itself)
+  - the CSS files that define layout, colours and so on
+  - the raw templates used
+
+in ascending order of complexity.
+
+
+* Can normal staff run OPUS after installation?
+-----------------------------------------------
+
+Yes, that's the whole point. OPUS has a hiararchy of administrators that run
+the system. Starting off with superuser / root users who have total control.
+Ideally trained users should have that level of access, but generally
+responsible users who exercise care should be OK.
+
+Most administrative users should be ordinary admin accounts which themselves
+have configurable levels of access and control.
+

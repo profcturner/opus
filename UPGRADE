@@ -6,6 +6,13 @@ we expect it to the most major change ever.
 As a result the upgrade is somewhat more tricky, so read this document
 carefully.
 
+0. Running Debian?
+------------------
+
+If you are running Debian, just install the new version of OPUS using the
+command in the INSTALL guide, and you are done. You might want to backup
+your database first (see step 3).
+
 1. Prepare a new location for version 4
 ---------------------------------------
 
@@ -43,32 +50,69 @@ You can of course archive the sql file which should compress very well. e.g.
 
 gzip opus_pre_4_backup.sql
 
+
 4. Create a preferences database
 --------------------------------
+
+OPUS v4 uses a preference system to save various information. It is possible
+to use the existing database for this, but it's advisable to use a separate
+database since it will allow other UU software packages you might use in the
+future to share preferences.
+
+mysql -u root -p
+(type password for mysql root user)
+create database preferences;
+grant all on preferences.* to opus_user@localhost identified by 'password_here';
+source /usr/share/opus/sql_patch/preferences-schema.sql
+
+adjust pathnames, usernames and passwords as needed.
+
 
 5. Upgrade the OPUS database
 ----------------------------
 
-mysql <credentials> <new db> < sql_patch/<blah>.sql
+If you didn't backup the OPUS database again, I repeat, you really should do so
+(see step 3).
+
+From the command prompt run
+
+mysql -u root -p opus < sql_patch/patch_3.3.x_4.0.0.sql
+(type password for mysql root user)
+
+to patch the database to version 4.
+
 
 6. Copy all materials stored in the file system rather than the database
 ------------------------------------------------------------------------
 
-OPUS : resources, logs
+If you have made the OPUS tree in the a new directory, then copy over
+the various static files, such as resources and photos.
 
-scp -r <old location> <new location>
+e.g.
 
-Rename some opus logs for the new v4 system (access becomes general 
-for example).
+cp -R /usr/share/opus/photos /usr/share/opus4/
+cp -R /usr/share/opus/resources /usr/share/opus4/
 
-7. Check configuration files, that in particular links to other systems 
-are correct. (might be a DNS issue here for testing).
+You should also go to your log directory, probably /var/log/opus/
+
+and rename the access log to general
+
+mv /var/log/opus/access.log /var/log/opus/general.log
 
 
-7. Log in as root users, check that the above functionality is available.
+7. The Rest
+-----------
 
-8. Redirect DNS to the new servers, optionally enable redirects on the 
-old servers
+Now jump to step 8 of the install guide.
 
-9. After an appropriate time, decommission old servers.
+When you are finished, probably you want to move version 3 out of the way
 
+mv /usr/share/opus /usr/share/opus-old
+
+and move version 4 to the original place
+
+mv /usr/share/opus4 /usr/share/opus
+
+Let us know if you need help by filing a support ticket.
+
+http://foss.ulster.ac.uk/projects/opus/
