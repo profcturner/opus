@@ -1567,7 +1567,7 @@
     $id = WA::request("id");
     $staff = Staff::load_by_id($id);
 
-    manage_objects($waf, $user, "Student", array(array("back", "section=directories&function=edit_staff&id=" . $id)), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . $staff->user_id, "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
+    manage_objects($waf, $user, "Student", array(array("back", "section=directories&function=edit_staff&id=" . $id)), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . $staff->user_id, "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources"); //, "staff/home/home.tpl");
   }
 
   // Admin
