@@ -1534,7 +1534,7 @@
 
     $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
+    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id), array("list students", "section=directories&function=list_students_for_staff&id=" . $id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
   }
 
   function edit_staff_do(&$waf, &$user) 
@@ -1557,6 +1557,17 @@
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "Staff", "section=directories&function=manage_staff");
+  }
+
+  function list_students_for_staff(&waf)
+  {
+    if(!Policy::check_default_policy("staff", "edit")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Staff.class.php");
+    $id = WA::request("id");
+    $staff = Staff::load_by_id($id);
+
+    manage_objects($waf, $user, "Student", array(array("back", "section=directories&function=edit_staff&id=" . $id), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . $staff->user_id, "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
   }
 
   // Admin
