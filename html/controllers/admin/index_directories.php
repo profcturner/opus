@@ -1534,7 +1534,7 @@
 
     $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id), array("list students", "section=directories&function=list_students_for_staff&id=" . $id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
+    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id), array("list students / view home", "section=directories&function=list_students_for_staff&id=" . $id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
   }
 
   function edit_staff_do(&$waf, &$user) 
@@ -1566,6 +1566,8 @@
     require_once("model/Staff.class.php");
     $id = WA::request("id", true);
     $staff = Staff::load_by_id($id);
+
+    $page = (int) WA::request("page", true);
 
     $alt_headings = array
     (
