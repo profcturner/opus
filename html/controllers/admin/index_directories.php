@@ -1567,6 +1567,14 @@
     $id = WA::request("id", true);
     $staff = Staff::load_by_id($id);
 
+    $alt_headings = array
+    (
+      'real_name'=>array('type'=>'text', 'size'=>30, 'header'=>true, 'title'=>'Name'),
+      'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year', 'header'=>true),
+    );
+    $waf->assign("alt_headings", $alt_headings);
+    $waf->assign("staff", $staff);
+
     manage_objects($waf, $user, "Student", array(array("back", "section=directories&function=edit_staff&id=" . $id)), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . $staff->user_id, "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
   }
 

@@ -26,6 +26,10 @@
     );
     $waf->assign("alt_headings", $alt_headings);
 
+    require_once("model/Staff.class.php");
+    $staff = Staff::load_by_user_id(User::get_id());
+    $waf->assign("staff", $staff);
+
     manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
   }
 
