@@ -46,7 +46,7 @@ class Staff extends DTO_Staff
 
   static $_root_extra_defs = array
   (
-    'reg_number'=>array('type'=>'text', size=>'20', 'mandatory'=>true)
+    'reg_number'=>array('type'=>'text', size=>'20')
   );
 
   // This defines which ones
@@ -271,7 +271,7 @@ class Staff extends DTO_Staff
     }
     $results['Other Schools'] = $objects;
 
-    return($objects);
+    return($results);
   }
 
   function get_name($id)
