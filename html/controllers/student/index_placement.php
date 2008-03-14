@@ -236,7 +236,13 @@
 
   function view_company(&$waf, &$user)
   {
-    $company_id = (int) WA::request("company_id");
+    // Did we get id passed in?
+    $id = (int) WA::request("id");
+
+    // If so use that
+    if($id) $company_id = $id;
+    else $company_id = (int) WA::request("company_id");
+
     if($_SESSION['company_id'] != $company_id)
     {
       // If this company isn't the active one, make it so
