@@ -32,7 +32,10 @@ pages
       {elseif $def.type == "file"}
         <a href="">{$objects[object]->$fn}</a>
       {elseif $def.type == "lookup"}
+        {* Is there a link defined? If so, show it *}
+        {if $def.link}<a href="{$def.link.url}&{if $def.link.id}{$def.link.id}{else}id{/if}={$objects[object]->$key}">{/if}
         {eval assign=fn2 var="_$key"}{if $objects[object]->$fn2}{$objects[object]->$fn2}{else}{$objects[object]->$fn}{/if}
+        {if $def.link}</a>{/if}
       {elseif $def.type == "date"}
         {$objects[object]->$fn|date_format}
          {elseif $def.type == "link"}

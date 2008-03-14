@@ -9,26 +9,31 @@
   <input type="submit" value="Show">
 </form>
 
-<h3>Root (Super Admin) Users</h3>
-{include file="list.tpl" objects=$root_users headings=$admin_headings}
+{#quick_links#}
 
-<h3>Administrators</h3>
-{include file="list.tpl" objects=$admin_users headings=$admin_headings}
+{#root_users#}
+{include file="list.tpl" objects=$root_users headings=$root_headings actions=$admin_actions}
+{#back_to_top#}
 
-<h3>Students</h3>
-{include file="list.tpl" objects=$student_users}
+{#admin_users#}
+{include file="list.tpl" objects=$admin_users headings=$admin_headings actions=$admin_actions}
+{#back_to_top#}
 
-<h3>Company HR Contacts</h3>
-{include file="list.tpl" objects=$company_users}
+{#staff_users#}
+{include file="list.tpl" objects=$staff_users headings=$staff_headings actions=$staff_actions}
+{#back_to_top#}
 
-<h3>Workplace Supervisors</h3>
-{include file="list.tpl" objects=$supervisor_users}
+{#contact_users#}
+{include file="list.tpl" objects=$contact_users headings=$contact_headings actions=$contact_actions}
+{#back_to_top#}
 
-<h3>Academic Staff</h3>
-{include file="list.tpl" objects=$staff_users}
+{#supervisor_users#}
+{include file="list.tpl" objects=$supervisor_users headings=$supervisor_headings actions=$supervisor_actions}
+{#back_to_top#}
 
-
-
+{#student_users#}
+{include file="list.tpl" objects=$student_users headings=$student_headings actions=$student_actions}
+{#back_to_top#}
 
 <h3>User Totals</h3>
 

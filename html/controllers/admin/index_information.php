@@ -131,20 +131,32 @@
     // ignore limits on root users
     require_once("model/SystemStatus.class.php");
     $root_users  = SystemStatus::get_root_users();
+    $root_headings = SystemStatus::get_root_headings();
+
+    // Get ordinary Admins, headers and actions
     $admin_users = SystemStatus::get_admin_users($max_users);
     $admin_headings = SystemStatus::get_admin_headings();
+    $admin_actions = SystemStatus::get_admin_actions();
 
-    $company_users = User::get_all("where user_type='company'", "order by last_time desc", 0, $max_users);
-    $supervisor_users = User::get_all("where user_type='supervisor'", "order by last_time desc ", 0, $max_users);
-    $staff_users = User::get_all("where user_type='staff'", "order by last_time desc", 0, $max_users);
-    $student_users = User::get_all("where user_type='student'", "order by last_time desc", 0, $max_users);
+    // Get Students, headers and actions
+    $student_users = SystemStatus::get_student_users($max_users);
+    $student_headings = SystemStatus::get_student_headings();
+    $student_actions = SystemStatus::get_student_actions();
 
-    $headings = array(
-      'username'=>array('type'=>'text','size'=>30, 'header'=>true),
-      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Name'),
-      'online'=>array('type'=>'list','values'=>array('no','yes'), 'header'=>true),
-      'last_time'=>array('type'=>'text','size'=>30, 'header'=>true, 'title'=>'Last Access')
-    );
+    // Get Contacts, headers and actions
+    $contact_users = SystemStatus::get_contact_users($max_users);
+    $contact_headings = SystemStatus::get_contact_headings();
+    $contact_actions = SystemStatus::get_contact_actions();
+
+    // Get Contacts, headers and actions
+    $staff_users = SystemStatus::get_staff_users($max_users);
+    $staff_headings = SystemStatus::get_staff_headings();
+    $staff_actions = SystemStatus::get_staff_actions();
+
+    // Get Contacts, headers and actions
+    $supervisor_users = SystemStatus::get_supervisor_users($max_users);
+    $supervisor_headings = SystemStatus::get_supervisor_headings();
+    $supervisor_actions = SystemStatus::get_supervisor_actions();
 
     // Get user counts
     $root_count       = User::count("where user_type='root'");
@@ -156,14 +168,29 @@
     $total_count = $root_count + $admin_count + $company_count + $supervisor_count + $staff_count + $student_count;
 
     $waf->assign("headings", $headings);
-    $waf->assign("admin_headings", $admin_headings);
 
     $waf->assign("root_users", $root_users);
+    $waf->assign("root_headings", $root_headings);
     $waf->assign("admin_users", $admin_users);
-    $waf->assign("company_users", $company_users);
-    $waf->assign("supervisor_users", $supervisor_users);
-    $waf->assign("staff_users", $staff_users);
+    $waf->assign("admin_headings", $admin_headings);
+    $waf->assign("admin_actions", $admin_actions);
+
     $waf->assign("student_users", $student_users);
+    $waf->assign("student_headings", $student_headings);
+    $waf->assign("student_actions", $student_actions);
+
+    $waf->assign("contact_users", $contact_users);
+    $waf->assign("contact_headings", $contact_headings);
+    $waf->assign("contact_actions", $contact_actions);
+
+    $waf->assign("staff_users", $staff_users);
+    $waf->assign("staff_headings", $staff_headings);
+    $waf->assign("staff_actions", $staff_actions);
+
+    $waf->assign("supervisor_users", $supervisor_users);
+    $waf->assign("supervisor_headings", $supervisor_headings);
+    $waf->assign("supervisor_actions", $supervisor_actions);
+
     $waf->assign("root_count", $root_count);
     $waf->assign("admin_count", $admin_count);
     $waf->assign("company_count", $company_count);
