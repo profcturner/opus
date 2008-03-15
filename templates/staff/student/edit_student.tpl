@@ -26,8 +26,8 @@
 {/if}
 
 <h3>Photograph</h3>
-<a href="?section=directories&function=display_photo&username={$object->username}&fullsize=true" >
-<img width="200" border="0"  src="?section=directories&function=display_photo&username={$object->username}" /></a>
+<a href="?section=directories&function=display_photo&username={$student->username}&fullsize=true" >
+<img width="200" border="0"  src="?section=directories&function=display_photo&username={$student->username}" /></a>
 
 <h3>Assessment</h3>
 {include file="general/assessment/assessment_results.tpl"}

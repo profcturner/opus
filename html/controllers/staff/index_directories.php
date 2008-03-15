@@ -301,6 +301,9 @@
 
     require_once("model/Vacancy.class.php");
     $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options));
+    $waf->assign("activities", $activities);
+    $waf->assign("vacancy_types", $vacancy_types);
+
     $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "admin/directories/search_vacancies.tpl");
   }
 
