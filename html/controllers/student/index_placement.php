@@ -490,10 +490,6 @@
   */
   function list_notes(&$waf, &$user)
   {
-    /*
-    $object_type = WA::request("object_type");
-    $object_id = (int) WA::request("object_id");
-    */
     $object_type = "Student";
     $object_id = User::get_id();
 
@@ -502,6 +498,7 @@
     $notes = Note::get_all_by_links($object_type, $object_id);
     $waf->assign("notes", $notes);
     $waf->assign("action_links", $action_links);
+    $waf->assign("section", "placement");
 
     $waf->display("main.tpl", "admin:directories:list_notes:list_notes", "admin/directories/search_notes.tpl");
   }
@@ -536,12 +533,17 @@
 
   function add_note(&$waf, &$user) 
   {
-    add_object($waf, $user, "Note", array("add", "placement", "add_note_do"), array(array("cancel","section=placement&function=view_notes")), array(array("user_id",$user["user_id"])), "admin:directories:list_notes:add_note");
+    $object_type = WA::request("object_type");
+    $object_id = WA::request("object_id");
+
+    $mainlink = $object_type . "_" . $object_id;
+
+    add_object($waf, $user, "Note", array("add", "placement", "add_note_do"), array(array("cancel","section=placement&function=view_notes")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
   }
 
   function add_note_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Note", "section=placement&function=view_notes", "add_note");
+    add_object_do($waf, $user, "Note", "section=placement&function=list_notes", "add_note");
   }
 
 ?>

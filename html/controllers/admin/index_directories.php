@@ -1068,7 +1068,7 @@
     if(empty($nvp_array['salary'])) $nvp_array['salary'] = $vacancy->salary;
     $waf->assign("nvp_array", $nvp_array);
 
-    add_object($waf, $user, "Placement", array("add", "directories", "add_placement_do"), array(array("cancel","section=directories&function=edit_student&id=" . $application->student_id)), array(array("company_id", $application->company_id), array("vacancy_id", $application->vacancy_id), array("student_id", $application->student_id), array("application_id", $application_id)), "admin:directories:student_directory:add_placement");
+    add_object($waf, $user, "Placement", array("add", "directories", "add_placement_do"), array(array("cancel","section=directories&function=edit_student&student_id=" . $application->student_id)), array(array("company_id", $application->company_id), array("vacancy_id", $application->vacancy_id), array("student_id", $application->student_id), array("application_id", $application_id)), "admin:directories:student_directory:add_placement");
   }
 
   function add_placement_do(&$waf, &$user) 
@@ -1087,7 +1087,7 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
-    edit_object($waf, $user, "Placement", array("confirm", "directories", "edit_placement_do"), array(array("cancel","section=directories&function=edit_student&id=$student_id")), array(array("student_id", $student_id), array("user_id",$user["user_id"])), "admin:directories:placement_directory:edit_placement");
+    edit_object($waf, $user, "Placement", array("confirm", "directories", "edit_placement_do"), array(array("cancel","section=directories&function=edit_student&student_id=$student_id")), array(array("student_id", $student_id), array("user_id",$user["user_id"])), "admin:directories:placement_directory:edit_placement");
   }
 
   function edit_placement_do(&$waf, &$user) 
@@ -1747,12 +1747,18 @@
 
     $mainlink = $object_type . "_" . $object_id;
 
-    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
+    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
   }
 
   function add_note_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Note", "section=directories&function=manage_admins", "add_admin");
+    //print_r($_REQUEST); 
+    $mainlink = WA::request("mainlink");
+    $parts = explode("_", $mainlink);
+    $object_type = $parts[0];
+    $object_id = $parts[1];
+
+    add_object_do($waf, $user, "Note", "section=directories&function=list_notes&object_type=$object_type&object_id=$object_id", "add_admin");
   }
 
   // Company / Vacancy resources

@@ -15,7 +15,7 @@
     <td>{$notes[notes].summary|escape:"htmlall"}</td>
     <td>{$notes[notes].date|escape:"htmlall"}</td>
     <td>{$notes[notes].main|default:#unknown#|escape:"htmlall"}</td>
-    <td class="action"><a href="?section=directories&function=view_note&id={$notes[notes].id}">view</a></td>
+    <td class="action"><a href="?section={$section|default:"directories"}&function=view_note&id={$notes[notes].id}">view</a></td>
   </tr>
   {sectionelse}
   {#none_found#}

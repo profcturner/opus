@@ -86,14 +86,17 @@ class Note extends DTO_Note
     Notelink::insert($link_fields);
 
     // And secondary ones
-    foreach($notelinks as $notelink)
+    if(is_array($notelinks))
     {
-      $bits = explode("_", $notelink);
-      $link_fields['link_type'] = $bits[0];
-      $link_fields['link_id'] = $bits[1];
-      $link_fields['main'] = "no";
-      $link_fields['note_id'] = $note_id;
-      Notelink::insert($link_fields);
+      foreach($notelinks as $notelink)
+      {
+        $bits = explode("_", $notelink);
+        $link_fields['link_type'] = $bits[0];
+        $link_fields['link_id'] = $bits[1];
+        $link_fields['main'] = "no";
+        $link_fields['note_id'] = $note_id;
+        Notelink::insert($link_fields);
+      }
     }
 
     return($note_id);
