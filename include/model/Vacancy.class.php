@@ -110,6 +110,7 @@ class Vacancy extends DTO_Vacancy
     if(empty($activities)) $activities = array();
 
     $fields['created'] = date("YmdHis");
+    //print_r($fields); exit;
     $vacancy_id =  $vacancy->_insert($fields);
 
     require_once("model/VacancyActivity.class.php");
@@ -246,7 +247,11 @@ class Vacancy extends DTO_Vacancy
     // Special handling
     $closedateHour   = WA::request("closedateHour");
     $closedateMinute = WA::request("closedateMinute");
-    $nvp_array['closedate'] .= " $closedateHour:$closedateMinute:00";
+    // If the first part is empty, the hour and minute mean nothing
+    if(strlen($nvp_array['closedate']))
+    {
+      $nvp_array['closedate'] .= " $closedateHour:$closedateMinute:00";
+    }
     return $nvp_array;
   }
 

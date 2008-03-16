@@ -166,13 +166,13 @@
         {#iso_date#}
       {elseif $def.type == "isodatetime"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="YMD" day_value_format="%02d"}
         {/if}
         {#iso_date#}
         {html_select_time use_24_hours=true display_seconds=false prefix=$def.prefix minute_interval=$def.minute_interval|default:15 time=$def.timestamp}
-        {#twenty_four#}
+        {#twentyfour_hours#}
       {elseif $def.type == "image" || $def.type == "file"}
         <input type="file" name="{$header}"/><input type="hidden" name="MAX_FILE_SIZE" value="30000" />
       {elseif $def.type == "list"}
@@ -250,13 +250,13 @@
         {#iso_date#}
       {elseif $def.type == "isodatetime"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="YMD" day_value_format="%02d"}
         {/if}
         {#iso_date#}
-        {html_select_time use_24_hours=true display_seconds=false prefix=$def.prefix minute_interval=$def.minute_interval|default:15}
-        {#24_hours#}
+        {html_select_time use_24_hours=true display_seconds=false prefix=$def.prefix minute_interval=$def.minute_interval|default:15 time=$nvp_array[$header]|default:$object->$header|date_format:"%Y%m%d%H%M%S"}
+        {#twentyfour_hours#}
       {elseif $def.type == "flexidate"}
         <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}  {if $def.readonly}readonly{/if}/> {#flexidate#}
       {elseif $def.type == "image" || $def.type == "file"}
