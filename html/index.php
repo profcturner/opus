@@ -921,6 +921,32 @@ function validate_field()
   echo $obj->_validation_response($field, $value);
 }
 
+function download_artefact(&$waf)
+{
+  require_once('model/Artefact.class.php');
+  $hash = WA::request('hash');
+
+  try
+  {
+    $artefact = Artefact::load_by_hash($hash);
+
+    header("Content-type: ".$artefact->file_type."\n");
+    header("Content-Disposition: inline; filename=\"".$artefact->file_name."\"\n");
+    header("Content-Transfer-Encoding: binary\n"); 
+    header("Content-length: " . $artefact->file_size. "\n"); 
+    $fullpath = User::upload_path($artefact->user_id).$artefact->hash;
+
+    $fp = fopen($fullpath, "rb");
+    while (!feof($fp)) { echo fgets($fp, 65536); }
+    fclose($fp);
+  }
+  catch (Exception $e)
+  {
+    $waf->log("download_artefact($hash): $e");
+  }
+}
+
+
 function get_academic_year()
 {
   global $config;

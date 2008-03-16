@@ -140,7 +140,7 @@
 
     </div>
   <div id="main_content">
-    <div id="page_title">{#page_title#|default:$page_title|default:"No \$page_title"}
+    <div id="page_title">{#page_title#|default:$page_title|default:"No \$page_title"}{$page_title_extra|escape:"htmlall"}
     </div>
 {if $navigation_history}
     <div id="navigation_history">

@@ -538,6 +538,14 @@
 
     $mainlink = $object_type . "_" . $object_id;
 
+    // Get any inbound variables (validation fail), and make the default auth all
+    $nvp_array = $waf->get_template_vars("nvp_array");
+    if(!strlen($nvp_array['all']))
+    {
+      $nvp_array['auth'] = 'all';
+      $waf->assign("nvp_array", $nvp_array);
+    }
+
     add_object($waf, $user, "Note", array("add", "placement", "add_note_do"), array(array("cancel","section=placement&function=view_notes")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
   }
 

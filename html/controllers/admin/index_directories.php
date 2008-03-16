@@ -656,6 +656,7 @@
       }
       $waf->assign("nvp_array", $nvp_array);
     }
+    $waf->assign("page_title_extra", " (" . $company->name . ")");
 
     add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:add_vacancy");
   }
@@ -680,6 +681,9 @@
       $nvp_array[$field] = $vacancy->$field;
     }
     $waf->assign("nvp_array", $nvp_array);
+
+    require_once("model/Company.class.php");
+    $waf->assign("page_title_extra", " (" . Company::get_name($company_id) . ")");
 
     add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:clone_vacancy");
   }
@@ -1747,18 +1751,25 @@
 
     $mainlink = $object_type . "_" . $object_id;
 
-    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
+    // Get any inbound variables (validation fail), and make the default auth all
+    $nvp_array = $waf->get_template_vars("nvp_array");
+    if(!strlen($nvp_array['all']))
+    {
+      $nvp_array['auth'] = 'all';
+      $waf->assign("nvp_array", $nvp_array);
+    }
+
+    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }
 
   function add_note_do(&$waf, &$user) 
   {
-    //print_r($_REQUEST); 
     $mainlink = WA::request("mainlink");
     $parts = explode("_", $mainlink);
     $object_type = $parts[0];
     $object_id = $parts[1];
 
-    add_object_do($waf, $user, "Note", "section=directories&function=list_notes&object_type=$object_type&object_id=$object_id", "add_admin");
+    add_object_do($waf, $user, "Note", "section=directories&function=list_notes&object_type=$object_type&object_id=$object_id", "add_note");
   }
 
   // Company / Vacancy resources

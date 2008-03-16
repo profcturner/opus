@@ -70,7 +70,7 @@ class Lastitems
     }
     $nav = array
     (
-      "recent"=>$items
+      "Recent"=>$items
     );
     return($nav);
   }

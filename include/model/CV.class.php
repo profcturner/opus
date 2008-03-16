@@ -57,6 +57,7 @@ class CV extends DTO_CV
     $art = Artefact::load_by_id($cv->artefact_id);
     $cv->_hash = $art->hash;
     $cv->_file_name = $art->file_name;
+    $cv->_file_type = $art->file_type;
 
     return $cv;
   }

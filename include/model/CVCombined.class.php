@@ -63,12 +63,12 @@ class CVCombined
     foreach($internal_cvs as $cv)
     {
       $new_cv = new CVCombined;
-      $new_cv->cv_ident = "internal:hash:"; // need's the hash
+      $new_cv->cv_ident = "internal:hash:" . $cv->_hash;
       $new_cv->student_user_id = $student_id;
-      $new_cv->mime_type = "unknown"; // needs work
-      $new_cv->description = $internal_cv->description;
+      $new_cv->mime_type = $cv->_file_type;
+      $new_cv->description = $cv->title;
       $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, &$problem);
-      $new_cv->valid = $problem;
+      $new_cv->problem = $problem;
       $new_cv->approval = CVApproval::check_approval($student_id, $new_cv->cv_ident);
       array_push($final_cvs, $new_cv);
     }
@@ -107,6 +107,7 @@ class CVCombined
       $new_cv->mime_type = $archived['_file_type'];
       $new_cv->description = trim($archived['title'] . " " . $archived['description']) . " (PDSystem Store)";
       $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, &$problem);
+      $new_cv->problem = $problem;
       $new_cv->approval = CVApproval::check_approval($student_id, $new_cv->cv_ident);
       array_push($final_cvs, $new_cv);
     }
@@ -127,7 +128,7 @@ class CVCombined
       if(!$cv->valid) continue;
       $result[$cv->cv_ident] = $cv->description;
     }
-    if(!count($result)) array_push($result, array('none:none:none'=>'No available CVs'));
+    if(!count($result)) $result = array('none:none:none'=>'No available CVs');
     return($result);
   }
 
@@ -359,7 +360,9 @@ class CVCombined
     {
       case "internal":
         require_once("model/Artefact.class.php");
-        return(Artefact::load_by_hash($cv_ident_parts[2]));
+        $artefact = Artefact::load_by_hash($cv_ident_parts[2]);
+        $fullpath = User::upload_path($artefact->user_id).$artefact->hash;
+        return(@file_get_contents($fullpath));
         break;
       case "pdsystem":
         require_once("model/PDSystem.class.php");

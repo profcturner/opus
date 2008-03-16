@@ -1,12 +1,12 @@
 <?php
 
 /**
-* This object manipulates artefacts held in the arefact repository.
+* This object manipulates artefacts held in the artefact repository.
 * @package OPUS
 */
 require_once("dto/DTO_Artefact.class.php");
 /**
-* This object manipulates artefacts held in the arefact repository.
+* This object manipulates artefacts held in the artefact repository.
 * This was lifted from the PDSystem source code, at some stage a common copy will
 * probably be maintained.
 *

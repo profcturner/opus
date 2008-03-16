@@ -260,7 +260,7 @@
       {elseif $def.type == "flexidate"}
         <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}  {if $def.readonly}readonly{/if}/> {#flexidate#}
       {elseif $def.type == "image" || $def.type == "file"}
-      <a href="?section=main&function=download&hash={$object->_hash}">{$object->_file_name}</a>
+      <a href="?section=main&function=download_artefact&hash={$object->_hash}" target="_blank">{$object->_file_name}</a>
       <input type="hidden" name="artefact_id" value="{$object->artefact_id}"/>    
       {elseif $def.type == "list"}
         {if $def.multiple}

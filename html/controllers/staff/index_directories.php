@@ -1297,12 +1297,30 @@
 
   function add_note(&$waf, &$user) 
   {
-    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:list_notes:add_note");
+    $object_type = WA::request("object_type");
+    $object_id = WA::request("object_id");
+
+    $mainlink = $object_type . "_" . $object_id;
+
+    // Get any inbound variables (validation fail), and make the default auth all
+    $nvp_array = $waf->get_template_vars("nvp_array");
+    if(!strlen($nvp_array['all']))
+    {
+      $nvp_array['auth'] = 'all';
+      $waf->assign("nvp_array", $nvp_array);
+    }
+
+    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }
 
   function add_note_do(&$waf, &$user) 
   {
-    add_object_do($waf, $user, "Note", "section=directories&function=manage_admins", "add_admin");
+    $mainlink = WA::request("mainlink");
+    $parts = explode("_", $mainlink);
+    $object_type = $parts[0];
+    $object_id = $parts[1];
+
+    add_object_do($waf, $user, "Note", "section=directories&function=list_notes&object_type=$object_type&object_id=$object_id", "add_note");
   }
 
   function reset_password(&$waf)

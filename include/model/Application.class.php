@@ -81,7 +81,10 @@ class Application extends DTO_Application
     switch($cv_ident_parts[0])
     {
       case 'internal':
-        break; // todo
+        require_once("model/Artefact.class.php");
+        $artefact = Artefact::load_by_hash($cv_ident_parts[2]);
+        $fields['archive_mime_type'] = $artefact->file_type;
+        break;
       case 'pdsystem':
         switch($cv_ident_parts[1])
         {
@@ -119,7 +122,10 @@ class Application extends DTO_Application
     switch($cv_ident_parts[0])
     {
       case 'internal':
-        break; // todo
+        require_once("model/Artefact.class.php");
+        $artefact = Artefact::load_by_hash($cv_ident_parts[2]);
+        $fields['archive_mime_type'] = $artefact->file_type;
+        break;
       case 'pdsystem':
         switch($cv_ident_parts[1])
         {
