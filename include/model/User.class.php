@@ -65,7 +65,7 @@ Class User extends DTO_User
       return array(
         'real_name'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'header'=>true),
         'username'=>array('type'=>'text','size'=>15, 'header'=>true),
-        'last_login_time'=>array('type'=>'datetime','size'=>30, 'header'=>true)
+        'last_time'=>array('type'=>'datetime','size'=>30, 'header'=>true)
       );
     }
     if($field_def_param == 'application_add')
