@@ -94,7 +94,7 @@ and you might need to obtain
   - Perl
   - Unix utilities (if you are not running Unix / Linux / Mac OS)
 
-for some none essential functionality.
+for some non-essential functionality.
 
 You can find more details in the INSTALL document. All of this software is
 available free of charge, and much of it is packaged nicely. Note that MySQL
@@ -126,6 +126,47 @@ Installing Linux based operating systems is now very simple, contrary to
 popular belief, and they are usually not resource hungry. As a consequence
 it is often easy to test an install on an old box. This will probably be much
 more simple than a Windows installation contrary to popular belief.
+
+
+* OK, I'm interested, now what?
+-------------------------------
+
+It's strongly recommended you sign up to the opus-announce mailing list. This
+read-only list is used for announcements of new versions, and updates.
+
+You can find all the mailing lists for OPUS listed here
+
+https://foss.ulster.ac.uk/mail/?group=opus
+
+Just click on the link for subscription and fill in your details.
+
+
+* How do I get it?
+------------------
+
+There are several ways. (For Debian packages, see the instructions in the
+INSTALL guide.)
+
+You will almost certainly want to download an official release. You can obtain
+these from:
+
+  - The official downloads directory (easiest):
+    http://foss.ulster.ac.uk/downloads/opus/
+    generally, download the latest version number, but previous versions are
+    also available. You can check the signatures of archives if you wish to
+    and know how.
+
+  - The source control system (more advanced):
+    http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/tags/?root=opus
+    again, any tagged version can be used. You can use a version control client
+    or elect to "download tarball" in the directory you want.
+
+    You should generally NOT download from the trunk directory in source
+    control. This is the bleeding edge application and may be broken from one
+    minute to the next. Only download this if you want to develop code and are
+    not running a production system with it.
+
+Did we mention yet you should sign up to opus-announce?
 
 
 * Does installation require much knowledge?
@@ -168,6 +209,22 @@ Go to our support site, you will find
 
 Great, send us the details on a support ticket (see above) and we'll
 incoporate your fixes.
+
+
+* What sort of CV support is in OPUS?
+-------------------------------------
+
+OPUS used to, in its original version, build CVs for students from supplied
+information. Since then our local Personal Development System (pdsystem)
+was produced, which not only performs a better job of CV building, but
+provides lots of other relevant personal development help.
+
+OPUS 4.x reintroduces basic standalone CV functionality, allowing students to
+upload CVs which they can use to apply for vacancies. You can have much
+superior CV handling if you also install the PDSystem which is also free
+software. You can of course try this out at a later stage.
+
+See http://foss.ulster.ac.uk/projects/pdsystem/
 
 
 * Will OPUS speak to our student records system (SRS)
@@ -275,3 +332,34 @@ for more information. File a wish request in the tracker if you can't do it
 yourself, but if it is complex, and not of interest to us, it might require
 a consultancy agreement for us to write it for you.
 
+
+* Is there a manual?
+--------------------
+
+There is a work in progress only at this point in time. The application proves
+to be relatively intuitive however, and in particular, for non-admin users it
+is really quite straightforward.
+
+
+* Can we contribute work to OPUS?
+---------------------------------
+
+Absolutely, if you have code you'd like to contribute, then we will consider
+including it in the main codebase if:
+
+  - the code is licensed under the GPL as for the rest of OPUS;
+  - the code meets the coding guidelines set out.
+
+If you'd like to contribute anything else, artwork, documentation, please
+contact us. Lots of people can help.
+
+
+* How is the code ensured to be "authoritative"?
+------------------------------------------------
+
+While we are happy to accept code contributions, we will audit all code added
+by ourselves and others. We have automated systems in place to make this simple.
+
+Official releases will be in cryptographically signed archives, which allow you
+to be sure (should you choose to check) that the code was officially signed off
+by us, and not altered by any third party before you receive it.
