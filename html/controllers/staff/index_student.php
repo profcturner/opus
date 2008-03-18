@@ -9,6 +9,7 @@
   * @todo this controller uses student_id for the student table, not from the user like others
   */
 
+  require_once("model/Student.class.php");
   // Ensure, before anything else happens, that we have the rights to this student
   if(Student::get_academic_user_id(Student::get_user_id($_SESSION['student_id'])) != User::get_id())
   {
