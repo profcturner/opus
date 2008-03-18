@@ -35,12 +35,12 @@ class StudentImport
 
     require_once("model/WebServices.php");
     // Oddly, for 06/07 the webservice uses 07, not 06!
-    $programme_xml = WebServices::get_course($programme->srs_ident, substr($year+1, 2), $onlyyear);
+    $srs_students = WebServices::get_students_by_course($programme->srs_ident, substr($year-1, 2) . "/" . substr($year, 2), $onlyyear);
     $students = array();
     require_once("model/User.class.php");
-    foreach($programme_xml->students->student as $student)
+    foreach($srs_students as $student)
     {
-      $student_array = StudentImport::import_student_via_SRS($student->reg_number);
+      $student_array = StudentImport::import_student_via_SRS($student[1]);
 
       // Are they already present?
       if(User::count("where reg_number='" . $student->reg_number . "'"))
@@ -71,16 +71,16 @@ class StudentImport
   */
   function import_student_via_SRS($reg_number)
   {
-    $student_xml = WebServices::get_student($reg_number);
+    $student_srs = WebServices::get_student($reg_number);
 
     $student = array();
     $student['reg_number'] = $reg_number;
-    $student['person_title'] = $student_xml->person_title;
-    $student['first_name'] = $student_xml->first_name;
-    $student['last_name'] =  $student_xml->last_name;
-    $student['email_address'] = $student_xml->email_address;
-    $student['disability_code'] = $student_xml->disability_code;
-    $student['year_on_course'] = $student_xml->year_on_course;
+    $student['person_title'] = $student_srs['title'];
+    $student['first_name'] = $student_srs['first_name'];
+    $student['last_name'] =  $student_srs['last_name'];
+    $student['email_address'] = $student_srs['email_uni'];
+    $student['disability_code'] = $student_srs['disability_code'];
+    $student['year_on_course'] = $student_srs['year_on_course'];
     return($student);
   }
 

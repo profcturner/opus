@@ -87,12 +87,11 @@ class WebServices
   *
   * @param string $reg_number the registration number for the member of staff
   * @return an associative PHP array
-  *
-  * @todo WebServices 2.0 doesn't support this call in the same way, need to change that
   */
   function get_staff($staff_number)
   {
-    return(WebServices::get_data("get_staff_details", "reg_num=$staff_number"));
+    $staff_members = WebServices::get_data("find_staff", "reg_num=$staff_number");
+    return($staff_members[0]);
   }
 
   /**
@@ -101,12 +100,11 @@ class WebServices
   * @param string $reg_number the registration number for the student
   * @return an associative PHP array
   *
-  * @todo disability information is no longer returned by WebServices 2.0
   * @todo should student number not take preceding s in Ulster?
   */
   function get_student($student_number)
   {
-    return(WebServices::get_data("get_student_details", "reg_num=$student_number"));  
+    return(WebServices::get_data("get_student_details", "regnum=$student_number&full=0"));
   }
 
   /**
@@ -117,14 +115,13 @@ class WebServices
   * @param int $course_year the year for which students should be extracted
   *
   * @return a PHP array of students
-  * @todo not available in WebServices 2.0 at this time (broken)
   */
-  function get_course($course_code, $calendar_occurence, $course_year)
+  function get_students_by_course($course_code, $calendar_occurence, $course_year)
   {
     global $waf;
     $waf->log("webservice get_course called for programme $course_code, calendar_occurence $calendar_occurence, programme year $course_year", PEAR_LOG_DEBUG, 'debug');
 
-    return(WebServices::get_data("soap_course", "course_code=$course_code&calendar_occurrence=$calendar_occurence&course_year=$course_year"));  
+    return(WebServices::get_data("get_students_by_course_code_calendar_occurrence_course_year", "course_code=$course_code&calendar_occurrence=$calendar_occurence&year=$course_year"));
   }
 }
 ?>

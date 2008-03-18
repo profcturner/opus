@@ -118,6 +118,7 @@ class Company extends DTO_Company
 
   function update($fields) 
   {
+    unset($fields['created']);
     // Null some fields if empty
     $fields = Company::set_empty_to_null($fields);
 
@@ -152,7 +153,7 @@ class Company extends DTO_Company
     $set_to_null = array("created", "modified");
     foreach($set_to_null as $field)
     {
-      if(!strlen($fields[$field])) $fields[$field] = null;
+      if(isset($fields[$field]) && !strlen($fields[$field])) $fields[$field] = null;
     }
     return($fields);
   }

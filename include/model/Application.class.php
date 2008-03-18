@@ -154,7 +154,7 @@ class Application extends DTO_Application
     $set_to_null = array("created", "modified", "lastseen", "status_modified");
     foreach($set_to_null as $field)
     {
-      if(!strlen($fields[$field])) $fields[$field] = null;
+      if(isset($fields[$field]) && !strlen($fields[$field])) $fields[$field] = null;
     }
     return($fields);
   }

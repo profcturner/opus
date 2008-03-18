@@ -129,6 +129,7 @@ class Vacancy extends DTO_Vacancy
 
   function update($fields) 
   {
+    unset($fields['created']);
     // Null some fields if empty
     $fields = Vacancy::set_empty_to_null($fields);
 
@@ -161,7 +162,7 @@ class Vacancy extends DTO_Vacancy
     $set_to_null = array("closedate", "jobstart", "jobend");
     foreach($set_to_null as $field)
     {
-      if(!strlen($fields[$field])) $fields[$field] = null;
+      if(isset($fields[$field]) && !strlen($fields[$field])) $fields[$field] = null;
     }
     return($fields);
   }

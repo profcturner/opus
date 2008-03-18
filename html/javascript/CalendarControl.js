@@ -244,7 +244,6 @@ function CalendarControl() {
       }
       table = table + "</tr>";
     }
-    table = table + "<tr><td colspan='7'>Time (24hr) <input type='text' size='2' /> : <input type='text' size='2' /></td></tr>";
 
     table = table + "<tr class='header'><th colspan='7' style='padding: 3px;'><a href='javascript:clearCalendarControl();'>Clear</a> | <a href='javascript:hideCalendarControl();'>Close</a></td></tr>";
     table = table + "</table>";

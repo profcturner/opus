@@ -1233,6 +1233,11 @@
       $company_id = (int) WA::request("company_id", true);
       goto("directories", "manage_contacts&company_id=$company_id");
     }
+    elseif(!$company_id && $_SESSION['company_id'])
+    {
+      // Nothing inbound, but something in the session
+      $company_id = $_SESSION['company_id'];
+    }
     require_once("model/Contact.class.php");
 
     if($company_id)
@@ -1251,7 +1256,7 @@
       $waf->assign("headings", $headings);
       $waf->assign("objects", $objects);
       $waf->assign("actions", $actions);
-      $waf->assign("action_links", array(array("Add", "section=directories&function=add_contact")));
+      $waf->assign("action_links", array(array("add", "section=directories&function=add_contact")));
     }
     $waf->display("main.tpl", "admin:directories:contact_directory:company_contacts", "list.tpl");
   }
@@ -1262,14 +1267,16 @@
 
     $company_id = (int) WA::request("company_id", true);
 
-    add_object($waf, $user, "Contact", array("add", "directories", "add_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"]), array("company_id", $company_id)), "admin:directories:contacts:add_contact");
+    add_object($waf, $user, "Contact", array("add", "directories", "add_contact_do"), array(array("cancel","section=directories&function=manage_contacts&company_id=$company_id")), array(array("user_id",$user["user_id"]), array("company_id", $company_id)), "admin:directories:contact_directory:add_contact");
   }
 
   function add_contact_do(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("contact", "create")) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "add_contact");
+    $company_id = (int) WA::request("company_id", true);
+
+    add_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts&company_id=$company_id", "add_contact");
   }
 
   function edit_contact_status(&$waf)

@@ -63,9 +63,6 @@ function main()
   $waf->assign_by_ref("help_prompter", $help_prompter);
   $waf->assign_by_ref("benchmark", $benchmark);
 
-  // For debugging
-  $waf->assign_by_ref("aaa_cookies", $_COOKIE);
-
   // Tell UUWAF about our database connections - there are two
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
   $waf->register_data_connection('preferences', $config_sensitive['opus']['preference']['dsn'], $config_sensitive['opus']['preference']['username'], $config_sensitive['opus']['preference']['password']);

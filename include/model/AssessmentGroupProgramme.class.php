@@ -71,7 +71,7 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
     $set_to_null = array("startyear", "endyear");
     foreach($set_to_null as $field)
     {
-      if(!strlen($fields[$field])) $fields[$field] = null;
+      if(isset($fields[$field]) && !strlen($fields[$field])) $fields[$field] = null;
     }
     return($fields);
   }

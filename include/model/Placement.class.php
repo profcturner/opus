@@ -117,6 +117,7 @@ class Placement extends DTO_Placement
 
   function update($fields) 
   {
+    unset($fields['created']);
     // Some fields cannot be reset by non admins
     if(!User::is_admin())
     {
@@ -144,7 +145,7 @@ class Placement extends DTO_Placement
     $set_to_null = array("created", "modified", "jobstart");
     foreach($set_to_null as $field)
     {
-      if(!strlen($fields[$field])) $fields[$field] = null;
+      if(isset($field[$field]) && !strlen($fields[$field])) $fields[$field] = null;
     }
     return($fields);
   }
