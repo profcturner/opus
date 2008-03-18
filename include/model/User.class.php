@@ -84,6 +84,7 @@ Class User extends DTO_User
     return array(
       'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
       'user_type'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Type'),
+      'username'=>array('type'=>'text','size'=>30, 'header'=>true),
       'reg_number'=>array('type'=>'text', 'header'=>true),
       'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
       'email'=>array('type'=>'email','size'=>40, 'header'=>true)
