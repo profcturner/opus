@@ -164,7 +164,7 @@
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Student", "section=directories&function=manage_students", "add_student");
+    add_object_do($waf, $user, "Student", "section=directories&function=student_directory", "add_student");
   }
 
   /**
@@ -1586,6 +1586,90 @@
 
   // Admin
 
+  function admin_directory(&$waf)
+  {
+    if(!Policy::check_default_policy("admin", "list")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Preference.class.php");
+    $form_options = Preference::get_preference("admin_directory_form");
+
+    $waf->assign("form_options", $form_options);
+
+    $letters = array();
+    for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
+    $waf->assign("letters", $letters);
+    $waf->assign("schools", $schools);
+
+    $waf->display("main.tpl", "admin:directories:admin_directory:admin_directory", "admin/directories/admin_directory.tpl");
+  }
+
+  function search_admins(&$waf)
+  {
+    require_once("model/Admin.class.php");
+    $search = WA::request("search", true);
+
+    if(!preg_match('/^[A-Za-z0-9 ]*$/', $search)) $waf->halt("error:admin:invalid_search");
+
+    $form_options['search'] = $search;
+    require_once("model/Preference.class.php");
+    Preference::set_preference("admin_directory_form", $form_options);
+
+    if(empty($search))
+    {
+      $where_clause = "";
+    }
+    else
+    {
+      $where_clause = "where lastname like '%$search%' OR firstname like '%$search%'";
+    }
+
+    $objects = Admin::get_all($where_clause);
+    $headings = Admin::get_admin_list_headings();
+    if(User::is_root())
+    {
+      $actions = array(array('edit', 'edit_admin'), array('remove', 'remove_admin'), array('promote', 'promote_admin'));
+    }
+    else
+    {
+      $actions = array(array('edit', 'edit_admin'));
+    }
+
+    $waf->assign("actions", $actions);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:admin_directory:search_admin", "list.tpl");
+  }
+
+  function simple_search_admins(&$waf)
+  {
+    if(!Policy::check_default_policy("admin", "list")) $waf->halt("error:policy:permissions");
+
+    require_once("model/Admin.class.php");
+    $initial = WA::request("initial");
+
+    if(!preg_match('/^[A-Za-z0-9]$/', $initial)) $waf->halt("error:admins:invalid_search");
+
+    $where_clause = "where lastname like '$initial%'";
+
+    $objects = Admin::get_all($where_clause);
+    $headings = Admin::get_admin_list_headings();
+    if(User::is_root())
+    {
+      $actions = array(array('edit', 'edit_admin'), array('remove', 'remove_admin'), array('promote', 'promote_admin'));
+    }
+    else
+    {
+      $actions = array(array('edit', 'edit_admin'));
+    }
+
+    $waf->assign("actions", $actions);
+    $waf->assign("headings", $headings);
+    $waf->assign("objects", $objects);
+
+    $waf->display("main.tpl", "admin:directories:admin_directory:simple_search_admin", "list.tpl");
+  }
+
   function manage_admins(&$waf, $user, $title)
   {
     require_once("model/Admin.class.php");
@@ -1637,7 +1721,16 @@
     $changes = WA::request("changes");
     $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel","section=directories&function=manage_admins"), array("reset password", "section=directories&function=reset_password&user_id=" . $admin->user_id)), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin", "admin/directories/edit_admin.tpl");
+    if(User::is_root(Admin::get_user_id($id)))
+    {
+      $return_function = "section=directories&function=manage_super_admins";
+    }
+    else
+    {
+      $return_function = "section=directories&function=admin_directory";
+    }
+
+    edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel",$return_function), array("reset password", "section=directories&function=reset_password&user_id=" . $admin->user_id)), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin", "admin/directories/edit_admin.tpl");
   }
 
   function edit_admin_do(&$waf, &$user) 
@@ -1645,21 +1738,122 @@
     $id = WA::request("id");
     if(!User::is_root() && (Admin::get_user_id($id) != User::get_id()))  $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "edit_admin");
+    if(User::is_root(Admin::get_user_id($id)))
+    {
+      $return_function = "section=directories&function=manage_super_admins";
+    }
+    else
+    {
+      $return_function = "section=directories&function=admin_directory";
+    }
+
+    edit_object_do($waf, $user, "Admin", $return_function, "edit_admin");
   }
 
   function remove_admin(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object($waf, $user, "Admin", array("remove", "directories", "remove_admin_do"), array(array("cancel","section=directories&function=manage_admins")), "", "admin:directories:admin_directory:remove_admin");
+    remove_object($waf, $user, "Admin", array("remove", "directories", "remove_admin_do"), array(array("cancel","section=directories&function=admin_directory")), "", "admin:directories:admin_directory:remove_admin");
   }
 
   function remove_admin_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "Admin", "section=directories&function=manage_admins");
+    remove_object_do($waf, $user, "Admin", "section=directories&function=admin_directory");
+  }
+
+  function promote_admin(&$waf, &$user)
+  {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
+    $id = (int) WA::request("id");
+    require_once("model/Admin.class.php");
+    $admin = Admin::load_by_id($id);
+
+    $waf->assign("admin", $admin);
+    $waf->assign("action_links", array(array("cancel", "section=directories&function=manage_super_admins")));
+    $waf->display("main.tpl", "admin:directories:admin_directory:promote_admin", "admin/directories/promote_admin.tpl");
+  }
+
+  function promote_admin_do(&$waf, &$user)
+  {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
+    $id = (int) WA::request("id");
+    require_once("model/Admin.class.php");
+    $admin = Admin::load_by_id($id);
+
+    $waf->log("Admin user " . $admin->real_name . " upgraded to root user");
+    $waf->security_log("Admin user " . $admin->real_name . " upgraded to root user");
+
+    $fields = array();
+    $fields['id'] = $admin->user_id;
+    $fields['user_type'] = 'root';
+
+    User::update($fields);
+    goto("directories", "manage_super_admins");
+  }
+
+  function demote_admin(&$waf, &$user)
+  {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
+    $id = (int) WA::request("id");
+    require_once("model/Admin.class.php");
+    $admin = Admin::load_by_id($id);
+
+    $waf->assign("admin", $admin);
+    $waf->assign("action_links", array(array("cancel", "section=directories&function=manage_super_admins")));
+    $waf->display("main.tpl", "admin:directories:admin_directory:demote_admin", "admin/directories/demote_admin.tpl");
+  }
+
+
+  function demote_admin_do(&$waf, &$user)
+  {
+    if(!User::is_root()) $waf->halt("error:policy:permissions");
+
+    $id = (int) WA::request("id");
+    require_once("model/Admin.class.php");
+    $admin = Admin::load_by_id($id);
+
+    $waf->log("Root user " . $admin->real_name . " demoted to normal admin user");
+    $waf->security_log("Root user " . $admin->real_name . " demoted to normal admin user");
+
+    $fields = array();
+    $fields['id'] = $admin->user_id;
+    $fields['user_type'] = 'admin';
+
+    User::update($fields);
+    goto("directories", "manage_super_admins");
+  }
+
+
+  function manage_super_admins(&$waf, $user, $title)
+  {
+    require_once("model/Admin.class.php");
+
+    $page = WA::request("page", true);
+
+    $root_objects  = Admin::get_all("where user_type = 'root'", "order by lastname");
+    $root_headings = Admin::get_root_list_headings();
+
+    if(User::is_root())
+    {
+      $actions = array(array('edit', 'edit_admin'), array('demote', 'demote_admin'));
+    }
+    else
+    {
+      $actions = array(array('edit', 'edit_admin'));
+    }
+
+    $waf->assign("root_headings", $root_headings);
+    $waf->assign("root_objects", $root_objects);
+    $waf->assign("actions", $actions);
+    $waf->assign("object_num", $object_num);
+
+    $waf->display("main.tpl", "admin:directories:manage_super_admins:manage_super_admins", "admin/directories/list_super_admins.tpl");
   }
 
   // Assessments

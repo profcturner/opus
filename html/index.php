@@ -750,7 +750,7 @@ function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
  * @uses WA::request()
  * 
  */
-function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
+function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl',  $additional_fields='', $field_def_param=null)
 {
 
   $object = str_replace(" ", "_", ucwords($object_name));
@@ -759,13 +759,16 @@ function remove_object(&$waf, &$user, $object_name, $action_button, $action_link
 
   $instance = new $object;
 
+  $headings = $instance->get_field_defs($field_def_param);
+  if (is_array($additional_fields)) $headings = array_merge($headings, $additional_fields);
+
   $id = WA::request("id");
   $object = call_user_func_array(array($object, "load_by_id"), array($id, true));
   $waf->assign("action_button", $action_button);
   $waf->assign("action_links", $action_links);
   $waf->assign("mode", "remove");
   $waf->assign("object", $object);
-  $waf->assign("headings", $instance->get_field_defs());
+  $waf->assign("headings", $headings);
   $waf->assign("hidden_values", $hidden_values);
   $content = $waf->fetch($manage_tpl);
   $waf->assign("content", $content);

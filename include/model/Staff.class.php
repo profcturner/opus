@@ -242,10 +242,18 @@ class Staff extends DTO_Staff
   {
     $student_id = WA::request('id');
     require_once("model/Student.class.php");
-    $student = Student::load_by_id($student_id);
-    $programme_id = Student::get_programme_id($student->user_id);
-    require_once("model/Programme.class.php");
-    $school_id = Programme::get_school_id($programme_id);
+    if($id)
+    {
+      $student = Student::load_by_id($student_id);
+      $programme_id = Student::get_programme_id($student->user_id);
+      require_once("model/Programme.class.php");
+      $school_id = Programme::get_school_id($programme_id);
+    }
+    else
+    {
+      // Student doesn't exist yet!
+      $school_id = 0;
+    }
 
     $staff = Staff::get_all("where school_id=$school_id", "order by lastname");
     if(!count($staff)) $staff = array();

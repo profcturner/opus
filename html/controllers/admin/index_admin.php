@@ -40,7 +40,8 @@ function nav_admin()
       array("academic staff","directories","staff_directory","staff_directory"),
       array("contacts", "directories", "contact_directory", "contact_directory"),
       array("supervisors", "directories", "supervisor_directory", "supervisor_directory"),
-      array("administrators", "directories", "manage_admins", "manage_admins")
+      array("administrators", "directories", "admin_directory", "admin_directory"),
+      array("superusers", "directories", "manage_super_admins", "manage_super_admins")
     ), 
     "Information"=>array
     (
@@ -78,6 +79,7 @@ function nav_admin()
     (
       array("services", "superuser", "edit_service", "edit_service"),
       array("Phone Home", "superuser", "edit_phonehome", "edit_phonehome"),
+      array("User Directory", "superuser", "user_directory", "user_directory"),
       array("API users", "superuser", "manage_api_users", "manage_api_users"),
       array("CSV Mapping", "superuser", "manage_csvmappings", "manage_csvmappings"),
       array("PHP info", "superuser", "view_phpinfo", "view_phpinfo")

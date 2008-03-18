@@ -29,6 +29,22 @@ class Preference extends DTO_Preference
     parent::__construct($config['opus']['pref_ident']);
   }
 
+  function fetch_all($reg_number)
+  {
+    global $waf;
+    $application = $waf->title;
+    if(empty($reg_number))
+    {
+      $waf->log("preferences cannot be fetched for this user without a reg_number", PEAR_LOG_DEBUG, 'debug');
+      return array();
+    }
+
+    $pref = new Preference;
+
+    $preferences = $pref->_get_all("where application='$application' and reg_number='$reg_number'");
+    return($preferences);
+  }
+
   function load_all($reg_number)
   {
     global $waf;

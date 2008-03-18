@@ -60,24 +60,36 @@ Class User extends DTO_User
   function get_field_defs($field_def_param = "null")
   {
     $field_defs = self::$_field_defs;
-    if($field_def_param == 'application_manage')
+    if($field_def_param == 'application')
     {
       return array(
-        'firstname'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'header'=>true),
+        'real_name'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'header'=>true),
         'username'=>array('type'=>'text','size'=>15, 'header'=>true),
         'last_login_time'=>array('type'=>'datetime','size'=>30, 'header'=>true)
       );
     }
-    if($field_def_param == 'application_manage')
+    if($field_def_param == 'application_add')
     {
       return array(
-        'firstname'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'header'=>true),
-        'username'=>array('type'=>'text','size'=>15, 'header'=>true),
-        'last_login_time'=>array('type'=>'datetime','size'=>30, 'header'=>true)
+        'firstname'=>array('type'=>'text','size'=>30, 'title'=>'Name', 'mandatory'=>true),
+        'username'=>array('type'=>'text','size'=>15, 'mandatory'=>true),
+        'password'=>array('type'=>'password','size'=>30, 'mandatory'=>true)
       );
     }
     return $field_defs;
   }
+
+  function get_user_list_headings()
+  {
+    return array(
+      'real_name'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Name'),
+      'user_type'=>array('type'=>'text','size'=>30, 'header'=>true, title=>'Type'),
+      'reg_number'=>array('type'=>'text', 'header'=>true),
+      'last_time'=>array('type'=>'text', 'header'=>true, 'title'=>'Last Access'),
+      'email'=>array('type'=>'email','size'=>40, 'header'=>true)
+    );
+  }
+
 
   function load_by_id($id) 
   {
@@ -284,9 +296,9 @@ Class User extends DTO_User
   }
 
   function get_fields($include_id = false) 
-  {   
+  {
     $user = new User;
-    return  $user->get_fieldnames($include_id);
+    return  $user->_get_fieldnames($include_id);
   }
 
   function request_field_values($include_id = false) 
