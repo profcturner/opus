@@ -88,13 +88,10 @@ deb-opus: deb-opus-etc
 	cat sql_patch/data.sql >> ${debprefix}/share/dbconfig-common/data/opus/install/mysql
 	mkdir -p ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql
 	cp sql_patch/patch_3.3.x_4.0.0.sql ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql/4.0.0
-	# Symlink OPUS executable
-	chmod 700 ${debprefix}/share/opus/cron/opus.php
-
 
 deb-opus-etc: 
 	mkdir -p ${debetc}/opus
-#	cp include/config.php.debian ${debetc}/opus/config.php
+	cp include/opus-local.config.php.debian ${debetc}/opus/opus-local.config.php
 	cp etc/apache2.conf ${debetc}/opus/apache2.conf
 
 

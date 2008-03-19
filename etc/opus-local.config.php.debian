@@ -1,0 +1,45 @@
+<?php
+
+/**
+* Local Configuration for OPUS, using a Debian system
+*
+* Much of the configuration for OPUS is automatic using Debian. In particular the
+* database for OPUS itself, and its preference system are by default automatically
+* configured. For an easy life therefore, use Debian's tools to edit that material:
+*
+* dpkg-reconfigure opus
+*
+* will regenerate debconf_config.php, and opus-database.php after questioning you,
+* while
+*
+* dpkg-reconfigure uuwaf-preferences
+*
+* will do the same for that config file. Don't change them directly since changes
+* may not be honoured. Likewise, don't change opus.config.php in the distribution.
+*
+* @package OPUS
+* @author Colin Turner <c.turner@ulster.ac.uk>
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
+*/
+
+// Read the Debian installed opus preferences
+require_once("/etc/opus/opus-database.php");
+// And translate it to OPUS 4 format
+$config_sensitive['opus']['database']['dsn'] = "$dbtype:host=$dbserver;dbname=$dbname";
+$config_sensitive['opus']['database']['username'] = "$dbuser";
+$config_sensitive['opus']['database']['password'] = "$dbpass";
+
+// Read the Debian installed uuwaf preferences
+require_once("/etc/uuwaf-preferences/uuwaf-preferences.php");
+// And translate it to OPUS 4 format
+$config['opus']['pref_ident'] = 'preferences';
+$config_sensitive['opus']['preference']['dsn'] = "$dbtype:host=$dbserver;dbname=$dbname";
+$config_sensitive['opus']['preference']['username'] = "$dbuser";
+$config_sensitive['opus']['preference']['password'] = "$dbpass";
+
+// Read material from debconf
+require_once("/etc/opus/debconf_config.php");
+
+// If you want to override aspects of configuration from opus.config.php do it here:
+
+?>

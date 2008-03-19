@@ -79,13 +79,20 @@ then
   chmod 770 /usr/share/opus/resources
   chmod 770 /var/lib/opus/templates_*
   chmod 770 /var/lib/opus/sessions
+  
+  # set permissions on opus executable, and symlink it to "opus"
+  chmod 700 /usr/share/opus/cron/opus.php
+  if [ ! -e /usr/sbin/opus ]
+  then
+    ln -s /usr/share/opus/cron/opus.php /usr/sbin/opus
+  fi
 fi
 
 # Install a symlink from the config file to the /etc directory
 if [ "$1" = "configure" ] && [ ! -e /usr/share/opus/include/local.conf.php ]
 then
   echo "Installing initial OPUS configuration..."
-  ln -s /etc/opus/config.php /usr/share/opus/include/local.conf.php
+  ln -s /etc/opus/opus-local.config.php /usr/share/opus/include/local.conf.php
 fi
 
 # Ensure log file stubs are present, have the right ownership and permissions
