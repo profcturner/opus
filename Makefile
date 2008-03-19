@@ -66,13 +66,15 @@ debs: deb-opus, deb-opus-doc
 deb-opus: deb-opus-etc
 	# Make main directory and copy in contents
 	mkdir -p ${debprefix}/share/opus
+	mkdir -p ${debvarlib}/opus/templates_c
+	mkdir -p ${debvarlib}/opus/templates_cache
+	mkdir -p ${debvarlib}/opus/sessions
 	cp -rf html ${debprefix}/share/opus
+	# Remove extra license for tiny_mce when doing debian package (it's elsewhere)
+	rm {debprefix}/share/opus/html/javascript/tiny_mce/license.txt
 	cp -rf include ${debprefix}/share/opus
 	cp -rf cron ${debprefix}/share/opus
 	cp -rf templates ${debprefix}/share/opus
-	mkdir ${debvarlib}/opus/templates_c
-	mkdir ${debvarlib}/opus/templates_cache
-	mkdir ${debvarlib}/opus/sessions
 	chown -R www-data:root ${debprefix}/share/opus/
 	chmod -R o-rwx ${debprefix}/share/opus/
 	chown -R www-data:root ${debvarlib}/opus/
@@ -85,7 +87,7 @@ deb-opus: deb-opus-etc
 	cp sql_patch/schema.sql ${debprefix}/share/dbconfig-common/data/opus/install/mysql
 	cat sql_patch/data.sql >> ${debprefix}/share/dbconfig-common/data/opus/install/mysql
 	mkdir -p ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql
-	cp sql_patch/patch_3.3.x_4.0.0.sql ${debprefix}/share/dbconfig-common/data/uuwaf-preferences/upgrade/mysql/4.0.0
+	cp sql_patch/patch_3.3.x_4.0.0.sql ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql/4.0.0
 	# Symlink OPUS executable
 	chmod 700 ${debprefix}/share/opus/cron/opus.php
 

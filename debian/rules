@@ -57,7 +57,7 @@ install: build
 
 	# Add here commands to install the package into debian/opus.
 	#$(MAKE) DESTDIR=$(CURDIR)/debian/opus install
-	$(MAKE) deb-opus debwww=$(CURDIR)/debian/opus/var/www debprefix=$(CURDIR)/debian/opus/usr debetc=$(CURDIR)/debian/opus/etc
+	$(MAKE) deb-opus debwww=$(CURDIR)/debian/opus/var/www debprefix=$(CURDIR)/debian/opus/usr debetc=$(CURDIR)/debian/opus/etc debvarlib=$(CURDIR)/debian/var/lib
 	$(MAKE) deb-opus-doc debwww=$(CURDIR)/debian/opus-doc/var/www debprefix=$(CURDIR)/debian/opus-doc/usr debetc=$(CURDIR)/debian/opus-doc/etc
 
 
