@@ -2,7 +2,7 @@ Source: opus
 Section: web
 Priority: extra
 Maintainer: Colin Turner <c.turner@ulster.ac.uk>
-Build-Depends: debhelper (>= 5)
+Build-Depends: debhelper (>= 5), po-debconf
 Homepage: http://foss.ulster.ac.uk/projects/opus
 Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/?root=opus
 Vcs-Svn: svn co svn://foss.ulster.ac.uk/svn/opus/trunk

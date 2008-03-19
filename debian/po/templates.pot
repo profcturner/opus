@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: opus@packages.debian.org\n"
+"POT-Creation-Date: 2008-03-19 17:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../opus.templates:1001
+msgid "fully qualified hostname for this computer:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:1001
+msgid ""
+"This is the name by which this computer will be known on the network. You "
+"will not want to use localhost on a production server, since OPUS will send "
+"emails linking to this address."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:2001
+msgid "the title of your institution:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:2001
+msgid ""
+"OPUS will use the title of your institution in appropriate places such as "
+"web pages and emails."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:3001
+msgid "host for cookies:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:3001
+msgid ""
+"OPUS will drop cookies as users are authenticated. Here you can specify what "
+"other hosts should have access to the cookies. For example, if this machine "
+"is a.b.com, you could pick .b.com to allow d.c.com to also access cookies. "
+"This is really only needed if you are sharing authentication."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:4001
+msgid "secret for cookies:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:4001
+msgid ""
+"OPUS will use a secret to help hash the cookies. It is important that this "
+"really is difficult to guess to prevent users from being able to present "
+"false cookies. If you need OPUS to talk to another system, such as the "
+"PDSystem, you will need to use exactly the same secret for the other system."
+msgstr ""

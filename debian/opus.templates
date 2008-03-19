@@ -1,7 +1,7 @@
 Template: opus/fq_hostname
 Type: string
 Default: localhost
-Description: fully qualified hostname for this computer:
+_Description: fully qualified hostname for this computer:
  This is the name by which this computer will be known on the network.
  You will not want to use localhost on a production server, since OPUS
  will send emails linking to this address.
@@ -9,14 +9,14 @@ Description: fully qualified hostname for this computer:
 Template: opus/institution
 Type: string
 Default: University of Somewhere
-Description: the title of your institution:
+_Description: the title of your institution:
  OPUS will use the title of your institution in appropriate places such as
  web pages and emails.
 
 Template: opus/cookie_host
 Type: string
 Default:
-Description: host for cookies:
+_Description: host for cookies:
  OPUS will drop cookies as users are authenticated. Here you can specify
  what other hosts should have access to the cookies. For example, if this
  machine is a.b.com, you could pick .b.com to allow d.c.com to also access
@@ -25,7 +25,7 @@ Description: host for cookies:
 Template: opus/cookie_secret
 Type: string
 Default:
-Description: secret for cookies:
+_Description: secret for cookies:
  OPUS will use a secret to help hash the cookies. It is important that this
  really is difficult to guess to prevent users from being able to present
  false cookies. If you need OPUS to talk to another system, such as the
