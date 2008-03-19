@@ -41,6 +41,7 @@ devdoc:
 debetc=/etc
 debprefix=/usr
 debwww=/var/www
+debvarlib=/var/lib
 
 install:
 	# Make main directory and copy in contents
@@ -69,16 +70,24 @@ deb-opus: deb-opus-etc
 	cp -rf include ${debprefix}/share/opus
 	cp -rf cron ${debprefix}/share/opus
 	cp -rf templates ${debprefix}/share/opus
-	mkdir ${debprefix}/share/opus/templates_c
-	mkdir ${debprefix}/share/opus/templates_cache
+	mkdir ${debvarlib}/opus/templates_c
+	mkdir ${debvarlib}/opus/templates_cache
+	mkdir ${debvarlib}/opus/sessions
 	chown -R www-data:root ${debprefix}/share/opus/
 	chmod -R o-rwx ${debprefix}/share/opus/
-	# Nuke license file for xinha, it is contained in debian/copyright
-	# and disturbs lintian
-	rm ${debprefix}/share/opus/html/jsincludes/htmlarea/license.txt
+	chown -R www-data:root ${debvarlib}/opus/
+	chmod -R o-rwx ${debvarlib}/opus/
 	# Make documentation directory
 	mkdir -p ${debprefix}/share/doc/opus
 	cp -rf sql_patch ${debprefix}/share/doc/opus
+	# Copy material for dbconfig-common
+	mkdir -p ${debprefix}/share/dbconfig-common/data/opus/install
+	cp sql_patch/schema.sql ${debprefix}/share/dbconfig-common/data/opus/install/mysql
+	cat sql_patch/data.sql >> ${debprefix}/share/dbconfig-common/data/opus/install/mysql
+	mkdir -p ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql
+	cp sql_patch/patch_3.3.x_4.0.0.sql ${debprefix}/share/dbconfig-common/data/uuwaf-preferences/upgrade/mysql/4.0.0
+	# Symlink OPUS executable
+	chmod 700 ${debprefix}/share/opus/cron/opus.php
 
 
 deb-opus-etc: 

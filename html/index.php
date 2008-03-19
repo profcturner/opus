@@ -124,31 +124,27 @@ function main()
   }
   else
   {
-    /*
-    $currentgroup = "guest";
+    // Not authenticated
+    if(WA::request("guest"))
+    {
+      // but deliberately... so we use a special guest controller, otherwise as above
+      $currentgroup = "guest";
 
-    // Ok, on with the show
-    $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
-    $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
-    */
-
-    //if(empty($section))
-    //{
+      $section =  $waf->get_section($config['opus']['cleanurls']);
+      $function = $waf->get_function($config['opus']['cleanurls']);
+      if(empty($section)) $section="home";
+      if(empty($function)) $function="home";
+      $nav = $waf->load_group_controller($currentgroup);
+      $waf->load_section_controller($currentgroup,$section);
+      $waf->assign("nav", $nav);
+      $waf->call_user_function($user, $section, $function, "home", "error");
+    }
+    else
+    {
+      // Then, they might be trying to go somewhere
       // Show the login screen, no valid user, keep any redirected URI
       $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
       login($waf);
-    //}
-    //else
-    { /*
-      // load controllers based on groups and capture the navigational structure
-      $nav = $waf->load_group_controller($currentgroup);
-      // load controller based on the object being managed
-      $waf->load_section_controller($currentgroup,$section);
-      //assignment of nav
-      $waf->assign("nav", $nav);
-      // call user function
-      $waf->call_user_function($user, $section, $function, "home", "error");
-      */
     }
   }
 }

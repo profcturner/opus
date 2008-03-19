@@ -1,3 +1,9 @@
 var/log/opus
 usr/share/opus/photos
 usr/share/opus/resources
+var/lib/opus
+var/lib/opus/sessions/
+var/lib/opus/templates_c/
+var/lib/opus/templates_cache/
+usr/share/dbconfig-common/data/opus/install
+usr/share/dbconfig-common/data/opus/upgrade/mysql

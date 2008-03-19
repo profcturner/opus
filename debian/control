@@ -6,11 +6,11 @@ Build-Depends: debhelper (>= 5)
 Homepage: http://foss.ulster.ac.uk/projects/opus
 Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/?root=opus
 Vcs-Svn: svn co svn://foss.ulster.ac.uk/svn/opus/trunk
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
 
 Package: opus
 Architecture: all
-Depends: uuwaf, debconf, dbconfig-common
+Depends: uuwaf, debconf, dbconfig-common, uuwaf-preferences
 Recommends: php5-gd, php5-ldap, libgd-gd2-perl
 Description: On-line Placement University System
  OPUS is a comprehensive web based tool for

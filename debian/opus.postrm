@@ -5,12 +5,13 @@
 
 set -e
 
-# Source debconf library.
-. /usr/share/debconf/confmodule
-
-# source dbconfig-common stuff
-. /usr/share/dbconfig-common/dpkg/postrm.mysql 
-dbc_go opus $@
+if [ -f /usr/share/debconf/confmodule ]; then
+    . /usr/share/debconf/confmodule
+fi
+if [ -f /usr/share/dbconfig-common/dpkg/postrm.mysql ]; then
+    . /usr/share/dbconfig-common/dpkg/postrm.mysql
+    dbc_go opus $@
+fi
 
 # summary of how this script can be called:
 #        * <postrm> `remove'
@@ -50,9 +51,9 @@ then
     rm /usr/share/opus/include/config.php
   fi
   # Remove compiled templates
-  if [ -e /usr/share/opus/templates_c ]
+  if [ -e /var/lib/opus/templates_c ]
   then
-    rm -rf /usr/share/opus/templates_c
+    rm -rf /var/lib/opus/templates_c
   fi
 fi
 
@@ -66,24 +67,9 @@ then
     rm -rf /var/log/opus
   fi
 
-  db_get opus/nuke_db_on_purge
-  if [ "$RET" = "yes" ]
-  then
-    # remove the database, while we still probably have the credentials
-    # note that the root password should have been reset and so we don't expect to find it.
-    db_get opus/db_hostname
-    data_hostname=$RET
-    db_get opus/db_database
-    data_database=$RET
-    db_get opus/db_username
-    data_username=$RET
-    db_get opus/db_password
-    data_password=$RET
-  
-    echo "Removing OPUS MySQL database ..."
-    echo "DROP DATABASE $data_database" | mysql -h $data_hostname -u $data_username --password=$data_password
-  else
-    echo "NOT removing the database as per your debconf settings ..."
+  rm -f /etc/opus/opus-database.php
+  if which ucf >/dev/null 2>&1; then
+          ucf --purge /etc/opus/opus-database.php
   fi
 
   if [ -e /etc/opus/debconf_config.php ]
@@ -91,7 +77,7 @@ then
     echo "Removing debconf generated files ..."
     rm /etc/opus/debconf_config.php
   fi
-  
+
 fi
 
 # dh_installdeb will replace this with shell code automatically
