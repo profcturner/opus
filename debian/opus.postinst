@@ -3,6 +3,7 @@
 # We didn't always use dbconfig-common, this tells OPUS what version
 # we changed at, and how to read the old database
 dbc_first_version='4.0.0'
+# This PHP script just reads the old config file and maps it to dbconfig-common
 dbc_load_include='php:/etc/opus/load-old-database.php'
 
 # Source debconf library.
@@ -10,6 +11,7 @@ dbc_load_include='php:/etc/opus/load-old-database.php'
 
 # source dbconfig-common stuff
 . /usr/share/dbconfig-common/dpkg/postinst.mysql 
+# generate a PHP config file we can read to get the database credentials
 dbc_generate_include_owner=root:www-data
 dbc_generate_include_perms=640
 dbc_generate_include=php:/etc/opus/opus-database.php
@@ -57,52 +59,33 @@ then
   echo "// Use dpkg-reconfigure -p low opus to regenerate this file" >> /etc/opus/debconf_config.php
   db_get opus/fq_hostname
   echo "\$config['opus']['url']= '$RET'/opus;" >> /etc/opus/debconf_config.php
+  db_get opus/institution
+  echo "\$config['opus']['institution'] = '$RET';" >> /etc/opus/debconf_config.php
+  db_get opus/cookie_host
+  echo "\$config['waf']['cookie_host'] = '$RET';" >> /etc/opus/debconf_config.php
+  db_get opus/cookie_secret
+  echo "\$config['waf']['cookie_secret'] = '$RET';" >> /etc/opus/debconf_config.php
 
-#  db_get opus/institution
-#  echo "\$conf['institution'] = '$RET';" >> /etc/opus/debconf_config.php
-#  echo "\$conf['database'] = array();" >> /etc/opus/debconf_config.php
   echo "?>" >>  /etc/opus/debconf_config.php
   chown www-data:root /etc/opus/*.php
   chmod 640 /etc/opus/*.php
-
-  # OK, schema should be installed, check if any data exists, again
-  num_users=`echo "select count(username) from id" | mysql --skip-column-names -h $data_hostname -u $data_username --password=$data_password $data_database`
-  if [ $num_users -eq 0 ]
-  then
-    # No installed users, better import some data
-    echo "Installing initial data ..."
-    gzip -d -c /usr/share/doc/opus/sql_patch/data.sql.gz | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
-    # Set the email address from debconf data
-    db_get opus/proot_email
-    proot_email=$RET
-    if [ $proot_email != "" ]
-    then
-      echo "update admins set email='$RET' where user_id=1" | mysql -h $data_hostname -u $data_username --password=$data_password $data_database
-    fi
-  fi
-  
-  # TODO: We need to write the code (for new versions) to sequentially apply
-  # SQL patches from the sql_patch directory. This is moot for now since this is the
-  # first external launch
-
-  # Remove any root password
-  db_reset opus/root_db_password
 
   # set permissions on other dirs
   echo "Creating paths and setting permissions ..."
   chown www-data:root /usr/share/opus/photos
   chown www-data:root /usr/share/opus/resources
-  chown www-data:root /usr/share/opus/templates_*
+  chown -R www-data:root /var/lib/opus
   chmod 770 /usr/share/opus/photos
   chmod 770 /usr/share/opus/resources
-  chmod 770 /usr/share/opus/templates_*
+  chmod 770 /var/lib/opus/templates_*
+  chmod 770 /var/lib/opus/sessions
 fi
 
 # Install a symlink from the config file to the /etc directory
-if [ "$1" = "configure" ] && [ ! -e /usr/share/opus/include/config.php ]
+if [ "$1" = "configure" ] && [ ! -e /usr/share/opus/include/local.conf.php ]
 then
   echo "Installing initial OPUS configuration..."
-  ln -s /etc/opus/config.php /usr/share/opus/include/config.php
+  ln -s /etc/opus/config.php /usr/share/opus/include/local.conf.php
 fi
 
 # Ensure log file stubs are present, have the right ownership and permissions
@@ -125,7 +108,7 @@ then
   apache2ctl restart
 fi
 
-# Pear modules
+# Pear modules, only log is needed now, try to keep it quiet
 pear -q install log
 
 # Now for debhelper deep magic

@@ -46,9 +46,9 @@ then
     rm /etc/apache2/conf.d/opus.conf
   fi
   # And similarly, one from the include directory
-  if [ -e /usr/share/opus/include/config.php ]
+  if [ -e /usr/share/opus/include/local.conf.php ]
   then
-    rm /usr/share/opus/include/config.php
+    rm /usr/share/opus/include/local.conf.php
   fi
   # Remove compiled templates
   if [ -e /var/lib/opus/templates_c ]
@@ -86,5 +86,3 @@ fi
 #DEBHELPER#
 
 exit 0
-
-

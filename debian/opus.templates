@@ -30,23 +30,3 @@ Description: secret for cookies:
  really is difficult to guess to prevent users from being able to present
  false cookies. If you need OPUS to talk to another system, such as the
  PDSystem, you will need to use exactly the same secret for the other system.
-
-Template: opus/proot_email
-Type: string
-Default: 
-Description: email of admin user:
- OPUS will create an initial account for you, with username "admin"
- and password "password". Specify an email address for this account
- here, note that this address will be used to send automatic emails,
- when no other obvious choice is present, so it should be a help
- contact of some kind, or expand to a list of appropriate contacts.
- .
- Note that you can change this email address from within OPUS later,
- and that the email address will only be set on an initial import
- of data.
-
-Template: opus/invalid_root_password
-Type: note
-Description: Invalid root MySQL password
- The credentials given to access the MySQL server are failing.
- Be aware that the database may not be installed correctly.
