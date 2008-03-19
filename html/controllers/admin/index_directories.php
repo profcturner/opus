@@ -200,11 +200,12 @@
       $student_id = $student->user_id;
     }
     if(!$student->id) $waf->halt("error:edit_student:invalid_student");
+    if(!Policy::is_auth_for_student($student_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
+
     // Put this in the session for next time
     $_SESSION['student_id'] = $student_id;
 
     $changes = WA::request("changes");
-    if(!Policy::is_auth_for_student($student_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
 
     $student_name = User::get_name($student_id);
     $_SESSION['lastitems']->add_here("s:$student_name", "s:$student_id", "Student: $student_name");
