@@ -2057,7 +2057,6 @@
   }
 
 
-
   function reset_password(&$waf)
   {
     $user_id = (int) WA::request("user_id");
