@@ -1,8 +1,9 @@
 <?php
 /**
- * @package Configuration
+ * @package OPUS
  *
  * The system wide configuration file for OPUS
+ * Don't change this file, it'll be clobbered on upgrade, make any changes in local.conf.php
  */
 
 // PHP settings
