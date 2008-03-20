@@ -55,6 +55,17 @@ then
   then
     rm -rf /var/lib/opus/templates_c
   fi
+  # Remove sessions
+  if [ -e /var/lib/opus/sessions ]
+  then
+    rm -rf /var/lib/opus/sessions
+  fi
+  # Remove sessions
+  if [ -e /usr/share/opus/cron/config.pl ]
+  then
+    rm /usr/share/opus/cron/config.pl
+  fi
+
 fi
 
 # Code for purge

@@ -148,6 +148,7 @@ Use MySQL to create a new database. Details vary but something like:
   (type password for mysql root user)
   create database opus;
   grant all on opus.* to opus_user@localhost identified by 'password_here';
+  use opus;
   source /usr/share/opus/sql_patch/schema.sql
   source /usr/share/opus/sql_patch/data.sql
 
@@ -160,7 +161,8 @@ later).
   (type password for mysql root user)
   create database preferences;
   grant all on preferences.* to opus_user@localhost identified by 'password_here';
-  source /usr/share/opus/sql_patch/preferences-schema.sql
+  use preferences;
+  source /usr/share/uuwaf/sql_patch/preferences-schema.sql
 
 
 8. Set up Smarty templating paths
@@ -198,12 +200,10 @@ Go to where your OPUS files are and go to the include directory. For example
 You will see a file called opus.conf.php.
 
 Don't edit this file, you can, but it will potentially be overwritten by
-upgrades. Instead, create a file called local.conf.php which contains only
-those parts of the main configuration you want to change.
-
+upgrades. Instead, copy the local.conf.php.dist to local.conf.php.
 For example, on *nix
 
-cp opus.conf.php local.conf.php
+cp local.conf.php.dist local.conf.php
 
 then edit the file to contain the paths of all the things you have done above
 and the usernames and passwords and so on.
