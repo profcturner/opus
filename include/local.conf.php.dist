@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @package OPUS
+ *
+ * Local configuration for OPUS
+ *
+ * Edit this file according to usernames and passwords set up elsewhere.
+ * You can also use it to override any settings in opus.conf.php
+ *
+ */
+
+// This next set of paths is used by cron jobs only - you will still have to
+// deal with the apache config
+$config['php']['include_dir'] = "/usr/share/php:/usr/share/php/smarty/libs:/usr/share/uuwaf/include:/usr/share/opus/include:.";
+
+// The following are already defaults, uncomment and change if needed
+//$config['waf']['base_dir'] = "/usr/share/opus/";
+//$config['waf']['var_dir'] = "/var/lib/opus/";
+// If you changed those above, you might want to change these too...
+$config['opus']['paths']['resources']   = '/usr/share/opus/resources/';
+$config['opus']['paths']['photos']      = '/usr/share/opus/photos/';
+$config['waf']['auth_dir']              = '/usr/share/opus/include/auth.d';
+
+// Define here your cookie values, needed for cross authentication
+$config['waf']['cookie_secret']         = 'put your secret here';
+$config['waf']['cookie_host']           = '.your.domain';
+
+$config['opus']['institution']          = 'University of Somewhere';
+$config['opus']['official_url']         = 'http://your.domain';
+$config['opus']['url']                  = 'http://your.domain/opus';
+
+// Define here the database which opus itself uses
+
+$config_sensitive['opus']['database']['dsn'] = "mysql:host=localhost;dbname=opus";
+$config_sensitive['opus']['database']['username'] = "opus";
+$config_sensitive['opus']['database']['password'] = "password";
+
+// Define here the database used for the preferences system
+
+$config_sensitive['opus']['preference']['dsn'] = "mysql:host=localhost;dbname=preference";
+$config_sensitive['opus']['preference']['username'] = "opus";
+$config_sensitive['opus']['preference']['password'] = "password";
+
+// If you use an LDAP server, define it here, and look at the plugin and edit accordingly
+
+$config_sensitive['opus']['auth']['ldap'] = 'ldap.your.domain';
+
+// PDSystem configuration options, use this to define the linked PDSystem (if any)
+// Make the URL blank if the PDSystem is not installed
+$config_sensitive['pds']['url'] = ""; //"http://localhost/pds/";
+$config_sensitive['pds']['real_url'] = ""; // "http://pds.ulster.ac.uk/pds/";
+$config_sensitive['pds']['username'] = "opus";
+$config_sensitive['pds']['password'] = "password";
+
+// web service configuration settings, again, make the URL if nothing is defined
+$config_sensitive['ws']['url'] = ""; // http://localhost/wservices/";
+$config_sensitive['ws']['username'] = "opus";
+$config_sensitive['ws']['password'] = "password";
+
+?>
