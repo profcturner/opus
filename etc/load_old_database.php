@@ -12,12 +12,12 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
 */
 
-require_once("/usr/share/opus/include/config.php");
+require_once("/etc/opus/debconf_config.php");
 
 $dbuser   = $conf['database']['username'];
 $dbpass   = $conf['database']['password'];
 $dbname   = $conf['database']['database'];
-$dbserver = $conf['database']['host'];
+$dbserver = $conf['database']['hostname'];
 $dbtype   = 'mysql';
 
 ?>
