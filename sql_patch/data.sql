@@ -2,7 +2,7 @@
 
 -- Add an admin user
 INSERT INTO `user` (real_name, salutation, firstname, lastname, username, password, user_type, id) VALUES('OPUS Front Desk', 'OPUS', 'Front', 'Desk', 'admin', '5f4dcc3b5aa765d61d8327deb882cf99', 'root', 1);
-INSERT INTO `admins` (position, user_id) values('administrator', 1);
+INSERT INTO `admin` (position, user_id) values('administrator', 1);
 
 -- new application is stopped --
 insert into service values('stopped', '4.0.0', 1);

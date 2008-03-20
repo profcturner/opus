@@ -37,6 +37,8 @@ function help_directory(&$waf)
   $waf->assign("admin_headings", $admin_headings);
   $waf->assign("root_headings", $root_headings);
 
+  $waf->assign("show_banners", true);
+
   $waf->display("bounded.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
 }
 

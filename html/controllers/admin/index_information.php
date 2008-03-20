@@ -209,4 +209,23 @@
     $waf->display("bounded.tpl", "general:information:information:about", "general/information/about.tpl");
   }
 
+  function privacy(&$waf)
+  {
+    $waf->assign("show_banners", true);
+    $waf->display("bounded.tpl", "general:information:information:about", "general/information/privacy.tpl");
+  }
+
+  function copyright(&$waf)
+  {
+    $waf->assign("show_banners", true);
+    $waf->display("bounded.tpl", "general:information:information:about", "general/information/copyright.tpl");
+  }
+
+  function terms_conditions(&$waf)
+  {
+    $waf->assign("show_banners", true);
+    $waf->display("bounded.tpl", "general:information:information:about", "general/information/terms.tpl");
+  }
+
+
 ?>

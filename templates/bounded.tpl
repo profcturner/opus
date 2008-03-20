@@ -8,6 +8,10 @@
   <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>{#application_title#} {#version_text#} {#major_version#}.{#minor_version#} {if #page_title#} | {#page_title#|capitalize}{/if}</title>
+<link REL="stylesheet" href="{$config.opus.url}/css/default.css" type="text/css" />
+<link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css" />
+<style type="text/css"> @import url("{$config.opus.url}/css/local.css");</style>
+<style type="text/css"> @import url("{$config.opus.url}/css/{$currentgroup}/local.css");</style>
 <link href="{$config.opus.url}/css/login.css" rel="stylesheet" type="text/css" />
   </head>
 
@@ -33,8 +37,8 @@
     <table width="700" height="90"  border="0" align="center" cellspacing="0">
       <tr valign="top">
         <td>
-          <div align="left"><img src="{#institution_logo#}" width="{#institution_logo_width#}"></div></td>
-          <td width="350"><div align="right"><img src="{$config.opus.url}/images/{#application_logo#}" width="115" height="66"></div></td>
+          <div align="left"><img src="{if $ulster_logo}{#uu_logo#}{else}{#institution_logo#}{/if}" width="{if $ulster_lgo}{#uu_logo_width#}{else}{#institution_logo_width#}{/if}"></div></td>
+          <td width="350"><div align="right"><a href="{$config.opus.url}"><img src="{$config.opus.url}/images/{#application_logo#}" width="115" height="66" border="0"></a></div></td>
       </tr>
     </table>
     <br/>

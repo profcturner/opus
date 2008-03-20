@@ -101,12 +101,14 @@ if [ "$1" = "configure" ]
 then
   chown www-data:root /var/log/opus
   chmod 770 /var/log/opus
-  if [ ! -e /var/log/opus/general.log ]; then touch /var/log/opus/general.log; chown www-data:root /var/log/opus/general.log; chmod 660 /var/log/opus/general.log; fi
-  if [ ! -e /var/log/opus/cron.log ]; then touch /var/log/opus/cron.log; chown www-data:root /var/log/opus/cron.log; chmod 660 /var/log/opus/cron.log; fi
-  if [ ! -e /var/log/opus/security.log ]; then touch /var/log/opus/security.log; chown www-data:root /var/log/opus/security.log; chmod 660 /var/log/opus/security.log; fi
-  if [ ! -e /var/log/opus/admin.log ]; then touch /var/log/opus/admin.log; chown www-data:root /var/log/opus/admin.log; chmod 660 /var/log/opus/admin.log; fi
-  if [ ! -e /var/log/opus/debug.log ]; then touch /var/log/opus/debug.log; chown www-data:root /var/log/opus/debug.log; chmod 660 /var/log/opus/debug.log; fi
-  if [ ! -e /var/log/opus/panic.log ]; then touch /var/log/opus/panic.log; chown www-data:root /var/log/opus/panic.log; chmod 660 /var/log/opus/panic.log; fi
+  if [ ! -e /var/log/opus/general.log ]; then touch /var/log/opus/general.log; fi
+  if [ ! -e /var/log/opus/cron.log ]; then touch /var/log/opus/cron.log; fi
+  if [ ! -e /var/log/opus/security.log ]; then touch /var/log/opus/security.log; fi
+  if [ ! -e /var/log/opus/admin.log ]; then touch /var/log/opus/admin.log; fi
+  if [ ! -e /var/log/opus/debug.log ]; then touch /var/log/opus/debug.log; fi
+  if [ ! -e /var/log/opus/panic.log ]; then touch /var/log/opus/panic.log; fi
+  chown www-data:root /var/log/opus/*
+  chmod 770 /var/log/opus/*
 
 fi
 
@@ -115,11 +117,11 @@ if [ "$1" = "configure" ] && [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/
 then
   echo "Installing OPUS apache2 configuration..."
   ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
-  apache2ctl restart
 fi
 
 # Pear modules, only log is needed now, try to keep it quiet
 pear -q install log
+apache2ctl restart
 
 # Now for debhelper deep magic
 # dh_installdeb will replace this with shell code automatically
