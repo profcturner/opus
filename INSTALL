@@ -189,8 +189,8 @@ Similarly, you need a directory somewhere which is writable by the web server
 to contain the OPUS log files. Create one of your choice.
 
 
-10. Create local configuration file(s)
---------------------------------------
+10. Create local configuration file
+-----------------------------------
 
 You are almost there.
 
@@ -207,34 +207,6 @@ cp local.conf.php.dist local.conf.php
 
 then edit the file to contain the paths of all the things you have done above
 and the usernames and passwords and so on.
-
-Next, go the configs directory for opus, so probably /usr/share/opus/configs
-or similar. Again, you will see a file called lang_en.conf. This contains
-all the text prompts for the system. Once more, don't edit this file, since an
-upgrade will clobber it, but make a file called local_en.conf which contains
-anything you want to override. Fire this up in your favourite text editor.
-
-For example, you probably want this to begin with
-
--=-
-
-institution="The University of Ulster"
-institution_short="UU"
-# This next logo is unusual, specify either a relative, or absolute URL
-institution_logo="http://fs1.ulster.ac.uk/library/images/uu.jpg"
-# You might need to scale this...
-institution_logo_width="250"
-
--=-
-
-where you edit this material appropriately for your institution. You can add
-more overrides later should you want to. Only add the bits you want to
-change from the defaults.
-
-
-Go to the include directory and use config.php.dist as a template for
-config.php (cp config.php.dist config.php), and edit the file appropriately.
-It is reasonably well commented. Debian will do most of this automatically.
 
 
 11. Set up periodic jobs
@@ -263,8 +235,34 @@ For windows, you might want to look carefully at the Windows Scheduler
 
 http://www.iopus.com/guides/winscheduler.htm
 
+12. Customise text prompts
+--------------------------
 
-12. Try to login
+Next, go the configs directory for opus, so probably /usr/share/opus/configs
+or similar. Again, you will see a file called lang_en.conf. This contains
+all the text prompts for the system. Once more, don't edit this file, since an
+upgrade will clobber it, but make a file called local_en.conf which contains
+anything you want to override. Fire this up in your favourite text editor.
+
+For example, you probably want this to begin with
+
+-=-
+
+institution="The University of Ulster"
+institution_short="UU"
+# This next logo is unusual, specify either a relative, or absolute URL
+institution_logo="http://fs1.ulster.ac.uk/library/images/uu.jpg"
+# You might need to scale this...
+institution_logo_width="250"
+
+-=-
+
+where you edit this material appropriately for your institution. You can add
+more overrides later should you want to. Only add the bits you want to
+change from the defaults.
+
+
+13. Try to login
 ----------------
 
 This should create an admin account with username "admin" and password
@@ -276,7 +274,7 @@ OPUS will be in a "closed" state to all users but superusers (like you).
 When you are happy, go to the Superuser -> service menu and open the site.
 
 
-13. Phone Home (optional)
+14. Phone Home (optional)
 -------------------------
 
 When you login for the first time, OPUS will ask you permission to "PhoneHome",
@@ -286,7 +284,7 @@ but such information would really help us to understand our customer base,
 and we won't ever publish information identified against your institution.
 
 
-14. Open OPUS for business
+15. Open OPUS for business
 --------------------------
 
 Finally, go the service menu under SuperUser and open OPUS for business when

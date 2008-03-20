@@ -50,6 +50,7 @@ then
   then
     rm /usr/share/opus/include/local.conf.php
   fi
+
   # Remove compiled templates
   if [ -e /var/lib/opus/templates_c ]
   then

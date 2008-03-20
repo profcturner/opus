@@ -11,7 +11,7 @@ carefully.
 
 If you are running Debian, just install the new version of OPUS using the
 command in the INSTALL guide, and you are done. You might want to backup
-your database first (see step 3).
+your database first (see step 3), but dbconfig-common does this as well for you.
 
 1. Prepare a new location for version 4
 ---------------------------------------
@@ -62,8 +62,9 @@ future to share preferences.
 mysql -u root -p
 (type password for mysql root user)
 create database preferences;
+use preferences;
 grant all on preferences.* to opus_user@localhost identified by 'password_here';
-source /usr/share/opus/sql_patch/preferences-schema.sql
+source /usr/share/uuwaf/sql_patch/preferences-schema.sql
 
 adjust pathnames, usernames and passwords as needed.
 
