@@ -129,7 +129,9 @@ class Vacancy extends DTO_Vacancy
 
   function update($fields) 
   {
+    // Some fields should not change after creation
     unset($fields['created']);
+    unset($fields['company_id']);
     // Null some fields if empty
     $fields = Vacancy::set_empty_to_null($fields);
 

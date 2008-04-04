@@ -663,9 +663,42 @@
   }
 
   /**
-  * @todo activities don't copy across, manage.tpl needs changed.
+  * clone the vacancy, but make sure the correct company is selected first
+  *
   */
-  function clone_vacancy(&$waf, &$user) 
+  function clone_vacancy(&$waf)
+  {
+    require_once("model/Vacancy.class.php");
+    $id = WA::request("id");
+    $changes = WA::request("changes");
+
+    $vacancy = Vacancy::load_by_id($id);
+
+    // Do we currently have a company being looked at?
+    $company_id = $_SESSION['company_id'];
+    if(!$company_id)
+    {
+      // No
+      $_SESSION['company_id'] = $company_id;
+    }
+    else
+    {
+      // Yes
+      if($company_id != $vacancy->company_id)
+      {
+        // But it's a different one!
+        $_SESSION['company_id'] = $vacancy->company_id;
+      }
+    }
+    // Ok, all should now be safe...
+    goto("directories", "clone_vacancy_real&id=$id&changes=$changes");
+  }
+
+
+  /**
+  * clone the vacancy, called when the company is correctly established
+  */
+  function clone_vacancy_real(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("vacancy", "create")) $waf->halt("error:policy:permissions");
 
@@ -698,7 +731,43 @@
     add_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "add_vacancy");
   }
 
-  function edit_vacancy(&$waf, &$user) 
+  /**
+  * edit the vacancy, but make sure the correct company is selected first
+  *
+  */
+  function edit_vacancy(&$waf)
+  {
+    require_once("model/Vacancy.class.php");
+    $id = WA::request("id");
+    $changes = WA::request("changes");
+
+    $vacancy = Vacancy::load_by_id($id);
+
+    // Do we currently have a company being looked at?
+    $company_id = $_SESSION['company_id'];
+    if(!$company_id)
+    {
+      // No
+      $_SESSION['company_id'] = $company_id;
+    }
+    else
+    {
+      // Yes
+      if($company_id != $vacancy->company_id)
+      {
+        // But it's a different one!
+        $_SESSION['company_id'] = $vacancy->company_id;
+      }
+    }
+    // Ok, all should now be safe...
+    goto("directories", "edit_vacancy_real&id=$id&changes=$changes");
+  }
+
+
+  /**
+  * the company should have been taken care of now, so really edit the vacancy
+  */
+  function edit_vacancy_real(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("vacancy", "edit")) $waf->halt("error:policy:permissions");
 
@@ -715,13 +784,14 @@
     edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
+
   function edit_vacancy_do(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("vacancy", "edit")) $waf->halt("error:policy:permissions");
 
     $company_id = (int) WA::request("company_id", true);
 
-    edit_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "edit_vacancy");
+    edit_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "edit_vacancy_real");
   }
 
   function remove_vacancy(&$waf, &$user) 
