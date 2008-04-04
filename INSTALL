@@ -55,6 +55,7 @@ to /etc/apt/sources.list with your favourite text editor.
 
 and then simply run
 
+aptitude update
 aptitude install opus
 
 (or use your favourite package management tool). Then answer the questions
