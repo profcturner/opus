@@ -2031,6 +2031,8 @@
       $nvp_array['auth'] = 'all';
       $waf->assign("nvp_array", $nvp_array);
     }
+    // This needs an override because we use an alternative template, don't know why yet.
+    $waf->assign("xinha_editor", true);
 
     add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }

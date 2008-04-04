@@ -50,7 +50,7 @@ class Student extends DTO_Student
   // This defines which ones
   static $_extended_fields = array
   (
-    'salutation','firstname','lastname','email','reg_number'
+    'salutation','firstname','lastname','email','reg_number','username'
   );
 
   function __construct() 
@@ -103,12 +103,14 @@ class Student extends DTO_Student
   */
   function insert($fields) 
   {
+    global $waf;
     require_once("model/User.class.php");
 
     $student = new Student;
     $extended_fields = Student::get_extended_fields();
     $user_fields = array();
 
+    // Extract user data
     foreach($fields as $key => $value)
     {
       if(in_array($key, $extended_fields))
@@ -119,6 +121,8 @@ class Student extends DTO_Student
       }
     }
     // Insert user data first, adding anything else we need
+    if(empty($user_fields['username'])) $user_fields['username'] = $user_fields['reg_number'];
+    if(empty($user_fields['username'])) $waf->halt("error:student_insert:no_username");
     $user_fields['user_type'] = 'student';
     $user_id = User::insert($user_fields);
 

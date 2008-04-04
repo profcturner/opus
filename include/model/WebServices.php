@@ -47,7 +47,7 @@ class WebServices
     if(!in_array($format, array('php', 'xml'))) $waf->halt("error:webservices:unknown_format");
 
     // Perform a preg security check on $service_name
-    if(!preg_match("/^[A-Za-x_]+$/", $service_name))
+    if(!preg_match("/^[A-Za-z_]+$/", $service_name))
     {
       $waf->security_log("attempt to use invalid web service [$service_name]");
       $waf->log("invalid web service [$service_name]");

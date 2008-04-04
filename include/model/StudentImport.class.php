@@ -43,7 +43,7 @@ class StudentImport
       $student_array = StudentImport::import_student_via_SRS($student[1]);
 
       // Are they already present?
-      if(User::count("where reg_number='" . $student->reg_number . "'"))
+      if(User::count("where reg_number='" . $student['reg_number'] . "'"))
       {
         // Already exists
         $student_array['result'] = "Exists";
@@ -232,7 +232,7 @@ class StudentImport
 
     $fields = array();
     $fields['reg_number'] = $student_array['reg_number'];
-    $fields['username'] = "s" . $student_array['reg_number'];
+    $fields['username'] = $student_array['reg_number'];
     $fields['salutation'] = $student_array['person_title'];
     $fields['firstname'] = $student_array['first_name'];
     $fields['lastname'] = $student_array['last_name'];
