@@ -1,0 +1,19 @@
+2008-04-04  colin
+
+	* INSTALL: forgot to mention that an update will be required
+	* html/controllers/admin/index_directories.php,
+	  include/model/Vacancy.class.php: fix for bug which caused
+	  vacancies to jump company if one edited a vacancy for company a
+	  when company b was selected
+	* include/opus.conf.php: updating version to 4.0.1
+	* html/controllers/admin/index_directories.php,
+	  include/model/Student.class.php,
+	  include/model/StudentImport.class.php,
+	  include/model/WebServices.php: students were imported with
+	  incorrect usernames, and fixed a problem with note display
+
+2008-04-08  colin
+
+	* etc/apache2.conf: some fixes / improvements to default apache
+	  configuration
+
