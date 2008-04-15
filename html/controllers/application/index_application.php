@@ -18,7 +18,8 @@ function nav_application()
 		),
     "User"=>array
     (
-      array("get_user_details", "user", "get_user_details", "get_user_details"), 
+      array("get_user_status", "user", "form_get_user_status", "form_get_user_status"),
+      array("kill_session", "user", "form_kill_session", "form_kill_session"),
     )
   );
 }
