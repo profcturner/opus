@@ -1,0 +1,80 @@
+/* Style Sheet used for overriding various aspects of display for printing */
+/*
+#page_wrapper {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  background-color: transparent;
+  background-image: none;
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  padding: 0.0em;
+  float:center;
+  overflow: visible;
+}
+*/
+
+#main_content {
+  display: inline;
+  overflow: visible;
+}
+
+
+#page_wrapper {
+  display: inline;
+  overflow: visible;
+}
+
+#content_block {
+  width:auto;
+  clear:left;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: inline;
+  overflow: visible;
+}
+
+#table_list {
+  margin-right:0.5em;
+  margin-bottom: 0.5em;
+  display: inline;
+  overflow: visible;
+}
+
+
+
+/* Navigation is somewhat pointless */
+
+#menu {
+  display: none;
+}
+
+#submenu {
+  display: none;
+}
+
+#mini_menu {
+  display: none;
+}
+
+
+#header {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+#page_title {
+  clear: left;
+  text-align: left;
+  padding-left: 10px;
+  line-height: 2em;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: top left;
+  min-height: 2em;
+  height: 2em;
+}
+
+#footer {
+  display: none;
+}
