@@ -24,6 +24,7 @@ function nav_student()
         array("Companies", "placement", "company_directory", "company_directory"),
         array("Vacancies", "placement", "vacancy_directory", "vacancy_directory"),
         array("Applications", "placement", "list_applications", "list_applications"),
+        array("Placements", "placement", "list_placements", "list_placements"),
         array("Assessment", "placement", "list_assessments", "list_assessments"),
         array("Resources", "placement", "list_resources", "list_resources"),
         array("Notes", "placement", "manage_notes", "list_notes")

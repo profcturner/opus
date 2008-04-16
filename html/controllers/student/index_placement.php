@@ -340,7 +340,6 @@
 
   // Applications
 
-
   function list_applications(&$waf, $user, $title)
   {
     $student_id = User::get_id();
@@ -482,6 +481,40 @@
 
     edit_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
   }
+
+  // Placements
+
+  function list_placements(&$waf, $user, $title)
+  {
+    $student_id = User::get_id();
+    $page = (int) WA::request("page", true);
+
+    manage_objects($waf, $user, "Placement", array(), array(array('edit', 'edit_placement')), "get_all", array("where student_id=$student_id", "", $page), "student:placement:list_placements:list_placements");
+  }
+
+  function edit_placement(&$waf, &$user)
+  {
+    $placement_id = (int) WA::request("id");
+    require_once("model/Placement.class.php");
+    $placement = Placement::load_by_id($placement_id);
+
+    if($placement->student_id != User::get_id()) $waf->halt("error:student:not_your_user");
+
+    edit_object($waf, $user, "Placement", array("confirm", "placement", "edit_placement_do"), array(array("cancel","section=placement&function=list_placements")), array(array("user_id", $student->user_id)), "student:placement:list_placements:edit_placement");
+  }
+
+  function edit_placement_do(&$waf, &$user)
+  {
+    $placement_id = (int) WA::request("id");
+    require_once("model/Placement.class.php");
+    $placement = Placement::load_by_id($placement_id);
+
+    if($placement->student_id != User::get_id()) $waf->halt("error:student:not_your_user");
+
+    edit_object_do($waf, $user, "Placement", "section=placement&function=list_placements", "edit_placement");
+  }
+
+
 
   // Notes
 

@@ -61,7 +61,8 @@ class Placement extends DTO_Placement
     'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date', 'readonly'=>'true'),
   );
 
-  static $_field_defs_studen_override = array(
+  static $_field_defs_student_override = array(
+    'company_id'=>array('type'=>'lookup', 'header'=>true, 'object'=>'company', 'value'=>'name', 'title'=>'Company', 'var'=>'companies'),
     'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true, 'readonly'=>'true'),
     'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date', 'readonly'=>'true'),
     'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date', 'readonly'=>'true'),
@@ -118,11 +119,16 @@ class Placement extends DTO_Placement
   function update($fields) 
   {
     unset($fields['created']);
+    unset($fields['company_id']);
     // Some fields cannot be reset by non admins
     if(!User::is_admin())
     {
       unset($fields['jobstart']);
       unset($fields['jobend']);
+      unset($fields['position']);
+    }
+    if(User::is_student())
+    {
       unset($fields['position']);
     }
     // Null some fields if empty
@@ -145,7 +151,7 @@ class Placement extends DTO_Placement
     $set_to_null = array("created", "modified", "jobstart");
     foreach($set_to_null as $field)
     {
-      if(isset($field[$field]) && !strlen($fields[$field])) $fields[$field] = null;
+      if(isset($fields[$field]) && !strlen($fields[$field])) $fields[$field] = null;
     }
     return($fields);
   }
