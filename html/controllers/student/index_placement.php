@@ -49,6 +49,23 @@
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id(User::get_id());
 
+    if($student->placement_status == 'Placed')
+    {
+      require_once("model/Placement.class.php");
+      $placement = Placement::get_most_recent($student->user_id);
+      if($placement == false)
+      {
+        // should never happen!
+        $waf->log("can't find most recent placement for placed student");
+      }
+      else
+      {
+        $waf->assign("placement", $placement);
+        $waf->assign("placement_headings", Placement::get_field_defs());
+        $waf->assign("placement_action", array("edit", "placement", "list_placements"));
+      }
+    }
+
     $waf->assign("student", $student);
     $waf->assign("vacancies_created", $vacancies_created);
     $waf->assign("vacancies_modified", $vacancies_modified);
