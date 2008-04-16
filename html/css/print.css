@@ -40,6 +40,23 @@
   overflow: visible;
 }
 
+#table_list table {
+  border:#ccc 1px solid;
+  color: #555555;
+  font-size: 0.9em;
+  width:100%;
+  height: 100%;
+}
+
+#table_list td {
+  font-family: Verdana, Arial, sans-serif;
+  padding: 2px;
+  border-right:#ccc 1px solid;
+  height: 100%;
+}
+
+
+
 
 
 /* Navigation is somewhat pointless */
