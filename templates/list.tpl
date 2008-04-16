@@ -14,6 +14,7 @@ pages
 {/if} {* nopage *}
 {if $objects}
 <table cellpadding="0" cellspacing="0" border="0">
+  <thead>
   <tr>
 {foreach from=$headings key=key item=def}
     {if $def.header == true}<th>{if $def.title}{$def.title}{else}{$key|replace:"_":" "|capitalize}{/if}</th>{/if}
@@ -22,6 +23,8 @@ pages
     <th class="action">{$actions[action][0]|capitalize}</th>
 {/section}
   </tr>
+  </thead>
+  <tbody>
 {section loop=$objects name=object }
   <tr class="{cycle values="dark_row,light_row"}">
 {foreach from=$headings key=key item=def}
@@ -55,6 +58,7 @@ pages
 {/section}
   </tr>
 {/section}
+</tbody>
 </table>
 {else}
 {$no_list|default:#no_list#}
