@@ -7,8 +7,8 @@
   <meta http-equiv="Refresh" content="{$refresh}" />
 {/if}
   <title>{$config.opus.title_short}{if $section} | {$section|capitalize}{/if}{if #page_title#} | {#page_title#|capitalize}{/if}</title>
-  <link REL="stylesheet" href="{$config.opus.url}/css/default.css" type="text/css" />
-  <link REL="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css" />
+  <link rel="stylesheet" href="{$config.opus.url}/css/default.css" type="text/css" />
+  <link rel="stylesheet" href="{$config.opus.url}/css/{$currentgroup}/default.css" type="text/css" />
   <style type="text/css"> @import url("{$config.opus.url}/css/local.css");</style>
   <style type="text/css"> @import url("{$config.opus.url}/css/{$currentgroup}/local.css");</style>
   <!--[if gt IE 5.0]><![if lt IE 7]>
@@ -33,6 +33,7 @@
     {/literal}
     </style>
   <![endif]><![endif]-->
+  <link rel="stylesheet" href="{$config.opus.url}/css/print.css" type="text/css" media="print" />
 
 {* Load HTML Area if the "editor" component of page is set *}
 {if $xinha_editor}
