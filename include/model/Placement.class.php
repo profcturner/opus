@@ -62,7 +62,7 @@ class Placement extends DTO_Placement
   );
 
   static $_field_defs_student_override = array(
-    'company_id'=>array('type'=>'lookup', 'header'=>true, 'object'=>'company', 'value'=>'name', 'title'=>'Company', 'var'=>'companies'),
+    'company_id'=>array('type'=>'lookup', 'header'=>true, 'object'=>'company', 'value'=>'name', 'title'=>'Company', 'var'=>'companies', 'readonly'=>'true'),
     'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true, 'mandatory'=>true, 'readonly'=>'true'),
     'jobstart'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'required'=>'true', 'title'=>'Job Start Date', 'readonly'=>'true'),
     'jobend'=>array('type'=>'isodate', 'inputstyle'=>'popup', 'title'=>'Job End Date', 'readonly'=>'true'),

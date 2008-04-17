@@ -271,17 +271,22 @@
         {html_options options=$def.list selected=$object->$header name=$header}
         {/if}
       {elseif $def.type == "lookup"}
-        {if $def.multiple}
-          {html_options name="$header" multiple=true}
-          {php}
-          echo smarty_function_html_options(array('multiple' => true, 'name' => $this->_tpl_vars['header'] . "[]",'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
-          {/php}<br />{#multiple_select#}
+        {if $def.readonly}
+          {eval assign=header2 var="_$header"}
+          {$object->$header2}
         {else}
-          {html_options name="$header"}
-          {php}
-          echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
-          {/php}
-        {/if}
+          {if $def.multiple}
+            {html_options name="$header" multiple=true}
+            {php}
+            echo smarty_function_html_options(array('multiple' => true, 'name' => $this->_tpl_vars['header'] . "[]",'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
+            {/php}<br />{#multiple_select#}
+          {else}
+            {html_options name="$header"}
+            {php}
+            echo smarty_function_html_options(array('name' => $this->_tpl_vars['header'],'options' => $this->_tpl_vars[$this->_tpl_vars['def']['var']], 'selected' => $this->_tpl_vars['object']->{$this->_tpl_vars['header']}), $this);
+            {/php}
+          {/if}
+      {/if}
       {elseif $def.type == "postcode"}
       <input type="text" name="{$header}" id="{$header}_{$object->id}" size="{$def.size}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}  {if $def.readonly}readonly{/if}/>
          {elseif $def.type == "link"}
