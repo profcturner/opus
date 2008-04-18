@@ -146,6 +146,8 @@ class Student extends DTO_Student
 
     // Only root users can change reg numbers
     if(!User::is_root()) unset($fields['reg_number']);
+    // No-one can change usernames
+    unset($fields['username']);
     $extended_fields = Student::get_extended_fields();
     $user_fields = array();
 
