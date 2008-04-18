@@ -59,8 +59,7 @@ class DTO_Company extends DTO
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
       {
         $these_activities = DTO_Company::get_company_activities($results_row['id']);
-        // Check that some activities are allocated, should always be true.
-        if(count($these_activities) && !DTO_Company::if_any_in_array($activities, $these_activities)) continue;
+        if(!DTO_Company::if_any_in_array($activities, $these_activities)) continue;
 
         array_push($object_array, $results_row);
       }
