@@ -119,8 +119,7 @@ then
   ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
 fi
 
-# Pear modules, only log is needed now, try to keep it quiet
-pear -q install log
+echo "Restart web server..."
 apache2ctl restart
 
 # Now for debhelper deep magic
