@@ -1,22 +1,5 @@
 #!/bin/sh -e
 
-# We didn't always use dbconfig-common, this tells OPUS what version
-# we changed at, and how to read the old database
-dbc_first_version='4.0.0'
-# This PHP script just reads the old config file and maps it to dbconfig-common
-dbc_load_include='php:/usr/share/opus/include/load-old-database.php'
-
-# Source debconf library.
-. /usr/share/debconf/confmodule
-
-# source dbconfig-common stuff
-. /usr/share/dbconfig-common/dpkg/postinst.mysql 
-# generate a PHP config file we can read to get the database credentials
-dbc_generate_include_owner=root:www-data
-dbc_generate_include_perms=640
-dbc_generate_include=php:/etc/opus/opus-database.php
-dbc_go opus $@
-
 # summary of how this script can be called:
 #        * <postinst> `configure' <most-recently-configured-version>
 #        * <old-postinst> `abort-upgrade' <new version>
@@ -42,8 +25,24 @@ case "$1" in
     ;;
 esac
 
-# The main event
+# We didn't always use dbconfig-common, this tells OPUS what version
+# we changed at, and how to read the old database
+dbc_first_version='4.0.0'
+# This PHP script just reads the old config file and maps it to dbconfig-common
+dbc_load_include='php:/usr/share/opus/include/load-old-database.php'
 
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+# source dbconfig-common stuff
+. /usr/share/dbconfig-common/dpkg/postinst.mysql 
+# generate a PHP config file we can read to get the database credentials
+dbc_generate_include_owner=root:www-data
+dbc_generate_include_perms=640
+dbc_generate_include=php:/etc/opus/opus-database.php
+dbc_go opus $@
+
+# The main event
 if [ "$1" = "configure" ]
 then
   echo "Writing debconf configuration ..."
@@ -66,8 +65,8 @@ then
   echo "\$config['waf']['cookie_host'] = '$RET';" >> /etc/opus/debconf_config.php
   db_get opus/cookie_secret
   echo "\$config['waf']['cookie_secret'] = '$RET';" >> /etc/opus/debconf_config.php
-
   echo "?>" >>  /etc/opus/debconf_config.php
+  # Ensure sensible permissions
   chown www-data:root /etc/opus/*.php
   chmod 640 /etc/opus/*.php
 
@@ -80,25 +79,15 @@ then
   chmod 770 /usr/share/opus/resources
   chmod 770 /var/lib/opus/templates_*
   chmod 770 /var/lib/opus/sessions
-  
-  # set permissions on opus executable, and symlink it to "opus"
-  chmod 700 /usr/share/opus/cron/opus.php
-  if [ ! -e /usr/sbin/opus ]
+
+  # Install a symlink from the config file to the /etc directory
+  if [ ! -e /usr/share/opus/include/local.conf.php ]
   then
-    ln -s /usr/share/opus/cron/opus.php /usr/sbin/opus
+    echo "Installing initial OPUS configuration..."
+    ln -s /etc/opus/opus-local.config.php /usr/share/opus/include/local.conf.php
   fi
-fi
 
-# Install a symlink from the config file to the /etc directory
-if [ "$1" = "configure" ] && [ ! -e /usr/share/opus/include/local.conf.php ]
-then
-  echo "Installing initial OPUS configuration..."
-  ln -s /etc/opus/opus-local.config.php /usr/share/opus/include/local.conf.php
-fi
-
-# Ensure log file stubs are present, have the right ownership and permissions
-if [ "$1" = "configure" ]
-then
+  # Ensure log file stubs are present, have the right ownership and permissions
   chown www-data:root /var/log/opus
   chmod 770 /var/log/opus
   if [ ! -e /var/log/opus/general.log ]; then touch /var/log/opus/general.log; fi
@@ -110,17 +99,31 @@ then
   chown www-data:root /var/log/opus/*
   chmod 770 /var/log/opus/*
 
-fi
+  # set permissions on opus executable, and symlink it to "opus"
+  chmod 700 /usr/share/opus/cron/opus.php
+  if [ ! -e /usr/sbin/opus ]
+  then
+    ln -s /usr/share/opus/cron/opus.php /usr/sbin/opus
+  fi
 
-# Install the apache2 configuration if required
-if [ "$1" = "configure" ] && [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/opus.conf ]
-then
-  echo "Installing OPUS apache2 configuration..."
-  ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
-fi
+  # Install the apache2 configuration if required
+  if [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/opus.conf ]
+  then
+    echo "Installing OPUS apache2 configuration..."
+    ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
+  fi
 
-echo "Restart web server..."
-apache2ctl restart
+  # If Apache 2 is running restart it, important in case folks are using apache1
+  # TODO would be nice to support alternative web servers at some point
+  if [ -e /var/run/apache2.pid ]
+  then
+    echo "Restarting web server..."
+    apache2ctl restart
+  else
+    echo "Warning: Apache2 web server is not running, you may have to resolve this manually..."
+  fi
+
+fi
 
 # Now for debhelper deep magic
 # dh_installdeb will replace this with shell code automatically
