@@ -1,3 +1,13 @@
+opus (4.0.1-1) unstable; urgency=low
+
+  * New upstream version.
+	
+  * Packaging no longer tries to install PEAR log, but uuwaf now depends on it.
+
+  * Packaging does not try to restart Apache 2 if it is not running.
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Tue, 22 Apr 2008 11:38:58 +0100
+
 opus (4.0.0-1) unstable; urgency=low
 
   * New upstream version; changed to dbconfig-common.

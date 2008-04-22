@@ -15,6 +15,7 @@ tar:
 	# Remove svn files, debian dir and this Makefile, since it
 	# is very debian specific right now
 	rm -rf `find ../tarballs/opus-$(rel) -type d -name ".svn"`
+	rm -rf `find ../tarballs/opus-$(rel) -name "*~"`
 	rm -rf ../tarballs/opus-${rel}/Makefile
 	rm -rf ../tarballs/opus-$(rel)/debian
 	# actually perform the gzip
