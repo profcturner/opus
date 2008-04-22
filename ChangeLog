@@ -16,4 +16,46 @@
 
 	* etc/apache2.conf: some fixes / improvements to default apache
 	  configuration
+	* ChangeLog: Adding changelog (4.0.0 to 4.0.1)
+
+2008-04-13  colin
+
+	* configs/lang_en.conf: fix missing prompt for add staff member
+
+2008-04-15  colin
+
+	* configs/lang_en.conf,
+	  html/controllers/application/index_application.php,
+	  html/controllers/application/index_information.php,
+	  html/controllers/application/index_user.php: Improvements to API
+	  users, allowing easier interactive use for debugging and testing
+	* templates/application/user/decoded_data.tpl,
+	  templates/application/user/form_kill_session.tpl: Improvements to
+	  API users, allowing easier interactive use for debugging and
+	  testing
+
+2008-04-16  colin
+
+	* configs/lang_en.conf,
+	  html/controllers/student/index_placement.php,
+	  html/controllers/student/index_student.php,
+	  include/model/Placement.class.php: students can now view and edit
+	  their placement records, should deal with bug #341
+	* html/controllers/student/index_student.php: students can now view
+	  and edit their placement records, should deal with bug #341
+	* configs/lang_en.conf,
+	  html/controllers/student/index_placement.php,
+	  templates/student/placement/placement_home.tpl: Show most recent
+	  placement on student home page
+	* html/css/print.css: adding a rudimentary print stylesheet
+	* templates/main.tpl: using new print style sheet
+	* html/css/print.css: stop tables from being truncated on gecko
+	* templates/list.tpl: explicitly specify table headers
+	* html/css/print.css: allow table headers to be handled cleverly
+	  when printing (if browser supports)
+
+2008-04-17  colin
+
+	* include/model/Placement.class.php, templates/manage.tpl: lookups
+	  that are readonly now don't display a drop down
 
