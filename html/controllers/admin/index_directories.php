@@ -1711,10 +1711,13 @@
     {
       $actions = array(array('edit', 'edit_admin'));
     }
+    $action_links = array(array('add', 'section=directories&function=add_admin'));
 
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
+    $waf->assign("action_links", $action_links);
+
 
     $waf->display("main.tpl", "admin:directories:admin_directory:search_admin", "list.tpl");
   }
@@ -1779,14 +1782,14 @@
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    add_object($waf, $user, "Admin", array("add", "directories", "add_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:admin_directory:add_admin");
+    add_object($waf, $user, "Admin", array("add", "directories", "add_admin_do"), array(array("cancel","section=directories&function=admin_directory")), array(array("user_id",$user["user_id"])), "admin:directories:admin_directory:add_admin");
   }
 
   function add_admin_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "add_admin");
+    add_object_do($waf, $user, "Admin", "section=directories&function=admin_directory", "add_admin");
   }
 
   function edit_admin(&$waf, &$user) 
