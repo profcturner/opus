@@ -166,28 +166,43 @@ later).
   source /usr/share/uuwaf/sql_patch/preferences-schema.sql
 
 
-8. Set up Smarty templating paths
----------------------------------
+8. Set up other paths
+---------------------
 
-The templates directory are used by Smarty, you should create
+OPUS will require some paths in which it will make temporary or changeable data.
+These should be created in some sensible path. For example, on a Unix/Linux
+system, possibly create a directory /var/lib/opus. Make the following paths
+under that.
+
+A path for holding PHP sessions
+
+  sessions
+
+Paths for holding photos and resources
+
+  photos
+  resources
+
+The templates directories that are used by Smarty, you should create
 
   templates_c
   templates_cache
 
-directories also, which need to be writeable by your web server user.
+All of these need to be writeable by your web server user.
 For example
 
-  chown root:www-data templates_*
-  chmod 770 templates_*
-
-Smarty will then be able to make files in here.
+  chown root:www-data /var/lib/opus/*
+  chmod 770 /var/lib/opus/*
 
 
 9. Set up Log files
 -------------------
 
 Similarly, you need a directory somewhere which is writable by the web server
-to contain the OPUS log files. Create one of your choice.
+to contain the OPUS log files. Create one of your choice, and make it writeable
+as you did for the other paths above. Often the directory would be
+
+/var/log/opus
 
 
 10. Create local configuration file
@@ -235,6 +250,7 @@ manual or email for help.
 For windows, you might want to look carefully at the Windows Scheduler
 
 http://www.iopus.com/guides/winscheduler.htm
+
 
 12. Customise text prompts
 --------------------------

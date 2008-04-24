@@ -43,8 +43,8 @@ $config['opus']['benchmarking']         = true;
 $config['opus']['logo']                 = "logo.png";
 $config['opus']['rows_per_page']        = 20;
 
-$config['opus']['paths']['resources']   = '/usr/share/opus/resources/';
-$config['opus']['paths']['photos']      = '/usr/share/opus/photos/';
+$config['opus']['paths']['resources']   = '/var/lib/opus/resources/';
+$config['opus']['paths']['photos']      = '/var/lib/opus/photos/';
 
 // names of objects held in session
 $config['opus']['session']['navigation'] = 'OPUS_Navigation';

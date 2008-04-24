@@ -1,17 +1,32 @@
 OPUS UPGRADE NOTES
 
-The transition from version 3.x to 4.x is be far the most major yet, and
-we expect it to the most major change ever.
-
-As a result the upgrade is somewhat more tricky, so read this document
-carefully.
-
 0. Running Debian?
 ------------------
 
 If you are running Debian, just install the new version of OPUS using the
 command in the INSTALL guide, and you are done. You might want to backup
 your database first (see step 3), but dbconfig-common does this as well for you.
+
+
+If you are not running Debian, then for upgrading from one 4.x release to
+another, things are relatively straightforward:
+
+  a) backup the database
+
+      e.g. mysqldump -u root -p opus > backup_opus.sql
+      (you will be asked for your MySQL root password).
+
+  b) optionally back up any other files, configuration and so on.
+
+  c) unarchive the new release and copy it over the old one.
+
+
+If you are upgrading from 3.x, the transition from version 3.x to 4.x is by
+far the most major yet, and we expect it to the most major change ever.
+
+As a result the upgrade is somewhat more tricky, so read this document
+carefully.
+
 
 1. Prepare a new location for version 4
 ---------------------------------------

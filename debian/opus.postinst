@@ -72,13 +72,27 @@ then
 
   # set permissions on other dirs
   echo "Creating paths and setting permissions ..."
-  chown www-data:root /usr/share/opus/photos
-  chown www-data:root /usr/share/opus/resources
+  chown www-data:root /var/lib/opus/photos
+  chown www-data:root /var/lib/opus/resources
   chown -R www-data:root /var/lib/opus
-  chmod 770 /usr/share/opus/photos
-  chmod 770 /usr/share/opus/resources
+  chmod 770 /var/lib/opus/photos
+  chmod 770 /var/lib/opus/resources
   chmod 770 /var/lib/opus/templates_*
   chmod 770 /var/lib/opus/sessions
+
+  # Check for old (incorrect) pathnames in use
+  if [ -d /usr/share/opus/resources ]
+  then
+    echo "old resources path found, moving to new path..."
+    mv /usr/share/opus/resources/* /var/lib/opus/resources
+    rmdir /usr/share/opus/resources/
+  fi
+  if [ -d /usr/share/opus/photos ]
+  then
+    echo "old photos path found, moving to new path..."
+    mv /usr/share/opus/photos/* /var/lib/opus/photos
+    rmdir /usr/share/opus/photos/
+  fi
 
   # Install a symlink from the config file to the /etc directory
   if [ ! -e /usr/share/opus/include/local.conf.php ]

@@ -1,7 +1,7 @@
 var/log/opus
-usr/share/opus/photos
-usr/share/opus/resources
 var/lib/opus
+var/lib/opus/photos
+var/lib/opus/resources
 var/lib/opus/sessions/
 var/lib/opus/templates_c/
 var/lib/opus/templates_cache/
