@@ -59,8 +59,7 @@ install:
 	# Make documentation directory
 	mkdir -p ${debprefix}/share/doc/opus
 	cp -rf sql_patch ${debprefix}/share/doc/opus
-
-
+	gzip -c -9 ChangeLog > ${debprefix}/share/doc/opus/changelog.gz
 
 debs: deb-opus, deb-opus-doc
 
@@ -84,6 +83,7 @@ deb-opus: deb-opus-etc
 	# Make documentation directory
 	mkdir -p ${debprefix}/share/doc/opus
 	cp -rf sql_patch ${debprefix}/share/doc/opus
+	gzip -c -9 ChangeLog > ${debprefix}/share/doc/opus/changelog.gz
 	# Copy material for dbconfig-common
 	mkdir -p ${debprefix}/share/dbconfig-common/data/opus/install
 	cp sql_patch/schema.sql ${debprefix}/share/dbconfig-common/data/opus/install/mysql
