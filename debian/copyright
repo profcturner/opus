@@ -7,10 +7,7 @@ License:
 OPUS is released under the GPL (Gnu Public License) v2. See the LICENSE file in the
 top directory for details.
 
-Some components, specifically the xinha JavaScript HTML editor have their own licenses,
-not incompatible with the DFSG.
-
-The Debian packaging is (C) 2007, colin <c.turner@ulster.ac.uk> and
+The Debian packaging is (C) 2007-2008, Colin Turner <c.turner@ulster.ac.uk> and
 is licensed under the GPL v2, see `/usr/share/common-licenses/GPL-2'.
 
 -=-
