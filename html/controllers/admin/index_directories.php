@@ -1816,10 +1816,10 @@
 
   function edit_admin_do(&$waf, &$user) 
   {
+    require_once("model/Admin.class.php");
     $id = WA::request("id");
     if(!User::is_root() && (Admin::get_user_id($id) != User::get_id()))  $waf->halt("error:policy:permissions");
 
-    require_once("model/Admin.class.php");
     if(User::is_root(Admin::get_user_id($id)))
     {
       $return_function = "section=directories&function=manage_super_admins";
