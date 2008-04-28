@@ -8,6 +8,13 @@ Logfile
 {html_options output=$available_logs values=$available_logs selected=$selected_log}
 </select>
 
+{*
+Sort
+<select name="order">
+{html_options options=$sort_options selected=$sort_option}
+</select>
+*}
+
 Search
 <input name="search" type="text" size="20" value="{$search}">
 
@@ -42,6 +49,13 @@ Logfile
 {html_options output=$available_logs values=$available_logs selected=$selected_log}
 </select>
 
+{*
+Sort
+<select name="order">
+{html_options options=$sort_options selected=$sort_option}
+</select>
+*}
+
 Search
 <input name="search" type="text" size="20" value="{$search}">
 
@@ -50,4 +64,6 @@ Lines
 
 <span id="button"><input type="submit" value="Show" /></span>
 </form>
+{$fetched_uncompressed_lines} lines were fetched from uncompressed log files<br />
+{$fetched_compressed_lines} lines were fetched from compressed log files<br />
 log file is {$log_size}

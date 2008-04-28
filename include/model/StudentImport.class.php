@@ -74,6 +74,7 @@ class StudentImport
     $student_srs = WebServices::get_student($reg_number);
 
     $student = array();
+    $student['username'] = $username;
     $student['reg_number'] = $reg_number;
     $student['person_title'] = $student_srs['title'];
     $student['first_name'] = $student_srs['first_name'];
