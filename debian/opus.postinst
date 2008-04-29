@@ -71,7 +71,7 @@ then
   chmod 640 /etc/opus/*.php
 
   # set permissions on other dirs
-  echo "Creating paths and setting permissions ..."
+  echo "Setting permissions on paths ..."
   chown www-data:root /var/lib/opus/photos
   chown www-data:root /var/lib/opus/resources
   chown -R www-data:root /var/lib/opus
@@ -83,13 +83,13 @@ then
   # Check for old (incorrect) pathnames in use
   if [ -d /usr/share/opus/resources ]
   then
-    echo "old resources path found, moving to new path..."
+    echo "old resources path found, moving to new path ..."
     mv /usr/share/opus/resources/* /var/lib/opus/resources
     rmdir /usr/share/opus/resources/
   fi
   if [ -d /usr/share/opus/photos ]
   then
-    echo "old photos path found, moving to new path..."
+    echo "old photos path found, moving to new path ..."
     mv /usr/share/opus/photos/* /var/lib/opus/photos
     rmdir /usr/share/opus/photos/
   fi
@@ -97,7 +97,7 @@ then
   # Install a symlink from the config file to the /etc directory
   if [ ! -e /usr/share/opus/include/local.conf.php ]
   then
-    echo "Installing initial OPUS configuration..."
+    echo "Installing initial OPUS configuration ..."
     ln -s /etc/opus/opus-local.config.php /usr/share/opus/include/local.conf.php
   fi
 
@@ -111,7 +111,7 @@ then
   if [ ! -e /var/log/opus/debug.log ]; then touch /var/log/opus/debug.log; fi
   if [ ! -e /var/log/opus/panic.log ]; then touch /var/log/opus/panic.log; fi
   chown www-data:root /var/log/opus/*
-  chmod 770 /var/log/opus/*
+  chmod 660 /var/log/opus/*
 
   # set permissions on opus executable, and symlink it to "opus"
   chmod 700 /usr/share/opus/cron/opus.php
@@ -120,7 +120,17 @@ then
     ln -s /usr/share/opus/cron/opus.php /usr/sbin/opus
   fi
 
-  # Install the apache2 configuration if required
+  # Install the apache1 or apache2 configuration if required
+  if [ -e /etc/apache/ ] && [ ! -e /etc/apache/conf.d/opus.conf ]
+  then
+    echo "Installing OPUS apache configuration..."
+    ln -s /etc/opus/apache2.conf /etc/apache/conf.d/opus.conf
+  fi
+  if [ -e /etc/apache-ssl/ ] && [ ! -e /etc/apache-ssl/conf.d/opus.conf ]
+  then
+    echo "Installing OPUS apache-ssl configuration..."
+    ln -s /etc/opus/apache2.conf /etc/apache-ssl/conf.d/opus.conf
+  fi
   if [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/opus.conf ]
   then
     echo "Installing OPUS apache2 configuration..."
@@ -128,13 +138,20 @@ then
   fi
 
   # If Apache 2 is running restart it, important in case folks are using apache1
-  # TODO would be nice to support alternative web servers at some point
-  if [ -e /var/run/apache2.pid ]
+  if [ -e /var/run/apache2.pid ] || [ -e /var/run/apache.pid ]
   then
-    echo "Restarting web server..."
-    apache2ctl restart
+    if [ -e /var/run/apache.pid ]
+    then
+      echo "Restarting Apache web server..."
+      apachectl restart
+    fi
+    if [ -e /var/run/apache2.pid ]
+    then
+      echo "Restarting Apache2 web server..."
+      apache2ctl restart
+    fi
   else
-    echo "Warning: Apache2 web server is not running, you may have to resolve this manually..."
+    echo "Warning: no known web server is running, you may have to configure and restart the server manually..."
   fi
 
 fi
