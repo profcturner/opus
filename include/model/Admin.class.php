@@ -91,6 +91,7 @@ class Admin extends DTO_Admin
   {
     parent::__construct();
   }
+ 
 
   /**
   * returns header definitions
@@ -257,6 +258,22 @@ class Admin extends DTO_Admin
     $admin->_update($fields);
   }
 
+  /**
+  * removes a given admin record
+  * 
+  * @param int $id the unique id (defaults to zero for safety)
+  */ 
+  function remove($id=0) 
+  {
+    require_once("model/User.class.php");
+
+    $admin = new Admin;
+    $admin->load_by_id($id);
+    // Remove the user object also
+    User::remove($admin->user_id);
+    $admin->_remove_where("WHERE id=$id");
+  }
+
   function exists($id) 
   {
     $admin = new Admin;
@@ -346,16 +363,6 @@ class Admin extends DTO_Admin
     return $nvp_array;
   }
 
-  function remove($id=0) 
-  {
-    require_once("model/User.class.php");
-
-    $admin = new Admin;
-    $admin->load_by_id($id);
-    // Remove the user object also
-    User::remove($admin->user_id);
-    $admin->_remove_where("WHERE id=$id");
-  }
 
   function get_user_id($id)
   {
