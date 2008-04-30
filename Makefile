@@ -96,6 +96,7 @@ deb-opus-etc:
 	mkdir -p ${debetc}/opus
 	cp etc/opus-local.config.php.debian ${debetc}/opus/opus-local.config.php
 	cp etc/apache2.conf ${debetc}/opus/apache2.conf
+	cp etc/local_en.conf ${debetc}/opus/local_en.conf
 
 
 deb-opus-doc:
