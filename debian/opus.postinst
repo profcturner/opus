@@ -100,6 +100,10 @@ then
     echo "Installing initial OPUS configuration ..."
     ln -s /etc/opus/opus-local.config.php /usr/share/opus/include/local.conf.php
   fi
+  if [ ! -e /usr/share/opus/configs/local_en.conf ]
+  then
+    ln -s /etc/opus/local_en.conf /usr/share/opus/configs/local_en.conf
+  fi
 
   # Ensure log file stubs are present, have the right ownership and permissions
   chown www-data:root /var/log/opus

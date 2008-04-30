@@ -50,6 +50,11 @@ then
   then
     rm /usr/share/opus/include/local.conf.php
   fi
+  # and finally any language localisation
+  if [ -e /usr/share/opus/configs/local_en.conf ]
+  then
+    rm /usr/share/opus/configs/local_en.conf
+  fi
 
   # Remove compiled templates
   if [ -e /var/lib/opus/templates_c ]

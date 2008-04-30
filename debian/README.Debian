@@ -14,30 +14,17 @@ on your own for now.
 To fully customize OPUS for your use, there are a couple of other things you
 should do.
 
+
 Customise text prompts
 ----------------------
 
-Next, go the configs directory for opus, so probably /usr/share/opus/configs
+Next, go the configs directory for opus, /usr/share/opus/configs.
 or similar. Again, you will see a file called lang_en.conf. This contains
-all the text prompts for the system. Once more, don't edit this file, since an
-upgrade will clobber it, but make a file called local_en.conf which contains
-anything you want to override. Fire this up in your favourite text editor.
-
-For example, you probably want this to begin with
-
--=-
-
-institution="The University of Ulster"
-institution_short="UU"
-# This next logo is unusual, specify either a relative, or absolute URL
-institution_logo="http://fs1.ulster.ac.uk/library/images/uu.jpg"
-# You might need to scale this...
-institution_logo_width="250"
-
--=-
-
-where you edit this material appropriately for your institution. You can add
-more overrides later should you want to. Only add the bits you want to
+all the text prompts for the system. Don't edit this file, since an
+upgrade will clobber it, but instead, if you wish to edit any prompts, 
+duplicate their key and section in the file /etc/opus/local_en.conf and
+make your changes there. You will at least want to edit the existing file
+to set up the details for your institution. Only add the bits you want to
 change from the defaults.
 
 
@@ -68,6 +55,7 @@ Open OPUS for business
 
 Finally, go the service menu under SuperUser and open OPUS for business when
 you want to, it starts off closed to all but superusers like you.
+
 
 Virtual Host Configuration
 --------------------------
