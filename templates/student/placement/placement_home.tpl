@@ -23,8 +23,8 @@
 {include file="manage.tpl" mode="view" headings=$academic_headings object=$academic_tutor}
 </div>
 <div class="user_photo">
-<a href="?section=placement&function=display_photo&user_id={$academic_tutor->username}&fullsize=true" >
-<img width="200" border="0"  src="?section=placement&function=display_photo&user_id={$academic_tutor->username}" /></a>
+<a href="?section=placement&function=display_photo&username={$academic_tutor->username}&fullsize=true" >
+<img width="200" border="0"  src="?section=placement&function=display_photo&username={$academic_tutor->username}" /></a>
 </div>
 {else}
 {#no_academic_tutor#}
