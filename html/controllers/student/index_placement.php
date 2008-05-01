@@ -1,6 +1,16 @@
 <?php
 
-  function placement_home(&$waf, $user, $title)
+  /**
+  * displays student placement home page
+  * 
+  * this displays information about recently created / changes companies and
+  * vacancies, as well as general announcements and details of the current
+  * placement if any, and academic tutor if any
+  * 
+  * @param $waf reference to the waf object
+  * @todo this function is now getting too large, we will soon need to reduce
+  */
+  function placement_home(&$waf)
   {
     $days = (int) WA::request("days");
 
@@ -63,6 +73,27 @@
         $waf->assign("placement", $placement);
         $waf->assign("placement_headings", Placement::get_field_defs());
         $waf->assign("placement_action", array("edit", "placement", "list_placements"));
+        
+        $academic_user_id = Student::get_academic_user_id(User::get_id());
+        if($academic_user_id)
+        {
+          // Academic tutor has been allocated
+          require_once("model/Staff.class.php");
+          $academic_tutor = Staff::load_by_user_id($academic_user_id);
+          $waf->assign("academic_tutor", $academic_tutor);
+          $academic_headings = array
+          (
+            'real_name'=>array('type'=>'text', 'size'=>50, 'title'=>'Name'),
+            'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'size'=>20, 'var'=>'schools'),
+            'position'=>array('type'=>'text','size'=>50,'header'=>true),
+            'email'=>array('type'=>'email','size'=>40, 'header'=>true, 'mandatory'=>true),
+            'voice'=>array('type'=>'text','size'=>40),
+            'room'=>array('type'=>'text', 'size'=>10, 'header'=>true),
+            'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
+            'postcode'=>array('type'=>'text', 'size'=>10),
+          );
+          $waf->assign("academic_headings", $academic_headings);
+        }
       }
     }
 
@@ -78,6 +109,17 @@
     $waf->assign("since", $since);
 
     $waf->display("main.tpl", "student:placement:placement_home:placement_home", "student/placement/placement_home.tpl");
+  }
+  
+  // Photos
+
+  function display_photo(&$waf, &$user)
+  {
+    $user_id = (int) WA::request("username");
+    $fullsize = WA::request("fullsize");
+    require_once("model/Photo.class.php");
+
+    Photo::display_photo($user_id, $fullsize);
   }
 
   function list_vacancies(&$opus, $user, $title)

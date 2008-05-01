@@ -16,6 +16,14 @@
     // Get details about the student
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id($student_user_id);
+    require_once("model/Programme.class.php");
+    $student->_programme_id = Programme::get_name($student->programme_id);
+    $student_headings = array
+    (
+      'real_name'=>array('type'=>'text', 'size'=>50, 'title'=>'Name'),
+      'reg_number'=>array('type'=>'text', 'size'=>15, 'readonly'=>true, 'mandatory'=>true),
+      'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
+    );
     $assessment_group_id = Student::get_assessment_group_id($student->user_id);
     $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
 
@@ -46,6 +54,7 @@
     );
 
     $waf->assign("student", $student);
+    $waf->assign("student_headings", $student_headings);
     $waf->assign("placement", $placement);
     $waf->assign("placement_headings", $placement_headings);
     $waf->assign("placement_action", array("confirm", "home", "edit_placement_do"));
@@ -133,11 +142,11 @@
 
   function display_photo(&$waf, &$user)
   {
-    $user_id = (int) WA::request("user_id");
+    $username = (int) WA::request("username");
     $fullsize = WA::request("fullsize");
     require_once("model/Photo.class.php");
 
-    Photo::display_photo($user_id, $fullsize);
+    Photo::display_photo($username, $fullsize);
   }
 
   // Assessments
