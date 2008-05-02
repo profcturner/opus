@@ -242,7 +242,7 @@ class Staff extends DTO_Staff
   {
     $student_id = WA::request('id');
     require_once("model/Student.class.php");
-    if($id)
+    if($student_id)
     {
       $student = Student::load_by_id($student_id);
       $programme_id = Student::get_programme_id($student->user_id);
