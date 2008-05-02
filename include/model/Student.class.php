@@ -182,6 +182,7 @@ class Student extends DTO_Student
     global $waf;
     // We have a potential security problem here, we should check id and user_id are really linked.
     $student = Student::load_by_id($fields['id']);
+
     if(!isset($fields['user_id'])) $fields['user_id'] = $student->user_id;
     if($student->user_id != $fields['user_id'])
     {
@@ -207,7 +208,13 @@ class Student extends DTO_Student
     }
     // Insert user data first, adding anything else we need
     $user_fields['id'] = $fields['user_id'];
-    User::update($user_fields);
+    // Sometimes there is nothing to change, and this results in a harmless,
+    // but annoying, SQL error
+    if(count($user_fields) > 1)
+    {
+      // Not just the id field
+      User::update($user_fields);
+    }
 
     $student = Student::load_by_id($fields[id]);
     $student->_update($fields);
