@@ -16,7 +16,6 @@ tar:
 	# is very debian specific right now
 	rm -rf `find ../tarballs/opus-$(rel) -type d -name ".svn"`
 	rm -rf `find ../tarballs/opus-$(rel) -name "*~"`
-	rm -rf ../tarballs/opus-${rel}/Makefile
 	rm -rf ../tarballs/opus-$(rel)/debian
 	# actually perform the gzip
 	cd ../tarballs && tar cfz opus_$(rel).orig.tar.gz opus-$(rel)
