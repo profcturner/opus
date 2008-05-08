@@ -36,6 +36,11 @@ This should create an admin account with username "admin" and password
 
 OBVIOUSLY IF YOU CAN LOGIN YOU SHOULD CHANGE THIS PASSWORD!
 
+You will also want to set a valid email address for the your superadmin user,
+and probably choose a reg_number. The reg_number should be unique, so pick
+something that won't clash with other users, it will be used for storing
+preferences for certain forms.
+
 OPUS will be in a "closed" state to all users but superusers (like you).
 When you are happy, go to the Superuser -> service menu and open the site.
 
@@ -48,6 +53,10 @@ to report the installation, and again, optionally report totally non
 confidential information about your OPUS install. You don't have to allow this
 but such information would really help us to understand our customer base,
 and we won't ever publish information identified against your institution.
+
+Read the FAQ for more reasons as to why you should do this. Sometimes if this
+is an initial install, your mail system will not yet be operational. Feel free
+to drop us a line in the usual way (c.turner@ulster.ac.uk).
 
 
 Open OPUS for business
