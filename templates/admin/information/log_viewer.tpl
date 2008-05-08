@@ -64,6 +64,6 @@ Lines
 
 <span id="button"><input type="submit" value="Show" /></span>
 </form>
-{$fetched_uncompressed_lines} lines were fetched from uncompressed log files<br />
-{$fetched_compressed_lines} lines were fetched from compressed log files<br />
+{$fetched_uncompressed_lines|default:"0"} lines were fetched from uncompressed log files<br />
+{$fetched_compressed_lines|default:"0"} lines were fetched from compressed log files<br />
 uncomressed log file is {$log_size}
