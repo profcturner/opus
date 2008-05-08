@@ -143,9 +143,10 @@ class Log_Viewer
     $this->fetched_uncompressed_lines = count($log_lines);
     
     // Did we get enough?
-    if(count($log_lines))
+    if($this->fetched_uncompressed_lines < $lines)
     {
-      $log_lines = array_merge($this->get_compressed_content($logname, $search, $lines - $this->fetched_compressed_lines), $log_lines);
+      $lines_to_get = $lines - $this->fetched_uncompressed_lines;
+      $log_lines = array_merge($this->get_compressed_content($logname, $search, $lines_to_get), $log_lines);
     }
     return($log_lines);
   }
