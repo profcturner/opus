@@ -60,6 +60,13 @@ install:
 	cp -rf sql_patch ${debprefix}/share/doc/opus
 	gzip -c -9 ChangeLog > ${debprefix}/share/doc/opus/changelog.gz
 
+update:
+	cp -rf html ${debprefix}/share/opus
+	cp -rf include ${debprefix}/share/opus
+	cp -rf cron ${debprefix}/share/opus
+	cp -rf templates ${debprefix}/share/opus
+	cp -rf configs ${debprefix}/share/opus
+
 debs: deb-opus, deb-opus-doc
 
 deb-opus: deb-opus-etc

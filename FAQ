@@ -103,6 +103,31 @@ scheme, but it is cheap, and OPUS should run on alternative databases such
 as PostGreSQL but this is currently untested.
 
 
+* What hardware do I need to run OPUS?
+--------------------------------------
+
+This is now hard to quantify, since it is a year or so, and a version or so
+since we ran OPUS on really old, essentially obsolete hardware, but it still
+should not require anything special. It will certainly run with ease on a 
+standard modern desktop machine.
+
+
+* How much storage space will I need?
+-------------------------------------
+
+Hard to quantify again, but looking at what we have racked up over about 6
+years of activity:
+
+  - Database       ~80M
+  - Resources      ~45M
+  - User Photos    ~180M
+  - Logs           ~350M
+  
+Note that these logs contain maximum detail, stretch back years, and have the
+older files automatically compressed (on Debian). Obviously this isn't even
+1 Gigabyte, so by modern terms storage is not a problem.
+
+
 * Can I run OPUS on Windows?
 ----------------------------
 
