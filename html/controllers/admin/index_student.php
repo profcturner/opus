@@ -53,7 +53,7 @@
     require_once("model/Student.class.php");
     $regime_items = Student::get_assessment_regime($student_id,  &$aggregate_total, &$weighting_total);
     $waf->assign("regime_items", $regime_items);
-    $waf->assign("assessed_id", $id);
+    $waf->assign("assessed_id", $student_id);
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("weighting_total", $weighting_total);
 

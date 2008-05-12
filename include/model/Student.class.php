@@ -53,11 +53,20 @@ class Student extends DTO_Student
     'salutation','firstname','lastname','email','reg_number','username'
   );
 
+  /**
+  * constructor establishes that this uses the default database connection
+  */
   function __construct() 
   {
     parent::__construct('default');
   }
 
+  /**
+  * obtain all the field_defs
+  * 
+  * there are some overrides for root users.
+  * @return the standard or augmented field_defs as required by user class
+  */
   function get_field_defs()
   {
     $field_defs = self::$_field_defs;
@@ -68,25 +77,48 @@ class Student extends DTO_Student
     return $field_defs;
   }
 
+  /**
+  * obtain all the extra fields stored in other tables
+  * 
+  * @return an array of field names
+  */
   function get_extended_fields()
   {
     return self::$_extended_fields;
   }
 
-  function load_by_user_id($user_id)
+  /**
+  * load a student by the id from the user table instead of the student table
+  * 
+  * @param int $student_user_id the id from the user table for the student
+  * @return the student object
+  */
+  function load_by_user_id($student_user_id)
   {
-    return(Student::load_by_id(Student::get_id_from_user_id($user_id)));
+    return(Student::load_by_id(Student::get_id_from_user_id($student_user_id)));
   }
 
-  function get_id_from_user_id($user_id)
+  /**
+  * obtain the id from the student table, given a user id
+  * 
+  * @param int $student_user_id the id from the user table for the student
+  * @return the id from the student table for the same student
+  */
+  function get_id_from_user_id($student_user_id)
   {
-    $user_id = (int) $user_id; // security
+    $student_user_id = (int) $student_user_id; // security
 
     $student = new Student;
-    $id = $student->_get_fields("id", "where user_id = $user_id");
+    $id = $student->_get_fields("id", "where user_id = $student_user_id");
     return($id);
   }
 
+  /**
+  * load a student object based on the id from the student table
+  * 
+  * @param int $id the id from the student table
+  * @return the student object, check id in object for validity
+  */
   function load_by_id($id) 
   {
      $student = new Student;
@@ -95,15 +127,18 @@ class Student extends DTO_Student
      return $student;
   }
 
-
   /**
   * inserts data about a new student to the User and Student tables
   *
   * this is more sophisticated that usual because there are two tables.
+  * 
+  * @param array $fields an associative array of fields to insert
+  * @return the id allocated to the inserted object
+  * @see User::insert()
   */
   function insert($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     require_once("model/User.class.php");
 
     $student = new Student;
@@ -132,11 +167,22 @@ class Student extends DTO_Student
     return $student->_insert($fields);
   }
 
+  /**
+  * updates data about a student to the User and Student tables
+  *
+  * This is more sophisticated that usual because there are two tables.
+  * Certain fields are unset for security reasons.
+  * 
+  * @param array $fields an associative array of fields to update
+  * @return the id allocated to the inserted object
+  * @see User::update()
+  */
   function update($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // We have a potential security problem here, we should check id and user_id are really linked.
     $student = Student::load_by_id($fields['id']);
+
     if(!isset($fields['user_id'])) $fields['user_id'] = $student->user_id;
     if($student->user_id != $fields['user_id'])
     {
@@ -162,7 +208,13 @@ class Student extends DTO_Student
     }
     // Insert user data first, adding anything else we need
     $user_fields['id'] = $fields['user_id'];
-    User::update($user_fields);
+    // Sometimes there is nothing to change, and this results in a harmless,
+    // but annoying, SQL error
+    if(count($user_fields) > 1)
+    {
+      // Not just the id field
+      User::update($user_fields);
+    }
 
     $student = Student::load_by_id($fields[id]);
     $student->_update($fields);
@@ -172,6 +224,11 @@ class Student extends DTO_Student
     Timeline::invalidate($fields['id']);
   }
 
+  /**
+  * checks if a student exists based on id in the student table
+  * @param $id the id from the student table
+  * @return true if the student exists, false otherwise
+  */
   function exists($id) 
   {
     $student = new Student;
@@ -179,12 +236,25 @@ class Student extends DTO_Student
     return $student->_exists();
   }
 
+  /**
+  * counts the number of students who meet certain criteria
+  * 
+  * @param string $where optional where clause (defaults to empty)
+  * @return the number of matching students
+  */
   function count($where="") 
   {
     $student = new Student;
     return $student->_count($where);
   }
 
+  /**
+  * function to fetch all students with paging
+  * 
+  * @param string $where_clause an optional where clause (defaults to empty)
+  * @param string $order_by an optional order clause (defaults to lastname)
+  * @param int $page a page number, set to zero for initial search
+  */
   function get_all($where_clause="", $order_by="ORDER BY lastname", $page=0) 
   {
     global $config;
@@ -203,24 +273,53 @@ class Student extends DTO_Student
     return $students;
   }
 
+  /**
+  * fetches only matching ids for students
+  * 
+  * to minimise returned data for complex queries, this returns ids from the
+  * student table only
+  * 
+  * @param string $where_clause optional where clause (defaults to empty)
+  * @param string $order_clause optional order clause (defaults to empty)
+  * @return array of ids from the student table
+  */
   function get_ids($where_clause="", $order_clause="")
   {
     $student = new Student;
     return($student->_get_ids($where_clause, $order_clause));
   }
 
+  /**
+  * fetches the values of a given field, indexed by id from the student table
+  * 
+  * @param string $fieldname the name of the field to fetch
+  * @param string $where_clause an optional where clause (defaults to empty)
+  * @return the array of values of the field, indexed by id
+  */
   function get_id_and_field($fieldname, $where_clause="") 
   {
     $students = new Student;
     return  $students->_get_id_and_field($fieldname, $where_clause);
   }
 
+  /**
+  * return an array of all column names used in the student table
+  * 
+  * @param boolean $include_id whether to include id (defaults to false)
+  * @return array of field names
+  */
   function get_fields($include_id = false) 
   {
     $student = new Student;
     return  $student->_get_fieldnames($include_id);
   }
 
+  /**
+  * obtains all the relevant field values from the the request variables
+  * 
+  * @param boolean $include_id whether to include id (defaults to false)
+  * @return associative array of fieldname, value pairs
+  */
   function request_field_values($include_id = false) 
   {
     $fieldnames = Student::get_fields($include_id);
@@ -234,24 +333,57 @@ class Student extends DTO_Student
     return $nvp_array;
   }
 
+  /**
+  * removes a given student record
+  * 
+  * @param int $id the id from the student table to remove (defaults to zero for safety)
+  */
   function remove($id=0) 
   {
     $student = new Student;
     $student->_remove_where("WHERE id=$id");
   }
 
+  /**
+  * fetches a list of students who meet certain search criteria
+  * 
+  * the list of students will be filtered for the permissions of the logged in
+  * user.
+  * 
+  * @param string $search optional search field
+  * @param int $year optional year placement should commence
+  * @param array $programmes array of programme ids
+  * @param string $sort a sort criterion
+  * @param array $other_options various other tweaks to the search
+  * @return an array of student information, itself in arrays
+  */
   function get_all_extended($search, $year, $programmes, $sort, $other_options)
   {
     $student = new Student;
     return($student->_get_all_extended($search, $year, $programmes, $sort, $other_options));
   }
 
+  /**
+  * fetches a list of all students whose last name begins with an initial
+  * 
+  * the list of students will be filtered for the permissions of the logged in
+  * user.
+  * 
+  * @param string $initial letter to match against last name
+  * @return an array of student information, itself in arrays
+  */
   function get_all_by_initial($initial)
   {
     $student = new Student;
     return($student->_get_all_by_initial($initial));
   }
 
+  /**
+  * fetch the id from the user table for a given student
+  * 
+  * @param int $id the id from the student table
+  * @return the id from the user table (or zero if missing)
+  */
   function get_user_id($id)
   {
     $id = (int) $id; // Security
@@ -264,6 +396,7 @@ class Student extends DTO_Student
   * gets the programme id
   *
   * @param int $user_id the id from the <strong>user</strong> table
+  * @return the id from the programme table (or zero if missing)
   */
   function get_programme_id($user_id)
   {
@@ -276,6 +409,7 @@ class Student extends DTO_Student
   * gets the placement year
   *
   * @param int $user_id the id from the <strong>user</strong> table
+  * @return the year in which placement would start
   */
   function get_placement_year($user_id)
   {
@@ -288,6 +422,7 @@ class Student extends DTO_Student
   * gets the academic tutor id
   *
   * @param int $user_id the id from the <strong>user</strong> table
+  * @return the id from the user table for the academic tutor (or zero if none)
   */
   function get_academic_user_id($user_id)
   {
@@ -296,11 +431,11 @@ class Student extends DTO_Student
     return($student->_get_fields("academic_user_id","where user_id='$user_id'"));
   }
 
-
   /**
   * gets the cv group id
   *
   * @param int $user_id the id from the <strong>user</strong> table
+  * @return the id of the cv group
   */
   function get_cv_group_id($user_id)
   {
@@ -315,6 +450,7 @@ class Student extends DTO_Student
   * gets the assessment group id
   *
   * @param int $user_id the id from the <strong>user</strong> table
+  * @return the id of the assessment group
   */
   function get_assessment_group_id($user_id)
   {
@@ -346,14 +482,26 @@ class Student extends DTO_Student
     return(1);
   }
 
-
-  function get_assessment_regime($user_id, &$aggregate_total, &$weighting_total)
+  /**
+  * fetches all assessment information for a student thus far recorded
+  * 
+  * This function performs a great deal of tasks, it obtains the whole
+  * list of assessment regime items a student will undertake, augments them
+  * with assessor information and marks so far, and sorts them, as well as
+  * indicating which is early, pending or late.
+  * 
+  * @param int $student_user_id the id of the student from the user table
+  * @param int $aggregate_total a reference into which to fill the total so far
+  * @param int $weighting_total a reference into which to fill the total weight
+  * @return an array of assessment regime items, augmented and sorted
+  */
+  function get_assessment_regime($student_user_id, &$aggregate_total, &$weighting_total)
   {
     // This will store the items
     $final_items = array();
 
     // Determine the students assessmentgroup
-    $assessmentgroup_id = Student::get_assessment_group_id($user_id);
+    $assessmentgroup_id = Student::get_assessment_group_id($student_user_id);
 
     // Get the regime items
     require_once("model/AssessmentRegime.class.php");
@@ -382,7 +530,7 @@ class Student extends DTO_Student
       if($regime_item->assessor == 'other')
       {
         require_once("model/AssessorOther.class.php");
-        $assessorother = AssessorOther::load_where("where assessed_id=$user_id and regime_id=" . $regime_item->id);
+        $assessorother = AssessorOther::load_where("where assessed_id=$student_user_id and regime_id=" . $regime_item->id);
         if($assessorother->id) // valid return
         {
           $regime_item->assessor = User::get_name($assessorother->assessor_id);
@@ -404,14 +552,14 @@ class Student extends DTO_Student
 
       // Get the results if possible
       require_once("model/AssessmentTotal.class.php");
-      $results = AssessmentTotal::load_where("where regime_id = " . $regime_item->id . " and assessed_id=$user_id");
+      $results = AssessmentTotal::load_where("where regime_id = " . $regime_item->id . " and assessed_id=$student_user_id");
 
       $percentage = $results->percentage;
       if(empty($results->id))
       {
         $percentage = "--";
         $aggregate = "--";
-        $punctuality = $regime_item->get_punctuality($user_id);
+        $punctuality = $regime_item->get_punctuality($student_user_id);
         switch($punctuality)
         {
           case "early": $percentage .= " (not due yet)"; break;
@@ -435,13 +583,26 @@ class Student extends DTO_Student
     return($final_items);
   }
 
-  function get_other_assessors($user_id)
+  /**
+  * fetch a list of assessments and assessors currently allocated for "other"
+  * 
+  * Most assessments are categorised against academic tutors, workplace
+  * supervisors and so on, but some are simply labelled as "other". These can
+  * be assigned to certain academic staff within OPUS, and this function
+  * allows for a full list of these, and the assessors to be obtained
+  * 
+  * @param int $student_user_id the id of the student from the user table
+  * @return an array of AssessmentRegime items, augmented with assessor_id
+  * @see AssessorOther.class.php
+  * @see AssessmentRegime.class.php
+  */
+  function get_other_assessors($student_user_id)
   {
     // This will store the items
     $final_items = array();
 
     // Determine the students assessmentgroup
-    $assessmentgroup_id = Student::get_assessment_group_id($user_id);
+    $assessmentgroup_id = Student::get_assessment_group_id($student_user_id);
 
     // Get the regime items
     require_once("model/AssessmentRegime.class.php");
@@ -451,7 +612,7 @@ class Student extends DTO_Student
     foreach($regime_items as $item)
     {
       require_once("model/AssessorOther.class.php");
-      $assessorother = AssessorOther::load_where("where assessed_id=$user_id and regime_id=" . $item->id);
+      $assessorother = AssessorOther::load_where("where assessed_id=$student_user_id and regime_id=" . $item->id);
       $item->assessor_id = $assessorother->assessor_id;
       array_push($final_items, $item);
     }
@@ -462,17 +623,32 @@ class Student extends DTO_Student
     return($final_items);
   }
 
-  function get_last_application_time($id)
+  /**
+  * obtains the last time at which a student made an application (if any)
+  * 
+  * @param int $id the id of the student from the user table
+  * @return a standard database datetime field (or empty if there are none)
+  */
+  function get_last_application_time($student_user_id)
   {
     require_once("model/Application.class.php");
     $application = new Application;
     // Get the last application!
-    $applications = $application->_get_all("where student_id=$id", "order by created DESC", 0, 1);
+    $applications = $application->_get_all("where student_id=$student_user_id", "order by created DESC", 0, 1);
     $application = $applications[0];
 
     return $application->created;
   }
 
+  /**
+  * obtains the full name of the student
+  * 
+  * this call is widely used in an automated fashion by various insert / edit
+  * calls and so on.
+  * 
+  * @param int $id the id of the student, from the student table
+  * @return the string with the real name field (title firstname lastname)
+  */
   function get_name($id)
   {
     return(User::get_name(Student::get_user_id($id)));

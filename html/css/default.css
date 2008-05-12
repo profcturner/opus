@@ -963,3 +963,16 @@ td.vacancy_description {
 .assessment_error {
   color: red;
 }
+
+.clear {
+  clear:both;
+}
+
+.user_details {
+  float:left;
+  padding-right: 30px;
+}
+
+.user_photo {
+  padding-left: 30px;
+}

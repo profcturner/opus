@@ -32,7 +32,7 @@ class DTO_Automail extends DTO
 
   function _load_by_lookup($lookup, $language_id = 1)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $con = $waf->connections[$this->_handle]->con;
 

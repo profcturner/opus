@@ -204,7 +204,7 @@ class AssessmentCombined
 
   function save_totals()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     // Form total mark
     $total = 0;
@@ -399,7 +399,7 @@ class AssessmentCombined
   */
   function check_variables()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $this->error = array();
 
     foreach($this->structure as $item)

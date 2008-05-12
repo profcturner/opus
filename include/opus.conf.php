@@ -53,6 +53,8 @@ $config['opus']['session']['navigation'] = 'OPUS_Navigation';
 // Don't change this if you don't know what you are doing
 $config['opus']['pref_ident'] = 'preferences';
 
+$config['opus']['tinymce_url'] = '/tinymce/tiny_mce.js';
+
 // now include the local configuration file
 // create this file locally and add any variation to the above configuration
 include "../include/local.conf.php"; 

@@ -37,7 +37,7 @@
 
 {* Load HTML Area if the "editor" component of page is set *}
 {if $xinha_editor}
-<script type="text/javascript" src="javascript/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="{$config.opus.tinymce_url}"></script>
 {literal}
 <script type="text/javascript">
   tinyMCE.init({

@@ -54,7 +54,7 @@ class DTO_Contact extends DTO
 
   function _get_all($where_clause="", $order_by="order by user.lastname", $start=0, $limit=MAX_ROWS_RETURNED, $parse = False) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
     if($waf->waf_debug)
@@ -85,7 +85,7 @@ class DTO_Contact extends DTO
 
   function _get_all_by_company($company_id = 0)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     require_once("model/CompanyContact.class.php");
 

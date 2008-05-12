@@ -146,7 +146,7 @@ class Automail extends DTO_Automail
   function sendmail($lookup, $mailfields, $language_id=1)
   {
     global $config;
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $automail = Automail::load_by_lookup($lookup, $language_id);
     if($automail == false) return; // lookup failed

@@ -19,7 +19,7 @@ class StudentImport
   function import_programme_via_SRS($programme_id, $year, $status, $onlyyear, $password, $test)
   {
     global $config_sensitive;
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     require_once("model/Programme.class.php");
     $programme = Programme::load_by_id($programme_id);
@@ -97,7 +97,7 @@ class StudentImport
   */
   function guess_mapping($filename)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     require_once("model/CSVMapping.class.php");
     $csvmapping = new CSVMapping;
@@ -136,7 +136,7 @@ class StudentImport
   {
     // This is the pattern OPUS expects at the end of a mapping
     $standard_pattern =       "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
-    global $waf;
+    $waf =& UUWAF::get_instance();
     require_once("model/Programme.class.php");
     require_once("model/CSVMapping.class.php");
     $programme = Programme::load_by_id($programme_id);
@@ -227,7 +227,7 @@ class StudentImport
 
   function add_student($student_array, $programme_id, $status, $year)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // Make their entry in the user table
     require_once("model/Student.class.php");
 

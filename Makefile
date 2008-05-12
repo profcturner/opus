@@ -16,7 +16,6 @@ tar:
 	# is very debian specific right now
 	rm -rf `find ../tarballs/opus-$(rel) -type d -name ".svn"`
 	rm -rf `find ../tarballs/opus-$(rel) -name "*~"`
-	rm -rf ../tarballs/opus-${rel}/Makefile
 	rm -rf ../tarballs/opus-$(rel)/debian
 	# actually perform the gzip
 	cd ../tarballs && tar cfz opus_$(rel).orig.tar.gz opus-$(rel)
@@ -61,6 +60,13 @@ install:
 	cp -rf sql_patch ${debprefix}/share/doc/opus
 	gzip -c -9 ChangeLog > ${debprefix}/share/doc/opus/changelog.gz
 
+update:
+	cp -rf html ${debprefix}/share/opus
+	cp -rf include ${debprefix}/share/opus
+	cp -rf cron ${debprefix}/share/opus
+	cp -rf templates ${debprefix}/share/opus
+	cp -rf configs ${debprefix}/share/opus
+
 debs: deb-opus, deb-opus-doc
 
 deb-opus: deb-opus-etc
@@ -96,6 +102,7 @@ deb-opus-etc:
 	mkdir -p ${debetc}/opus
 	cp etc/opus-local.config.php.debian ${debetc}/opus/opus-local.config.php
 	cp etc/apache2.conf ${debetc}/opus/apache2.conf
+	cp etc/local_en.conf ${debetc}/opus/local_en.conf
 
 
 deb-opus-doc:

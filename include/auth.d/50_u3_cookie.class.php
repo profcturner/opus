@@ -19,7 +19,7 @@ class u3_cookie
 {
   function waf_authenticate_user($username, $password)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     require_once("WA.Cookie.class.php");
 
     // Look for, verify, and decode any PDS cookie

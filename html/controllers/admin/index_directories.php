@@ -1122,6 +1122,8 @@
 
   /**
   * record a placement with a vacancy
+  * 
+  * the original data for the form is read from the vacancy record where possible
   */
   function add_placement(&$waf, &$user)
   {
@@ -1181,7 +1183,7 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
-    remove_object($waf, $user, "Placement", array("remove", "directories", "remove_placement_do"), array(array("cancel","section=directories&function=manage_placements&student_id=$student_id")), "", "admin:directories:student_directory:remove_placement");
+    remove_object($waf, $user, "Placement", array("remove", "directories", "remove_placement_do"), array(array("cancel","section=directories&function=edit_student&student_id=$student_id")), "", "admin:directories:student_directory:remove_placement");
   }
 
   function remove_placement_do(&$waf, &$user) 
@@ -1190,7 +1192,7 @@
 
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "Placement", "section=directories&function=edit_student&id=$student_id");
+    remove_object_do($waf, $user, "Placement", "section=directories&function=edit_student&student_id=$student_id");
   }
 
   function view_placement_vacancy(&$waf)

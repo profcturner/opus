@@ -25,7 +25,7 @@ class DTO_CompanyActivity extends DTO
 
   function _get_activity_ids_for_company($company_id)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
     $results_array = array();

@@ -33,7 +33,7 @@ class DTO_Vacancy extends DTO
 
   function _get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
     $sort_types = array("name", "locality");

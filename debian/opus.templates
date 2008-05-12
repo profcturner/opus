@@ -4,7 +4,9 @@ Default: localhost
 _Description: fully qualified hostname for this computer:
  This is the name by which this computer will be known on the network.
  You will not want to use localhost on a production server, since OPUS
- will send emails linking to this address.
+ will send emails linking to this address, and furthermore, OPUS will change
+ most accesses to the hostname supplied here, which will not work when browsed
+ from a remote machine.
 
 Template: opus/institution
 Type: string

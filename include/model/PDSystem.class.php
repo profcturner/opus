@@ -31,7 +31,7 @@ class PDSystem
   function get_data($section_name, $service_name, $input = "", $format = 'php')
   {
     global $config_sensitive;
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $format = strtolower($format);
     if(!in_array($format, array('php', 'xml', 'raw'))) $waf->halt("error:pdsystem_api:invalid_format");

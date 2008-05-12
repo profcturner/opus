@@ -30,6 +30,10 @@ etc. please contact us.
 Having said all that, I repeat, OPUS should work on any environment with
 PHP and MySQL.
 
+It requires PHP 5.1 or above for PDO support, and you will need to ensure that
+PHP has the mysql, mysql_pdo extension installed, together with ldap if you
+need it for authentication. This will be automatic on most platforms.
+
 
 1. Decide whether to install the PDSystem
 -----------------------------------------

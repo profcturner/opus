@@ -132,6 +132,7 @@ class Placement extends DTO_Placement
   */
   function insert($fields) 
   {
+    $waf =& UUWAF::get_instance();
     // Null some fields if empty
     $fields = Placement::set_empty_to_null($fields);
 
@@ -140,6 +141,7 @@ class Placement extends DTO_Placement
     $student_fields['placement_status'] = 'Placed';
     // inbound $student_id is the user id, not the id from the student table
     $student_fields['id'] = Student::get_id_from_user_id($fields['student_id']);
+    $waf->log("updating student", PEAR_LOG_DEBUG, 'debug');
     Student::update($student_fields);
 
     // Now the main insertion
@@ -148,6 +150,7 @@ class Placement extends DTO_Placement
     $id = $placement->_insert($fields);
 
     // See if the supervisor needs created / updated
+    $waf->log("updating supervisor", PEAR_LOG_DEBUG, 'debug');    
     require_once("model/Supervisor.class.php");
     Supervisor::update_from_placement($id, $fields);
   }
@@ -199,7 +202,7 @@ class Placement extends DTO_Placement
   */
   function set_empty_to_null($fields)
   {
-    $set_to_null = array("created", "modified", "jobstart");
+    $set_to_null = array("created", "modified", "jobstart", "jobend");
     foreach($set_to_null as $field)
     {
       if(isset($fields[$field]) && !strlen($fields[$field])) $fields[$field] = null;

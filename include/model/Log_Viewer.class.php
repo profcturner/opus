@@ -26,7 +26,7 @@ class Log_Viewer
 
   function __construct($logname="general", $search="", $lines=100)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $this->available_logs = array('general', 'admin', 'debug', 'security', 'panic', 'cron', 'waf_debug', 'php_errors');
 
@@ -57,7 +57,7 @@ class Log_Viewer
 
   function get_log_size($logname)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     global $config;
 
     if(!in_array($logname, $this->available_logs))
@@ -93,7 +93,7 @@ class Log_Viewer
 
   function get_log_content($logname, $search, $lines)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     global $config;
 
     $lines = (int) $lines; // security
@@ -155,7 +155,7 @@ class Log_Viewer
   */ 
   private function get_compressed_content($logname, $search, $lines)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     global $config;
 
     // globbed filename for any gz content

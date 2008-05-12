@@ -166,7 +166,7 @@ class Policy extends DTO_Policy
   */
   function load_default_policy()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     if(isset($_SESSION['user']['policy'])) return true;
 
     if(User::is_root()) return false;
@@ -235,7 +235,7 @@ class Policy extends DTO_Policy
   */
   function is_auth_for_student($student_id, $category, $permission)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // roots are always authorised
     if(User::is_root()) return true;
 

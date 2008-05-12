@@ -26,7 +26,7 @@ class Photo
   */
   function display_photo($username, $fullsize = false)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     global $config;
 
     if(!preg_match("/^[A-Za-z0-9]+$/", $username)) $waf->halt("error:photo:invalid_username");
@@ -88,7 +88,7 @@ class Photo
 
   function create_thumbnail($username)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     global $config;
 
     if(!preg_match("/^[A-Za-z0-9]+$/", $username)) $waf->halt("error:photo:invalid_username");

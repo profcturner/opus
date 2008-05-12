@@ -29,7 +29,7 @@ class DTO_PhoneHome extends DTO
   */
   function _get_unixtimes()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
     try
     {

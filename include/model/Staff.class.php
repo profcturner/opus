@@ -137,7 +137,7 @@ class Staff extends DTO_Staff
 
   function update($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // We have a potential security problem here, we should check id and user_id are really linked.
     $staff = Staff::load_by_id($fields['id']);
     if($staff->user_id != $fields['user_id'])
@@ -242,7 +242,7 @@ class Staff extends DTO_Staff
   {
     $student_id = WA::request('id');
     require_once("model/Student.class.php");
-    if($id)
+    if($student_id)
     {
       $student = Student::load_by_id($student_id);
       $programme_id = Student::get_programme_id($student->user_id);

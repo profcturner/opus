@@ -16,6 +16,20 @@
 {if $placement}
 {#placement_details#}
 {include file="manage.tpl" mode="view" headings=$placement_headings object=$placement action_button=$placement_action}
+<div id="student_academic_tutor">
+{#academic_tutor#}
+{if $academic_tutor}
+<div class="user_details">
+{include file="manage.tpl" mode="view" headings=$academic_headings object=$academic_tutor}
+</div>
+<div class="user_photo">
+<a href="?section=placement&function=display_photo&username={$academic_tutor->username}&fullsize=true" >
+<img width="200" border="0"  src="?section=placement&function=display_photo&username={$academic_tutor->username}" /></a>
+</div>
+{else}
+{#no_academic_tutor#}
+{/if}
+</div>
 {/if}
 {/if}
 {eval assign="student_year" var="StudentHomePlaced"|cat:$student->placement_year} 

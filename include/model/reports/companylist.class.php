@@ -47,7 +47,7 @@ class companylist extends Report
   */
   function input_stage_1($report_options)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     // We won't be supplying a template, this is the only question
     $waf->assign("standalone", true);
@@ -62,7 +62,7 @@ class companylist extends Report
   */
   function input_stage_do_1($report_options)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $output_format = WA::request("output_format");
     if(!in_array($output_format, $this->available_formats))

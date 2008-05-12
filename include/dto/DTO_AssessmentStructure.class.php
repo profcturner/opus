@@ -33,7 +33,7 @@ class DTO_AssessmentStructure extends DTO
   */
   function _move_down($assessment_id, $varorder)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -85,7 +85,7 @@ class DTO_AssessmentStructure extends DTO
   */
   function _move_up($assessment_id, $varorder)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -126,7 +126,7 @@ class DTO_AssessmentStructure extends DTO
 
   function _swaprows($assessment_id, $varorder1, $varorder2)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
     // @todo Need transaction code here really!

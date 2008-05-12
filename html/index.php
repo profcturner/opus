@@ -44,8 +44,7 @@ function main()
   require_once("model/Policy.class.php"); // Not happy to have to read this for all classes
 
   // Initialise the Web Application Framework
-  global $waf;
-  $waf = new WA($config['waf']);
+  $waf =& UUWAF::get_instance($config['waf']);
 
   // We want an extra log file for admin users
   $waf->create_log_file("admin");
@@ -151,7 +150,7 @@ function main()
 
 function load_user($username)
 {
-  global $waf;
+  $waf =& UUWAF::get_instance();
   $now = date("YmdHis");
 
   require_once("model/User.class.php");
@@ -229,7 +228,7 @@ function load_user($username)
 */
 function drop_cookies()
 {
-  global $waf;
+  $waf =& UUWAF::get_instance();
   $reg_number = $waf->user['opus']['reg_number'];
   $username = $waf->user['opus']['username'];
 
@@ -247,7 +246,7 @@ function drop_cookies()
 
 function destroy_cookies()
 {
-  global $waf;
+  $waf =& UUWAF::get_instance();
   $waf->log("invalidating u3ticket and opusticket", PEAR_LOG_DEBUG, 'debug');
   require_once("WA.Cookie.class.php");
   // destroy the cookies we might have dropped
@@ -331,7 +330,7 @@ function login(&$waf)
 
 function logout(&$waf) 
 {
-  global $waf;
+  $waf =& UUWAF::get_instance();
 
   $id = $waf->user['opus']['user_id'];
 

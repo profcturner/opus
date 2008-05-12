@@ -25,7 +25,7 @@ class DTO_Company extends DTO
 
   function _get_all_extended($search, $activities, $sort)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
     $sort_types = array("name", "locality");

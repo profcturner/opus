@@ -91,6 +91,7 @@ class Admin extends DTO_Admin
   {
     parent::__construct();
   }
+ 
 
   /**
   * returns header definitions
@@ -227,7 +228,7 @@ class Admin extends DTO_Admin
   */
   function update($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // We have a potential security problem here, we should check id and user_id are really linked.
     $admin = Admin::load_by_id($fields['id']);
     if($admin->user_id != $fields['user_id'])
@@ -255,6 +256,22 @@ class Admin extends DTO_Admin
 
     $admin = Admin::load_by_id($fields[id]);
     $admin->_update($fields);
+  }
+
+  /**
+  * removes a given admin record
+  * 
+  * @param int $id the unique id (defaults to zero for safety)
+  */ 
+  function remove($id=0) 
+  {
+    require_once("model/User.class.php");
+
+    $admin = new Admin;
+    $admin->load_by_id($id);
+    // Remove the user object also
+    User::remove($admin->user_id);
+    $admin->_remove_where("WHERE id=$id");
   }
 
   function exists($id) 
@@ -346,16 +363,6 @@ class Admin extends DTO_Admin
     return $nvp_array;
   }
 
-  function remove($id=0) 
-  {
-    require_once("model/User.class.php");
-
-    $admin = new Admin;
-    $admin->load_by_id($id);
-    // Remove the user object also
-    User::remove($admin->user_id);
-    $admin->_remove_where("WHERE id=$id");
-  }
 
   function get_user_id($id)
   {

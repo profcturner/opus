@@ -101,7 +101,7 @@ class Report
   */
   function get_reports()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $report_list = array();
 
     // Declare a test expression for valid files
@@ -161,7 +161,7 @@ class Report
   */
   function input($input_stage)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $input_stage = (int) $input_stage; // security
 
@@ -192,7 +192,7 @@ class Report
   */
   function input_do($input_stage)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $input_stage = (int) $input_stage; // security
 
@@ -226,7 +226,7 @@ class Report
   */
   function output_data()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     // Get any options
     $report_options = $this->load_options();
@@ -274,7 +274,7 @@ class Report
   */
   function make_object($unique_name)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // Declare a test expression for valid files
     $test_expr = "/^([A-Za-z0-9_-]+)$/";
 

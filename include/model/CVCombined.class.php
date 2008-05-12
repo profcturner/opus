@@ -168,12 +168,12 @@ class CVCombined
 
           case "template":
             if($allowAllTemplates) return true;
-            if(!in_array("allow", $template_permissions[$cv_ident_parts[2]]))
+            if(!in_array("allow", (array) $template_permissions[$cv_ident_parts[2]]))
             {
               $problem = "Disallowed Template";
               return false;
             }
-            if(in_array("requiresApproval", $template_permissions[$cv_ident_parts[2]]))
+            if(in_array("requiresApproval", (array) $template_permissions[$cv_ident_parts[2]]))
             {
               require_once("model/CVApproval.class.php");
               $approval = CVApproval::check_approval($student_id, $cv_ident);
@@ -263,7 +263,7 @@ class CVCombined
   */
   function view_cv_for_application($application_id)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $application_id = (int) $application_id;
 
@@ -313,7 +313,7 @@ class CVCombined
   */
   function view_cv($student_user_id, $cv_ident)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $student_name = User::get_name($student_user_id);
 
