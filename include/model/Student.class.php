@@ -138,7 +138,7 @@ class Student extends DTO_Student
   */
   function insert($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     require_once("model/User.class.php");
 
     $student = new Student;
@@ -179,7 +179,7 @@ class Student extends DTO_Student
   */
   function update($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // We have a potential security problem here, we should check id and user_id are really linked.
     $student = Student::load_by_id($fields['id']);
 

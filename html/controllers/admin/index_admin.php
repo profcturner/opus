@@ -11,7 +11,8 @@
 require_once("model/Policy.class.php");
 
 // The admin log file should be created, and it should be the default
-$GLOBALS['waf']->set_default_log("admin");
+$waf = UUWAF::get_instance();
+$waf->set_default_log("admin");
 
 /**
 * Defines and handles the Administrator Menu

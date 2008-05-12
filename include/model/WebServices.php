@@ -33,7 +33,7 @@ class WebServices
   function get_data($service_name, $input, $format = 'php')
   {
     global $config_sensitive;
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $waf->log("requesting service $service_name from web services", PEAR_LOG_DEBUG, 'debug');
     if(empty($config_sensitive['ws']['url']))
@@ -118,7 +118,7 @@ class WebServices
   */
   function get_students_by_course($course_code, $calendar_occurence, $course_year)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $waf->log("webservice get_course called for programme $course_code, calendar_occurence $calendar_occurence, programme year $course_year", PEAR_LOG_DEBUG, 'debug');
 
     return(WebServices::get_data("get_students_by_course_code_calendar_occurrence_course_year", "course_code=$course_code&calendar_occurrence=$calendar_occurence&year=$course_year"));

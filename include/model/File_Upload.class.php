@@ -30,7 +30,7 @@ class File_Upload
   */
   function test_file($file_var_name, $proposed_name="", $space_allowed = 0)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $result = array();
     // failsafe condition
@@ -103,7 +103,7 @@ class File_Upload
 
   function move_file($file_var_name, $new_name)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     if(move_uploaded_file($_FILES[$file_var_name]['tmp_name'], $new_name))
     {

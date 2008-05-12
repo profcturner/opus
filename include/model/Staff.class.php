@@ -137,7 +137,7 @@ class Staff extends DTO_Staff
 
   function update($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // We have a potential security problem here, we should check id and user_id are really linked.
     $staff = Staff::load_by_id($fields['id']);
     if($staff->user_id != $fields['user_id'])

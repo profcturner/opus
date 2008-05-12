@@ -38,7 +38,7 @@ $config['opus']['title_short']          = 'OPUS';
 $config['opus']['tagline']              = 'Online Placement University System';
 $config['opus']['version']              = 4;
 $config['opus']['minor_version']        = 0;
-$config['opus']['patch_version']        = 2;
+$config['opus']['patch_version']        = 3;
 $config['opus']['benchmarking']         = true;
 $config['opus']['logo']                 = "logo.png";
 $config['opus']['rows_per_page']        = 20;
@@ -52,6 +52,8 @@ $config['opus']['session']['navigation'] = 'OPUS_Navigation';
 
 // Don't change this if you don't know what you are doing
 $config['opus']['pref_ident'] = 'preferences';
+
+$config['opus']['tinymce_url'] = '/opus/javascript/tinymce/tiny_mce.js';
 
 // now include the local configuration file
 // create this file locally and add any variation to the above configuration

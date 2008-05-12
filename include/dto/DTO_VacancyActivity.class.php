@@ -28,7 +28,7 @@ class DTO_VacancyActivity extends DTO
   */
   function _get_activity_ids_for_vacancy($vacancy_id)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
     $results_array = array();

@@ -132,7 +132,7 @@ class Placement extends DTO_Placement
   */
   function insert($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // Null some fields if empty
     $fields = Placement::set_empty_to_null($fields);
 

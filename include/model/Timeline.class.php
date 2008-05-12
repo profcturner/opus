@@ -174,7 +174,7 @@ class Timeline extends DTO_Timeline
 
   function update_year($year, $check_applications = false)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $message = "Updating timelines for $year";
     if($waf->unattended) echo "$message\n";
@@ -220,7 +220,7 @@ class Timeline extends DTO_Timeline
 
   function add_image($student_id)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $message = "Adding new timeline for student $student_id";
     if($waf->unattended) echo "  $message\n";
@@ -242,7 +242,7 @@ class Timeline extends DTO_Timeline
 
   function modify_image($student_id, $timeline_id)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $message = "Modifying timeline for student $student_id";
     if($waf->unattended) echo "  $message\n";
@@ -265,7 +265,7 @@ class Timeline extends DTO_Timeline
 
   function create_image($student_id)
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $perl_script = $waf->base_dir . "/cron/timeline.pl";
     $fp = popen("$perl_script $student_id", "rb");

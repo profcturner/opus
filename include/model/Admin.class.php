@@ -228,7 +228,7 @@ class Admin extends DTO_Admin
   */
   function update($fields) 
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // We have a potential security problem here, we should check id and user_id are really linked.
     $admin = Admin::load_by_id($fields['id']);
     if($admin->user_id != $fields['user_id'])

@@ -151,7 +151,7 @@ Class User extends DTO_User
 
   function get_id()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     return($waf->user['opus']['user_id']);
   }
 
@@ -207,7 +207,7 @@ Class User extends DTO_User
   function reset_password($id = 0, $allow_other_user = false)
   {
     if($id == 0) return(false);
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // Non admins can only do this for themselves
     if(!User::is_admin() && !allow_other_user)
     {
@@ -396,7 +396,7 @@ Class User extends DTO_User
 
   function check_online_users()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
     // Who is supposedly online?
     $marked_online = User::get_id_and_field('session_hash', "where online = 'online'");
 
@@ -425,7 +425,7 @@ Class User extends DTO_User
   */
   function get_active_session_hashes()
   {
-    global $waf;
+    $waf =& UUWAF::get_instance();
 
     $waf->log("building hashes of active sessions", PEAR_LOG_DEBUG);
 

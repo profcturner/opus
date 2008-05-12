@@ -8,7 +8,8 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  if(!User::is_root()) $GLOBALS['waf']->halt("error:admin:no_access");
+  $waf &= UUWAF::get_instance();
+  if(!User::is_root()) $waf->halt("error:admin:no_access");
 
   /**
   * @author Gordon Crawford <g.crawford@ulster.ac.uk>
