@@ -929,7 +929,7 @@
     $status         = $_REQUEST['status'];
     $test           = $_REQUEST['test'];
     $onlyyear       = (int) $_REQUEST['onlyyear'];
-    $csvmapping_id  = (int) $_REQUEST['csv_mapping'];
+    $csvmapping_id  = (int) $_REQUEST['csvmapping_id'];
 
     require_once("model/StudentImport.class.php");
     if(strlen($_FILES['userfile']['tmp_name']))
