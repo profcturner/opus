@@ -348,7 +348,9 @@ In short, it supports our development of OPUS on our own, and your behalf.
 * Can OPUS produce a new report that has X, Y and Z?
 ----------------------------------------------------
 
-Yes, the reports have a plugin architecture, but DO require good knowledge of
+OPUS has a number of built-in reports, but you can create new ones.
+
+The reports have a plugin architecture, but DO require good knowledge of
 PHP to create.
 
 see include/Model/reports/
@@ -364,6 +366,9 @@ a consultancy agreement for us to write it for you.
 There is a work in progress only at this point in time. The application proves
 to be relatively intuitive however, and in particular, for non-admin users it
 is really quite straightforward.
+
+It is a plan that, since the development from version 4 on will likely need
+less work, the manual will be a priority for September 2008.
 
 
 * Can we contribute work to OPUS?
@@ -388,3 +393,41 @@ by ourselves and others. We have automated systems in place to make this simple.
 Official releases will be in cryptographically signed archives, which allow you
 to be sure (should you choose to check) that the code was officially signed off
 by us, and not altered by any third party before you receive it.
+
+We will sign your GPG keys with appropriate documentation if we meet in person
+and are happy to provide documentation to allow you to sign ours.
+
+
+At the bottom of the file it suggests that you can add some options. Add these:
+
+
+* Can I get more information out of OPUS, about what is happening in it?
+------------------------------------------------------------------------
+
+OPUS can produce a number of log files, here they are with what they are for
+
+  - general.log  (general, often quite detailed user activity)
+  - admin.log    (user activity for admin users)
+  - cron.log     (details activity performed offline to maintain the system)
+  - security.log (details of suspicious activity (OPUS is paranoid))
+  - panic.log    (details of problems, like database errors, usually empty)
+  - debug.log    (boring detail about some of the above)
+
+If you want even more detail about deep internals, you can switch on the
+waf_debug.lof, but it will rapidly become huge, so keep an eye on it.
+
+Go to your local config file and add some of what is below.
+-=-
+
+// Enables debug console, should ONLY be turned on for trusted IPs
+// Don't use it if your IP is behind a proxy shared with other users
+$config['waf']['debugging'] = True;
+$config['waf']['debug_only_on_IP'] = array("127.0.0.1", "your ip");
+
+// Enables extra logging (HUGE!!!!)
+$config['waf']['waf_debug'] = True;
+
+-=-
+
+---
+End of Document
