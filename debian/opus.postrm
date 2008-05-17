@@ -92,7 +92,9 @@ then
   if [ -e /etc/opus/debconf_config.php ]
   then
     echo "Removing debconf generated files ..."
-    rm /etc/opus/debconf_config.php
+      if which ucf >/dev/null 2>&1; then
+          ucf --purge /etc/opus/debconf_config.php
+      fi
   fi
 
 fi
