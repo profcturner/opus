@@ -105,7 +105,7 @@ deb-opus-etc:
 deb-opus-doc:
 	cd docs/latex ; make all
 	mkdir -p $(debprefix)/share/doc/opus-doc
-	cp opus_manual.pdf ${debprefix}/share/doc/opus-doc
+	cp docs/latex/opus_manual.pdf ${debprefix}/share/doc/opus-doc
 
 build_debs:
 	dpkg-buildpackage -rfakeroot

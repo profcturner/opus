@@ -3,8 +3,11 @@ opus (4.0.2-2) unstable; urgency=low
   * Watch file added
   * debconf_config.php now protected by ucf
   * Removed support for installation with apache 1 which is no longer in sid
+  * Fixed Vcs-Svn to only use a URL, not a command
+  * Packaging for opus-doc now only ships the resulting PDF, not Latex
+  * Cookie secrets are now generated automatically if left blank
 
- -- Colin Turner <colin@imladris.piglets.org>  Sat, 17 May 2008 23:46:49 +0100
+ -- Colin Turner <c.turner@ulster.ac.uk>  Sat, 17 May 2008 23:46:49 +0100
 
 opus (4.0.2-1) unstable; urgency=low
 

@@ -2,7 +2,9 @@ Source: opus
 Section: web
 Priority: extra
 Maintainer: Colin Turner <c.turner@ulster.ac.uk>
-Build-Depends: debhelper (>= 5), po-debconf
+Build-Depends: debhelper (>= 5),
+  po-debconf,
+  texlive
 Homepage: http://foss.ulster.ac.uk/projects/opus
 Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/?root=opus
 Vcs-Svn: svn://foss.ulster.ac.uk/svn/opus/trunk
@@ -26,7 +28,7 @@ Package: opus-doc
 Architecture: all
 Section: doc
 Depends:
-Description: On-line Placement University System
+Description: On-line Placement University System Documentation
  OPUS is a comprehensive web based tool for managing all aspects of placement.
  .
  This is the documentation for OPUS, which is currently very incomplete.
