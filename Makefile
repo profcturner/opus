@@ -27,6 +27,7 @@ clean:
 	rm -fv *.cache
 	rm -rf debian/opus
 	rm -rf debian/files
+	cd docs/latex ; make clean
 
 # Make development documentation, you will need phpdoc installed
 devdoc:
@@ -38,10 +39,6 @@ devdoc:
 # Currently contains commands for making with Debian primarily, but you can
 # override these paths with the call the make install to override.
 #
-debetc=/etc
-debprefix=/usr
-debwww=/var/www
-debvarlib=/var/lib
 
 install:
 	# Make main directory and copy in contents
@@ -106,8 +103,9 @@ deb-opus-etc:
 
 
 deb-opus-doc:
+	cd docs/latex ; make all
 	mkdir -p $(debprefix)/share/doc/opus-doc
-	cp -rf docs ${debprefix}/share/doc/opus-doc
+	cp docs/latex/opus_manual.pdf ${debprefix}/share/doc/opus-doc
 
 build_debs:
 	dpkg-buildpackage -rfakeroot

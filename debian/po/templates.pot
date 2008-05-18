@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: opus@packages.debian.org\n"
-"POT-Creation-Date: 2008-05-09 00:34+0100\n"
+"POT-Creation-Date: 2008-05-17 23:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,15 +33,31 @@ msgid ""
 "from a remote machine."
 msgstr ""
 
-#. Type: string
+#. Type: select
 #. Description
 #: ../opus.templates:2001
+msgid "protocol to use by default:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../opus.templates:2001
+msgid ""
+"You may have configured your web server to use the secure hypertext protocol "
+"https, which is a sensible choice if you are using password security. If so, "
+"you will want to configure OPUS to use https in preference to http, in which "
+"case it will redirect to https when used."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../opus.templates:2002
 msgid "the title of your institution:"
 msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:2001
+#: ../opus.templates:2002
 msgid ""
 "OPUS will use the title of your institution in appropriate places such as "
 "web pages and emails."
@@ -76,5 +92,6 @@ msgid ""
 "OPUS will use a secret to help hash the cookies. It is important that this "
 "really is difficult to guess to prevent users from being able to present "
 "false cookies. If you need OPUS to talk to another system, such as the "
-"PDSystem, you will need to use exactly the same secret for the other system."
+"PDSystem, you will need to use exactly the same secret for the other system. "
+"If you leave this field blank, a random secret will be created for you."
 msgstr ""
