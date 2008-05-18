@@ -78,7 +78,7 @@ class Resource extends DTO_Resource
   function view($id)
   {
     global $config;
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $resource = new Resource;
     $resource->id = $id;
@@ -146,7 +146,7 @@ class Resource extends DTO_Resource
   */
   function insert($fields) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     global $config;
 
     require_once("model/File_Upload.class.php");
@@ -181,7 +181,7 @@ class Resource extends DTO_Resource
   */
   function update($fields) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     global $config;
 
     // Is there a new inbound file?
@@ -277,7 +277,7 @@ class Resource extends DTO_Resource
   */
   function remove($id=0) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     global $config;
 
     // Get details for logging

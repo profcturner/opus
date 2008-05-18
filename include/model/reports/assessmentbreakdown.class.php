@@ -44,7 +44,7 @@ class assessmentbreakdown extends Report
   */
   function input_stage_1($report_options)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     // We want all the assessment groups
     require_once("model/AssessmentGroup.class.php");
@@ -61,7 +61,7 @@ class assessmentbreakdown extends Report
   */
   function input_stage_do_1($report_options)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $assessment_group = WA::request("assessment_group");
 
@@ -75,7 +75,7 @@ class assessmentbreakdown extends Report
   */
   function input_stage_2($report_options)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $group_id = (int) $report_options['assessment_group'];
 

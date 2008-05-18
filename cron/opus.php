@@ -46,7 +46,8 @@ function main()
   }
 
   // Initialise the Web Application Framework
-  $waf =& UUWAF::get_instance($config['waf']);
+  global $waf;
+  $waf = new WA($config['waf']);
   $waf->log("cron job started");
 
   $waf->assign_by_ref("benchmark", $benchmark);
@@ -214,7 +215,7 @@ function expire_vacancies($waf, $parameters)
 */
 function update_perl_config()
 {
-  $waf =& UUWAF::get_instance();
+  global $waf;
   global $config_sensitive;
 
   $filename = "config.pl";

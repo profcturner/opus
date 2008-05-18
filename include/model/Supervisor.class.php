@@ -129,7 +129,7 @@ class Supervisor extends DTO_Supervisor
   */
   function update_from_placement($placement_id, $fields)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $placement_id = (int) $placement_id;
 
     // Mapping to user table

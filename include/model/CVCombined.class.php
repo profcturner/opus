@@ -263,7 +263,7 @@ class CVCombined
   */
   function view_cv_for_application($application_id)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $application_id = (int) $application_id;
 
@@ -313,7 +313,7 @@ class CVCombined
   */
   function view_cv($student_user_id, $cv_ident)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $student_name = User::get_name($student_user_id);
 

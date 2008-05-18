@@ -64,7 +64,7 @@ class DTO_Admin extends DTO
 
   function _count($where_clause="")
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -84,7 +84,7 @@ class DTO_Admin extends DTO
 
   function _get_all($where_clause="", $order_by="order by user.lastname", $start=0, $limit=MAX_ROWS_RETURNED, $parse = False) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     if($waf->waf_debug)
@@ -130,7 +130,7 @@ class DTO_Admin extends DTO
 
   function _get_all_by_level($level, $level_id = 0, $help_directory = false)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     require_once("model/Policy.class.php");
 
@@ -172,7 +172,7 @@ class DTO_Admin extends DTO
 
   function _get_user_id_and_name($where_clause)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     $final_array = array();

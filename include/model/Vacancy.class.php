@@ -313,7 +313,7 @@ class Vacancy extends DTO_Vacancy
   */
   function close_vacancy($vacancy_id)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $vacancy = Vacancy::load_by_id($vacancy_id);
     // Perform the close

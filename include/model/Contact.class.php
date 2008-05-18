@@ -140,7 +140,7 @@ class Contact extends DTO_Contact
 
   function update($fields) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     // We have a potential security problem here, we should check id and user_id are really linked.
     $contact = Contact::load_by_id($fields['id']);
     if($contact->user_id != $fields['user_id'])

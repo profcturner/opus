@@ -40,7 +40,7 @@ class DTO_Resource extends DTO
   */
   function _get_all_by_company($company_id)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     $object_array = array();
@@ -67,7 +67,7 @@ class DTO_Resource extends DTO
   */
   function _get_all_by_vacancy($vacancy_id)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     $object_array = array();

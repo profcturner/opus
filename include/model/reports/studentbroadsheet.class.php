@@ -52,7 +52,7 @@ class studentbroadsheet extends Report
   */
   function input_stage_1($report_options)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     // We want all the assessment groups
     require_once("model/AssessmentGroup.class.php");
@@ -74,7 +74,7 @@ class studentbroadsheet extends Report
   */
   function input_stage_do_1($report_options)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $output_format = WA::request("output_format");
     $extras = WA::request("extras");

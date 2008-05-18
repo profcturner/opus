@@ -25,7 +25,7 @@ class DTO_ChannelAssociation extends DTO
 
   function _insert($fields)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -56,7 +56,7 @@ class DTO_ChannelAssociation extends DTO
   */
   function _move_down($channel_id, $priority)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -108,7 +108,7 @@ class DTO_ChannelAssociation extends DTO
   */
   function _move_up($channel_id, $priority)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -149,7 +149,7 @@ class DTO_ChannelAssociation extends DTO
 
   function _swaprows($channel_id, $priority1, $priority2)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     // @todo Need transaction code here really!
@@ -176,7 +176,7 @@ class DTO_ChannelAssociation extends DTO
   */
   function _get_all_extended($channel_id)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     $object_array = array();

@@ -19,7 +19,7 @@ class ldap_uu
 {
   function waf_authenticate_user($username, $password)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     global $config_sensitive;
 
     if(!strlen($username) || !strlen($password)) return false;

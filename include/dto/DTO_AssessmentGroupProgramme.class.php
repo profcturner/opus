@@ -23,7 +23,7 @@ class DTO_AssessmentGroupProgramme extends DTO
 
   function _get_all_programmes($group_id, $year)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     $programmes = array();

@@ -31,7 +31,7 @@ class Preference extends DTO_Preference
 
   function fetch_all($reg_number)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $application = $waf->title;
     if(empty($reg_number))
     {
@@ -47,7 +47,7 @@ class Preference extends DTO_Preference
 
   function load_all($reg_number)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $application = $waf->title;
     if(empty($reg_number))
     {
@@ -69,7 +69,7 @@ class Preference extends DTO_Preference
 
   function save_all($reg_number)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $application = $waf->title;
 
     if(empty($reg_number))
@@ -101,7 +101,7 @@ class Preference extends DTO_Preference
 
   function set_preference($name, $value)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $application = $waf->title;
 
     $_SESSION['waf'][$application]['preferences'][$name] = $value;
@@ -109,7 +109,7 @@ class Preference extends DTO_Preference
 
   function get_preference($name)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $application = $waf->title;
 
     return($_SESSION['waf'][$application]['preferences'][$name]);

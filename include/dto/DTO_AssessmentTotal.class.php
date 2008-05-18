@@ -24,7 +24,7 @@ class DTO_AssessmentTotal extends DTO
 
   function _get_totals_with_stamps($assessed_id, $regime_id)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     $query = "select *, UNIX_TIMESTAMP(created) as created_unix, UNIX_TIMESTAMP(assessed) as assessed_unix from assessmenttotal where assessed_id=? and regime_id=?";

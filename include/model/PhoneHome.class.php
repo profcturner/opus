@@ -71,7 +71,7 @@ class PhoneHome extends DTO_PhoneHome
 
   function update($fields) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $phonehome = PhoneHome::load_by_id($fields[id]);
 
     // Update any templates
@@ -179,7 +179,7 @@ class PhoneHome extends DTO_PhoneHome
   */
   function send_install()
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $now = date("YmdHis");
 
     $phonehome = PhoneHome::load_by_id(1);
@@ -208,7 +208,7 @@ class PhoneHome extends DTO_PhoneHome
   */
   function send_periodic()
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $now = date("YmdHis");
 
     $phonehome = PhoneHome::load_by_id(1);

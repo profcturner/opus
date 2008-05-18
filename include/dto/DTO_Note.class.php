@@ -32,7 +32,7 @@ class DTO_Note extends DTO
 
   function _get_all_by_links($object_type, $object_id = 0)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $con = $waf->connections[$this->_handle]->con;
 

@@ -57,7 +57,7 @@ class Cache_Object extends DTO
   */
   function load_from_cache($key, $return_stale = false)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $success = $this->_load_by_field_value("key", $key);
     if($success)
@@ -88,7 +88,7 @@ class Cache_Object extends DTO
   */
   function update_cache($key, $cache)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $waf->log("update cache on key $key", PEAR_LOG_DEBUG, 'debug');
     $wscache = new Cache_Object;

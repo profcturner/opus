@@ -56,7 +56,7 @@ class DTO_Student extends DTO
 
   function _get_all_extended($search, $year, $programmes, $sort, $other_options)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     if(empty($programmes)) $programmes = array();
@@ -111,7 +111,7 @@ class DTO_Student extends DTO
 
   function _get_all_by_initial($initial)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     require_once("model/Policy.class.php");
@@ -140,7 +140,7 @@ class DTO_Student extends DTO
 
   function _get_all($where_clause="", $order_by="order by user.lastname", $start=0, $limit=MAX_ROWS_RETURNED, $parse = False) 
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     if($waf->waf_debug)

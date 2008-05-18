@@ -31,7 +31,7 @@ class DTO_User extends DTO
   */
   function _username_password($username, $password)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     try
@@ -66,7 +66,7 @@ class DTO_User extends DTO
   */
   function _reg_number_password($reg_number, $password)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con; 
 
     try

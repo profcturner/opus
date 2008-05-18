@@ -27,7 +27,7 @@ class DTO_Supervisor extends DTO_NoData
 
   function _load_by_placement_id($id=0, $halt_on_error = true)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $id = (int) $id;
     // Load the placement record
@@ -87,7 +87,7 @@ class DTO_Supervisor extends DTO_NoData
 
   function _get_all($where_clause="", $order_clause="order by lastname", $start=0, $limit=10000)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
 
     $con = $waf->connections[$this->_handle]->con;
 
@@ -117,7 +117,7 @@ class DTO_Supervisor extends DTO_NoData
 
   function _get_all_by_initial($initial)
   {
-    $waf =& UUWAF::get_instance();
+    global $waf;
     $con = $waf->connections[$this->_handle]->con;
 
     if(!preg_match('/^[A-Za-z]$/', $initial)) return array();
