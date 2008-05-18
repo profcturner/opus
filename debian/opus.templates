@@ -17,7 +17,7 @@ _Description: protocol to use by default:
  https, which is a sensible choice if you are using password security. If so,
  you will want to configure OPUS to use https in preference to http, in which
  case it will redirect to https when used.
- 
+
 Template: opus/institution
 Type: string
 Default: University of Somewhere
