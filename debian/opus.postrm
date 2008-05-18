@@ -84,19 +84,16 @@ then
     rm -rf /var/log/opus
   fi
 
+  echo "Removing debconf generated files ..."
   rm -f /etc/opus/opus-database.php
   if which ucf >/dev/null 2>&1; then
           ucf --purge /etc/opus/opus-database.php
   fi
 
-  if [ -e /etc/opus/debconf_config.php ]
-  then
-    echo "Removing debconf generated files ..."
-      if which ucf >/dev/null 2>&1; then
-          ucf --purge /etc/opus/debconf_config.php
-      fi
+  rm -f /etc/opus/debconf_config.php
+  if which ucf >/dev/null 2>&1; then
+    ucf --purge /etc/opus/debconf_config.php
   fi
-
 fi
 
 # dh_installdeb will replace this with shell code automatically

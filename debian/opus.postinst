@@ -57,7 +57,6 @@ then
   COOKIE_HOST="$RET";
   db_get opus/cookie_secret
   COOKIE_SECRET="$RET"
-  
   # Sanity checking on COOKIE_SECRET
   if [ ! "$COOKIE_SECRET" ]
   then
@@ -70,7 +69,6 @@ then
 	fi
 	# Put the processed value back into debconf
   db_set opus/cookie_secret "$COOKIE_SECRET"
-
   # Place all of this in a temporary file
   cat <<EOF > /etc/opus/debconf_config.php.ucftmp
 <?php
@@ -91,9 +89,12 @@ then
 ?>
 EOF
   
-  # Now, check with debconf that we can replace the "real" config.
+  # Now, check with debconf that we can replace the "real" config. 
   ucf --debconf-ok /etc/opus/debconf_config.php.ucftmp /etc/opus/debconf_config.php
   rm -f /etc/opus/debconf_config.php.ucftmp
+
+  # Release debconf
+  db_stop
 
   # Ensure sensible permissions
   chown www-data:root /etc/opus/*.php
