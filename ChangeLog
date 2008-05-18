@@ -59,3 +59,146 @@
 	* include/model/Placement.class.php, templates/manage.tpl: lookups
 	  that are readonly now don't display a drop down
 
+2008-04-18  colin
+
+	* include/model/Student.class.php: Stop username corruption
+	  (sometimes become blank).
+	* include/dto/DTO_Company.class.php: if a company has no associated
+	  activities (impossible in any recent OPUS install) it didn't show
+	  in the list (bug #341).
+	* include/dto/DTO_Company.class.php: undoing previous fix, it will
+	  cause more confusion than it will solve
+
+2008-04-19  colin
+
+	* debian/opus.postinst: remove line to try and install pear log, it
+	  is itself Debian packaged and I'll move the dependency to uuwaf
+	* debian/control: Ensure that uuwaf 1.0.1 or higher is installed
+	  since that now carries the dependency for PEAR Log
+
+2008-04-21  colin
+
+	* debian/opus.postinst: streamlining OPUS packaging
+
+2008-04-22  colin
+
+	* ChangeLog, Makefile, debian/changelog, debian/control,
+	  debian/docs: Last changes for 4.0.1
+	* html/controllers/admin/index_directories.php: the button to add
+	  an administrator got accidentally removed just before 4.0.0
+	  release, it is now reinstated (as usual, after you search for an
+	  admin).
+	* include/opus.conf.php: updating version number
+
+2008-04-24  colin
+
+	* debian/docs: Debian packaging obviously does not require the
+	  UPGRADE and INSTALL files, and in fact they produce lintian
+	  errors, so removing them from the package.
+	* debian/conffiles: Debian automatically treats the contents of etc
+	  as conffiles, so duplicating them causes a lintian error
+	* INSTALL, UPGRADE, debian/opus.dirs, debian/opus.postinst,
+	  include/opus.conf.php: Ensure strict compliance with the
+	  Filesystem Hierarchy Standard, by moving photos and resources to
+	  /var/lib/opus
+	* Makefile, debian/changelog, debian/control, debian/docs: various
+	  packaging improvements
+
+2008-04-25  colin
+
+	* debian/copyright: Remove xinha from copyright message
+	* html/controllers/admin/index_directories.php: fixed a problem
+	  which could cause a fatal error when editing an admin sometimes
+
+2008-04-26  colin
+
+	* include/model/Placement.class.php: removed some inert code and
+	  commented file
+
+2008-04-28  colin
+
+	* include/model/Log_Viewer.class.php,
+	  include/model/StudentImport.class.php,
+	  templates/admin/information/log_viewer.tpl: log viewer should now
+	  support compressed (log rotated) log files
+	* etc/opus.logrotate.d: including a log rotate configuration now
+	  compressed reading is possible
+
+2008-04-29  colin
+
+	* debian/README.Debian, debian/opus.postinst, debian/rules: added
+	  initial readme for debian users and also configuration for
+	  logrotation, and the possibility to install apache1
+	  configurations.
+
+2008-04-30  colin
+
+	* debian/README.Debian, debian/opus.postinst, debian/opus.postrm,
+	  debian/opus.templates: more improvements to packaging, a
+	  local_en.conf will now also be installed.
+	* etc/local_en.conf: initial local_en.conf
+	* include/model/Admin.class.php: improved comments
+	* Makefile: updated for new debian packaging
+
+2008-05-01  colin
+
+	* templates/manage.tpl: remove overzealous checking for textareas
+	  to stop a slowdown problem visible on slower connections with
+	  firefox (bug #371)
+	* configs/lang_en.conf, debian/changelog,
+	  html/controllers/student/index_placement.php,
+	  html/controllers/supervisor/index_home.php, html/css/default.css,
+	  include/model/Student.class.php,
+	  templates/student/placement/placement_home.tpl,
+	  templates/supervisor/home/home.tpl: updated version, adding
+	  photos of students for supervisors, and academic tutors for
+	  students, plus some improved documentation
+	* html/controllers/student/index_placement.php,
+	  templates/student/placement/placement_home.tpl: small error in
+	  photo url corrected
+	* html/controllers/student/index_placement.php,
+	  html/controllers/supervisor/index_home.php: small error in photo
+	  url corrected
+	* templates/manage.tpl: accidentally removed character counter
+	* templates/manage.tpl: accidentally removed character counter
+
+2008-05-02  colin
+
+	* configs/lang_en.conf,
+	  html/controllers/admin/index_directories.php,
+	  include/model/Placement.class.php,
+	  include/model/Student.class.php: fixed some minor issues with
+	  workflow when maniulating placements, and a harmless SQL error on
+	  placement manipulation has been removed (see bug #391)
+	* include/model/Staff.class.php: stupid typo meant all staff shown
+	  in other schools in lookup for academic tutor
+
+2008-05-08  colin
+
+	* include/model/Log_Viewer.class.php: compressed log entries were
+	  merged after uncompressed, but they should have been before
+	* etc/opus.logrotate.d: all rotated log files will be compressed
+	  right away
+	* templates/admin/information/log_viewer.tpl: make it clear only
+	  the uncompressed log file is measured
+	* include/model/Log_Viewer.class.php: error in number of lines
+	  fetched fixed
+	* include/model/Log_Viewer.class.php: error in number of lines
+	  fetched fixed
+	* templates/admin/information/log_viewer.tpl: reporting zero lines
+	  fetched correctly
+	* debian/README.Debian, debian/po/templates.pot, debian/rules:
+	  various changes to Debian packaging in preparation for upload
+	* Makefile: various changes to Debian packaging in preparation for
+	  upload
+
+2008-05-09  colin
+
+	* html/controllers/admin/index_student.php: minor issue in linkages
+	  for assessment view by admins on students (bug #405)
+
+2008-05-12  colin
+
+	* FAQ, INSTALL, Makefile: Minor fixes and improvements to
+	  documentation
+

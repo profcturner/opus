@@ -11,30 +11,24 @@ opus (4.0.2-2) unstable; urgency=low
 
 opus (4.0.2-1) unstable; urgency=low
 
-  * packaging now allows other web servers than apache 2
-
-  * packaging also includes new README.Debian and auto installed local_en.conf
-
-  * new upstream version
+  * Packaging now allows other web servers than apache 2
+  * Packaging also includes new README.Debian and auto installed local_en.conf
+  * New upstream version
 
  -- Colin Turner <c.turner@ulster.ac.uk>  Thu, 01 May 2008 23:10:41 +0100
 
 opus (4.0.1-2) unstable; urgency=low
 
-  * move photos and resources to /var/lib/opus where they belong
-
-  * remove conffiles to prevent apache2.conf being declared twice
-
-  * remove INSTALL and UPGRADE from packaging
+  * Move photos and resources to /var/lib/opus where they belong
+  * Remove conffiles to prevent apache2.conf being declared twice
+  * Remove INSTALL and UPGRADE from packaging
 
  -- Colin Turner <c.turner@ulster.ac.uk>  Thu, 24 Apr 2008 19:42:44 +0100
 
 opus (4.0.1-1) unstable; urgency=low
 
   * New upstream version.
-	
   * Packaging no longer tries to install PEAR log, but uuwaf now depends on it.
-
   * Packaging does not try to restart Apache 2 if it is not running.
 
  -- Colin Turner <c.turner@ulster.ac.uk>  Tue, 22 Apr 2008 11:38:58 +0100
