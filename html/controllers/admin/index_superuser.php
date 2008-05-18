@@ -8,7 +8,7 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  //global $waf;
+  global $waf;
   if(!User::is_root()) $waf->halt("error:admin:no_access");
 
   /**
