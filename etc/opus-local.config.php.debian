@@ -37,6 +37,9 @@ $config_sensitive['opus']['preference']['dsn'] = "$dbtype:host=$dbserver;dbname=
 $config_sensitive['opus']['preference']['username'] = "$dbuser";
 $config_sensitive['opus']['preference']['password'] = "$dbpass";
 
+// Use Debian packaged tinymce
+$config['opus']['tinymce_url'] = '/tinymce/tiny_mce.js';
+
 // Read material from debconf
 require_once("/etc/opus/debconf_config.php");
 
