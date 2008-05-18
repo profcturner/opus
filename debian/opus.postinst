@@ -66,7 +66,7 @@ then
 		COOKIE_SECRET=`env LANG=C LC_ALL=C tr -dc "[:alnum:]" < /dev/urandom | dd bs=1 count=12 2>/dev/null`
   else
     # Remove any characters dangerous to the encoding here, specifically quotes and dollars, backslashes
-    COOKIE_SECRET=`env LANG=C LC_ALL=C echo $cookie_secret | tr -d "[\'\"$]" 2>/dev/null`
+    COOKIE_SECRET=`env LANG=C LC_ALL=C echo $COOKIE_SECRET | tr -d "[\'\"$]" 2>/dev/null`
 	fi
 	# Put the processed value back into debconf
   db_set opus/cookie_secret "$COOKIE_SECRET"
@@ -93,7 +93,7 @@ EOF
   
   # Now, check with debconf that we can replace the "real" config.
   ucf --debconf-ok /etc/opus/debconf_config.php.ucftmp /etc/opus/debconf_config.php
-  rm -f /etc/opus/debconf_config.ucftmp
+  rm -f /etc/opus/debconf_config.php.ucftmp
 
   # Ensure sensible permissions
   chown www-data:root /etc/opus/*.php
@@ -163,15 +163,12 @@ EOF
   # If Apache 2 is running restart it, important in case folks are using apache1
   if [ -e /var/run/apache2.pid ]
   then
-    if [ -e /var/run/apache2.pid ]
+    echo "Restarting Apache2 web server..."
+    if [ -x /usr/sbin/invoke-rc.d ]
     then
-      echo "Restarting Apache2 web server..."
-      if [ -x /usr/sbin/invoke-rc.d ]
-      then
-        invoke-rc.d apache2 restart
-      else
-        /etc/init.d/apache2 restart
-      fi
+      invoke-rc.d apache2 restart
+    else
+      /etc/init.d/apache2 restart
     fi
   else
     echo "Warning: no known web server is running, you may have to configure and restart the server manually..."
