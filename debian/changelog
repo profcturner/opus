@@ -1,3 +1,10 @@
+opus (4.0.2-3) unstable; urgency=low
+
+  * Added ucf as a dependency
+  * Upload for final release, Closes: #415241
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Wed, 21 May 2008 22:12:15 +0100
+
 opus (4.0.2-2) unstable; urgency=low
 
   * Watch file added
