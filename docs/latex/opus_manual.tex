@@ -376,10 +376,11 @@ source sql_patch/data.sql
 OPUS uses substantial logging throughout, and maintains several log files. You should ensure that you have a directory created to which
 the web server has write access. See the discussion for the templates directory above. This can be anywhere, such as \lstinline!/var/log/opus/!.
 
-\chapter{Initial Configuration}
 
-After installation, it is usually necessary to copy the file \lstinline!config.php.dist! to
-\lstinline!config.php! (in the \lstinline!include! directory) and customize its values.\footnote{Debian installation will take care of this aspect.}
+
+
+
+
 
 \chapter{Administrators \& Policies}
 \index{security}
@@ -387,26 +388,55 @@ After installation, it is usually necessary to copy the file \lstinline!config.p
 \index{administrators}
 \index{policies}
 
+This chapter is required reading for the top level administrators of OPUS, it
+is of less interest to other administrators who should find that things are
+already correctly configured for them.
+
 You should login with the newly installed ``Super-Admin'' user account. This
 user has no security restrictions imposed on it, and it is unwise to use it
-for day to day purposes. Therefore you will want to make one or more administrator
-accounts.
+for day to day purposes. Therefore you will want to make one or more ``normal''
+administrator accounts.
 
-\opustip{The initial login credentials will be \lstinline!admin! and \lstinline!password! so it
-is obviously absolutely essential that you change the password as soon as possible,
-and certainly before importing other data.}
+\opustip{The initial login credentials will be \lstinline!admin! and 
+\lstinline!password! so it is obviously absolutely essential that you change 
+the password as soon as possible, and certainly before importing other data.}
 
-Normal administrator accounts are bound by \emph{security policies}. These define
-the range of actions that may be undertaken by the user. In addition, it is usually
-the case that administrators are only able to undertake actions on specific courses
-or schools.
+Normal administrator accounts are bound by \emph{security policies}. These
+define the range of actions that may be undertaken by the user. In addition, 
+each administrator may be limited in scope so that they may exercise their
+powers on an institutional level, or at faculty, school or individual
+programme, or even a combination of the above.
 
 \section{Policies}
 \index{policies}
 
 You should begin by considering your security policies. By clicking on
-\opusacademicmenu{Configuration -> Admins} and then the \opusacademicmenu{Policies} tab,
-you will have the opportunity to define a new policy.
+\opusacademicmenu{Advanced -> Policies} you will be able to view and manipulate
+policies. OPUS already comes configured with a number of policies, that you may
+wish to add to, or adjust.
+
+More or less, \emph{Placement Coordinators} operate ata high level
+institutionally, should be better trained with OPUS and well versed in your
+policies for adding companies. Out of the box, they can add companies and other
+details that lesser users can only edit.
+
+By contrast, \emph{Placement Tutors} usually have responsibility for a few
+programmes. They have less power, but remember, you can \emph{help} staff by
+restricting their access so they can't make foolish errors.
+
+The \emph{Viewer} policy is intended for staff who need read only access to
+data but should never make changes.
+
+The \emph{Priority} attached to a policy simply dictates a kind of distance
+from the students. The lower the priority, the closer a policy holder is to
+the students, and so it is assumed they will be able to help more fully deal
+with queries about individual students.
+
+Clicking on \emph{Permissions} shows the complete list of permissions for a
+policy. Only super-admin users can make changes, but other admin users can
+see the details of their own policy.
+
+\subsection{Adding a Policy}
 
 Choose a name that reflects your policy and submit it. You are now able to
 edit the permissions for that policy. One of the first options is a priority
@@ -429,75 +459,217 @@ In general, the recommendations are that
 In general a hierarchy of at least a couple of policies is recommended, to put
 more experienced users in the higher bracket.
 
-There is a default policy for course directors, who have very limited access to
-some administrative features. Many advanced features cannot be enabled
-for this category.
-
 \section{Administrator Users}
 
 Now you have created suitable policies, you are ready to create administrator
 users and allocate them to policies. A policy provides a ceiling on the powers
 of a user - it is possible to curtail them further as needed (see~\ref{}).
 
-Clicking on the \opusacademicmenu{Configuration -> Admins} tab will allow you to list and
-create new administrator users. This is a two step process.
+Clicking on the \opusacademicmenu{Directories -> Administrators} menu item will 
+allow you to list and create new administrator users. As is often the case 
+within OPUS, you should start by searching for the user to ensure they are not
+already present before the \emph{add} button will present itself.
 
 \subsection{Creating Administrators}
 
-Use the form at the bottom of the page to create a new administrator account.
-Most of the fields are self explanatory, but there are some things to note.
+Adding an administrator can only be performed by a super-admin user, and quite
+a bit of information is required. Add all the required fields, and note in
+particular these others. When a user is created, they will be emailled their
+initial username and password.
 
-\subsubsection{Staff Number}
+\subsubsection{Policy}
 
-If the staff number is defined, it will be possible to login using a ``standard''
-single sign-on method. Otherwise the username and password generated must be used.
+If no policy is defined, this user will not be able to do anything. Select an
+appropriate policy having read the details above.
 
-\subsubsection{Options}
+\subsubsection{Institutional Admin}
 
-It is possible to define if this user will be shown in the Help Directory. This
-should normally be yes unless this user will not answer enquiries about students etc..
-\opustip{You can uncheck this if you are on leave to cause the
-help directory to automatically work around the absence.}
+Sometimes a member of staff will need rights over the whole institution, but
+not at a super-admin level. Rather than add them to each faculty, you can
+choose to make them an institutional admin, in which case they will see all
+programmes of study, and potentially all students. There should be 
+\emph{very few} such users.
 
-\subsubsection{Username \& Real name}
+\subsubsection{Help Directory}
 
-Generally you should leave this to ``auto'' and let OPUS work them out for you.
-On successful creation of a new user OPUS will email them their credentials
-(in an email apparently from you).
+This dictates whether a user will appear in the dynamic help directory. You
+should add members of staff who should be contacted by students and outside
+companies here. Members of staff on holiday should be temporarily removed.
 
-\subsection{Allocating Activities \& Policies}
+\subsubsection{Reg Number}
 
-Administrator users so created will initially have no security policy defined. This
-renders them virtually useless. You must then locate them in the Administrator listing
-and \opustext{Edit} them. 
+If the staff number is defined, it may be possible to login using a ``standard''
+single sign-on method, depending on how your OPUS is configured. It is also
+required for automatic saving of preferences.
 
-\subsubsection{Policies}
-\index{policies}
-
-You can now allocate a security policy for the user. This action will require
-confirmation and will be logged in the security log. Any subsequent change of policy
-will also require this.
-
-\subsubsection{Activities}
-\index{activities}
-\index{help!directory}
-
-Allocating activities to an administrator indicates that they are a useful point of
-contact for companies who operate in that activity, and will be used in formulating
-the Help Directory.
-
-\subsubsection{Root Users}
-\index{root users}
-
-
-If you are logged in as a super-admin or root user you will also be presented with
-an option to promote a ``normal'' administrator user to a ``root'' user and vice versa.
-You should generally keep \emph{very few} root accounts on your system.
-
-\subsection{Editing User Details}
+\subsection{Editing Admin Details}
 
 If you are a normal administrator you will only have permission to edit your own
-account, and will not see the details of other accounts.
+account, and will not be able to edit other accounts.
+
+
+\subsection{Promotion}
+\index{root users}
+
+You can (if you are a super-admin user), promote another admin to super-admin
+status. This should be done with \emph{great care}!
+
+\section{Super-Admin Users}
+
+These users have a directory of their own, which allows them to be edited,
+and demoted. Note you cannot directly create a super-admin user, you must 
+create a normal admin user and promote them. This is not a bug.
+
+You should generally keep \emph{very few} root accounts on your system.
+
+
+
+
+\chapter{Initial Configuration}
+
+After installation, it is usually necessary to copy the file \lstinline!config.php.dist! to
+\lstinline!config.php! (in the \lstinline!include! directory) and customize its values.\footnote{Debian installation will take care of this aspect.}
+
+\section{Organisation Details}
+
+OPUS will need to know something about the way in which your organisation is
+set-up. Clicking on this menu item will take you to an option to configure the
+faculties that will use OPUS.
+
+\subsection{Faculties}
+
+Create a new faculty by using the \emph{add}
+button. You will asked for a name, an optional web address, and an optional SRS
+(Student Records System) code. If your system has a unique short identifier for
+the faculty place it here.
+
+Once a faculty is created, you can assign administrators that will have a role
+over an entire faculty, or edit the schools within that faculty. Faculties can
+be marked as \emph{archive} which means they are no longer active (do not
+delete records unless you have added them in error, old records should be
+archived).
+
+\subsection{Schools}
+
+This operates in an identical way to the faculty list, create schools and if
+desired, assign administrators to them. You can edit and move a school to
+another faculty once created by changing the faculty in the drop down box.
+
+\subsection{Programmes}
+
+Finally we come to programmes of study. Again, you should specify the name, and
+code for the programme, and also decide on the \emph{CV Group} if you want
+different handling for this course.
+
+It is also possible, from the programme list, to assign administrators to an
+individual programme, if no-one already assigned at institutional level,
+faculty level or school level will do. Furthermore, clicking on assessment
+allows you to configure the assessmentgroup that a programme belongs to. This
+can change over the years, so it is possible to declare the start and end years
+for each association. Again, you should not delete older associations.
+
+\section{CV Groups}
+
+This section allows you to configure the way in which CVs should be handled.
+You can create as many CV Groups as you wish, and each one can contain as many
+programmes as you wish from a single unusual case, to all your programmes of
+study.
+
+OPUS already ships with a Default Group which all programmes belong to unless
+you change them.
+
+\subsection{Adding a CV Group}
+
+To add a CV Group simply click the \emph{add} button on this screen. You should
+use a simple, easily understood name for the group, and you can add a detailed
+description of the rationale for this group if you choose.
+
+Editing the Permissions allows you to select if all PDSystem templates should 
+be allowed (assuming the PDSystem is available to you), and whether custom CVs
+should be allowed.
+
+\subsection{Editing a CV Group}
+
+Once you have created a group, when it appears in the listing, there will be
+an option to specify how \emph{templates} are handled. If you have a coupled
+PDSystem this will produce an up-to-date list of templates offered by the
+PDSystem, and you can choose whether each template is allowed by that group
+for applications for placement, and, whether any such template based CV must 
+be approved before use.
+
+You can also select a default template which will be suggested to the student
+when they make an application.
+
+Remember, if you have selected to allow All PDSystem templates, this screen
+will have no effect.
+
+\subsection{Assigned Programmes to Groups}
+
+Once your CV Group is created, you should edit the programmes you wish to move
+into it, and simply change the CV Group to your new choice.
+
+\section{Assessment Groups}
+
+Assessment Groups allow you to decide how students will be assessed within
+OPUS. Before this will be of any use, you must have configured some assessments
+within the Advanced menu.
+
+A Default Scheme already exists within OPUS which has no assessments added to
+it. You should be cautious about changing groups, and read this section
+carefully before hand.
+
+\subsection{Adding an Assessment Group}
+
+Adding an assessment group is as simple as clicking on the \emph{add} option
+within this section. All that can be added is a name (which as usual should be
+clear and distinctive) and some comments to describe the rationale of the
+group.
+
+\subsection{Changing the Regime for a Group}
+
+Once a group has been created, clicking on \emph{regime} within its listing
+will allow you to alter the assessments associated with it.
+
+\pdstip{Generally, you should \emph{never} alter the regime for any group that
+is in current use unless you absolutely know what you are doing. You may make
+it impossible to retrieve marks already recorded for this group.}
+
+\subsubsection{Adding Assessments}
+
+Clicking on \emph{add} allows you to choose from the available assessments to
+add to your regime. You can use a given assessment more than once if that is
+appropriate.
+
+You will see a pull down box of all the available assessments, and you should
+add a unique description, within your regime to describe this instance,
+together with a weighting (number between 0 and 1) that describes how much this
+is worth, for example 0.3 represents $30\%$. You should also choose who will
+perform the assessment.
+
+Next comes the year, which is the year, relative to placement that the
+assessment will take place. That is, for an assessment that takes place in the
+year of placement, enter zero, for an assessment that takes place the previous
+year, enter $-1$ and $1$ for the year after placement and so on. The
+\emph{start} and \emph{end} dates should be specified in the MMDD form when
+the assessment should be due, and completed. This is used to guage when 
+assessments are late.
+
+\subsubsection{Editing and Removing Assessments}
+
+You can edit and remove assessments, but again, this can cause already submitted
+marks to become inaccessible (not deleted, but essentially lost in the database),
+so only certain users can perform these actions, and generally they are for the
+design phase of assessment groups not currently used.
+
+\subsection{Changing Regime for a Programme}
+
+Assessment needs change, but generally you should create a brand new assessment
+group if that happens, and record that the programme changed from one to 
+another in a given year. This is the only was to guarantee access to old
+marks in the old regime as well as new ones.
+
+
+
 
 \chapter{Courses, Groups \& Channels}
 
@@ -629,46 +801,213 @@ whole classes of students.
 
 \section{Searching}
 
+As for more of the directories for people within OPUS, there are two ways of
+searching for students.
+
 \subsection{Simple Searches}
+
+To perform a simple search, simply click on the letter which begins the lastname
+of the student you are looking for. OPUS will list all students that match, and
+which you have permission to view. You can use the placement year shown to help
+choose between entries that look like the one you need.
 
 \subsection{Advanced Searches}
 
-\subsection{Communication}
+To perform an advanced search, you can use one of more of the search criteria
+displayed.
 
-\section{Student Records}
+\pdstip{The advanced search form will preserve your choices between usage if
+you have a registration number entered for your user, and you logout correctly.}
 
-When one has select a student record, there are five tabs that allow you to handle it.
+\subsubsection{Search For}
+
+The \emph{Search For} criteria can be used to match a fragment of a name, or a
+reg number or username. Leave this field blank to match all students that meet
+the other selected criteria.
+
+\subsubsection{For placement in year}
+
+This field, if specified, limits the search to students whose placement begins
+in a specified year. For example, put in 2008 for students who will be on
+placement in the 2008/2009 academic year. Leave this field blank to match all
+students that meet the other selected criteria.
+
+\subsubsection{From Programmes}
+
+Here you will see, seperated by faculties and schools, a list of all the
+programmes for which you will have permission to list students. If the list
+is incorrect, you should contact one of the super-admin users to have them
+correct it. Select which programmes you wish to search for students in. Note
+that there are links to allow you to select or de-select programmes by a whole
+school or faculty.
+
+\subsubsection{Other Options}
+
+At present there is only one \emph{other option} and it is used to augment the
+output. The \emph{Show Timelines} switch allows you to produce a timeline
+figure against each student, that shows you at a glance their pattern of
+applications for vacancies. See below for more details.
+
+\subsubsection{Sort Criterion}
+
+The sort criterion allows you choose which field the results are to be sorted
+by, for example, sorting by placement status is convenient for placing students
+that still require placement at the top of the list.
+
+\subsection{Student Lists}
+
+Regardless of how you search for students, the matches are shown in the same
+basic format.\footnote{Although of course, timelines will be present if you
+requested them.}%
+
+The first column is labelled \emph{Email}, and you select this tick box if you
+wish to send a message to this student. There is a link to select or deselect
+all the shown students at the top and bottom of the list. You can enter the
+text of the email at the bottom, and optionally choose to be send a copy of
+your email (which will be sent to come from your listed address).
+
+Next you will see the student's \emph{Name} and \emph{Student Number}, the next
+fields show when the student \emph{Last Accessed} OPUS, what year they expect
+to be placed in, and their current placement status.
+
+Finally you will see some options to manipulat the student, \emph{CV} is a
+shortcut to the CV functions listed below, while \emph{Help} brings up the
+help directory which is customized for the student at hand. The \emph{Edit}
+option will bring up a detailed screen for viewing and manipulating that
+student.
+
+\section{Adding Students}
+
+Adding students is usually done in bulk, via the \emph{Import Data} option,
+but it is possible to add individual students, even if this is not recommended
+since it is probably more error prone. You should first search for the student
+to double check they are not already in OPUS. When the search results appear
+the \emph{Add} button will be shown for adding a new student, simply complete
+the form this is displayed.
+
+\section{Editing a Student}
+
+When you edit a student, the student's name will immediately appear on the 
+top menu, to allow you to undertake actions with this student. This student
+will remain on the menu, until you select another, or \emph{drop} him or her.
+
+You should also see the student appear in the \emph{Recent} menu at the top,
+allowing you to easily return to this student after editing others.
+
+\subsection{Main View}
+
+The main view for editing a student shows the most important information for
+the student, such as the name, email address, registration number and placement
+year. Also listed are the placement status, the programme of study, and the
+Academic Tutor, if one is appointed.
+
+At the top, you will see options to \emph{cancel} the edit, \emph{reset the
+password}\footnote{This only assigns a new internal password, if you use
+another system to authenticate students it could be of limited use}, and
+\emph{manage the applications} made by the student.
+
+\subsubsection{Placement History}
+
+This section shows a summary of placement records for this student, each of
+which can be edited. To add a new placement, click on \emph{manage applications}
+and pick the application for which the student should be placed.
+
+\subsubsection{Timeline}
+
+This feature of OPUS allows a casual glance to determine the pattern of
+applications for the student. A line is drawn that represents a certain
+period of time, a thick black line indicated the student requires placement,
+green indicates the student is placed, and grey represents any other 
+status.
+
+In the top right you will the total number of applications (made to open
+vacancies within OPUS), and each red line represents a single application. An
+arrow may appear to indicate that applications were made at some time outside
+the timeline shown. The timeline should be accurate to within a few minutes,
+but will not instantly register new applications.
+
+\subsubsection{Photo}
+
+A photograph of the student is shown if one exists. Clicking on the photo will
+provide the fullsize image.
+
+\subsubsection{Assessment}
+
+The assessment grid for the student will be shown, if the assessment schedule
+has been defined for the programme of study concerned. The grid shows, among
+other things, the assessments that have been or will be taken, who will assess
+them, their overall weighting, recorded marks and timeliness. Simply click on
+view to view, or submit the assessment as appropriate. Assessments with marks
+labelled by `--' are yet to be taken, otherwise a mark will be shown (even if
+this is zero for marks with no weighting assigned).
+
+\subsubsection{Configure Other Assessors}
+
+Depending upon the assessment regime, it may be that other members of staff will
+be assigned to mark other assessments. In that case, those assignments can be
+made here.
+
+\subsection{Home}
+
+The \emph{Home} item on the student menu should bring you to a facsimile of the
+student's home page, complete with the announcements that show on it. It may
+not be an exact match in all regards.
+
+\subsection{Vacancies}
+
+The \emph{Vacancies} item allows you to search the vacancies in the normal way.
+The student you have selected with stay attached to you, and when you
+\emph{view} a vacancy you will be given an extra option to \emph{apply with
+the selected student}.
 
 \subsection{CVs}
 \index{CVs}
 
-This tab provides information about the CVs that a student has completed, and whether or not they can
-be used to apply for vacancies. It also provides the mechanism by which a CV can be approved for use
-(or have that approval revoked) if this feature is enabled.
+This item provides information about the CVs that a student has completed, and
+whether or not they can be used for applying for placement. The 
+\emph{Description} shows the name of the CV and where it is stored, the 
+\emph{Valid} column will show either that the CV is \emph{valid} and hence
+allowable for application for placement, or the reason why it is not valid. A
+final column will show if the CV has been \emph{approved} by a member of the
+placement team. Whether or not approval is required as a prerequisite for a
+valid CV depends on the configuration of the \emph{CV Group} for the programme
+of student the student is enrolled in.
 
-The CV group (see~\ref{CVGroups}) that the student belongs to is given, so that any errors can be seen. Note that
-it is not possible to explictly change the CV Group for a single student, since the grouping is done based on course code.
+You can undertake a number of options with each CV, to \emph{view} them, 
+\emph{approve} them or \emph{revoke} approval. As noted above, approval has
+no effect unless the CV group requires it.
+
+\subsection{Applications}
+
+This item shows all the applications the student has filed on the system, 
+together with their status and date and time of application. You can click on
+\emph{place} to place the student with one of the applications. Otherwise you
+can \emph{edit} or \emph{delete} existing applications, which should obviously
+be done with care and an appropriate reason. Consider filing a note if this is
+done.
 
 \subsection{Channels}
 \index{channels}
 
-The channels which the student is automatically subscribed to are shown here. Any errors should be handled by correcting the
-configuration of the channel itself (see~\ref{}).
-
-\subsection{Companies}
-
-This tab shows all the applications for the student record. It is possible to remove any application here, which should be done with caution
-since companies may wonder why this has happened. Note that students do \emph{not} have the ability  to retract an application for this very reason.
-
-If a student has achieved placement with one of these companies the appropriate link can be clicked to begin the process of recording the placement.
-
-\subsection{Status}
-
-This is the most important tab, allowing most of the information that is of day-to-day use to be viewed and edited.
+The channels which the student is automatically subscribed to are shown here.
+Any errors should be handled by correcting the configuration of the channel
+itself (see~\ref{}). If you wish to specifically add a student to another
+channel, you can do so using the list below. Note that may not see all channels
+depending upon your permissions. It is hugely preferable to have students
+automatically added to channels so only add them directly as a last resort.
 
 \subsection{Notes}
 
-\section{Management Statistics}
+Here you can view, and file, \emph{notes} against a student. Notes are an
+important feature of OPUS, and you should ensure you understand them before
+proceeding to enter one since they \emph{cannot be edited or deleted}.
+
+See more about notes elsewhere (\ref{}).
+
+\subsection{Drop}
+
+Finally you can \emph{drop} a student to remove them from your menu. This is
+not necessary since a new student will always replace the existing one.
 
 %
 %
