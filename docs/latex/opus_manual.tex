@@ -85,8 +85,7 @@
 
 \newcommand{\pdstext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor} 
 \newcommand{\opustext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor} 
-\newcommand{\pdsstudentmenu}[1]{\color{blue}{\ttfamily \bfseries #1}\normalcolor} 
-\newcommand{\pdsacademicmenu}[1]{\color{red}{\ttfamily \bfseries #1}\normalcolor} 
+\newcommand{\opusstudentmenu}[1]{\color{blue}{\ttfamily \bfseries #1}\normalcolor} 
 \newcommand{\opusacademicmenu}[1]{\color{red}{\ttfamily \bfseries #1}\normalcolor} 
 \newcommand{\pdsiconcd}{\marginpar{\includegraphics[scale=1.0]{png/icon_cd.png}}}
 \newcommand{\pdsiconsa}{\marginpar{\includegraphics[scale=1.0]{png/icon_sa.png}}}
@@ -209,16 +208,16 @@ be found at \url{http://opus.ulster.ac.uk}.}
 \index{typographical conventions}
 
 Text which appears on OPUS screens will be
-presented \pdstext{like this}.
+presented \opustext{like this}.
 
 Where specific menu selections on OPUS are detailed they will
 be shown as follows: 
 \begin{itemize}
-\item \pdsstudentmenu{Section -> Subsection} when the student strand is discussed; and
-\item \pdsacademicmenu{Section -> Subsection} when the staff strand is being discussed.
+\item \opusstudentmenu{Section -> Subsection} when the student strand is discussed; and
+\item \opusacademicmenu{Section -> Subsection} when the staff strand is being discussed.
 \end{itemize}
 
-\pdstip{Sometimes an important tip will appear like this}.
+\opustip{Sometimes an important tip will appear like this}.
 
 \part{Administration Guide}
 
@@ -376,12 +375,6 @@ source sql_patch/data.sql
 OPUS uses substantial logging throughout, and maintains several log files. You should ensure that you have a directory created to which
 the web server has write access. See the discussion for the templates directory above. This can be anywhere, such as \lstinline!/var/log/opus/!.
 
-
-
-
-
-
-
 \chapter{Administrators \& Policies}
 \index{security}
 \index{access}
@@ -527,8 +520,11 @@ You should generally keep \emph{very few} root accounts on your system.
 
 \chapter{Initial Configuration}
 
-After installation, it is usually necessary to copy the file \lstinline!config.php.dist! to
-\lstinline!config.php! (in the \lstinline!include! directory) and customize its values.\footnote{Debian installation will take care of this aspect.}
+After installation, it is usually necessary to copy the file
+\lstinline!config.php.dist! to \lstinline!config.php! (in the 
+\lstinline!include! directory) and customize its values.
+\footnote{Debian installation will take care of this aspect, in Debian installs
+you will find the local file in \lstinline!/etc/opus!.}
 
 \section{Organisation Details}
 
@@ -538,14 +534,14 @@ faculties that will use OPUS.
 
 \subsection{Faculties}
 
-Create a new faculty by using the \emph{add}
+Create a new faculty by using the \opustext{add}
 button. You will asked for a name, an optional web address, and an optional SRS
 (Student Records System) code. If your system has a unique short identifier for
 the faculty place it here.
 
 Once a faculty is created, you can assign administrators that will have a role
 over an entire faculty, or edit the schools within that faculty. Faculties can
-be marked as \emph{archive} which means they are no longer active (do not
+be marked as \opustext{archive} which means they are no longer active (do not
 delete records unless you have added them in error, old records should be
 archived).
 
@@ -668,96 +664,117 @@ group if that happens, and record that the programme changed from one to
 another in a given year. This is the only was to guarantee access to old
 marks in the old regime as well as new ones.
 
+\section{Channels}
 
+Channels are a relatively advanced topic, and on a relatively small OPUS
+installation they may not be necessary at all. If however you have diverse
+groups of students to deal with, read on.
 
+A channel is a means to restrict the audience of some aspect of communication,
+and so allows you to create a more local feel for a group of students in what
+might otherwise be a very anonymous system. Various parts of OPUS, in particular
+the resources and help systems can be customized by channels.
 
-\chapter{Courses, Groups \& Channels}
+OPUS comes installed with a special \emph{Global} channel, to which all users
+belong.
 
-Before students are added to the system, it is import to configure schools and
-courses. In addition, the concepts of groups and channels can help you deal
-with courses in an efficient manner later, so it is worth giving some thought
-to that now.
+\subsection{Adding a Channel}
 
-\section{Groups}
+To add a channel, first list them by selecting the 
+\opusacademicmenu{Advanced -> Channels} option. To add a channel very little
+information is required, first of all a short name, which should be clear,
+unique and distinctive; together with a short description of the channel
+membership.
 
-OPUS groups courses in two different ways: CV groups and Assessment groups.
+e.g. SSS - School of Sports Studies
 
-A group provides a simple mechanism for dealing with a large number of courses
-in one way. Groups can contain dozens of courses, or a single course that
-requires special handling.
+\subsection{Editing Channel Associations}
 
-OPUS installs with a default group for CVs and a default group for Assessments;
-if a course is not explicitly added to a group it is assumed to be in these
-groups.
+Now we can edit the channel associations to determine who is included within
+the channel. An \opustext{associations} action is shown in the channel list.
 
-\subsection{CV Groups}
-\label{CVGroups}
+This will list the existing associations, and allow new associations to be
+made. These essentially fall into five categories, and each assocition 
+indicated a value of ``Enable'' or ``Disable'' together with an order. You
+can move associations up and down the list and remove them. Currently you
+cannot edit an association, simply remove it and add a new one.
 
-A CV group defines which CVs can be used by students on these courses.
+This is quite a flexible system, but can be difficult to understand, so
+let us take an example. Suppose the system shows
 
-\subsection{Assessment Groups}
+\begin{tabular}{llll}
+1 & Enable & School & School of Engineering \\
+2 & Disable & Programme & BSc Hons Technology with Design \\
+\end{tabular}
 
-An assessment group collects all the courses that are assessed in the same way.
-You can define an assessment regime for each of these groups.
+Then this channel will first \emph{include} all students in the school listed,
+but will then \emph{remove} the students in the one programme listed. If for
+example this one programme does not have compulsory placement this allows for
+a channel that can address all students in the school for whom placement is
+compulsory.
 
-\section{Schools}
-\index{schools}
+\subsubsection{Add Programme}
 
-A school is simply a division that contains a number of courses. You should 
-create one or more schools. For each school it is possible to define its name
-and any webpage it uses.
+You can add an individual programme to a channel. If you wanted all the
+programmes in a school you would be better to add only the school. As shown
+above, disable can be selected to remove a programme from a channel.
 
-When editing a school record it is possible to label it as \opustext{archived}. Generally,
-within OPUS data should not be deleted, since this destroys the audit capabilities
-of the system. Labelling an old school as archived removes it from normal visibility
-however.
+\subsubsection{Add School}
 
-You may also be able to define which administrators have permissions related to this
-school. You can choose any administrator and a security policy. Normally you will
-wish to use the default policy for the user, but it is also possible to give
-curtailed access to a particular school by using a lower security policy.
+Similarly you can add an association with a whole school, that automatically
+includes all the associated programmes.
 
-\opustip{The default policy for a user always provides a ceiling on their abilities.
-You cannot use a local policy to increase priviledges, only to reduce them.}
+\subsubsection{Assessment Group}
 
-\section{Courses}
+An association with an assessment group can be useful to allow you to address
+all the students who are assessed in the same way.
 
-Editing courses is much like that of schools. When creating courses if only the
-course code is specified OPUS attempts to retrieve the course details from your
-SRS, otherwise you may supply full details.
+\subsubsection{Activities}
 
-\subsection{Administration Rights}
+Activities are important to determine which companies will belong to a channel.
+All companies claiming an activity listed against your channel will be
+included within it.
 
-Just as for schools it is possible to define what administrators have powers over
-this course.
+\subsubsection{Students}
 
-\opustip{An administrator attached to the school this course is in already has
-permissions for this course. Only use this for administrators who only have
-access to one or two courses.}
+As a last resort, individual students can be added to a channel. This is done
+from the channels option on the menu when editing a student. The association
+can be removed here however. You should avoid this for all but the most
+awkward cases.
 
-\subsection{Course Directors}
+\subsection{Channel Membership}
 
-You can also define a member of academic staff who is the course director. This
-member of staff will obtain slighly augmented abilities (generally access to the
-student directory (see~\ref{}) and most of its abilities for their students).
+When designing channels it is useful to know how OPUS decided what users are
+included in a channel.
 
-\subsection{CV Groups}
+\subsubsection{Administrators}
 
-You can select a single CV group that this course belongs to. This will define
-which CVs can be used by students on that course, and whether they require vetting.
+Channel membership for administrator users is decided by what programmes, or
+schools etc. they are configured to manage. Super-Admin users are automatically
+a member of all channels.
 
-\subsection{Assessment Groups}
+\subsubsection{Students}
 
-A course is likely to belong to different assessment groups as the years progress and
-assessment regimes change. In OPUS, this is handled by creating a new assessment group
-and recording that students in subsequent years are members of the new group.
+Students are placed in channels precisely by their membership of programmes,
+the schools to which the programme belongs and the assessmentgroup to which
+their programme belongs to in their year.
 
-For each assessment group a course is allocated into a start and end year may be
-specified. If for example the start year is 2006 and there is no end year then all
-students seeking placement in 2006 or later belong to this group. Similarly an entry
-showing no start year and an end year of 2005 indicates that students seeking
-placement in 2005 and before belong to that group. Obviously it is possible to
-specify both a start and end year.
+\subsubsection{Academic Staff}
+
+A channel is chosen for a member of academic staff purely on the basis of their
+school.
+
+\subsubsection{Company Contacts}
+
+Company Contacts belong to a channel if their company has an activity that is
+included in the listed activities for that channel.
+
+\subsubsection{Workplace Supervisors}
+
+Workplace supervisors have a unique account for the supervision of each student,
+and their channel membership is identical to that of the student they
+supervise.
+
 
 \chapter{Importing Students}
 
@@ -1015,20 +1032,259 @@ not necessary since a new student will always replace the existing one.
 
 \chapter{Company Directory}
 
+The company directory gives you a convenient way to search the companies
+available to OPUS, as well as to edit them.
+
 \section{Searching for companies}
 
-\section{Adding and updating company records}
+The search form for companies is relatively straightforward. You simply select
+the activities of companies that you wish to include in your search, and
+optionally, specify a fragment to search for (which might appear in the
+company name, brief, location etc.). You can also select how you wish the
+matching companies to be sorted. For lots of day-to-day work, it can be
+more useful to use the Vacancy Directory.
 
-The company directory has an option to create a new company.
+\subsection{Search Results}
 
-\opustip{It is vitally important you check if a company already exists in the database
-before you create what might be a duplicate record.}
+When you perform a search, information will be presented on the names of
+matching companies, together with their locality. There are a number of 
+actions you can perform on the items in this list
 
-\section{Contacts}
+\subsubsection{View}
 
-\section{Resources}
+When you click on \opustext{view} you will see the company details presented
+in the same way in which a student will see them (albeit, a student will
+normally see these in addition to a vacancy detail). The most important
+information will be shown, including a list of resources available for this
+company. You will note that company phone numbers and similar details are
+\emph{not} shown. This is a deliberate feature to prevent students directly
+pestering companies rather than going through appropriate channels.
+
+When you view a company, it will be added to your main menu and remain there
+until you select another company or \opustext{drop} it. It will also appear
+in your recent items menu.
+
+\subsubsection{Contacts}
+
+The \opustext{contacts} option allows you to handle the contacts defined for
+this company. You can read more about contacts in Chapter~ref{}.
+
+\subsubsection{Vacancies}
+\index{vacancies!listing for a company}
+
+Selecting \opustext{vacancies} brings up a most important screen within OPUS
+allowing you to handle all the vacancies for a given function. If there are
+a large number of vacancies they will be shown a page at a time, with numbers
+to indicate other pages you can select. They are ordered chronologically so
+that the most recent, and usually most relevant will be at the top of the
+list.
+
+More details about handling the vacancy list can be found in~\ref{}.
+
+\subsubsection{Resources}
+\index{resources!for a company}
+
+The \opustext{resources} action allows you to show all the resources that are
+available for a company. These are files that are visible within the company
+description and can be used to store presentations, fact sheets, application
+forms and anything else appropriate.
+
+\subsubsection{Company Menu}
+
+The company menu, available on the main menu (the name of the company will be
+shown) allows a fast access to all of these functions, in addition to the notes
+functionality. Full details about notes can be found here~\ref{}.
+
+Sometimes you will need to add a new company to OPUS.
+\opustip{It is vitally important you check if a company already exists in 
+the database before you create what might be a duplicate record.}
+
+In order to add a company, first search for it, and when the search results
+appear, you will the \opustext{add} button present itself. Whether you are 
+adding or editing a company the form is essentially the same.
+
+\subsection{Adding a company}
+
+The form for adding a company has a large number of fields, but only a few of
+which are compulsory. Of particular note are the following.
+
+\subsubsection{Locality}
+
+This should be meaningfully and consistently picked for your system. For
+local companies, a county might be appropriate, or the name of a large city
+if appropriate, for distant companies, you might choose to use a country name.
+
+\subsubsection{Activities}
+
+You may select any number of activities from the available list for this
+company. Note that this does \emph{not} necessarily indicate the activity 
+types of vacancies offered by the company. Normally, pressing CTRL while
+selecting activities allows you to choose multiple activities.
+
+\subsubsection{Brief}
+
+This is the description of the company shown to the students, and so must
+be appropriately detailed, or at least accurate, and of course, companies can
+edit this themselves (as they can many of these fields).
+
+\section{Vacancies for a Company}
+
+Handling vacancies for a company is an important part of OPUS' functionality.
+A list of all vacancies are shown including fields such as the job description,
+the closing date for applications, the year in which placement starts, the
+current status of the vacancy and the number of applicants so far.
+
+A number of actions are available, from using the \opustext{add} button to
+add a new vacancy to using the actions on an existing vacancy to manipulate
+it.
+
+\subsection{Adding a Vacancy}
+
+As usual, take care to avoid duplication of vacancies. It is not necessary to
+advertise two vacancies records if two students are being sought for 
+essentially the same job description.
+
+\subsubsection{Job Description}
+
+The \opustext{Job Description} is the first field prospective students will
+see when a new vacancy is filed, therefore it should be as descriptive as
+possible. Titles like ``Placement Student'' have absolutely no value since all
+the vacancies will have that in common.
+
+\subsubsection{Type}
+
+The \opustext{Type} of vacancy should be carefully chosen. It is possible to
+add more types to OPUS (see~\ref{}).
+
+\subsubsection{Activities}
+
+This will indicated the activities by this vacancy, and might be totally
+unrelated to the company. (For example, a manufacturing industry might seek
+an IT placement). Multiple activities can be selected if appropriate.
+
+\subsubsection{Job Start Date}
+
+The approximate job start date is vital. OPUS uses it to determine which
+collection of students should see the job. Don't worry if the date changes a
+little, but do put in the best guess.
+
+\subsubsection{Address Fields}
+
+The address fields will be automatically copied from the company, but they can
+be altered in case this vacancy is not at the principal premises for the 
+company listed.
+
+\subsubsection{Status}
+
+The \opustext{Status} chosen for a vacancy can be one of open, closed or 
+special. A \emph{closed} vacancy is no longer eligible for further applications
+and so should not be chosen for a new vacancy. A status of \emph{open} means 
+that students can use the full facilities of OPUS to apply directly to the
+vacancy appending their CV, while \emph{special} means that an alternative
+application process exists (which should therefore be carefully detailed in the
+brief).
+
+\subsubsection{Application Deadline}
+
+If there is a deadline for applications, this date and time can be entered 
+here. OPUS will automatically close the vacancy thereafter and email the
+Contact to inform them that they should collect and process applications.
+
+If this field is left blank, applications can continue until the vacancy is
+manually closed.
+
+\subsubsection{Contact}
+
+Any of the contacts for the company may be chosen to receive correspondence
+related to this vacancy (see above).
+
+\subsubsection{Brief}
+
+The \opustext{brief} will be shown when students view the vacancy for more
+information, so it is the pitch that will encourage applications.
+
+\subsection{Editing a Vacancy}
+
+Editing a vacancy is exactly similar to adding one.
+
+\subsection{Cloning a Vacancy}
+
+Frequently, companies look for similar placements year after year, it can be
+a lot of effort to write in all the information each time. If you elect to
+\opustext{clone} a vacancy then a copy of the original will be created, that
+you will most certainly wish to edit before saving, but it is likely that
+only tweaks need be made, although the start date and closing date for 
+applications will almost always have to be changed.
+
+\subsection{Managing Applicants}
+
+When \opustext{applicants} is selected in the vacancy list, you will a 
+complete list of applicants for this vacancy. The view is shown split into
+up to three sections.
+
+\subsubsection{Students Already Selected}
+
+These are students that have been placed with this vacancy.
+
+\subsubsection{Students Still Available}
+
+Students who have applied and are still indicated as requiring placement.
+
+\subsubsection{Students No Longer Available}
+
+These students have been placed in other chosen vacancies, or have otherwise
+been removed from a need for placement. They are shown so that companies will
+understand what happened to them. Note that companies can no longer view CVs
+for students in this category.
+
+In each section, students are shown in the order in which they applied, and
+the application date is clearly shown. If they modified their application in
+some way, the last date of modification is shown. Also shown is the programme
+of study for the students, the status of their application and a number of
+actions.
+
+\opustip{While you will see all students who applied for a vacancy, you will
+only be able to perform administrative functions on these students for which
+you have appropriate authorisation.}
+
+\subsubsection{Status of Application}
+
+The status of the application can have several values. It begins as ``unseen''
+and automatically changes to ``seen'' when the company viewed the CV. Note that
+administrator views do not affect this field.
+
+Companies can (and may choose not to) change the values of these fields to
+give students feedback. Administrators can also do this, but should be
+strongly discouraged from doing so without good reason. More details of how
+this works can be found in the company guide.
+
+\subsubsection{CV}
+
+Clicking on \opustext{CV} will produce the CV the student has selected for this
+application, live from its source.
+
+\subsubsection{Letter}
+
+Students can optionally add a cover \opustext{letter} to their application that
+can be seen if it is present.
+
+\subsubsection{Help}
+
+The \opustext{help} action allows you to look at the personal help directory
+for this student, to determine the members of staff responsible for this
+student.
+
+\subsubsection{Edit}
+
+The \opustext{edit} action allows a shortcut to the main editing screen for
+OPUS. Of course this will not be possible is this is not one of your students.
 
 \section{Companies and channels}
+
+The channels to which a company belongs for the purposes of which resources
+and help prompts they see (see~\ref{}) are determined entirely by the
+activities declared for the company. It is therefore essential that both
+channels and companies are set-up with accurate activities.
 
 %
 %
