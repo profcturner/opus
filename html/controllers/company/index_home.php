@@ -90,11 +90,11 @@
 
   function display_photo(&$waf, &$user)
   {
-    $username = (int) WA::request("username");
+    $username = WA::request("username");
     $fullsize = WA::request("fullsize");
     require_once("model/Photo.class.php");
 
-    Photo::display_photo($user_id, $fullsize);
+    Photo::display_photo($username, $fullsize);
   }
 
   // Assessments
