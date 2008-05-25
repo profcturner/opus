@@ -4,13 +4,9 @@ Copyright: 2001-2008 University of Ulster
 
 License:
 
-OPUS is released under the GPL (Gnu Public License) v2. See the LICENSE file in the
-top directory for details.
+OPUS is released under the GPL (Gnu Public License) v2.
+, see `/usr/share/common-licenses/GPL-2'.
 
 The Debian packaging is (C) 2007-2008, Colin Turner <c.turner@ulster.ac.uk> and
 is licensed under the GPL v2, see `/usr/share/common-licenses/GPL-2'.
-
--=-
-
-TinyMCE, which is embedded in this product is licensed under the Lesser GPL v2.
 

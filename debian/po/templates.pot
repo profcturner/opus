@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: opus@packages.debian.org\n"
-"POT-Creation-Date: 2008-05-17 23:45+0100\n"
+"POT-Creation-Date: 2008-05-18 22:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,13 +51,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:2002
+#: ../opus.templates:3001
 msgid "the title of your institution:"
 msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:2002
+#: ../opus.templates:3001
 msgid ""
 "OPUS will use the title of your institution in appropriate places such as "
 "web pages and emails."
@@ -65,13 +65,13 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:3001
+#: ../opus.templates:4001
 msgid "host for cookies:"
 msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:3001
+#: ../opus.templates:4001
 msgid ""
 "OPUS will drop cookies as users are authenticated. Here you can specify what "
 "other hosts should have access to the cookies. For example, if this machine "
@@ -81,17 +81,35 @@ msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:4001
+#: ../opus.templates:5001
 msgid "secret for cookies:"
 msgstr ""
 
 #. Type: string
 #. Description
-#: ../opus.templates:4001
+#: ../opus.templates:5001
 msgid ""
 "OPUS will use a secret to help hash the cookies. It is important that this "
 "really is difficult to guess to prevent users from being able to present "
 "false cookies. If you need OPUS to talk to another system, such as the "
 "PDSystem, you will need to use exactly the same secret for the other system. "
 "If you leave this field blank, a random secret will be created for you."
+msgstr ""
+
+#. Type: note
+#. Description
+#: ../opus.templates:6001
+msgid "Aliases are enabled by default"
+msgstr ""
+
+#. Type: note
+#. Description
+#: ../opus.templates:6001
+msgid ""
+"For convenience, the installation of this package will automatically enable "
+"OPUS at /opus on your webserver, but this may appear on multiple virtual  "
+"hosts. If you would prefer to change this setting, please comment out or  "
+"otherwise edit the Alias lines in /etc/opus/apache2.conf and restart your  "
+"webserver. You can find an example of the virtual host configuration, along  "
+"with other configuration information in /usr/share/doc/opus/README.Debian"
 msgstr ""

@@ -17,7 +17,7 @@ _Description: protocol to use by default:
  https, which is a sensible choice if you are using password security. If so,
  you will want to configure OPUS to use https in preference to http, in which
  case it will redirect to https when used.
- 
+
 Template: opus/institution
 Type: string
 Default: University of Somewhere
@@ -43,3 +43,13 @@ _Description: secret for cookies:
  false cookies. If you need OPUS to talk to another system, such as the
  PDSystem, you will need to use exactly the same secret for the other system.
  If you leave this field blank, a random secret will be created for you.
+
+Template: opus/enabled_aliases
+Type: note
+_Description: Aliases are enabled by default
+ For convenience, the installation of this package will automatically enable
+ OPUS at /opus on your webserver, but this may appear on multiple virtual 
+ hosts. If you would prefer to change this setting, please comment out or 
+ otherwise edit the Alias lines in /etc/opus/apache2.conf and restart your 
+ webserver. You can find an example of the virtual host configuration, along 
+ with other configuration information in /usr/share/doc/opus/README.Debian
