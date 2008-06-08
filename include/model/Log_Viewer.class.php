@@ -153,45 +153,60 @@ class Log_Viewer
   
   /**
   * fetches additional lines from compressed logs that may exist
+  * 
+  * this loops through log files of the name
   */ 
   private function get_compressed_content($logname, $search, $lines)
   {
     $waf =& UUWAF::get_instance();
     global $config;
+    
+    $log_lines = array();
+    // Start with name.log.1.gz etc
+    $log_index = 1;
 
-    // globbed filename for any gz content
-    $logfile = $waf->log_dir . $logname . ".log.*.gz";
-    $command = "zcat $logfile";
-
-    if(!empty($search))
+    while(true)
     {
-      $command .= " | grep " . escapeshellarg($search) ." ";
-    }
-    // Provided a limit has been specified on the number of lines
-    // to show, pipe the output from the above commant to tail.
-    // Escapsulate the $lines variable in quotes for safety
-    if(!empty($lines)) $command .= " | tail -\"$lines\"";
-
-    // Command now contains the full unix command necessary
-    // Run it and get the output as a read only file.
-    $handle = popen($command, "r");
-    if(!$handle){
-      $waf->log("unable to open compressed logfiles", PEAR_LOG_ERR, 'admin');
-      $waf->log("unable to open compressed logfiles $logfile", PEAR_LOG_ERR, 'debug');
-      $waf->halt("error:log_view:no_access");
-    }
-    else{
-      $log_lines = array();
-      // Keep reading lines while we have stuff to read
-      while(!feof($handle)){
-        array_push($log_lines, str_replace(array('\r', '\n'), "", fgets($handle)));
+      $logfile = $waf->log_dir . $logname . ".log.$log_index.gz";
+      if(!file_exists($logfile))
+      {
+        // We're done, no log file of this type exists
+        $this->fetched_compressed_lines = count($log_lines);
+        return($log_lines);
       }
+      
+      $command = "zcat $logfile";
+
+      if(!empty($search))
+      {
+        $command .= " | grep " . escapeshellarg($search) ." ";
+      }
+      // Provided a limit has been specified on the number of lines
+      // to show, pipe the output from the above commant to tail.
+      // Escapsulate the $lines variable in quotes for safety
+      if(!empty($lines)) $command .= " | tail -\"$lines\"";
+
+      // Command now contains the full unix command necessary
+      // Run it and get the output as a read only file.
+      $handle = popen($command, "r");
+      if(!$handle)
+      {
+        $waf->log("unable to open compressed logfiles", PEAR_LOG_ERR, 'admin');
+        $waf->log("unable to open compressed logfiles $logfile", PEAR_LOG_ERR, 'debug');
+        $waf->halt("error:log_view:no_access");
+      }
+      else
+      {
+        // Keep reading lines while we have stuff to read
+        while(!feof($handle))
+        {
+          array_push($log_lines, str_replace(array('\r', '\n'), "", fgets($handle)));
+        }
+      }
+      pclose($handle);
+      // Remove the empty line if no entries where found
+      unset($log_lines[count($log_lines)-1]);
     }
-    pclose($handle);
-    // Remove the empty line if no entries where found
-    unset($log_lines[count($log_lines)-1]);
-    $this->fetched_compressed_lines = count($log_lines);
-    return($log_lines);    
   }
 }
 
