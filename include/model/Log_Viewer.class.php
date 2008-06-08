@@ -160,26 +160,25 @@ class Log_Viewer
   {
     $waf =& UUWAF::get_instance();
     global $config;
-    
+
     $log_lines = array();
     // Start with name.log.1.gz etc
-    $log_index = 1;
+    $log_index = 0;
 
-    while(true)
+    while($lines > 0)
     {
+      $log_index++;
       $logfile = $waf->log_dir . $logname . ".log.$log_index.gz";
       if(!file_exists($logfile))
       {
-        // We're done, no log file of this type exists
-        $this->fetched_compressed_lines = count($log_lines);
-        return($log_lines);
+        break;
       }
-      
+
       $command = "zcat $logfile";
 
       if(!empty($search))
       {
-        $command .= " | grep " . escapeshellarg($search) ." ";
+       	$command .= " | grep " . escapeshellarg($search) ." ";
       }
       // Provided a limit has been specified on the number of lines
       // to show, pipe the output from the above commant to tail.
@@ -191,22 +190,27 @@ class Log_Viewer
       $handle = popen($command, "r");
       if(!$handle)
       {
-        $waf->log("unable to open compressed logfiles", PEAR_LOG_ERR, 'admin');
+       	$waf->log("unable to open compressed logfiles", PEAR_LOG_ERR, 'admin');
         $waf->log("unable to open compressed logfiles $logfile", PEAR_LOG_ERR, 'debug');
         $waf->halt("error:log_view:no_access");
       }
       else
       {
+        $this_file_lines = array();
         // Keep reading lines while we have stuff to read
         while(!feof($handle))
         {
-          array_push($log_lines, str_replace(array('\r', '\n'), "", fgets($handle)));
+          array_push($this_file_lines, str_replace(array('\r', '\n'), "", fgets($handle)));
         }
       }
       pclose($handle);
-      // Remove the empty line if no entries where found
-      unset($log_lines[count($log_lines)-1]);
+      unset($this_file_lines[count($this_file_lines)-1]);
+      $lines -= count($this_file_lines);
+      $log_lines = array_merge($this_file_lines, $log_lines);
     }
+    // We're done, either no more lines required or no more files
+    $this->fetched_compressed_lines = count($log_lines);
+    return($log_lines);
   }
 }
 
