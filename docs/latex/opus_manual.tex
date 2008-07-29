@@ -1290,14 +1290,31 @@ channels and companies are set-up with accurate activities.
 %
 %
 
-\chapter{Contact Directory}
+\chapter{Contact \& Supervisor Directories}
+
+While it is usual to manipulate company contacts from within their company record as described above
+(~\ref{}), sometimes it is useful to find a contact for whom you cannot remember the company. On the
+other hand, supervisor users are generated one per placement, and it is often useful to search for
+the details of a given supervisor.
 
 \section{Searching for contacts}
 
+As for many of the other directories, there are two ways to perform a search, either by clicking on
+a letter that is the first initial of a surname, or by supplying a fragment of a name.
+
 \section{Managing contacts}
 
-\section{Contacts and channels}
+The list given shows the name of the contact, their position, brief contact details and an option to
+edit their details. Note that you \emph{cannot} change the status of a contact within a company
+from here - you will need to do this from the company menu. You can send a new password to a contact
+by selecting this option after editing them.
 
+\section{Searching for supervisors}
+
+The supervisors are searched in the same way as for contacts, with an initial from the last name,
+or using a name fragment.
+
+\section{Managing supervisors}
 %
 %
 %
@@ -1342,13 +1359,73 @@ channels and companies are set-up with accurate activities.
 %
 %
 
-\chapter{Logs \& Status}
+\chapter{Obtaining other information}
+
+OPUS provides a number of mechanisms that allow you to inspect what is happening with the
+system now, and what has happened in the past, with a considerable level of detail.
 
 \section{Log files}
 
+OPUS uses several log files, depending on its configuration some logs may not be used and
+the level of detail logged is configurable.
+
+\begin{description}
+  \item[general] is used for the majority of logging, of normal user, interactive usage;
+  \item[admin] is used for most activity pertaining to administrative users;
+  \item[debug] contains low level detail on all kinds of usage;
+  \item[panic] should really be empty, it is used to flag SQL and other serious errors;\footnote{At the time of writing the panic log is still sometimes non empty, but we are working on that}.
+  \item[cron] shows activity triggered by OPUS at the command line, usually triggered by cron;
+  \item[security] provides indications of possible foul play, together with IP numbers;
+  \item[phperrors] shows (if your system is so configured) errors in the PHP;
+  \item[waf\_debug] is an optional log that shows very deep detail in the execution, this file can rapidly become huge, and so should not be used without good reason.
+\end{description}
+
+\subsection{Compressing log files}
+
+Log files can rapidly become very large, but having logs that stretch back for weeks, months or years, can
+be useful for various purposes. One way to deal with this is to compress the log files. On a Unix/Linux
+system, this can be done automatically and conveniently with a logrotate configuration file which is
+provided in the archive. The log files should have names like
+
+
+general.log
+general.log.1.gz
+general.log.2.gz
+
+OPUS can, in its internal viewer, read and process compressed (with gzip) log files transparently.
+
+
 \subsection{Searching the log files}
 
+Naturally the log files can be searched directly from within the filesystem, but OPUS provides a
+convenient log viewer integrated within the Administrator interface. As noted above (~\ref{}), this uses standard
+Unix like tools that should still be available for Windows.
+
+The log viewer has several configurable options.
+
+\subsubsection{Log file}
+
+This allows the specific log file to be selected, note that for non root users, the choice of log files
+shown is limited by the security policy of that user.
+
+\subsubsection{Search}
+
+If the search is for a specific item or phrase, place this here. As usual, leave the field blank otherwise.
+
+\subsubsection{Lines}
+
+Only the most recent number of matching lines up to this limit will be returned.
+
+\subsubsection{Statistics}
+
+At the bottom of the log file listing, simple statistics on the log file size, and how many lines were fetched from the compressed logs and uncompressed logs are shown.
+
 \section{Status}
+
+The status page shows, at a glance, the most recent usage of the system by all categories of
+users. It is possible to specify how many users in each category it should show, but this defaults to ten.
+
+The bottom of the page shows a complete count of users in each category.
 
 %
 %
