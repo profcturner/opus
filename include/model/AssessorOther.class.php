@@ -86,6 +86,49 @@ class AssessorOther extends DTO_AssessorOther
     }
     return $assessorothers;
   }
+  
+  function get_all_by_assessor($assessor_id)
+  {
+    $assessor_id = (int) $assessor_id;
+    
+    // Start off by getting all the assessments for this assessor
+    $assessments = AssessorOther::get_all("where assessor_id = $assessor_id");
+    
+    require_once("model/AssessmentCombined.class.php");
+    require_once("model/Student.class.php");
+    // Now augment each one
+    foreach($assessments as $assessment)
+    {
+      // Try to load information about the assessment
+      $assessment_combined = new AssessmentCombined($assessment['regime_id'], $assessment['assessed_id'], $assessment['assessor_id']);
+      
+      // Augment assessed information
+      $assessment['assessed_name'] = $assessment_combined->assessed_name;
+      $assessment['placement_year'] = Student::get_placement_year($assessment['assessed_id']);
+      $assessment['punctuality'] = 'now';
+      if($assessment_combined->early) $assessment['punctuality'] = 'early';
+      if($assessment_combined->late) $assessment['punctuality'] = 'late';      
+      if($assessment_combined->assessment_results)
+      {
+        $assessment['percentage'] = $assessment_combined->assessment_results['percentage'];
+      }
+      else
+      {
+        $assessment['percentage'] = '--';
+      }
+      array_push($augmented_assessments, $assessment);
+    }
+    // Sort the array
+    usort($augmented_assessments, array("AssessorOther", "assessment_augmented_compare"));
+  }
+  
+  function assessment_augmented_compare($aug_ass1, $aug_ass2)
+  {
+    if($aug_ass1['placement_year'] < $aug_ass2['placement_year']) return -1;
+    if($aug_ass1['placement_year'] > $aug_ass2['placement_year']) return 1;
+    
+    return(strcasecmp($aug_ass1['assessed_name'], $aug_ass2['assessed_name']));
+  }
 
   function get_id_and_field($fieldname, $where_clause="") 
   {

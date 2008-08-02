@@ -32,6 +32,15 @@
 
     manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
   }
+  
+  function other_assessees(&$waf)
+  {
+    require_once("model/AssessorOther.class.php");
+    $assessor_others = AssessorOther::get_all_by_assessor(User::get_id());
+    
+    $waf->assign("assessor_others", $assessor_others);
+    $waf->display("main.tpl", "staff:home:other_assessees:other_assessees", "staff/home/other_assessees.tpl");
+  }
 
   function edit_staff(&$waf, &$user) 
   {

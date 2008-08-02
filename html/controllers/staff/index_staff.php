@@ -21,6 +21,7 @@ function nav_staff()
     (
       array("home", "home", "home", "home"),
       array("my details", "home", "edit_staff", "edit_staff"),
+      array("other students", "home", "other_assessees", "other_assessees"),
       array("company activity", "home", "company_activity", "company_activity"),
       array("change password", "home", "change_password", "change_password")
     ),

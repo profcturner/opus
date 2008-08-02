@@ -57,6 +57,8 @@ class Programme extends DTO_Programme
   function get_school_id($id)
   {
     $id = (int) $id; // Security
+    
+    if(!$id) return 0; // No programme, no school
 
     $data = Programme::get_id_and_field("school_id","where id='$id'");
     return($data[$id]);

@@ -1,12 +1,28 @@
-This package was created by the upstream author: Dr Colin Turner <c.turner@ulster.ac.uk>
+Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat
+Debianized-By: Colin Turner <c.turner@ulster.ac.uk>
+Debianized-Date: Mon, 2 Jun 2008 02:00:00 +0100
+Original-Source: http://foss.ulster.ac.uk/projects/opus/
 
+Files: debian/*
+Copyright: Copyright 2007-2008, Colin Turner <c.turner@ulster.ac.uk>
+License: GPL-2+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ can be found in file "/usr/share/common-licenses/GPL-2".
+
+Files: *
 Copyright: 2001-2008 University of Ulster
+License: GPL-2
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; using version 2 of the License
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ can be found in file "/usr/share/common-licenses/GPL-2".
 
-License:
-
-OPUS is released under the GPL (Gnu Public License) v2.
-, see `/usr/share/common-licenses/GPL-2'.
-
-The Debian packaging is (C) 2007-2008, Colin Turner <c.turner@ulster.ac.uk> and
-is licensed under the GPL v2, see `/usr/share/common-licenses/GPL-2'.
+Files: html/javascript/
 

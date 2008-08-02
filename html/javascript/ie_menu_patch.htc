@@ -1,3 +1,8 @@
+//
+// Written by Paul Vitty
+// Copyright University of Ulster
+// License GPL v2
+//
 <attach event="onmouseover" handler="rollOver" />
 <attach event="onmouseout" handler="rollOff" />
 <script type="text/javascript">

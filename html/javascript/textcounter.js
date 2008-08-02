@@ -6,10 +6,10 @@
 // Limit the number of characters per textarea 
 // Begin
 
-function textCounter(field,cntfield,maxlimit) {
-if (field.value.length > maxlimit) // if too long...trim it!
-field.value = field.value.substring(0, maxlimit);
-// otherwise, update 'characters left' counter
-else
-cntfield.value = maxlimit - field.value.length;
+function textCounter(field, count_field, limit)
+{
+  if(field.value.length > limit)
+    field.value = field.value.substring(0, limit);
+  else
+    count_field.value = limit = field.value.length;
 }
