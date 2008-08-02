@@ -97,6 +97,7 @@ class AssessorOther extends DTO_AssessorOther
     require_once("model/AssessmentCombined.class.php");
     require_once("model/Student.class.php");
     // Now augment each one
+    $augmented_assessments = array();
     foreach($assessments as $assessment)
     {
       // Try to load information about the assessment
