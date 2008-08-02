@@ -104,7 +104,7 @@ class AssessorOther extends DTO_AssessorOther
       
       // Augment assessed information
       $assessment->assessed_name = $assessment_combined->assessed_name;
-      $assessment->placement_year = Student::get_placement_year($assessment['assessed_id']);
+      $assessment->placement_year = Student::get_placement_year($assessment->assessed_id);
       $assessment->punctuality = 'now';
       if($assessment_combined->early) $assessment->punctuality = 'early';
       if($assessment_combined->late) $assessment->punctuality = 'late';      
