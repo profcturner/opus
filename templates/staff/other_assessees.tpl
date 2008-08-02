@@ -12,11 +12,11 @@
     </tr>
     {section name=other_assessments loop=$other_assessments}
     <tr class="{cycle name="cycle1" values="dark_row,light_row"}">
-      <td>{$other_assessments['other_assessments'].assessed_name:escape:"htmlall"}</td>
-      <td>{$other_assessments['other_assessments'].placement_year:escape:"htmlall"}</td>
-      <td>{$other_assessments['other_assessments'].assessment_name:escape:"htmlall"}</td>
-      <td>{$other_assessments['other_assessments'].percentage:escape:"htmlall"}</td>
-      <td>{$other_assessments['other_assessments'].punctuality:escape:"htmlall"}</td>      
+      <td>{$other_assessments['other_assessments']->assessed_name:escape:"htmlall"}</td>
+      <td>{$other_assessments['other_assessments']->placement_year:escape:"htmlall"}</td>
+      <td>{$other_assessments['other_assessments']->assessment_name:escape:"htmlall"}</td>
+      <td>{$other_assessments['other_assessments']->percentage:escape:"htmlall"}</td>
+      <td>{$other_assessments['other_assessments']->punctuality:escape:"htmlall"}</td>      
     </tr>
     {sectionelse}
     {#none_found#}
