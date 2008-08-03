@@ -112,11 +112,13 @@ class AssessorOther extends DTO_AssessorOther
       if($assessment_combined->assessment_results)
       {
         $assessment->percentage = $assessment_combined->assessment_results['percentage'];
+        $assessment->punctuality = 'n/a';
       }
       else
       {
         $assessment->percentage = '--';
       }
+      $assessment->assessment_name = $assessment_combined->assessment->student_description;
       array_push($augmented_assessments, $assessment);
     }
     // Sort the array
