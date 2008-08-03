@@ -11,4 +11,3 @@
 {if $student->placement_status == 'Placed'}
 {$help_prompter->display($student_year, $student->user_id)}
 {/if}
-{#your_students#}
