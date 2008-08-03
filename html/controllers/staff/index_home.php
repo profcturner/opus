@@ -36,9 +36,9 @@
   function other_assessees(&$waf)
   {
     require_once("model/AssessorOther.class.php");
-    $assessor_others = AssessorOther::get_all_by_assessor(User::get_id());
+    $other_assessments = AssessorOther::get_all_by_assessor(User::get_id());
     
-    $waf->assign("assessor_others", $assessor_others);
+    $waf->assign("other_assessments", $other_assessments);
     $waf->display("main.tpl", "staff:home:other_assessees:other_assessees", "staff/home/other_assessees.tpl");
   }
 
