@@ -139,6 +139,7 @@ class AssessmentCombined
 
   private function get_staff_permissions()
   {
+    require_once("model/Student.class.php");
     $academic_tutor = (Student::get_academic_user_id($this->assessed_id) == User::get_id());
 
     if($academic_tutor)
