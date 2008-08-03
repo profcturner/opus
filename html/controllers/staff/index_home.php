@@ -41,6 +41,25 @@
     $waf->assign("other_assessments", $other_assessments);
     $waf->display("main.tpl", "staff:home:other_assessees:other_assessees", "staff/home/other_assessees.tpl");
   }
+  
+  /**
+  * show an assessment (for an "other" student) for viewing or editing
+  */
+  function edit_assessment(&$waf, &$user)
+  {
+    // Note security is handled internally by the AssessmentCombined object
+
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+  }
+
 
   function edit_staff(&$waf, &$user) 
   {
