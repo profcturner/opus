@@ -16,7 +16,6 @@
   */
   function home(&$waf)
   {
-    //$waf->display("main.tpl", "staff:home:home:home", "staff/home/home.tpl");
     $page = (int) WA::request("page", true);
 
     $alt_headings = array

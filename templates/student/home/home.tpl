@@ -1,6 +1,6 @@
 {* Smarty *}
 
-{#last_login#} {$user.last_login}<br />
+{#last_login#} {$user.opus.last_login}<br />
 {$help_prompter->display("StudentHome", $student->user_id)}
 {eval assign="student_year" var="StudentHome"|cat:$student->placement_year} 
 {$help_prompter->display($student_year, $student->user_id)}
