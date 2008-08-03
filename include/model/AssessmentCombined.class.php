@@ -151,7 +151,7 @@ class AssessmentCombined
       if($this->regime->assessor != 'other') return; // Can't have rights...
       // Ok, is this staff member the designated "other"?
       require_once("model/AssessorOther.class.php");
-      $assessorother = AssessorOther::load_where("where assessor=" . User::get_id() . " and assessed_id=" . $this->assessed_id . " and regime_id=" . $this->regime->id);
+      $assessorother = AssessorOther::load_where("where assessor_id=" . User::get_id() . " and assessed_id=" . $this->assessed_id . " and regime_id=" . $this->regime->id);
       if($assessorother->id)
       {
         // They are
