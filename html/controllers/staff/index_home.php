@@ -30,7 +30,7 @@
     $staff = Staff::load_by_user_id(User::get_id());
     $waf->assign("staff", $staff);
 
-    manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "admin:configuration:resources:manage_resources", "staff/home/home.tpl");
+    manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "staff:home:home:home", "staff/home/home.tpl");
   }
   
   function other_assessees(&$waf)
@@ -75,8 +75,6 @@
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
   
-
-
   function edit_staff(&$waf, &$user) 
   {
     require_once("model/Staff.class.php");
