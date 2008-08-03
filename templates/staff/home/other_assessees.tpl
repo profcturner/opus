@@ -18,6 +18,7 @@
       <td>{$other_assessments[other_assessments]->assessment_name|escape:"htmlall"}</td>
       <td>{$other_assessments[other_assessments]->percentage|escape:"htmlall"}</td>
       <td>{$other_assessments[other_assessments]->punctuality|escape:"htmlall"}</td>      
+      <td class="action"><a href="?section=student&function=edit_assessment&id={$other_assessments[other_assessments]->regime_id}&assessed_id={$other_assessments[other_assessments]->assessed_id}">edit</a></td>
     </tr>
     {sectionelse}
     {#none_found#}
