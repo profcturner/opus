@@ -121,14 +121,16 @@ class AssessorOther extends DTO_AssessorOther
     }
     // Sort the array
     usort($augmented_assessments, array("AssessorOther", "assessment_augmented_compare"));
+    
+    return($augmented_assessments);
   }
   
   function assessment_augmented_compare($aug_ass1, $aug_ass2)
   {
-    if($aug_ass1->placement_year < $aug_ass2->placement_year) return -1;
-    if($aug_ass1->placement_year > $aug_ass2->placement_year) return 1;
+    if($aug_ass1->placement_year < $aug_ass2->placement_year) return 1;
+    if($aug_ass1->placement_year > $aug_ass2->placement_year) return -1;
     
-    return(strcasecmp($aug_ass1->assessed_name, $aug_ass2->assessed_name));
+    return(-(strcasecmp($aug_ass1->assessed_name, $aug_ass2->assessed_name)));
   }
 
   function get_id_and_field($fieldname, $where_clause="") 
