@@ -59,6 +59,22 @@
     $waf->assign("assessment", $assessment);
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
+    
+  /**
+  * process inbound assessment information for an assessment for an "other" student
+  */
+  function edit_assessment_do(&$waf, &$user)
+  {
+    // Get the unique identifer for the assessment instance
+    $regime_id = (int) WA::request("regime_id");
+    // and for whom
+    $assessed_id = (int) WA::request("assessed_id");
+    require_once("model/AssessmentCombined.class.php");
+    $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id(), true); // try to save
+    $waf->assign("assessment", $assessment);
+    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+  }
+  
 
 
   function edit_staff(&$waf, &$user) 

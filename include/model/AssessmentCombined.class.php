@@ -157,7 +157,7 @@ class AssessmentCombined
       {
         // They are
         $this->can_view = true;
-        $this->can_edit = false;
+        $this->can_edit = true;
       }
     }
   }
