@@ -23,7 +23,7 @@
 </td>
 <td colspan="4">
 {$assessment->flag_error("comment1")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment1">{$assessment->get_value("comment1")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment1" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -52,7 +52,7 @@
 </td>
 <td colspan="4">
 {$assessment->flag_error("comment2")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment2">{$assessment->get_value("comment2")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment2" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -81,7 +81,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment3")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment3">{$assessment->get_value("comment3")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment3" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -111,7 +111,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment4")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment4">{$assessment->get_value("comment4")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment4" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -141,7 +141,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment5")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment5">{$assessment->get_value("comment5")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment5" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -172,7 +172,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment6")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment6">{$assessment->get_value("comment6")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment6" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -203,7 +203,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment7")}
-<TEXTAREA ROWS="5" COLS="30" NAME="comment7">{$assessment->get_value("comment7")|escape:"htmlall"}</TEXTAREA></td>
+{include file="general/assessment/textarea.tpl" name="comment7" rows="6" cols="50"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -224,7 +224,8 @@
 
 <tr>
   <td class="property">General Comments</td>
-  <td colspan="5"><textarea name="comments" rows="15" cols="70">{$assessment->get_value("comments")|escape:"htmlall"}</textarea></td>
+  <td colspan="5">
+  {include file="general/assessment/textarea.tpl" name="comments" rows="15" cols="70"}</td>
 </tr>
 <tr>
   <td colspan="6" class="button"><input type="submit" class="submit" value="confirm" /></td>

@@ -396,7 +396,7 @@
   </td>
   
   <td colspan="5">
-    <textarea name="performance_comments" rows="6" cols="60" wrap="virtual">{$assessment->get_value('performance_comments')|escape:"htmlall"}</textarea>
+    {include file="general/assessment/textarea.tpl" name="performance_comments" rows="6" cols="60"}
   </td>
 </tr>
 
@@ -406,7 +406,7 @@
   </td>
   
   <td colspan="5">
-    <textarea name="skills_comments" rows="6" cols="60" wrap="virtual">{$assessment->get_value('skills_comments')|escape:"htmlall"}</textarea>
+    {include file="general/assessment/textarea.tpl" name="skills_comments" rows="6" cols="60"}
   </td>
 </tr>
 
@@ -416,7 +416,7 @@
   </td>
   
   <td colspan="5">
-    <textarea name="process_comments" rows="6" cols="60" wrap="virtual">{$assessment->get_value('process_comments')|escape:"htmlall"}</textarea>
+    {include file="general/assessment/textarea.tpl" name="process_comments" rows="6" cols="60"}
   </td>
 </tr>
 <tr>

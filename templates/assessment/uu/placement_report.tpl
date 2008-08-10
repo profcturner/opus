@@ -22,7 +22,8 @@
 </td>
 <td colspan="4">
 {$assessment->flag_error("comment1")}
-<textarea rows="5" cols="30" name="comment1">{$assessment->get_value("comment1")|escape:"htmlall"}</textarea></td>
+{include file="general/assessment/textarea.tpl" name="comment1" rows="5" cols="30"}
+</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -53,7 +54,8 @@
 </td>
 <td colspan="4">
 {$assessment->flag_error("comment2")}
-<textarea rows="5" cols="30" name="comment2">{$assessment->get_value("comment2")|escape:"htmlall"}</textarea></td>
+{include file="general/assessment/textarea.tpl" name="comment2" rows="5" cols="30"}
+</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -84,7 +86,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment3")}
-<textarea rows="5" cols="30" name="comment3">{$assessment->get_value("comment3")|escape:"htmlall"}</textarea></td>
+  {include file="general/assessment/textarea.tpl" name="comment3" rows="5" cols="30"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -116,7 +118,8 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment4")}
-<textarea rows="5" cols="30" name="comment4">{$assessment->get_value("comment4")|escape:"htmlall"}</textarea></td>
+  {include file="general/assessment/textarea.tpl" name="comment4" rows="5" cols="30"}
+</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -146,7 +149,8 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment5")}
-<textarea rows="5" cols="30" name="comment5">{$assessment->get_value("comment5")|escape:"htmlall"}</textarea></td>
+  {include file="general/assessment/textarea.tpl" name="comment5" rows="5" cols="30"}
+</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -177,7 +181,8 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment6")}
-<textarea rows="5" cols="30" name="comment6">{$assessment->get_value("comment6")|escape:"htmlall"}</textarea></td>
+  {include file="general/assessment/textarea.tpl" name="comment6" rows="5" cols="30"}
+</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -199,7 +204,7 @@
 <tr>
   <td class="property">General Comments</td>
   <td colspan="5">
-  <textarea name="comments" rows="15" cols="70">{$assessment->get_value("comments")|escape:"htmlall"}</textarea>
+  {include file="general/assessment/textarea.tpl" name="comments" rows="15" cols="70"}
   </td>
 </tr>
 <tr>

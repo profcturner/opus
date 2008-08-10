@@ -208,14 +208,12 @@ to determine where the <strong>best career prospects</strong> are and what
 
 <tr>
   <td class="property">Comments<br />(on and for the Student)</td>
-  <td colspan="2">{$assessment->flag_error("scomments")}<textarea cols="60" rows="10" name="scomments">{$assessment->get_value("scomments")|escape:"htmlall"}</textarea></td>
+  <td colspan="2">{$assessment->flag_error("scomments")}{include file="general/assessment/textarea.tpl" name="scomments" rows="10" cols="60"}</td>
 </tr>
 
 <tr>
   <td class="property">Comments<br />(on the Company and<br />future participation)</td>
-  <td colspan="2">{$assessment->flag_error("ccomments")}
-    <textarea cols="60" rows="10" name="ccomments">{$assessment->get_value("ccomments")|escape:"htmlall"}</textarea>
-  </td>
+  <td colspan="2">{$assessment->flag_error("ccomments")}{include file="general/assessment/textarea.tpl" name="ccomments" rows="10" cols="60"}</td>
 </tr>
 
 <tr>

@@ -17,63 +17,56 @@
   <td class="property">Training / experience programme arranged</td>
   <td><input type="checkbox" name="check1" {if $assessment->get_value("check1")} checked{/if}></td>
   <td>{$assessment->flag_error("comment1")}
-  <textarea rows="3" cols="60" name="comment1">{$assessment->get_value("comment1")|escape:"htmlall"}
-  </textarea>
+  {include file="general/assessment/textarea.tpl" name="comment1" rows="3" cols="60"}</td>
 </tr>
 
 <tr><td class="property">Industrial supervisor appointed</td>
 <td><input type="checkbox" name="check2"
 {if $assessment->get_value("check2")} checked {/if}
 ></td>
-<td>{$assessment->flag_error("comment2")}
-<textarea rows="3" cols="60" name="comment2">
-{$assessment->get_value("comment2")|escape:"htmlall"}
-</textarea></tr>
+  <td>{$assessment->flag_error("comment2")}
+  {include file="general/assessment/textarea.tpl" name="comment2" rows="3" cols="60"}</td>
+</tr>
 
 <tr><td class="property">Student interviewed</td>
 <td><input type="checkbox" name="check3"
 {if $assessment->get_value("check3")} checked {/if}
 ></td>
-<td>{$assessment->flag_error("comment3")}
-<textarea rows="3" cols="60" name="comment3">
-{$assessment->get_value("comment3")|escape:"htmlall"}
-</textarea></tr>
+  <td>{$assessment->flag_error("comment3")}
+  {include file="general/assessment/textarea.tpl" name="comment3" rows="3" cols="60"}</td>
+</tr>
 
 <tr><td class="property">Company representative interviewed</td>
 <td><input type="checkbox" name="check4"
 {if $assessment->get_value("check4")} checked {/if}
 ></td>
-<td>{$assessment->flag_error("comment4")}
-<textarea rows="3" cols="60" name="comment4">
-{$assessment->get_value("comment4")|escape:"htmlall"}
-</textarea></tr>
+  <td>{$assessment->flag_error("comment4")}
+  {include file="general/assessment/textarea.tpl" name="comment4" rows="3" cols="60"}</td>
+</tr>
 
 <tr><td class="property">Log book inspected</td>
 <td><input type="checkbox" name="check5"
 {if $assessment->get_value("check5")} checked {/if}
-></td><td>
-  {$assessment->flag_error("comment5")}
-<textarea rows="3" cols="60" name="comment5">
-{$assessment->get_value("comment5")|escape:"htmlall"}
-</textarea></tr>
+></td>
+  <td>{$assessment->flag_error("comment5")}
+  {include file="general/assessment/textarea.tpl" name="comment5" rows="3" cols="60"}</td>
+</tr>
 
 <tr><td class="property">Health and Safety Checklist Inspected</td>
 <td><input type="checkbox" name="check6"
 {if $assessment->get_value("check6")} checked {/if}
-></td><td>
-  {$assessment->flag_error("comment6")}
-<textarea rows="3" cols="60" name="comment6">
-{$assessment->get_value("comment6")|escape:"htmlall"}
-</textarea></tr>
+></td>
+  <td>{$assessment->flag_error("comment6")}
+  {include file="general/assessment/textarea.tpl" name="comment6" rows="3" cols="60"}</td>
+</tr>
 
 <tr><td class="property">Student accomodation satisfactory</td>
 <td><input type="checkbox" name="check7"
 {if $assessment->get_value("check7")} checked {/if}
-></td><td>
-  {$assessment->flag_error("comment7")}
-<textarea rows="3" cols="60" name="comment7">
-{$assessment->get_value("comment7")|escape:"htmlall"}
-</textarea></tr>
+></td>
+  <td>{$assessment->flag_error("comment7")}
+  {include file="general/assessment/textarea.tpl" name="comment7" rows="3" cols="60"}</td>
+</tr>
 </table>
 
 <table>
@@ -81,19 +74,19 @@
 <tr>
   <td class="property">Changes to the training / experience programme</td>
   <td>{$assessment->flag_error("changes")}</td>
-  <td><textarea cols="80" rows="10" name="changes">{$assessment->get_value("changes")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="changes" rows="10" cols="80"}</td>
 </tr>
 
 <tr>
   <td class="property">Comments on the student and programme</td>
   <td>{$assessment->flag_error("scomments")}</td>
-  <td><textarea cols="80" rows="10" name="scomments">{$assessment->get_value("scomments")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="scomments" rows="10" cols="80"}</td>
 </tr>
 
 <tr>
   <td class="property">Advice given to the student</td>
   <td>{$assessment->flag_error("advice")}</td>
-  <td><textarea cols="80" rows="10" name="advice">{$assessment->get_value("advice")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="advice" rows="10" cols="80"}</td>
 </tr>
 
 <tr>

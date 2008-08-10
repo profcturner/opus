@@ -108,7 +108,7 @@
 <tr>
   <td class="property">Notes<br /><small>(if required)</small></td>
   <td colspan="6">{$assessment->flag_error("Notes")}
-  <textarea cols="60" rows="10" name="Notes">{$assessment->get_value("Notes")|escape:"htmlall"}</textarea></td>
+  {include file="general/assessment/textarea.tpl" name="Notes" rows="10" cols="60"}</td>
 </tr>
 <tr>
   <td colspan="7" class="button"><input type="submit" class="submit" value="confirm" /></td>

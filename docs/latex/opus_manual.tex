@@ -115,7 +115,7 @@
 
 \author{Dr Colin Turner\\\url{c.turner@ulster.ac.uk}}
 
-\date{October, 2006}
+\date{July, 2008}
 
 %%% ----------------------------------------------------------------------
 
@@ -228,26 +228,29 @@ We look at the various requirements of OPUS here and how to install it.
 \section{Requirements}
 \index{requirements}
 
-OPUS can be probably be run on top of  any system that supports PHP%
+OPUS can be run on top of  any system that supports PHP%
 \footnote{A popular web scripting language (\url{http://www.php.net})} and MySQL.%
 \footnote{A relational database engine (\url{http://www.mysql.com})}
 
 At the time of writing, specific requirements are
 \begin{itemize}
-  \item PHP version 5.1 or higher (since PDO is planned to be used in new code);
+  \item PHP version 5.1 or higher;
   \item MySQL version 4 or higher;
   \item Smarty\footnote{A templating enginer (\url{http://smarty.php.net})} version 1.3 or higher;
   \item Pear;%
-    \footnote{Extensions to PHP, found at \url{http://pear.php.net}. Pear is required for DB support, and was used for mail\_mime support prior to version 3.3.0,
-     but will probably be phased out in version 4.0.0 when built in PDO support is likely to be used.}
+    \footnote{Extensions to PHP, found at \url{http://pear.php.net}. Pear is required for logging support.}
   \item Perl version 5 or higher.\footnote{A powerful scripting language, required for some offline maintainence, available from \url{http://www.perl.com}.}
 \end{itemize}
+
+Some (optional) functionality uses Unix command line tools that will almost certainly be present on
+any modern Unix or Linux system. If you are using Windows, you can obtain free versions of such
+software for that platform.\footnote{See \url{http://unxutils.sourceforge.net/} for example.}
 
 \section{Operating Systems}
 \index{operating systems}
 \index{Debian GNU/Linux}
 
-It should be straight forward to install OPUS on most variants of Unix, or Linux and, with perhaps some more work Microsoft Windows.
+It should be straight forward to install OPUS on most variants of Unix, or Linux and, with perhaps some more work, Microsoft Windows.
 
 \subsection{GNU/Linux}
 
@@ -401,6 +404,7 @@ powers on an institutional level, or at faculty, school or individual
 programme, or even a combination of the above.
 
 \section{Policies}
+\ref{Policies}
 \index{policies}
 
 You should begin by considering your security policies. By clicking on
@@ -408,7 +412,7 @@ You should begin by considering your security policies. By clicking on
 policies. OPUS already comes configured with a number of policies, that you may
 wish to add to, or adjust.
 
-More or less, \emph{Placement Coordinators} operate ata high level
+More or less, \emph{Placement Coordinators} operate at a high level
 institutionally, should be better trained with OPUS and well versed in your
 policies for adding companies. Out of the box, they can add companies and other
 details that lesser users can only edit.
@@ -507,6 +511,15 @@ account, and will not be able to edit other accounts.
 You can (if you are a super-admin user), promote another admin to super-admin
 status. This should be done with \emph{great care}!
 
+\subsection{Assigning Administrators to Academic Units}
+
+While you will have some administrators who are appointed at an \emph{institutional}
+level, that is they exercise their powers over all academic units in the institution,
+it is more common that administrators act over a faculty, school, or programme.
+
+Later, once you have defined your organisation within OPUS (see~\ref{Organisation}),
+you will be able to assign administrators to these units.
+
 \section{Super-Admin Users}
 
 These users have a directory of their own, which allows them to be edited,
@@ -514,9 +527,6 @@ and demoted. Note you cannot directly create a super-admin user, you must
 create a normal admin user and promote them. This is not a bug.
 
 You should generally keep \emph{very few} root accounts on your system.
-
-
-
 
 \chapter{Initial Configuration}
 
@@ -527,6 +537,7 @@ After installation, it is usually necessary to copy the file
 you will find the local file in \lstinline!/etc/opus!.}
 
 \section{Organisation Details}
+\ref{Organisation}
 
 OPUS will need to know something about the way in which your organisation is
 set-up. Clicking on this menu item will take you to an option to configure the
@@ -801,7 +812,8 @@ any new students it has not seen before.
 \section{From CSV files}
 
 The University of Ulster uses CSV files to store student lists that can also be used for this
-purpose, by browsing to the file first.
+purpose, by browsing to the file first. In other institutions you will wish to configure your
+own CSV format so that OPUS can obtain your data.
 
 TODO: Specify the file format here.
 
@@ -1380,6 +1392,32 @@ the level of detail logged is configurable.
   \item[waf\_debug] is an optional log that shows very deep detail in the execution, this file can rapidly become huge, and so should not be used without good reason.
 \end{description}
 
+\subsection{Log file configuration and tweaking}
+
+You can control how much detail appears in the log files by setting the log level in your \lstinline!local.conf.php!.
+It is recommended you leave this at the default level (debug) until everything is running very smoothly, and even then
+the logs may always be useful, consider using log rotations to reduce space used (see~\ref{logging:rotation}).
+
+\begin{lstlisting}{language=PHP}
+$config['waf']['log_level'] = 7; // From 0 - emergency, to 7 - debug
+\end{lstlisting}
+
+You can enable the waf_debug log file if you really need to look deeply into a problem, generally this is only going
+to be of use if you are developing OPUS.
+
+\begin{lstlisting}{language=PHP}
+$config['waf']['waf_debug'] = True;
+\end{lstlisting}
+
+You can change the path in which the log files are stored with the following setting
+
+\begin{lstlisting}{language=PHP}
+$config['waf']['log_dir'] = '/var/log/opus';
+\end{lstlisting}
+
+but make sure the web server will have write access to this directory, or at least the log files within it.
+
+
 \subsection{Compressing log files}
 
 Log files can rapidly become very large, but having logs that stretch back for weeks, months or years, can
@@ -1387,10 +1425,11 @@ be useful for various purposes. One way to deal with this is to compress the log
 system, this can be done automatically and conveniently with a logrotate configuration file which is
 provided in the archive. The log files should have names like
 
-
+\begin{lstlisting}
 general.log
 general.log.1.gz
 general.log.2.gz
+\end{lstlisting}
 
 OPUS can, in its internal viewer, read and process compressed (with gzip) log files transparently.
 
@@ -1398,8 +1437,9 @@ OPUS can, in its internal viewer, read and process compressed (with gzip) log fi
 \subsection{Searching the log files}
 
 Naturally the log files can be searched directly from within the filesystem, but OPUS provides a
-convenient log viewer integrated within the Administrator interface. As noted above (~\ref{}), this uses standard
-Unix like tools that should still be available for Windows.
+convenient log viewer integrated within the Administrator interface. As noted in the installation notes,
+this uses standard Unix like tools that should still be available for Windows, but that will have to
+be installed on that platform.
 
 The log viewer has several configurable options.
 

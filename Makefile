@@ -1,5 +1,9 @@
 # Makefile for OPUS
 
+debprefix=/usr
+debvarlib=/var/lib
+debetc=/etc
+
 tar:
 	# Usage
 	@echo "Usage: rel=<version>; rel is set to ${rel}"

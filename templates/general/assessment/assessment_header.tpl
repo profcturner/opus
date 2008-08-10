@@ -1,6 +1,9 @@
 {* Smarty *}
 {* assessment/assessment_header.tpl *}
 
+{* include javascript for helping count characters *}
+<script src="{$config.opus.url}/javascript/textcounter.js" type="text/javascript"></script>
+
 {* If we are submitting, and errors occured, warn the user *}
 {if $assessment->get_error()}
 <div id="warning">
@@ -71,7 +74,7 @@
 
 {* Common information required in all forms *}
 
-<form method="post">
+<form method="post" name="mainform">
 <input type="hidden" name="section" value="{$section}" />
 <input type="hidden" name="function" value="edit_assessment_do" />
 <input type="hidden" name="regime_id" value="{$assessment->regime->id}" />

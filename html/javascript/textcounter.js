@@ -11,5 +11,5 @@ function textCounter(field, count_field, limit)
   if(field.value.length > limit)
     field.value = field.value.substring(0, limit);
   else
-    count_field.value = limit = field.value.length;
+    count_field.value = limit - field.value.length;
 }
