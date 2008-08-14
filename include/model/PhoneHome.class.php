@@ -234,7 +234,7 @@ class PhoneHome extends DTO_PhoneHome
     $mailfields['custom_admins']      = User::count("where user_type='admin'");
     $mailfields['custom_contacts']    = User::count("where user_type='company'");
     $mailfields['custom_staff']       = User::count("where user_type='staff'");
-    $mailfields['custom_supervisors'] = User::count("where user_type='supervisors'");
+    $mailfields['custom_supervisors'] = User::count("where user_type='supervisor'");
     $mailfields['custom_students']    = User::count("where user_type='student'");
     require_once("model/Company.class.php");
     $mailfields['custom_companies'] = Company::count();
