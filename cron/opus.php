@@ -35,6 +35,7 @@ function main()
 
   require_once("opus.conf.php");
   require_once("WA.class.php");
+  require_once("UUWAF.class.php");
 
   // Running in batch mode
   $config['waf']['unattended'] = true;
