@@ -83,7 +83,8 @@
 
 % New environments
 
-\newcommand{\pdstext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor} 
+\newcommand{\pdstext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor}
+\newcommand{\opusurl}{http://opus.ulster.ac.uk}
 \newcommand{\opustext}[1]{\color{magenta}{\sffamily\bfseries #1}\normalcolor} 
 \newcommand{\opusstudentmenu}[1]{\color{blue}{\ttfamily \bfseries #1}\normalcolor} 
 \newcommand{\opusacademicmenu}[1]{\color{red}{\ttfamily \bfseries #1}\normalcolor} 
@@ -222,11 +223,12 @@ be shown as follows:
 \part{Administration Guide}
 
 \chapter{Installation}
+\index{installation}
 
 We look at the various requirements of OPUS here and how to install it.
 
 \section{Requirements}
-\index{requirements}
+\index{installation!requirements}
 
 OPUS can be run on top of  any system that supports PHP%
 \footnote{A popular web scripting language (\url{http://www.php.net})} and MySQL.%
@@ -236,7 +238,7 @@ At the time of writing, specific requirements are
 \begin{itemize}
   \item PHP version 5.1 or higher;
   \item MySQL version 4 or higher;
-  \item Smarty\footnote{A templating enginer (\url{http://smarty.php.net})} version 1.3 or higher;
+  \item Smarty\footnote{A templating engine (\url{http://smarty.php.net})} version 1.3 or higher;
   \item Pear;%
     \footnote{Extensions to PHP, found at \url{http://pear.php.net}. Pear is required for logging support.}
   \item Perl version 5 or higher.\footnote{A powerful scripting language, required for some offline maintainence, available from \url{http://www.perl.com}.}
@@ -272,11 +274,13 @@ deb http://foss.ulster.ac.uk/debian stable main
 \end{lstlisting}
 
 \subsection{Unix}
+\index{Unix}
 
 As Unix and GNU/Linux are very closely related, most versions of Unix will also run OPUS with ease. Again, most modern Unix versions
 provide packaged versions of the requirements, or most of them.
 
 \subsection{Microsoft Windows}
+\index{Windows (Microsoft)}
 
 At this time Windows cannot be recommended for running OPUS since
 \begin{itemize}
@@ -306,7 +310,8 @@ If you plan to install OPUS manually, here is some guidance on the important dir
   \item[sql\_patch] contains SQL files for importing the intial schema and data into MySQL.
 \end{description}
 
-In addition, you should create two more directories, in the same directory as the \lstinline!templates! directory.
+In addition, you should create two more directories, probably in \lstinline!/var/lib/opus/! or an
+equivalent directory on your operating system. 
 
 \begin{description}
   \item[templates\_c] used by smarty to compile templates, note it \emph{must} be writable by the web server process.
@@ -341,6 +346,7 @@ If you are using an operating system that supports symbolic links, you could lin
 document root.
 
 \subsubsection{Using a configuration file}
+\index{Apache}
 
 Probably the most flexible and elegant way it to use a configuration file. If you are using Apache 2 you will find a suitable configuration file in the
 \lstinline!etc! directory of the OPUS package. Simply copy it to your appropriate configuration directory for apache (probably something like
@@ -353,6 +359,7 @@ method you will almost certainly need to include a file (like \lstinline!.htacce
 it does, ensure that this is included last on the include paths.}
 
 \subsection{Database Creation}
+\index{MySQL}
 
 You should now create a new database. Using your mysql client or otherwise. To use the client, launch it from the
 command line like so. If you have (correctly) configured a password for the root user add \lstinline! -p ! to this command.
@@ -437,7 +444,9 @@ see the details of their own policy.
 
 Choose a name that reflects your policy and submit it. You are now able to
 edit the permissions for that policy. One of the first options is a priority
-for use in the help directory (see~\ref{}). The lower the priority, the 
+for use in the help directory (see~\ref{HelpDirectory}).
+
+The lower the priority, the 
 ``closer'' this group is to the students, and therefore the
 higher up such users will appear in the dynamic help directory.
 
@@ -531,7 +540,7 @@ You should generally keep \emph{very few} root accounts on your system.
 \chapter{Initial Configuration}
 
 After installation, it is usually necessary to copy the file
-\lstinline!config.php.dist! to \lstinline!config.php! (in the 
+\lstinline!local.config.php.dist! to \lstinline!local.config.php! (in the 
 \lstinline!include! directory) and customize its values.
 \footnote{Debian installation will take care of this aspect, in Debian installs
 you will find the local file in \lstinline!/etc/opus!.}
@@ -676,6 +685,7 @@ another in a given year. This is the only was to guarantee access to old
 marks in the old regime as well as new ones.
 
 \section{Channels}
+\label{Channels}
 
 Channels are a relatively advanced topic, and on a relatively small OPUS
 installation they may not be necessary at all. If however you have diverse
@@ -823,12 +833,15 @@ It is also possible to add students individually using an option available from 
 Directory.
 
 \chapter{Student Directory}
+\index{students}
 
 The student directory is perhaps the most important administrative feature of OPUS. It provides
 a mechanism to obtain or add information on individual students, and to extract information from
 whole classes of students.
 
 \section{Searching}
+\index{students!searching}
+\index{searching!for students}
 
 As for more of the directories for people within OPUS, there are two ways of
 searching for students.
@@ -845,7 +858,7 @@ choose between entries that look like the one you need.
 To perform an advanced search, you can use one of more of the search criteria
 displayed.
 
-\pdstip{The advanced search form will preserve your choices between usage if
+\opustip{The advanced search form will preserve your choices between usage if
 you have a registration number entered for your user, and you logout correctly.}
 
 \subsubsection{Search For}
@@ -1347,25 +1360,150 @@ or using a name fragment.
 
 \chapter{Help, Templates \& Resources}
 
+On large systems it is desireable to be able to speak directly to the
+relavent users, without cluttering the system for other users. OPUS
+allows a great deal of customisation of it's on-line help system, mail
+templates, and resources, often arranged around channels (see~\ref{Channels}).
+
 \section{Help}
+\index{Help prompts}
+\label{Help}
+
+Help prompts are used in various parts of the system to display messages
+and other content to users. Each help prompt has a \emph{lookup} field,
+which determines where, and to whom, the help is shown. OPUS comes
+pre-installed with a number of help prompts that you can edit to your
+need. In addition, each help prompt occurs in a given channel.
+
+Frequently the same lookup is used in several channels. This allows the
+content shown to different user groups to be customized. For a given
+user, the prompt in the global channel for that lookup will be shown first
+(if it exists), followed by prompts in other channels the user belongs to.
 
 \subsection{Creating help}
 
+When creating a help prompt, you will have to supply a lookup name, a
+channel, and a language. The lookup name cannot be arbitrary, and must
+be one that OPUS uses. Generally this means using a lookup that is
+already used, but defining an entry for another channel.
+
+\subsubsection{Special lookups}
+
+There are a few special lookups you might wish to consider.
+
+\begin{description}
+  \item[StudentHomeXXXX] is shown to students on their home page, 
+  who are or were seeking placement in the year XXXX.
+  \item[StudentHomeRequiredXXXX] is shown to students, on their home
+  page who are still actively seeking placement for year XXXX.
+  \item[StudentHomePlacedXXXX] is shown to students, on their home
+  page seeking placement in year XXXX who have found a placement.
+\end{description}
+
+So, for example, a student on their home page will see the contents
+of the generic \opustext{StudentHome} prompt (in the various appropriate
+channels), then the contents of the \opustext{StudentHomeXXXX} prompt
+for their placement year, and then any \emph{required} or \emph{placed}
+prompt as appropriate.
+
+Therefore, the \opustext{StudentHome} prompt should be kept short,
+simple and very generic (or empty), and very specific announcements
+should be put in the appropriate prompt for the year, and if possible
+for required or placed students.
+
 \subsection{Editing help}
+
+When you edit a help prompt, you can use the WYWIWYG editor to refine
+the content. As above, be mindful as to the audience of the specific
+prompt, and whether the content would be better placed in another
+prompt.
 
 \section{Templates}
 
-\subsection{Creating templates}
+Templates are used by OPUS's internal mail system to customize the 
+emails it sends out periodically on certain events.
 
 \subsection{Editing templates}
 
+
+
 \section{Resources}
+
+Resources are files that OPUS holds for various stakeholders to allow
+them to obtain appropriate information. In theory resources can be of
+any arbitrary file type, but they must be a type allowed by the 
+configuration in \opusacademicmenu{Advanced->Mime Types}.
 
 \subsection{Adding a resource}
 
+To add a resource, go to the \opusacademicmenu{Configuration->Manage Resources}
+menu, and click on the \opustext{add} button. You will be asked for a
+number of fields for your upload.
+
+\subsubsection{File Upload}
+
+Use this to browse to the file you will upload.
+
+\subsubsection{Description}
+
+This description is shown to the users, it should be clear and unambiguous at least within its channel.
+
+\subsubsection{Lookup}
+
+The lookup field should contain no spaces and be unique within the channel. It is currently unused.
+
+\subsubsection{Language \& Channel}
+
+Select the appropriate language and channel for this resource. You will only see the channels which you yourself belong to.
+If you use channels, you should understand the criteria by which
+different users belong to channels (see~\ref{Channels}).
+
+\subsection{Authorisation}
+
+This field allows you to control what \emph{types} of user can see this resource.
+A value of \emph{all} allows users (in the correct channel) to see this resource.
+You can use some of \emph{student}, \emph{company} and \emph{admin} to allow different
+user types to see the resource. Seperate categories by spaces. For example
+``student admin'' will indicate a resource available to students and
+administrators, but not companies.
+
+\subsubsection{Filename}
+
+This is the filename which will be offered to the user when they download the file.
+It \emph{must} have an appropriate extension for the type of file. For example,
+an Adobe Acrobat file must have an extension of ``.pdf''.
+
+\subsubsection{Author \& Copyright}
+
+These fields can be used to indicate the origin of the document and any
+copyright that exists upon the contents.
+\opustip{This information will only be seen by a user who requests the
+full information for a resource. If there are strict copyright entanglements
+it may be advisable to include it in the file directly.}
+
 \subsection{Resource information}
 
+Resources are generally retrieved through the \opusacademicmenu{Information -> Resources}
+menu. On that menu all the resources that a user has access to are shown,
+subject to the restrictions of the authorisation and channels for each
+resource.
+
+Clicking on \opustext{view} allows the resource to be downloaded, while
+clicking on \opustext{info} will show more background information,
+including how many downloads of the resource have been made, and when
+the last download was, which is useful for finding stale resources.
+You will also see information about the author and copyright on the
+document.
+
 \subsection{Modifying a resource}
+
+You can modify an existing resource, or the information associated with
+it by going to the \opusacademicmenu{Configuration -> Manage Resources}
+menu item, and clicking on \opustext{edit} for the associated resource.
+
+If you wish to change the file itself, then upload a new file using
+that part of the form, otherwise, leave that blank and edit the other
+associated information.
 
 %
 %
@@ -1402,7 +1540,7 @@ the logs may always be useful, consider using log rotations to reduce space used
 $config['waf']['log_level'] = 7; // From 0 - emergency, to 7 - debug
 \end{lstlisting}
 
-You can enable the waf_debug log file if you really need to look deeply into a problem, generally this is only going
+You can enable the waf\_debug log file if you really need to look deeply into a problem, generally this is only going
 to be of use if you are developing OPUS.
 
 \begin{lstlisting}{language=PHP}
@@ -1473,13 +1611,152 @@ The bottom of the page shows a complete count of users in each category.
 
 \chapter{Assessment}
 
+Assessment is of course the cornerstone of placements, and helps students
+understand and deepen their awareness of their own learning. OPUS 
+provides considerable support for the assessment process, but obviously
+since assessment is the thing that probably varies the most from one
+discipline area to another, it is important to plan and deploy this
+aspect with care.
+
 \section{Assessments}
 
-\subsection{Creating an assessment record}
+The first step in the process is to consider the individual assessments
+that already exist within OPUS and those that need to be added. The
+existing assessments can be found on the 
+\opusacademicmenu{Advanced -> Assessments} menu.
 
-\subsection{Creating an assessment skin}
+This shows a description for administrative staff, a description for
+students, and the filename of the associated template. You can also
+edit the \opustext{structure} for an assessment by clicking on that link.
+
+You may find the menu of existing assessments is enough to build your
+assessment regime from, otherwise you will need to create new assessments
+which is a reasonably technical task.
+
+\subsection{Creating a new assessment}
+
+Creating a new assessment is one of the most complex tasks within OPUS,
+to allow for complete flexibility in the pro-forma used. It consists of
+two tasks, forming the underlying structure of the assessment, and
+creating a template for the pro-forma.
+
+\subsubsection{Assessment structure}
+
+Begin by creating a new assessment with the \opustext{add} button.
+Enter an appropriate description, and a filename where the template
+will reside. This is normally relative to the other templates.
+
+Once the assessment is created, click on structure to begin adding
+components. Structure items are combinations of numeric fields (usually
+marks), textual fields (usually comments), checkboxes, and, optionally
+as assessment date. Before adding fields you should carefully consider
+the purpose of your assessment, and whether it is formative or summative.
+
+To add a component, the \opustext{add} button is selected. This brings
+up a dialog with the following options.
+
+\begin{description}
+  \item[description] is used to communicate with the end user, it should
+  be a very clear, unambigious description of the field.
+  \item[variable name] relates the underlying variable that will be used
+  in the template. This could, in theory, take any standard variable
+  name, but \emph{must match} the variable used in the template beloe.
+  \item[type] defines whether the component represents a number, bit of
+  text, checkbox or assessment date.
+  \item[Minimum] for numeric fields, is the smallest number allowable 
+  (if any), and for text fields, is the minimum number of characters
+  allowable.
+  \item[Maximum] is similar to the above, but either the largest number
+  allowed, or the maximum number of characters.
+  \item[Weighting] is used to weight the contribution of any numeric
+  field. For simplicity, it is usually zero if the number should not
+  appear in a total score, and one otherwise.
+  \item[Compulsory] is used to indicate that this field \emph{must} be
+  filled for a complete entry.
+\end{description}
+
+Consider the case in which you want a form with two marks out of 50,
+each with
+an associated comment field. Begin by adding a numeric field by clicking
+on the \opustext{add} button. Assign the maximum value for the field
+to be 50, and the minimum 0, and make the field compulsory. Do the same
+for the second field. Create textual components with a cap (if desired)
+on the number of characters that can be used.
+
+\subsubsection{Creating an assessment skin}
+
+Having defined the underlying structure of the assessment, it is now
+required that the corresponding form is created. This will require
+modest skills to edit HTML, and upload the file to the appropriate place
+and is beyond the scope of this manual. The \lstinline!README! file in the
+\lstinline!templates/assessment! details this more.\footnote
+{This process is intentionally fairly non-automatic, partly to allow
+total flexibility in the pro-forma, and also for security reasons.}
 
 \section{Creating an assessment regime}
+
+An assessment regime is built up from individual assessments, where an
+individual assessment can, if desired, be used more than one time. Each
+assessment regime is defined for a group of courses, known as an 
+Assessment Group.
+
+The existing assessment groups can be found at
+\opusacademicmenu{Configuration -> Assessment Groups}. Click on the
+\opustext{add} option to create a new assessment group, and
+give a clear, unambiguous description of the assessment group.
+
+After this, it becomes possible to build, or edit the regime of assessment
+by clicking on the \opustext{regime} against your new group. The list
+of existing assessments in the regime are shown, showing the description
+that is visible to the student, the weighting of the assessment and the
+assessor.
+
+\opustip{Be \emph{extremely cautious} about editing any regime that is
+currently in use. In general you should not do this, since students 
+will already have marks recorded against the previous regime.}
+
+\subsection{Adding assessments to a regime}
+
+Click on the \opustext{add} button while looking at the list of
+existing assessments within the regime. You will obtain the following
+dialog items.
+
+\subsubsection{Assessment}
+
+This is the assessment, from the master list, you wish to add to this 
+regime. You can, if you wish use the same assessment twice (for example
+imagine you have two identical reports at different phases).
+
+\subsubsection{Student Description}
+
+The student description is how this regime item will be labelled in a
+list shown to students, it should therefore make sense to the students
+who will be assessed by it.
+
+\subsubsection{Weighting}
+
+This is the proportion of the total assessment regime that this item
+contributes. For example, a weighting of $0.10$ indicates a $10\%$ load.
+You might choose to use a weighting of $0$ for an assessment that is
+entirely formative, and does not contribute to overall marks.
+
+\subsubsection{Assessor}
+
+This is the person who will act as the assessor for this assessment.
+Allowed values are the Academic Tutor, the Workplace Supervisor, the
+student themselves (self assessment), or ``Other''. This last value
+allows an arbitrary second member of academic staff, or any appropriate
+administrator to undertake this assessment.
+
+\subsubsection{Year, Start and End}
+
+This fields explain when the assessment should take place. The year is
+relative to the
+
+ of the assessment will be
+
+
+
 
 %
 %
@@ -1493,9 +1770,13 @@ The bottom of the page shows a complete count of users in each category.
 
 \chapter{Using OPUS to hire students}
 
+\input{insert_company_hr.tex}
+
 \part{Workplace Supervisor Guide}
 
 \chapter{Using OPUS to help supervise students}
+
+\input{insert_supervisor_guide}
 
 \part{Student Guide}
 
