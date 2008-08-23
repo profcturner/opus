@@ -25,8 +25,8 @@ class AssessmentStructure extends DTO_AssessmentStructure
     'human'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Description', 'header'=>true, 'listclass'=>'assessmentstructure_description', 'mandatory'=>true),
     'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Variable Name', 'header'=>true, 'mandatory'=>true),
     'type'=>array('type'=>'list', 'list'=>array('textual'=>'textual','numeric'=>'numeric','checkbox'=>'checkbox','assesseddate'=>'assesseddate'), 'header'=>true),
-    'min'=>array('type'=>'text', 'size'=>3, 'title'=>'Minimum Value / Characters'),
-    'max'=>array('type'=>'text', 'size'=>3, 'title'=>'Maximum Value / Characters'),
+    'min'=>array('type'=>'text', 'size'=>5, 'title'=>'Minimum Value / Characters'),
+    'max'=>array('type'=>'text', 'size'=>5, 'title'=>'Maximum Value / Characters'),
     'weighting'=>array('type'=>'text', 'size'=>3, 'title'=>'Weighting'),
     'options'=>array('type'=>'list', 'list'=>array('compulsory','optional'))
   );
