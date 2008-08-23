@@ -22,7 +22,7 @@
 </td>
 <td colspan="4">
 {$assessment->flag_error("comment1")}
-{include file="general/assessment/textarea.tpl" name="comment1" rows="5" cols="30"}
+{include file="general/assessment/textarea.tpl" name="comment1" rows="7" cols="60"}
 </td>
 </tr>
 
@@ -54,7 +54,7 @@
 </td>
 <td colspan="4">
 {$assessment->flag_error("comment2")}
-{include file="general/assessment/textarea.tpl" name="comment2" rows="5" cols="30"}
+{include file="general/assessment/textarea.tpl" name="comment2" rows="7" cols="60"}
 </td>
 </tr>
 
@@ -86,7 +86,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment3")}
-  {include file="general/assessment/textarea.tpl" name="comment3" rows="5" cols="30"}</td>
+  {include file="general/assessment/textarea.tpl" name="comment3" rows="7" cols="60"}</td>
 </tr>
 
 <tr><td colspan="5">Marking Scheme</td></tr>
@@ -118,7 +118,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment4")}
-  {include file="general/assessment/textarea.tpl" name="comment4" rows="5" cols="30"}
+  {include file="general/assessment/textarea.tpl" name="comment4" rows="7" cols="60"}
 </td>
 </tr>
 
@@ -149,7 +149,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment5")}
-  {include file="general/assessment/textarea.tpl" name="comment5" rows="5" cols="30"}
+  {include file="general/assessment/textarea.tpl" name="comment5" rows="7" cols="60"}
 </td>
 </tr>
 
@@ -181,7 +181,7 @@
 </td>
 <td colspan="4">
   {$assessment->flag_error("comment6")}
-  {include file="general/assessment/textarea.tpl" name="comment6" rows="5" cols="30"}
+  {include file="general/assessment/textarea.tpl" name="comment6" rows="7" cols="60"}
 </td>
 </tr>
 
