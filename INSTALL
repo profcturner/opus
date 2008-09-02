@@ -66,6 +66,24 @@ aptitude install opus
 and skip to step 12 (for the rest of you, seriously consider how easy your
 life could be with Debian, running on an old box).
 
+You may also need to configure the mail server if it's a fresh install
+
+dpkg-reconfigure exim4-config
+
+2a. Are you running Ubunutu?
+----------------------------
+
+Ubuntu installers have reported success installing the Debian packages
+as noted above. However, the location of the Smarty libraries is
+somewhat different. You will need to edit
+
+/etc/opus/apache2.conf
+
+and remove the "/libs/" part of the include_path for Smarty.
+
+Then restart the apache2 server
+
+/etc/init.d/apache2/opus.conf
 
 3. Obtain and unpack the UUWAF
 ------------------------------
