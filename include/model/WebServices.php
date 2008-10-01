@@ -105,7 +105,7 @@ class WebServices
   */
   function get_student($student_number)
   {
-    return(WebServices::get_data("get_student_details", "banner_id=$student_number&full=0"));
+    return(WebServices::get_data("get_student_details", "bannerid=$student_number&full=0"));
   }
 
   /**
