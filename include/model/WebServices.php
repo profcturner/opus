@@ -57,6 +57,7 @@ class WebServices
       "&password=" . $config_sensitive['ws']['password'];
 
     $url = $config_sensitive['ws']['url'] . "?function=$service_name&$input";
+    $waf->log($url, PEAR_LOG_DEBUG, 'debug');
 
     $data = @file_get_contents($url);
     switch($format)
@@ -121,7 +122,7 @@ class WebServices
     $waf =& UUWAF::get_instance();
     $waf->log("webservice get_course called for programme $course_code, calendar_occurence $calendar_occurence, programme year $course_year", PEAR_LOG_DEBUG, 'debug');
 
-    return(WebServices::get_data("get_students_by_course_code_calendar_occurrence_course_year", "ppio_code=$course_code&calendar_occurrence=$calendar_occurence&year=$course_year"));
+    return(WebServices::get_data("get_students_by_ppio_by_year", "ppio_code=$course_code&calendar_occurrence=$calendar_occurence&year=$course_year"));
   }
 }
 ?>
