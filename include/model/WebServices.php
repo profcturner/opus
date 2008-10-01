@@ -57,7 +57,6 @@ class WebServices
       "&password=" . $config_sensitive['ws']['password'];
 
     $url = $config_sensitive['ws']['url'] . "?function=$service_name&$input";
-    $waf->log($url, PEAR_LOG_DEBUG, 'debug');
 
     $data = @file_get_contents($url);
     switch($format)
