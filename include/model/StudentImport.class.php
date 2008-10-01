@@ -35,7 +35,7 @@ class StudentImport
 
     require_once("model/WebServices.php");
     // Oddly, for 06/07 the webservice uses 07, not 06!
-    $srs_students = WebServices::get_students_by_course($programme->srs_ident, substr($year-1, 2) . "/" . substr($year, 2), $onlyyear);
+    $srs_students = WebServices::get_students_by_course($programme->srs_ident, "20" . substr($year-1, 2) . substr($year, 2), $onlyyear);
     $students = array();
     require_once("model/User.class.php");
     foreach($srs_students as $student)

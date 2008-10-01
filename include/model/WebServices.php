@@ -104,7 +104,7 @@ class WebServices
   */
   function get_student($student_number)
   {
-    return(WebServices::get_data("get_student_details", "regnum=$student_number&full=0"));
+    return(WebServices::get_data("get_student_details", "banner_id=$student_number&full=0"));
   }
 
   /**
@@ -121,7 +121,7 @@ class WebServices
     $waf =& UUWAF::get_instance();
     $waf->log("webservice get_course called for programme $course_code, calendar_occurence $calendar_occurence, programme year $course_year", PEAR_LOG_DEBUG, 'debug');
 
-    return(WebServices::get_data("get_students_by_course_code_calendar_occurrence_course_year", "course_code=$course_code&calendar_occurrence=$calendar_occurence&year=$course_year"));
+    return(WebServices::get_data("get_students_by_course_code_calendar_occurrence_course_year", "ppio_code=$course_code&calendar_occurrence=$calendar_occurence&year=$course_year"));
   }
 }
 ?>
