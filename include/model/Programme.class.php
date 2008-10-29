@@ -25,7 +25,7 @@ class Programme extends DTO_Programme
 
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>200, 'title'=>'Name', 'header'=>true, 'listclass'=>'programme_name', 'mandatory'=>true),
-    'srs_ident'=>array('type'=>'text', 'size'=>10, 'maxsize'=>10, 'header'=>true, 'title'=>'Code'),
+    'srs_ident'=>array('type'=>'text', 'size'=>15, 'maxsize'=>30, 'header'=>true, 'title'=>'Code'),
     'www'=>array('type'=>'url', 'size'=>60, 'maxsize'=>200, 'title'=>'Web Address'),
     'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'var'=>'schools'),
     'cvgroup_id'=>array('type'=>'lookup', 'object'=>'CVGroup', 'value'=>'name', 'title'=>'CV Group', 'var'=>'cvgroup'),

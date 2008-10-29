@@ -400,6 +400,26 @@ and are happy to provide documentation to allow you to sign ours.
 
 At the bottom of the file it suggests that you can add some options. Add these:
 
+* Why is OPUS not sending mail?
+-------------------------------
+
+OPUS uses your standard SMTP server, if you have one, and the configuration of
+that is beyond this document, but you should look there.
+
+On Debian, the default SMTP server is exim4 but it installs in what is
+essentially a dormant state.
+
+Either go to a terminal (recommended):
+
+su (enter root password)
+dpkg-reconfigure exim4-config
+
+Or, if it's more conformatble in a gui
+
+System -> Administration -> Synaptic
+
+search for exim4-config, click on the exim4-config package, then from
+the package menu package->configure
 
 * Can I get more information out of OPUS, about what is happening in it?
 ------------------------------------------------------------------------

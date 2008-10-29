@@ -39,8 +39,8 @@ class ldap_uu
 
       // Backwards compatibility for no prefix
       if(preg_match("/^[0-9]+$/", $username)) $username = "s" . $username;
-      $r = @ldap_bind($ds, "uid=$username,ou=People,dc=ulst,dc=ac,dc=uk","$password");
-      $sr = @ldap_search($ds, "ou=People,dc=ulst,dc=ac,dc=uk", "uid=$username");
+      $r = @ldap_bind($ds, "uid=$username,ou=People,dc=ulster,dc=ac,dc=uk","$password");
+      $sr = @ldap_search($ds, "ou=People,dc=ulster,dc=ac,dc=uk", "uid=$username");
       $entry = @ldap_first_entry($ds, $sr);
       $attrs = @ldap_get_attributes($ds, $entry);
 
