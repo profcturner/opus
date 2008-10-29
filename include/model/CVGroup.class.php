@@ -19,6 +19,7 @@ class CVGroup extends DTO_CVGroup
   var $name = "";            // Name of cvgroup
   var $comments = "";     // Description of group
   var $permissions = "";     // Permissions for templates
+  var $description = "";     // The description of the group
   var $default_template = 0; // Default PDSystem template
 
   static $_field_defs = array(
