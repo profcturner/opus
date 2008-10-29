@@ -19,12 +19,11 @@ class CVGroup extends DTO_CVGroup
   var $name = "";            // Name of cvgroup
   var $comments = "";     // Description of group
   var $permissions = "";     // Permissions for templates
-  var $description = "";     // The description of the group
   var $default_template = 0; // Default PDSystem template
 
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>40, 'maxsize'=>80, 'title'=>'Name', 'header'=>true, 'listclass'=>'cvgroup_name', 'mandatory'=>true),
-    'description'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>1000),
+    'comments'=>array('type'=>'textarea', 'rowsize'=>10, 'colsize'=>40, 'maxsize'=>1000),
     'permissions'=>array('type'=>'list', 'list'=>array('allowAllTemplates'=>"Allow All PDSystem Templates",'allowCustom'=>"Allow Custom CVs"), 'multiple'=>true)
     //'default_template'=>array('type'=>'text') handled in CVGroupTemplate
   );
