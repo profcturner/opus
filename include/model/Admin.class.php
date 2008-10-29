@@ -61,7 +61,7 @@ class Admin extends DTO_Admin
     'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
     'signature'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
     'help_directory'=>array('type'=>'list', 'list'=>array('yes'=>'Show', 'no'=>'Don\'t Show')),
-    'status'=>array('type'=>'list', 'list'=>array('active', 'archive'))
+    'status'=>array('type'=>'list', 'list'=>array('active'=>'Active', 'archive'=>'Archive'))
   );
 
   static $_root_extra_defs = array
