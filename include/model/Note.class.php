@@ -193,5 +193,39 @@ class Note extends DTO_Note
     $data = Note::get_id_and_field("summary","where id='$id'");
     return($data[$id]);
   }
+  
+  /**
+  * Adds a note linked to an item given minimal information
+  * 
+  * Sometimes OPUS finds it useful to record a note about some automatic
+  * action it takes. This function is used to allow this process to be
+  * extremely simple and automatic.
+  * 
+  * @param $link_type the link type (main link)
+  * @param $link_id the id of the link
+  * @param $note_summary the single line summary of the note
+  * @param $note_body the full detail of the note
+  */
+  function simple_insert($link_type, $link_id, $note_summary, $note_body)
+  {
+    $fields = array();
+
+    $fields['auth'] = 'all'; // This is a simple, quick note.
+    $fields['summary'] = $note_summary;
+    $fields['comments'] = $note_body;    
+    $fields['main_link'] = $link_type . "_" . (int) $link_id;
+    
+    Note::insert($fields);
+  }
+  
+  function simple_insert_student($student_user_id, $note_summary, $note_body)
+  {
+    Note::simple_insert("Student", $student_user_id, $note_summary, $note_body);
+  }
+  
+  function simple_insert_company($company_id, $note_summary, $note_body)
+  {
+    Note::simple_insert("Company", $company_id, $note_sumamry, $note_body);
+  }
 }
 ?>
