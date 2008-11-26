@@ -170,7 +170,7 @@ class DTO_Admin extends DTO
   }
 
 
-  function _get_user_id_and_name($where_clause)
+  function _get_user_id_and_name($where_clause, $order_by="order by user.lastname")
   {
     $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
@@ -178,7 +178,7 @@ class DTO_Admin extends DTO
     $final_array = array();
     try
     {
-      $sql = $con->prepare("select user.* from admin left join user on admin.user_id = user.id $where_clause");
+      $sql = $con->prepare("select user.* from admin left join user on admin.user_id = user.id $where_clause $order_by");
       $sql->execute();
 
       while ($results_row = $sql->fetch(PDO::FETCH_ASSOC))
