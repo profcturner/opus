@@ -222,7 +222,7 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $action_links = array(array('add', "section=configuration&function=add_facultyadmin&faculty_id=$faculty_id"));
-    $actions = array(array('remove', 'remove_facultyadmin'));
+    $actions = array(array('remove', "remove_facultyadmin&faculty_id=$faculty_id"));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -267,15 +267,24 @@
   function remove_facultyadmin(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
+    
+    // The inbound id is actually the admin id, not the id from the facultyadmin table
+    require_once("model/Admin.class.php");
+    $id = (int) WA::request("id");
+    $faculty_id = (int) WA::request("faculty_id", true);
+    $new_id = Admin::get_link_id_from_admin_and_level("faculty", $faculty_id, $id);
 
+    // Ok, so now we inject the correct id back into place.
+    $_REQUEST['id'] = $new_id;
     remove_object($waf, $user, "FacultyAdmin", array("remove", "configuration", "remove_facultyadmin_do"), array(array("cancel","section=configuration&function=manage_facultyadmins")), "", "admin:configuration:organisation_details:remove_facultyadmin");
   }
 
   function remove_facultyadmin_do(&$waf, &$user) 
   {
+    $faculty_id = (int) WA::request("faculty_id", true);
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "FacultyAdmin", "section=configuration&function=manage_facultyadmins");
+    remove_object_do($waf, $user, "FacultyAdmin", "section=configuration&function=manage_facultyadmins&faculty_id=$faculty_id");
   }
 
   // School Admins
@@ -296,7 +305,7 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $action_links = array(array('add', "section=configuration&function=add_schooladmin&school_id=$school_id"));
-    $actions = array(array('remove', 'remove_schooladmin'));
+    $actions = array(array('remove', "remove_schooladmin&school_id=$school_id"));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -342,14 +351,23 @@
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
+    // The inbound id is actually the admin id, not the id from the facultyadmin table
+    require_once("model/Admin.class.php");
+    $id = (int) WA::request("id");
+    $school_id = (int) WA::request("school_id", true);
+    $new_id = Admin::get_link_id_from_admin_and_level("school", $school_id, $id);
+
+    // Ok, so now we inject the correct id back into place.
+    $_REQUEST['id'] = $new_id;
     remove_object($waf, $user, "SchoolAdmin", array("remove", "configuration", "remove_schooladmin_do"), array(array("cancel","section=configuration&function=manage_schooladmins")), "", "admin:configuration:organisation_details:remove_schooladmin");
   }
 
   function remove_schooladmin_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
+    $school_id = (int) WA::request("school_id", true);
 
-    remove_object_do($waf, $user, "SchoolAdmin", "section=configuration&function=manage_schooladmins");
+    remove_object_do($waf, $user, "SchoolAdmin", "section=configuration&function=manage_schooladmins&school_id=$school_id");
   }
 
   // Programme Admins
@@ -370,7 +388,7 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $action_links = array(array('add', "section=configuration&function=add_programmeadmin&programme_id=$programme_id"));
-    $actions = array(array('remove', 'remove_programmeadmin'));
+    $actions = array(array('remove', "remove_programmeadmin&programme_id=$programme_id"));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -416,14 +434,23 @@
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
+    // The inbound id is actually the admin id, not the id from the facultyadmin table
+    require_once("model/Admin.class.php");
+    $id = (int) WA::request("id");
+    $programme_id = (int) WA::request("programme_id", true);
+    $new_id = Admin::get_link_id_from_admin_and_level("programme", $programme_id, $id);
+
+    // Ok, so now we inject the correct id back into place.
+    $_REQUEST['id'] = $new_id;
     remove_object($waf, $user, "ProgrammeAdmin", array("remove", "configuration", "remove_programmeadmin_do"), array(array("cancel","section=configuration&function=manage_programmeadmins")), "", "admin:configuration:organisation_details:remove_programmeadmin");
   }
 
   function remove_programmeadmin_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
+    $programme_id = (int) WA::request("programme_id", true);
 
-    remove_object_do($waf, $user, "ProgrammeAdmin", "section=configuration&function=manage_programmeadmins");
+    remove_object_do($waf, $user, "ProgrammeAdmin", "section=configuration&function=manage_programmeadmins&programme_id=$programme_id");
   }
 
   // Programmes

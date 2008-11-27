@@ -140,7 +140,7 @@ class DTO_Admin extends DTO
     $tablename = $level . "admin";
     try
     {
-      $query = "select admin_id, $tablename.policy_id as level_policy_id from admin left join $tablename on admin.user_id = $tablename.admin_id left join user on admin.user_id = user.id left join policy on policy.id = $tablename.policy_id where $level" . "_id=?";
+      $query = "select admin_id, $tablename.policy_id as level_policy_id, $tablename.id as level_id from admin left join $tablename on admin.user_id = $tablename.admin_id left join user on admin.user_id = user.id left join policy on policy.id = $tablename.policy_id where $level" . "_id=?";
       if($help_directory) $query .= " and admin.help_directory = 'yes'";
       $query .= " order by policy.priority, user.lastname"; // needs to be improved
       $sql = $con->prepare($query);
@@ -159,6 +159,7 @@ class DTO_Admin extends DTO
         {
           $user->_level_policy_name = $user->_policy_id;
         }
+        $user->_level_id = $results_row["level_id"];
         $object_array[] = $user;
       }
     }
@@ -169,6 +170,41 @@ class DTO_Admin extends DTO
     return $object_array; 
   }
 
+  /**
+  * retrieves the id from the link table for a given admin and level
+  * 
+  * for example, when the faculty admins are listed, the ids are those
+  * of the admin users. This is normally good, but when trying to
+  * remove the link in the table facultyadmin, the id from that table
+  * needs to be retrieved.
+  * 
+  * @param $level is the name of the link type, e.g. faculty, school
+  * @param $level_id is the id for that type, e.g. the faculty id
+  * @parem $admin_id is the id from the admin table
+  * @return the id from the link table
+  */ 
+  function _get_link_id_from_admin_and_level($level, $level_id = 0, $admin_id)
+  {
+    $waf =& UUWAF::get_instance();
+
+    $con = $waf->connections[$this->_handle]->con;
+
+    $tablename = $level . "admin";
+    try
+    {
+      $query = "select $tablename.id from $tablename left join admin on admin.user_id = $tablename.admin_id where admin.id=? and $tablename.$level" . "_id=?";
+
+      $sql = $con->prepare($query);
+      $sql->execute(array($admin_id, $level_id));
+
+      $results_row = $sql->fetch(PDO::FETCH_ASSOC);
+      return($results_row['id']);
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, "Admin", "_get_link_id_from_admin_and_level($level, $level_id, $admin_id)");
+    }
+  }
 
   function _get_user_id_and_name($where_clause, $order_by="order by user.lastname")
   {

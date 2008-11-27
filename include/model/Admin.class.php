@@ -337,6 +337,13 @@ class Admin extends DTO_Admin
     $admin = new Admin;
     return $admin->_get_all_by_programme($programme_id, $help_directory);
   }
+  
+  function get_link_id_from_admin_and_level($level, $level_id = 0, $admin_id)
+  {
+    $admin = new Admin;
+    return $admin->_get_link_id_from_admin_and_level($level, $level_id, $admin_id);
+  }
+ 
 
   function get_id_and_field($fieldname, $where_clause="") 
   {
