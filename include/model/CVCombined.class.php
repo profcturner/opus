@@ -210,6 +210,7 @@ class CVCombined
     require_once("model/Application.class.php");
     $application = Application::load_by_id($application_id);
     $vacancy_id = $application->vacancy_id;
+    $company_id = $application->company_id;
     $student_user_id = $application->student_id;
 
     if(!$application->id) return false; // no such application linking the two
