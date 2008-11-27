@@ -194,9 +194,11 @@ class StudentImport
       {
         $student['result'] = "Invalid Programme";
       }
-      elseif(strlen($onlyyear) && $student['year'] != $onlyyear)
+      elseif(strlen($onlyyear) && $student['year_on_course'] != $onlyyear)
       {
         $student['result'] = "Invalid Year";
+        //print_r($student);
+        //echo $onlyyear;
       }
       else
       {
