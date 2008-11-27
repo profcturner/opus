@@ -417,7 +417,7 @@
       {
         // Send me the combined CV
         require_once("model/Application.class.php");
-        $application = Application::load_where("where vacancy_id = $vacancy_id and student_id=" . (int) $key);
+        $application = Application::load_where("where vacancy_id = $vacancy_id and student_id=" . (int) $student_id);
         CVCombined::email_cv(User::get_id(), $application->id);
       }
     }

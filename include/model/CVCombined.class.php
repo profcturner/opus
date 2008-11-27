@@ -245,7 +245,7 @@ class CVCombined
     require_once("model/User.class.php");
     $recipient = User::load_by_id($recipient_user_id);
 
-    $body = "Company : $company_name\nVacancy : $vacancy_name\nStudent: $student_name";
+    $body = "Company : $company_name\nVacancy : $vacancy_name\nStudent : $student_name";
 
     // Finally package it up
     require_once("model/OPUSMail.class.php");
