@@ -204,6 +204,7 @@ class CVCombined
   */
   function email_cv($recipient_user_id, $application_id = 0)
   {
+    $waf = UUWAF::get_instance();
     $application_id = (int) $application_id;
 
     require_once("model/Application.class.php");
