@@ -218,6 +218,7 @@ class CVCombined
     require_once("model/Company.class.php");
     $student_name = User::get_name($student_user_id);
     $vacancy_name = Vacancy::get_name($vacancy_id);
+    $company_name = Company::get_name($company_id);
 
     if(!CVCombined::is_auth_to_view_cv($application->cv_ident, $student_user_id))
     {
@@ -241,7 +242,7 @@ class CVCombined
 
     // Now the email address and other things
     require_once("model/User.class.php");
-    $recipient = User::load_by_id($recipient_id);
+    $recipient = User::load_by_id($recipient_user_id);
 
     $body = "Company : $company_name\nVacancy : $vacancy_name\nStudent: $student_name";
 
