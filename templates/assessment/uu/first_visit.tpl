@@ -128,11 +128,11 @@ using the on-line form, and if not, ask them to complete it without delay.</p>
 <table>
 <tr>
   <td class="property">Health &amp; Safety<br />Matters Raised {$assessment->flag_error("hs_matters")}</td>
-  <td><textarea name="hs_matters" rows="10" cols="60" wrap="VIRTUAL">{$assessment->get_value("hs_matters")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="hs_matters" rows="10" cols="60"}</td>
 </tr>
 <tr>
   <td class="property">Health &amp; Safety<br />Advice Given {$assessment->flag_error("hs_advice")}</td>
-  <td><textarea name="hs_advice" rows="10" cols="60" wrap="VIRTUAL">{$assessment->get_value("hs_advice")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="hs_advice" rows="10" cols="60"}</td>
 </tr>
 </table>
 </div>
@@ -141,15 +141,15 @@ using the on-line form, and if not, ask them to complete it without delay.</p>
 <table>
 <tr>
   <td class="property">Student Living Accommodation{$assessment->flag_error("accommodation")}</td>
-  <td><textarea name="accommodation" rows="10" cols="60" wrap="VIRTUAL">{$assessment->get_value("accommodation")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="accommodation" rows="10" cols="60"}</td>
 </tr>
 <tr>
   <td class="property">Comments on and for the Student {$assessment->flag_error("comment_student")}</td>
-  <td><textarea name="comment_student" rows="10" cols="60" wrap="VIRTUAL">{$assessment->get_value("comment_student")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="comment_student" rows="10" cols="60"}</td>
 </tr>
 <tr>
   <td class="property">Comments on the Placement {$assessment->flag_error("comment_placement")}</td>
-  <td><textarea name="comment_placement" rows="10" cols="60" wrap="VIRTUAL">{$assessment->get_value("comment_placement")|escape:"htmlall"}</textarea></td>
+  <td>{include file="general/assessment/textarea.tpl" name="comment_placement" rows="10" cols="60"}</td>
 </tr>
 <tr>
   <td class="property">Visit conducted</td>
