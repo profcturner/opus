@@ -71,6 +71,8 @@ class AssessmentStructure extends DTO_AssessmentStructure
   function insert($fields) 
   {
     $assessmentstructure = new AssessmentStructure;
+    $largest_varorder = $assessmentstructure->_get_highest_varorder_for_assessment($fields['assessment_id']);
+    $fields['varorder'] = $largest_varorder + 1;
     $assessmentstructure->_insert($fields);
   }
 
