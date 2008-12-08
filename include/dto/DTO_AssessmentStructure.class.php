@@ -147,6 +147,25 @@ class DTO_AssessmentStructure extends DTO
     }
     return $results_row[0];
   }
+  
+  function _get_highest_varorder_for_assessment($assessment_id)
+  {
+    $waf =& UUWAF::get_instance();
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare("SELECT MAX(varorder) from assessmentstructure where assessment_id=?");
+      $sql->execute(array($assessment_id));
+      
+      $results_row = $sql->fetch(PDO::FETCH_NUM);
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, "assessmentstructure", "get_highest_varorder_for_assessment");
+    }
+    return $results_row[0];
+  }  
 }
 
 ?>
