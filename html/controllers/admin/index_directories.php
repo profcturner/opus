@@ -344,6 +344,7 @@
 
     $waf->assign("student_id", $student_id);
     $waf->assign("cvs", $cvs);
+    $waf->assign("action_links", array(array('manage internal cvs', 'section=directories&function=manage_cvs')));    
 
     $waf->display("main.tpl", "admin:directories:student_directory:display_cv_list", "admin/directories/list_student_cvs.tpl");
   }
@@ -2134,6 +2135,73 @@
     remove_object_do($waf, $user, "Resource", "section=directories&function=manage_company_resources&company_id=$company_id");
   }
 
+  // CV management, to allow Admins to manipulate student CVs
+
+  function manage_cvs(&$waf, $user)
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    
+    $page = WA::request('page', true);
+    manage_objects($waf, User::get_id(), "CV", array(array("add","section=directories&function=add_cv")), array(array('edit', 'edit_cv'), array('remove','remove_cv')), "get_all", array("WHERE `user_id`=\"".$student_id."\"", "", $page, True), "student:career:cv_store:manage_cvs");
+  }
+
+  function add_cv(&$waf, $user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    
+    add_object($waf, User::get_id(), "CV", array("add", "directories", "add_cv_do"), array(array("cancel","section=directories&function=manage_cvs")), array(array("user_id", $student_id)), "student:career:cv_store:add_cv");
+  }
+
+  function add_cv_do(&$waf, $user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    
+    add_object_do($waf, User::get_id(), "CV", "section=directories&function=manage_cvs", "add_cv");
+  }
+
+  function edit_cv(&$waf, $user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    
+    edit_object($waf, User::get_id(), "CV", array("confirm", "directories", "edit_cv_do"), array(array("cancel","section=directories&function=manage_cvs")), array(array("user_id",$student_id)), "student:career:cv_store:edit_cv");
+  }
+
+  function edit_cv_do(&$waf, $user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    
+    edit_object_do($waf, User::get_id(), "CV", "section=directories&function=manage_cvs", "edit_cv");
+  }
+
+  function remove_cv(&$waf, $user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+        
+    remove_object($waf, User::get_id(), "CV", array("remove", "directories", "remove_cv_do"), array(array("cancel","section=directories&function=manage_cvs")), "", "student:career:cv_store:remove_cv");
+  }
+
+  function remove_cv_do(&$waf, $user) 
+  {
+    $student_id = (int) WA::request("student_id", true);
+    if(!$student_id) $waf->halt("error:student_cv:no_student_id");
+    if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
+    
+    remove_object_do($waf, User::get_id(), "CV", "section=directories&function=manage_cvs");
+  }
+
+  // Password reset
 
   function reset_password(&$waf)
   {
