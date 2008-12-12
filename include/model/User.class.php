@@ -241,6 +241,8 @@ Class User extends DTO_User
 
   function email_password($fields, $password)
   {
+    global $config;
+    
     require_once("model/Automail.class.php");
 
     $mailfields = array();
@@ -263,7 +265,11 @@ Class User extends DTO_User
         Automail::sendmail("NewPassword_Supervisor", $mailfields);
         break;
       case "student" :
-        // Nothing, for now...
+        // We send emails to students if so configured...
+        if($config['opus']['email_students_on_creation'])
+        {
+          Automail::sendmail("NewPassword_Student", $mailfields);
+        }
         break;
       default:
         Automail::sendmail("NewPassword", $mailfields);
