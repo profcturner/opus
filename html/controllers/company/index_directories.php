@@ -203,7 +203,7 @@
       'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special"), 'header'=>true)
     );
 
-    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy'));
+    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants'), array('clone', 'clone_vacancy'));
 
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
