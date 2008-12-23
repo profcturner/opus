@@ -201,6 +201,7 @@ class CVCombined
   * @param int $recipient_user_id the user_id of the recipient
   * @param int $application_id the application that was used
   * @todo would be nice to drive this from a template
+  * @todo use an appropriate filename, based on mime type
   */
   function email_cv($recipient_user_id, $application_id = 0)
   {
