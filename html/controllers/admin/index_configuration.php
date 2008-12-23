@@ -656,7 +656,7 @@
 
     add_navigation_history($waf, $faculty->name);
 
-    manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add","section=configuration&function=add_assessmentgroupprogramme")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", "where programme_id=$programme_id", "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
+    manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add","section=configuration&function=add_assessmentgroupprogramme")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", array("where programme_id=$programme_id", "", $page), "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
   }
 
   function add_assessmentgroupprogramme(&$waf, &$user) 
