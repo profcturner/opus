@@ -28,7 +28,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
     'min'=>array('type'=>'text', 'size'=>5, 'title'=>'Minimum Value / Characters'),
     'max'=>array('type'=>'text', 'size'=>5, 'title'=>'Maximum Value / Characters'),
     'weighting'=>array('type'=>'text', 'size'=>3, 'title'=>'Weighting'),
-    'options'=>array('type'=>'list', 'list'=>array('compulsory','optional')),
+    'options'=>array('type'=>'list', 'list'=>array('compulsory'=>'compulsory','optional'=>'optional')),
     'varorder'=>array('type'=>'hidden')
   );
 
