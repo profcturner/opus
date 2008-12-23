@@ -1591,26 +1591,18 @@
 
   }
 
-
-  function manage_staff(&$waf, $user, $title)
-  {
-    if(!Policy::check_default_policy("staff", "list")) $waf->halt("error:policy:permissions");
-
-    manage_objects($waf, $user, "Staff", array(array("add","section=directories&function=add_staff")), array(array('edit', 'edit_staff'), array('remove','remove_staff')), "get_all", "", "admin:directories:staff_directory:manage_staff");
-  }
-
   function add_staff(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("staff", "create")) $waf->halt("error:policy:permissions");
 
-    add_object($waf, $user, "Staff", array("add", "directories", "add_staff_do"), array(array("cancel","section=directories&function=manage_staff")), array(array("user_id",$user["user_id"])), "admin:directories:staff_directory:add_staff");
+    add_object($waf, $user, "Staff", array("add", "directories", "add_staff_do"), array(array("cancel","section=directories&function=staff_directory")), array(array("user_id",$user["user_id"])), "admin:directories:staff_directory:add_staff");
   }
 
   function add_staff_do(&$waf, &$user) 
   {
     if(!Policy::check_default_policy("staff", "create")) $waf->halt("error:policy:permissions");
 
-    add_object_do($waf, $user, "Staff", "section=directories&function=manage_staff", "add_staff");
+    add_object_do($waf, $user, "Staff", "section=directories&function=staff_directory", "add_staff");
   }
 
   function edit_staff(&$waf, &$user) 
@@ -1624,7 +1616,7 @@
 
     $waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=manage_staff"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id), array("list students / view home", "section=directories&function=list_students_for_staff&id=" . $id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
+    edit_object($waf, $user, "Staff", array("confirm", "directories", "edit_staff_do"), array(array("cancel","section=directories&function=staff_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $staff->user_id), array("list students / view home", "section=directories&function=list_students_for_staff&id=" . $id)), array(array("user_id", $staff->user_id)), "admin:directories:staff_directory:edit_staff", "admin/directories/edit_staff.tpl");
   }
 
   function edit_staff_do(&$waf, &$user) 
@@ -1639,14 +1631,14 @@
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object($waf, $user, "Staff", array("remove", "directories", "remove_staff_do"), array(array("cancel","section=directories&function=manage_staff")), "", "admin:directories:staff_directory:remove_staff");
+    remove_object($waf, $user, "Staff", array("remove", "directories", "remove_staff_do"), array(array("cancel","section=directories&function=staff_directory")), "", "admin:directories:staff_directory:remove_staff");
   }
 
   function remove_staff_do(&$waf, &$user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
-    remove_object_do($waf, $user, "Staff", "section=directories&function=manage_staff");
+    remove_object_do($waf, $user, "Staff", "section=directories&function=staff_directory");
   }
 
   function list_students_for_staff(&$waf, &$user)

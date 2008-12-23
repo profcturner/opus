@@ -122,12 +122,6 @@
     Photo::display_photo($username, $fullsize);
   }
 
-  function list_vacancies(&$opus, $user, $title)
-  {
-    manage_objects($opus, $user, "Vacancy", array(), array(array('view', 'view_vacancy')), "get_all", "", "student:placement:list_vacancies:list_vacancies");
-  }
-
-
   // Assessments
 
   /**

@@ -93,7 +93,7 @@
     $waf->assign("percentage_total", $percentage_total);
     $waf->assign("assessment_section", "student");
 
-    $waf->display("main.tpl", "student:myplacement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
+    $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
   }
 
   // Assessments

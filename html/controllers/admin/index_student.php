@@ -28,7 +28,7 @@
     $student = Student::load_by_user_id($student_id);
 
     $waf->assign("student", $student);
-    $waf->display("main.tpl", "student:myplacement:home:home", "student/home/home.tpl");
+    $waf->display("main.tpl", "student:home:home:home", "student/home/home.tpl");
   }
 
   function vacancy_directory(&$waf)

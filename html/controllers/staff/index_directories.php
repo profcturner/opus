@@ -927,54 +927,6 @@
     $waf->display("main.tpl", "admin:directories:contact_directory:search_contacts", "list.tpl");
   }
 
-  function add_contact(&$waf, &$user) 
-  {
-    if(!Policy::check_default_policy("contact", "create")) $waf->halt("error:policy:permissions");
-
-    $company_id = (int) WA::request("company_id", true);
-
-    add_object($waf, $user, "Contact", array("add", "directories", "add_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id",$user["user_id"]), array("company_id", $company_id)), "admin:directories:contacts:add_contact");
-  }
-
-  function add_contact_do(&$waf, &$user) 
-  {
-    if(!Policy::check_default_policy("contact", "create")) $waf->halt("error:policy:permissions");
-
-    add_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "add_contact");
-  }
-
-  function edit_contact(&$waf, &$user) 
-  {
-    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
-
-    require_once("model/Contact.class.php");
-    $id = WA::request("id");
-    $contact = Contact::load_by_id($id);
-
-    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact");
-  }
-
-  function edit_contact_do(&$waf, &$user) 
-  {
-    if(!Policy::check_default_policy("contact", "edit")) $waf->halt("error:policy:permissions");
-
-    edit_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts", "edit_contact");
-  }
-
-  function remove_contact(&$waf, &$user) 
-  {
-    if(!Policy::check_default_policy("contact", "delete")) $waf->halt("error:policy:permissions");
-
-    remove_object($waf, $user, "Contact", array("remove", "directories", "remove_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), "", "admin:directories:contacts:remove_contact");
-  }
-
-  function remove_contact_do(&$waf, &$user) 
-  {
-    if(!Policy::check_default_policy("contact", "delete")) $waf->halt("error:policy:permissions");
-
-    remove_object_do($waf, $user, "Contact", "section=directories&function=manage_contacts");
-  }
-
   // Staff
 
   function staff_directory(&$waf)
