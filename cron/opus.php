@@ -250,4 +250,74 @@ function get_academic_year()
   return($year);
 }
 
+
+
+function check_missing_error_prompts()
+{
+  $halt_command = "grep -Ihor \"halt(\\\"error:.*.*\\\")\" ../* | sed -e \"s/halt(\\\"//\" -e \"s/\\\")//\" | sort | uniq";
+  // Look for the error codes called on halt, from the top of the source tree
+  $fp = popen($halt_command, 'r');
+  while(!feof($fp))
+  {
+    $line = trim(fgets($fp));
+    if(empty($line)) continue; // Last line is blank
+    // grep for this now!
+    
+
+    $missing_halt_command = "grep -IL \"" . $line . "\" ../configs/lang_*";
+    $missing_files = array();
+    $fp_missing = popen($missing_halt_command, "r");
+    while(!feof($fp_missing))
+    {
+      $missing_files_line = trim(fgets($fp_missing));
+      if(!empty($missing_files_line)) array_push($missing_files, $missing_files_line);
+    }
+    pclose($fp_missing);
+    if(count($missing_files))
+    {
+      echo "Prompt $line... missing for :\n";
+      foreach($missing_files as $missing_files_line)
+      {
+        echo "  $missing_files_line\n";
+      }
+    }
+    
+  }
+  pclose($fp);
+}
+
+function check_missing_lang_prompts()
+{
+  $lang_command = "grep -Ihor \\\"[a-z_]*:[a-z_]*:[a-z_]*:[a-z_]*\\\" ../* | sort | uniq";
+  // Look for the error codes called on halt, from the top of the source tree
+  $fp = popen($lang_command, 'r');
+  while(!feof($fp))
+  {
+    $line = trim(fgets($fp));
+    if(empty($line)) continue; // Last line is blank
+    // grep for this now!
+    
+
+    $missing_lang_command = "grep -IL \"" . $line . "\" ../configs/lang_*";
+    $missing_files = array();
+    $fp_missing = popen($missing_lang_command, "r");
+    while(!feof($fp_missing))
+    {
+      $missing_files_line = trim(fgets($fp_missing));
+      if(!empty($missing_files_line)) array_push($missing_files, $missing_files_line);
+    }
+    pclose($fp_missing);
+    if(count($missing_files))
+    {
+      echo "Prompt $line... missing for :\n";
+      foreach($missing_files as $missing_files_line)
+      {
+        echo "  $missing_files_line\n";
+      }
+    }
+    
+  }
+  pclose($fp);
+}
+
 ?>
