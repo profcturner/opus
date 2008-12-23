@@ -100,6 +100,7 @@ class AssessmentRegime extends DTO_AssessmentRegime
     {
       $assessmentregimes = $assessmentregime->_get_all($where_clause, $order_by, 0, 1000);
     }
+    usort($assessmentregimes, array(AssessmentRegime, assessment_date_compare));
     return $assessmentregimes;
   }
 
