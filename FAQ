@@ -397,8 +397,22 @@ by us, and not altered by any third party before you receive it.
 We will sign your GPG keys with appropriate documentation if we meet in person
 and are happy to provide documentation to allow you to sign ours.
 
+* We get a wierd logout / second login problem
+----------------------------------------------
 
-At the bottom of the file it suggests that you can add some options. Add these:
+This is usually caused by a misconfigured fully qualified host name for your
+server in the configuration, or you using an alias (like localhost) for testing
+which is then redirected to a new name. Check the config file.
+
+* Feature X is missing, but I saw it in a demo?
+  Is it not in the Open Source Version?
+---------------------------------------
+
+There is no "premium" closed source version, it's all open source. This is
+often caused by the fact that, for example, out of the box OPUS does not assume
+how you would wish to assess your students, so the default assessment group is
+empty. You need to configure that to your wishes. This is true of other
+examples too. If in doubt, please ask us.
 
 * Why is OPUS not sending mail?
 -------------------------------
