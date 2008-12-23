@@ -653,8 +653,9 @@
     if(!Policy::check_default_policy("assessmentgroup", "list")) $waf->halt("error:policy:permissions");
 
     $programme_id = (int) WA::request("id", true);
+    require_once("model/Programme.class.php");
 
-    add_navigation_history($waf, $faculty->name);
+    add_navigation_history($waf, Programme::get_name($programme_id));
 
     manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add","section=configuration&function=add_assessmentgroupprogramme")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", array("where programme_id=$programme_id", "", $page), "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
   }
