@@ -72,6 +72,13 @@ class Programme extends DTO_Programme
     return $programme;
   }
 
+  function load_where($where_clause)
+  {
+    $programme = new Programme;
+    $programme->_load_where($where_clause);
+    return $programme;
+  }
+  
   function insert($fields) 
   {
     $programme = new Programme;
@@ -214,6 +221,65 @@ class Programme extends DTO_Programme
       if(count($faculty['schools'])) array_push($final_array, $faculty);
     }
     return($final_array);
+  }
+  
+  /**
+  * Attempts to create a programme, school and faculty if needed
+  * 
+  * Particularly on auto creation of student accounts, we often need
+  * to create a programme entry, and perhaps all the details above.
+  * 
+  * @param $programme_details an associative array of details to use
+  * @return a valid programme->id if success, or it exists, false otherwise
+  */ 
+  function auto_create($programme_details)
+  {
+    $programme_code = $programme_details['programme_code'];
+    $programme = Programme::load_where("where srs_ident='$programme_code'");
+    if($programme->id)
+    {
+      return $programme->id;
+    }
+    
+    // Ok, we don't already have it. Do we have the faculty?
+    require_once("model/Faculty.class.php");
+    $faculty = Faculty::load_by_srs_ident($programme_details['faculty_code']);
+    if(!$faculty->id)
+    {
+      // Does not yet exist
+      $fields = array();
+      $fields['name'] = $programme_details['faculty_name'];
+      $fields['srs_ident'] = $programme_details['faculty_code'];
+      $fields['status'] = 'active';
+      $faculty_id = Faculty::insert($fields);
+    }
+    else $faculty_id = $faculty->id;
+    
+    // Do we have the school?
+    require_once("model/School.class.php");
+    $school = School::load_by_srs_ident($programme_details['department']);
+    if(!$school->id)
+    {
+      // Does not yet exist
+      $fields = array();
+      $fields['name'] = $programme_details['department_name'];
+      $fields['srs_ident'] = $programme_details['department'];
+      $fields['faculty_id'] = $faculty_id;
+      $fields['status'] = 'active';
+      $school_id = School::insert($fields);
+    }
+    else $school_id = $school->id;
+    
+    // Now create the programme
+    $fields = array();
+    $fields['name'] = $programme_details['programme_title'];
+    $fields['srs_ident'] = $programme_details['programme_code'];
+    $fields['school_id'] = $school_id;
+    $fields['cvgroup_id'] = 1;
+    $fields['status'] = 'active';
+    $programme_id = Programme::insert($fields);
+    
+    return($programme_id);
   }
 }
 ?>

@@ -48,6 +48,13 @@ class Faculty extends DTO_Faculty
     $faculty->_load_by_id();
     return $faculty;
   }
+  
+  function load_where($where_clause)
+  {
+    $faculty = new Faculty;
+    $faculty->_load_where($where_clause);
+    return $faculty;
+  }
 
   function insert($fields) 
   {

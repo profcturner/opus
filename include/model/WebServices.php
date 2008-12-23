@@ -100,11 +100,22 @@ class WebServices
   * @param string $reg_number the registration number for the student
   * @return an associative PHP array
   *
-  * @todo should student number not take preceding s in Ulster?
   */
   function get_student($student_number)
   {
     return(WebServices::get_data("get_student_details", "bannerid=$student_number&full=0"));
+  }
+
+  /**
+  * fetches information on a student's course, school and faculty
+  *
+  * @param string $reg_number the registration number for the student
+  * @return an associative PHP array
+  *
+  */
+  function get_student_course($student_number)
+  {
+    return(WebServices::get_data("get_student_course", "bannerid=$student_number&full=1"));
   }
 
   /**

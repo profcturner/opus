@@ -248,6 +248,49 @@ class StudentImport
     $waf->log("added student " . $fields['firstname'] . " " . $fields['surname']);
     Student::insert($fields);
   }
+  
+  function auto_add_student($reg_number)
+  {
+    $waf = UUWAF::get_instance();
+    
+    $waf->log("Request to auto add student $reg_number");
+    require_once("model/Student.class.php");
+    if(Student::count("where reg_number='$reg_number'"))
+    {
+      $waf->log("Student already in OPUS database, skipping");
+      return;
+    }
+    
+    // Get details on the student course
+    $course_details = WebServices::get_student_course($reg_number);
+    
+    $programme_code = $course_details['programme_code'];
+    require_once("model/Programme.class.php");
+    
+    $programme = Programme::load_where("where srs_ident='$programme_code'");
+    if($programme->id)
+    {
+      $waf->log("Missing programme : " . $course_details['programme_title'] . "(" . $course_details['programme_code'] . ")");
+      // The course currently does not exist within OPUS
+      // Try to create it
+      $programme_id = Programme::auto_create($course_details);
+      if($programme_id == false)
+      {
+        $waf->log("Cannot create base programme, so cannot add student");
+        return;
+      }
+    }
+    else $programme_id = $programme->id;
+    
+    // Ok, at last, can we add the student? Get the details
+    $student_array = StudentImport::import_student_via_SRS($reg_number);
+    // Try to guess the placement year, which is currently a pretty
+    // primitive algorithm
+    $year_on_course = $student_array['year_on_course'];
+    $placement_year = get_academic_year() + (3 - $year_on_course);
+    StudentImport::add_student($student_array, $programme_id, "Required", $placement_year);
+    
+  }
 }
 
 ?>

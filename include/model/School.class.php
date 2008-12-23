@@ -51,6 +51,13 @@ class School extends DTO_School
     return $school;
   }
 
+  function load_where($where_clause)
+  {
+    $school = new School;
+    $school->_load_where($where_clause);
+    return $school;
+  }
+
   function insert($fields) 
   {
     $school = new School;
