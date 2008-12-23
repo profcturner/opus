@@ -8,26 +8,54 @@
 
 <div id="table_manage">
 <table>
-{*
+
+{* Productivity *}
+
 <tr>
-  <th>Category</th>
-  <th>3</th>
-  <th>2</th>
-  <th>1</th>
-  <th>0</th>
+  <td class="property">Productivity <br />{$assessment->flag_error("productivity")}</td>
+  <td><input type="radio" name="productivity" value="6" {if $assessment->get_value("productivity")==6}CHECKED{/if}/>
+    <small>Student's output makes a <strong>significant net contribution</strong> to the company or department.</small>
+  </td>
+  <td><input type="radio" name="productivity" value="3" {if $assessment->get_value("productivity")==3}CHECKED{/if}/>
+    <small>Student's output makes a <strong>net contribution</strong> to the company or department.</small>
+  </td>
+  <td><input type="radio" name="productivity" value="2" {if $assessment->get_value("productivity")==2}CHECKED{/if}/>
+    <small>Student's output is <strong>acceptable</strong>.</small>
+  </td>
+  <td><input type="radio" name="productivity" value="0" {if $assessment->get_value("productivity")==0}CHECKED{/if}/>
+    <small>Student's output is <strong>not yet acceptable</strong>.</small>
+  </td>
 </tr>
-*}
+
+{* Quality of Work *}
+
+<tr>
+  <td class="property">Quality <br />{$assessment->flag_error("quality")}</td>
+  <td><input type="radio" name="quality" value="6" {if $assessment->get_value("quality")==6}CHECKED{/if}/>
+    <small>Student <strong>always</strong> produces work of the <strong>very highest quality</strong>.</small>
+  </td>
+  <td><input type="radio" name="quality" value="3" {if $assessment->get_value("quality")==3}CHECKED{/if}/>
+    <small>Student <strong>frequently</strong> produces <strong>very good</strong> work.</small>
+  </td>
+  <td><input type="radio" name="quality" value="2" {if $assessment->get_value("quality")==2}CHECKED{/if}/>
+    <small>Quality of student's work is <strong>acceptable</strong>.</small>
+  </td>
+  <td><input type="radio" name="quality" value="0" {if $assessment->get_value("quality")==0}CHECKED{/if}/>
+    <small>Quality of student's work is <strong>not yet acceptable</strong>.</small>
+  </td>
+</tr>
+
 {* Initiative *}
 
 <tr>
   <td class="property" width="20%">Initiative <br />{$assessment->flag_error("initiative")}</td>
-  <td width="20%"><input type="radio" name="initiative" value="3" {if $assessment->get_value("initiative")==3}CHECKED{/if}/>
+  <td width="20%"><input type="radio" name="initiative" value="4" {if $assessment->get_value("initiative")==4}CHECKED{/if}/>
     <small>Student takes initiative when <strong>appropriate</strong> and <strong>actively</strong> seeks opportunities to contribute to the department.</small>
   </td>
-  <td width="20%"><input type="radio" name="initiative" value="2" {if $assessment->get_value("initiative")==2}CHECKED{/if}/>
+  <td width="20%"><input type="radio" name="initiative" value="3" {if $assessment->get_value("initiative")==3}CHECKED{/if}/>
     <small>Student takes initiative when <strong>appropriate</strong>.</small>
   </td>
-  <td width="20%"><input type="radio" name="initiative" value="1" {if $assessment->get_value("initiative")==1}CHECKED{/if}/>
+  <td width="20%"><input type="radio" name="initiative" value="2" {if $assessment->get_value("initiative")==2}CHECKED{/if}/>
     <small>Student <strong>sometimes</strong> takes initiative.</small>
   </td>
   <td width="20%"><input type="radio" name="initiative" value="0" {if $assessment->get_value("initiative")==0}CHECKED{/if}/>
@@ -53,63 +81,20 @@
   </td>
 </tr>
 
-{* Productivity *}
-
-<tr>
-  <td class="property">Productivity <br />{$assessment->flag_error("productivity")}</td>
-  <td><input type="radio" name="productivity" value="3" {if $assessment->get_value("productivity")==3}CHECKED{/if}/>
-    <small>Student's output makes a <strong>significant net contribution</strong> to the company or department.</small>
-  </td>
-  <td><input type="radio" name="productivity" value="2" {if $assessment->get_value("productivity")==2}CHECKED{/if}/>
-    <small>Student's output makes a <strong>net contribution</strong> to the company or department.</small>
-  </td>
-  <td><input type="radio" name="productivity" value="1" {if $assessment->get_value("productivity")==1}CHECKED{/if}/>
-    <small>Student's output is <strong>acceptable</strong>.</small>
-  </td>
-  <td><input type="radio" name="productivity" value="0" {if $assessment->get_value("productivity")==0}CHECKED{/if}/>
-    <small>Student's output is <strong>not yet acceptable</strong>.</small>
-  </td>
-</tr>
-
-{* Quality of Work *}
-
-<tr>
-  <td class="property">Quality <br />{$assessment->flag_error("quality")}</td>
-  <td><input type="radio" name="quality" value="3" {if $assessment->get_value("quality")==3}CHECKED{/if}/>
-    <small>Student <strong>always</strong> produces work of the <strong>very highest quality</strong>.</small>
-  </td>
-  <td><input type="radio" name="quality" value="2" {if $assessment->get_value("quality")==2}CHECKED{/if}/>
-    <small>Student <strong>frequently</strong> produces <strong>very good</strong> work.</small>
-  </td>
-  <td><input type="radio" name="quality" value="1" {if $assessment->get_value("quality")==1}CHECKED{/if}/>
-    <small>Quality of student's work is <strong>acceptable</strong>.</small>
-  </td>
-  <td><input type="radio" name="quality" value="0" {if $assessment->get_value("quality")==0}CHECKED{/if}/>
-    <small>Quality of student's work is <strong>not yet acceptable</strong>.</small>
-  </td>
-</tr>
-
-</table>
-<table>
-{*
-<tr>
-  <th>Category</th>
-  <th>2</th>
-  <th>1</th>
-  <th>0</th>
-</tr>
-*}
 {* Interpersonal skills (including team working) *}
 
 <tr>
-  <td width="20%" class="property">Interpersonal Skills (including team working) <br />{$assessment->flag_error("interpersonal")}</td>
-  <td width="26%"><input type="radio" name="interpersonal" value="2" {if $assessment->get_value("interpersonal")==2}CHECKED{/if}/>
+  <td class="property">Interpersonal Skills (including team working) <br />{$assessment->flag_error("interpersonal")}</td>
+  <td><input type="radio" name="interpersonal" value="4" {if $assessment->get_value("interpersonal")==4}CHECKED{/if}/>
     <small>Student <strong>always</strong> interacts effectively with colleagues / clients and shows respect for the views of others.</small>
   </td>
-  <td width="27%"><input type="radio" name="interpersonal" value="1" {if $assessment->get_value("interpersonal")==1}CHECKED{/if}/>
+  <td><input type="radio" name="interpersonal" value="3" {if $assessment->get_value("interpersonal")==3}CHECKED{/if}/>
+    <small>Student <strong>usually</strong> interacts effectively with colleagues / clients and shows respect for the views of others.</small>
+  </td>
+  <td><input type="radio" name="interpersonal" value="2" {if $assessment->get_value("interpersonal")==2}CHECKED{/if}/>
     <small>Student <strong>sometimes</strong> interacts effectively with colleagues / clients and shows respect for the views of others.</small>
   </td>
-  <td width="27%"><input type="radio" name="interpersonal" value="0" {if $assessment->get_value("interpersonal")==0}CHECKED{/if}/>
+  <td><input type="radio" name="interpersonal" value="0" {if $assessment->get_value("interpersonal")==0}CHECKED{/if}/>
     <small>Student <strong>rarely</strong> interacts effectively with colleagues / clients.</small>
   </td>
   {* Never n/a *}
@@ -131,7 +116,7 @@
 
 <tr>
   <td width="20%" class="property">Attendance, Punctuality &amp; Time Management <br />{$assessment->flag_error("attendance")}</td>
-  <td width="40%"><input type="radio" name="attendance" value="1" {if $assessment->get_value("attendance")==1}CHECKED{/if}/>
+  <td width="40%"><input type="radio" name="attendance" value="2" {if $assessment->get_value("attendance")==2}CHECKED{/if}/>
     <small>Student attendance, punctuality and time management are <strong>acceptable</strong>.</small>
   </td>
   <td width="40%"><input type="radio" name="attendance" value="0" {if $assessment->get_value("attendance")==0}CHECKED{/if}/>
