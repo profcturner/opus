@@ -36,7 +36,7 @@ class DTO_Vacancy extends DTO
     $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
-    $sort_types = array("name", "locality");
+    $sort_types = array("name", "locality", "closedate");
     if(!in_array($sort, $sort_types)) $sort="name";
 
     if(empty($other_options)) $other_options = array();

@@ -208,7 +208,7 @@
     require_once("model/Vacancytype.class.php");
     $activity_types = Activitytype::get_id_and_field("name");
     $vacancy_types = Vacancytype::get_id_and_field("name");
-    $sort_types = array("name", "locality");
+    $sort_types = array("name" => 'Name', "locality" => 'Locality', "closedate" => 'Closing date');
     $other_options = array("ShowClosed" => "Show Closed");
 
     require_once("model/Preference.class.php");
