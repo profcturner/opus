@@ -1146,63 +1146,13 @@
     $admin_headings = Admin::get_admin_list_headings();
     $root_headings = Admin::get_root_list_headings();
 
-    $actions = array(array('edit', 'edit_admin'), array('remove', 'remove_admin'));
-
     $waf->assign("root_headings", $root_headings);
     $waf->assign("admin_headings", $admin_headings);
     $waf->assign("admin_objects", $admin_objects);
     $waf->assign("root_objects", $root_objects);
     $waf->assign("actions", $actions);
-    $waf->assign("action_links", array(array("add", "section=directories&function=add_admin")));
 
     $waf->display("main.tpl", "admin:directories:admin_directory:manage_admins", "admin/directories/list_admins.tpl");
-  }
-
-  function add_admin(&$waf, &$user) 
-  {
-    if(!User::is_root()) $waf->halt("error:policy:permissions");
-
-    add_object($waf, $user, "Admin", array("add", "directories", "add_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id",$user["user_id"])), "admin:directories:admin_directory:add_admin");
-  }
-
-  function add_admin_do(&$waf, &$user) 
-  {
-    if(!User::is_root()) $waf->halt("error:policy:permissions");
-
-    add_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "add_admin");
-  }
-
-  function edit_admin(&$waf, &$user) 
-  {
-    require_once("model/Admin.class.php");
-    $id = WA::request("id");
-    if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
-
-    $admin = Admin::load_by_id($id);
-
-    edit_object($waf, $user, "Admin", array("confirm", "directories", "edit_admin_do"), array(array("cancel","section=directories&function=manage_admins")), array(array("user_id", $admin->user_id)), "admin:directories:admin_directory:edit_admin");
-  }
-
-  function edit_admin_do(&$waf, &$user) 
-  {
-    $id = WA::request("id");
-    if(!User::is_root() && ($id != User::get_id()))  $waf->halt("error:policy:permissions");
-
-    edit_object_do($waf, $user, "Admin", "section=directories&function=manage_admins", "edit_admin");
-  }
-
-  function remove_admin(&$waf, &$user) 
-  {
-    if(!User::is_root()) $waf->halt("error:policy:permissions");
-
-    remove_object($waf, $user, "Admin", array("remove", "directories", "remove_admin_do"), array(array("cancel","section=directories&function=manage_admins")), "", "admin:directories:admin_directory:remove_admin");
-  }
-
-  function remove_admin_do(&$waf, &$user) 
-  {
-    if(!User::is_root()) $waf->halt("error:policy:permissions");
-
-    remove_object_do($waf, $user, "Admin", "section=directories&function=manage_admins");
   }
 
   // Assessments

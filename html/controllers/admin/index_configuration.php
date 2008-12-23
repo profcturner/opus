@@ -504,6 +504,10 @@
     if(!Policy::check_default_policy("programme", "edit")) $waf->halt("error:policy:permissions");
 
     $school_id = (int) WA::request("id", true);
+    $programme_id = (int) WA::request("id", true);
+    require_once("model/Programme.class.php");
+    
+    add_navigation_history($waf, Programme::get_name($programme_id));
 
     edit_object($waf, $user, "Programme", array("confirm", "configuration", "edit_programme_do"), array(array("cancel","section=configuration&function=manage_programmes")), array(array("user_id",$user["user_id"])), "admin:configuration:organisation_details:edit_programme");
   }

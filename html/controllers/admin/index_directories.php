@@ -1500,9 +1500,6 @@
     $waf->assign("letters", $letters);
     $waf->assign("schools", $schools);
 
-    $actions = array(array('add', 'section=directories&function=add_staff'));
-    $waf->assign("action_links", $actions);
-
     $waf->display("main.tpl", "admin:directories:staff_directory:staff_directory", "admin/directories/staff_directory.tpl");
   }
 
@@ -1549,7 +1546,11 @@
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
     $actions = array(array('edit', 'edit_staff'));
-
+    
+    // Now allow staff to be added
+    $actions = array(array('add', 'section=directories&function=add_staff'));
+    
+    $waf->assign("action_links", $actions);
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
@@ -1578,6 +1579,10 @@
     );
     $actions = array(array('edit', 'edit_staff'));
 
+    // Now allow staff to be added
+    $actions = array(array('add', 'section=directories&function=add_staff'));
+    
+    $waf->assign("action_links", $actions);
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
@@ -1746,10 +1751,12 @@
     {
       $actions = array(array('edit', 'edit_admin'));
     }
+    $action_links = array(array('add', 'section=directories&function=add_admin'));
 
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
+    $waf->assign("action_links", $action_links);
 
     $waf->display("main.tpl", "admin:directories:admin_directory:simple_search_admin", "list.tpl");
   }

@@ -17,7 +17,7 @@
     <td>{$objects[objects].object_name|escape:"htmlall"}</td>
     <td class="action"><a href="?section=advanced&function=move_channelassociation_up&channel_id={$channel_id}&id={$objects[objects].id}">up</a></td>
     <td class="action"><a href="?section=advanced&function=move_channelassociation_down&channel_id={$channel_id}&id={$objects[objects].id}">down</a></td>
-    <td class="action"><a href="?section=advanced&function=remove_channelassociation_do&id={$objects[objects].id}">remove</a></td>
+    <td class="action"><a href="?section=advanced&function=remove_channelassociation&id={$objects[objects].id}">remove</a></td>
   </tr>
   {/section}
 </table>
