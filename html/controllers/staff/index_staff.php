@@ -27,11 +27,8 @@ function nav_staff()
     ),
     "Directories"=>array
     (
-      array("students","directories", "student_directory", "student_directory"), 
       array("companies", "directories", "company_directory", "company_directory"),
       array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
-      array("academic staff","directories","staff_directory","staff_directory"),
-      array("contacts", "directories", "contact_directory", "contact_directory"),
       array("administrators", "directories", "manage_admins", "manage_admins")
     ), 
     "Information"=>array
