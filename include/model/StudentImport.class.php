@@ -135,7 +135,7 @@ class StudentImport
   function import_csv($filename, $programme_id, $year, $status, $onlyyear, $password, $test, $csvmapping_id)
   {
     // This is the pattern OPUS expects at the end of a mapping
-    $standard_pattern =       "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
+    $standard_pattern = "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
     $waf =& UUWAF::get_instance();
     require_once("model/Programme.class.php");
     require_once("model/CSVMapping.class.php");
@@ -184,6 +184,7 @@ class StudentImport
       $student['email_address']   = $matches[6];
       $student['programme_code']  = $matches[7];
       $student['disability_code'] = $matches[8];
+      $student['username']        = $matches[9];
 
       if(User::count("where reg_number='" . $student['reg_number'] . "'"))
       {
@@ -235,7 +236,15 @@ class StudentImport
 
     $fields = array();
     $fields['reg_number'] = $student_array['reg_number'];
-    $fields['username'] = $student_array['reg_number'];
+    // If we have a username, use it, otherwise default to reg_number
+    if(!empty($student_array['username']))
+    {
+      $fields['username'] = $student_array['username'];
+    }
+    else
+    {
+      $fields['username'] = $student_array['reg_number'];      
+    }
     $fields['salutation'] = $student_array['person_title'];
     $fields['firstname'] = $student_array['first_name'];
     $fields['lastname'] = $student_array['last_name'];

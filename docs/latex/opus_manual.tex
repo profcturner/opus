@@ -411,7 +411,7 @@ powers on an institutional level, or at faculty, school or individual
 programme, or even a combination of the above.
 
 \section{Policies}
-\ref{Policies}
+\label{Policies}
 \index{policies}
 
 You should begin by considering your security policies. By clicking on
@@ -442,6 +442,9 @@ see the details of their own policy.
 
 \subsection{Adding a Policy}
 
+Initially you may be happy to use the policies already provided by OPUS, but
+it may be you will wish to create more policies of your own.
+
 Choose a name that reflects your policy and submit it. You are now able to
 edit the permissions for that policy. One of the first options is a priority
 for use in the help directory (see~\ref{HelpDirectory}).
@@ -468,7 +471,7 @@ more experienced users in the higher bracket.
 \section{Administrator Users}
 
 Now you have created suitable policies, you are ready to create administrator
-users and allocate them to policies. A policy provides a ceiling on the powers
+users and allocate policies to them. A policy provides a ceiling on the powers
 of a user - it is possible to curtail them further as needed (see~\ref{}).
 
 Clicking on the \opusacademicmenu{Directories -> Administrators} menu item will 
@@ -480,8 +483,7 @@ already present before the \emph{add} button will present itself.
 
 Adding an administrator can only be performed by a super-admin user, and quite
 a bit of information is required. Add all the required fields, and note in
-particular these others. When a user is created, they will be emailled their
-initial username and password.
+particular these others.
 
 \subsubsection{Policy}
 
@@ -508,6 +510,9 @@ If the staff number is defined, it may be possible to login using a ``standard''
 single sign-on method, depending on how your OPUS is configured. It is also
 required for automatic saving of preferences.
 
+Finally, when a user is created, they will be emailled their
+initial username and password.
+
 \subsection{Editing Admin Details}
 
 If you are a normal administrator you will only have permission to edit your own
@@ -531,9 +536,11 @@ you will be able to assign administrators to these units.
 
 \section{Super-Admin Users}
 
-These users have a directory of their own, which allows them to be edited,
+These ``root'' or ``super-admin'' users have a directory of their own, which
+allows them to be edited,
 and demoted. Note you cannot directly create a super-admin user, you must 
-create a normal admin user and promote them. This is not a bug.
+create a normal admin user and promote them. This is not a bug, but an
+intentional barrier to the accidental creation of super-admin accounts.
 
 You should generally keep \emph{very few} root accounts on your system.
 
@@ -546,7 +553,7 @@ After installation, it is usually necessary to copy the file
 you will find the local file in \lstinline!/etc/opus!.}
 
 \section{Organisation Details}
-\ref{Organisation}
+\label{Organisation}
 
 OPUS will need to know something about the way in which your organisation is
 set-up. Clicking on this menu item will take you to an option to configure the
@@ -585,6 +592,9 @@ can change over the years, so it is possible to declare the start and end years
 for each association. Again, you should not delete older associations.
 
 \section{CV Groups}
+\label{CVGroups}
+\index{CV groups}
+
 
 This section allows you to configure the way in which CVs should be handled.
 You can create as many CV Groups as you wish, and each one can contain as many
@@ -596,7 +606,7 @@ you change them.
 
 \subsection{Adding a CV Group}
 
-To add a CV Group simply click the \emph{add} button on this screen. You should
+To add a CV Group simply click the \opustext{add} button on this screen. You should
 use a simple, easily understood name for the group, and you can add a detailed
 description of the rationale for this group if you choose.
 
@@ -619,7 +629,7 @@ when they make an application.
 Remember, if you have selected to allow All PDSystem templates, this screen
 will have no effect.
 
-\subsection{Assigned Programmes to Groups}
+\subsection{Assigning Programmes to CV Groups}
 
 Once your CV Group is created, you should edit the programmes you wish to move
 into it, and simply change the CV Group to your new choice.
@@ -628,7 +638,7 @@ into it, and simply change the CV Group to your new choice.
 
 Assessment Groups allow you to decide how students will be assessed within
 OPUS. Before this will be of any use, you must have configured some assessments
-within the Advanced menu.
+within the Advanced menu, although OPUS ships with some examples.
 
 A Default Scheme already exists within OPUS which has no assessments added to
 it. You should be cautious about changing groups, and read this section
@@ -636,14 +646,14 @@ carefully before hand.
 
 \subsection{Adding an Assessment Group}
 
-Adding an assessment group is as simple as clicking on the \emph{add} option
+Adding an assessment group is as simple as clicking on the \opustext{add} option
 within this section. All that can be added is a name (which as usual should be
 clear and distinctive) and some comments to describe the rationale of the
 group.
 
 \subsection{Changing the Regime for a Group}
 
-Once a group has been created, clicking on \emph{regime} within its listing
+Once a group has been created, clicking on \opustext{regime} within its listing
 will allow you to alter the assessments associated with it.
 
 \pdstip{Generally, you should \emph{never} alter the regime for any group that
@@ -652,14 +662,17 @@ it impossible to retrieve marks already recorded for this group.}
 
 \subsubsection{Adding Assessments}
 
-Clicking on \emph{add} allows you to choose from the available assessments to
+Clicking on \opustext{add} allows you to choose from the available assessments to
 add to your regime. You can use a given assessment more than once if that is
-appropriate.
+appropriate. For example, you might choose four essentially identical reports to
+be made in each of four short episodes of placement. In this case, the same
+report can be added four times to the regime, with a different student
+description each time.
 
 You will see a pull down box of all the available assessments, and you should
 add a unique description, within your regime to describe this instance,
 together with a weighting (number between 0 and 1) that describes how much this
-is worth, for example 0.3 represents $30\%$. You should also choose who will
+is worth, for example 0.3 represents 30\%. You should also choose who will
 perform the assessment.
 
 Next comes the year, which is the year, relative to placement that the
@@ -681,11 +694,24 @@ design phase of assessment groups not currently used.
 
 Assessment needs change, but generally you should create a brand new assessment
 group if that happens, and record that the programme changed from one to 
-another in a given year. This is the only was to guarantee access to old
+another in a given year. This is the only way to guarantee access to old
 marks in the old regime as well as new ones.
+
+When editing a given programme clicking on \opustext{assessment} in the
+programme list for a given school will produce a list of assessment regimes
+used for that programme. Each one will, potentially, specify a start and end
+date. You will probably find the \emph{Default Group} is already in place with
+no defined start and end date. This will be a fall back position. If, however,
+you add your new assessment group with a start date of 2008 and no end date,
+then OPUS understands that after 2008\footnote{As elsewhere in OPUS, the year refers to the year in which placement
+starts.} students began to be assessed in this new way. Students before that
+date will still show the default group's assessment. In this way OPUS maintains
+a history of the different assessment taken by students in the same programme
+to allow you to obtain data from old assessments.
 
 \section{Channels}
 \label{Channels}
+\index{Channels}
 
 Channels are a relatively advanced topic, and on a relatively small OPUS
 installation they may not be necessary at all. If however you have diverse
@@ -710,6 +736,7 @@ membership.
 e.g. SSS - School of Sports Studies
 
 \subsection{Editing Channel Associations}
+\label{ChannelAssociations}
 
 Now we can edit the channel associations to determine who is included within
 the channel. An \opustext{associations} action is shown in the channel list.
@@ -765,7 +792,7 @@ awkward cases.
 
 \subsection{Channel Membership}
 
-When designing channels it is useful to know how OPUS decided what users are
+When designing channels it is useful to know how OPUS decides what users are
 included in a channel.
 
 \subsubsection{Administrators}
@@ -796,6 +823,29 @@ Workplace supervisors have a unique account for the supervision of each student,
 and their channel membership is identical to that of the student they
 supervise.
 
+\section{Activity Types}
+\index{Activity Types}
+\label{ActivityTypes}
+
+OPUS maintains a list of activities that describe the work done by companies,
+as well as the work involved in a given vacancy. This list can be manipulated
+by going to \opusacademicmenu{Advanced -> Activity Types}.
+
+You can add or remove from this list as you choose, but it is better not to
+remove activity types that have already been used to describe a company or
+vacancy in the past.
+
+\section{Vacancy Types}
+\index{Vacancy Types}
+\label{VacancyTypes}
+
+There are different kinds of work opportunities available, and OPUS allows you
+to customize this list for your own purposes. These can be viewed and edited
+by going to \opusacademicmenu{Advanced -> Vacancy Types}.
+
+For example, you may wish to distinguish between Summer jobs and full year
+placements.
+
 
 \chapter{Importing Students}
 
@@ -825,7 +875,146 @@ The University of Ulster uses CSV files to store student lists that can also be 
 purpose, by browsing to the file first. In other institutions you will wish to configure your
 own CSV format so that OPUS can obtain your data.
 
-TODO: Specify the file format here.
+This menu can be found on the \opusacademicmenu{Superuser -> CSV Mapping Menu},
+since misconfiguration can cause errors in the application when importing
+occurs. Also, initial configuration of patterns requires substantial
+understanding of \emph{regular expressions}%
+\footnote{http://www.php.net/manual/en/reference.pcre.pattern.syntax.php}
+which may be difficult for some users. If you are not sure how to do this then
+feel free to file a support ticket or ask in the mailing lists for advice.
+
+The principles for the more adventurous are laid out below.
+
+\subsection{The Standard OPUS format}
+
+OPUS has a standard format it expects to receive data in, and you will then
+create regular expressions that take your format, and convert it to this
+standard. Therefore, a good understanding of the format is essential.
+
+OPUS expects nine fields, encapsulated in double quote characters and
+separated by commas. A typical line might look like so%
+\footnote{Split across two lines for clarity only.}
+
+\begin{lstlisting}
+"2","x123","Mr","No","Body","nb@db.ac.uk",
+"p123","4","x123"
+\end{lstlisting}
+
+Here is what OPUS expects to find in each field, and broadly, the type of
+data if expects in each field.
+
+\begin{enumerate}
+  \item The year of study (\emph{numeric}).
+  \item The student registration ``number'' (\emph{alphanumeric}).
+  \item The title of the student (\emph{alpha}).
+  \item The first name of the student (\emph{alpha}).
+  \item The last name of the student (\emph{alpha}).
+  \item The email address (\emph{email}).
+  \item The programme of study (\emph{alphanumeric}), this is the SRS code defined in the programme list (see~\ref{Organization}).
+  \item The disability code if you use one (\emph{alphanumeric}).
+  \item The proposed username, which might be the same as the registration number.
+\end{enumerate}
+
+If you don't have, or can't supply a data field, then usually it is fine to
+simple leave the field empty (no data between double quotes), but \emph{leave
+the field itself present}.
+
+OPUS doesn't expect that you will automatically have data in that format, the
+University of Ulster itself uses a different format. We will now explore how
+to use a mapping to alter the data format to this standard.
+
+\subsection{Creating a Mapping}
+
+When you create a new mapping, give it a clear and useful name, since normal
+administrator users will be using it day to day.
+
+\opustip{Don't hijack an existing mapping, delete mappings you don't use and
+make one of your own, if you change an existing mapping an upgrade might
+overwrite your changes.}
+
+There are three fields in the form you now need to fill in.
+
+\subsubsection{Pattern}
+
+This will contain a regular expression that performs two essential functions.
+First of all it will (hopefully uniquely) match data from your chosen source.
+OPUS will (for safety) reject data that does not match the regular expression
+given here. Secondly, it will \emph{capture} certain elements to allow them to
+be mapped appropriately in the replacement.
+
+\subsubsection{Replacement}
+
+This regular expression will contain the way in which the captured elements
+above will be exported so as to meet the OPUS standard format detailed above.
+
+\subsubsection{Exclude}
+
+This field is often empty, but it can be used to specify a regular expression
+that details lines that will be silently ignored. That is, they will not be
+used for data import, and nor will they cause an import to be aborted due to
+failing to match the \opustext{Pattern}. This field can be useful if, for 
+example, your CSV files have a header line that should be ignored, or it can
+be used to perform selective matches on fields that represent students you
+do not wish to import.
+
+\subsection{Examples}
+
+Here are a couple of simple examples to set the theme.
+
+\subsubsection{Swapping Order}
+
+Perhaps your format has all the correct data, with maybe more than the
+number of fields you desire, and in the ``wrong'' order. This is a reasonably
+simple case.
+
+Suppose your data file looks like this\footnote{Again, split lines for clarity.}
+\begin{lstlisting}
+"x123","2","Mr","No","Body","nb@db.ac.uk",
+"p123",
+\end{lstlisting}
+
+So that the fields are registration number, year of study, title, firstname,
+lastname, email, and programme code. There is no username, nor disability code.
+
+The \opustext{Pattern} might look like so%
+\footnote{Again, this should all be one line. Also this is a very primitive
+regular expression for an email address and some exotic addresses will foul
+this format up.}
+\begin{lstlisting}
+/^"([a-z][0-9]+)","([0-9]+)","([A-Za-z]+)",
+"([A-Za-z']+)","([A-Za-z']+)",
+"([A-Za-z.]+@[A-Za-z.]+)","([a-z][0-9]+)"$/
+\end{lstlisting}
+
+All the regular expressions begin with being bracketted with a matching
+character, in this case
+"\lstinline!/!", at the start and end. The character ``\lstinline!^!'' at the
+start represents the
+start of a line, and the ``\lstinline!$!'' at the end the end of the line. In
+between we have a number of expressions, in double quotes, in parentheses. To
+take the first one
+\begin{lstlisting}
+"([a-z][0-9]+)"
+\end{lstlisting}
+means, ``match an expression, in double quotes, that has a single lower case
+alphabetical character, followed by one or more numeric characters, and
+\emph{capture} the bit contained in parentheses''.
+
+Next we need to spit out this line in the standard format. Well, there is
+little difference here except that the first two terms are the wrong way
+around and some are missing. So the \opustext{Replacement} field looks as
+follows.
+
+\begin{lstlisting}
+"${2}","${1}","${3}","${4}","${5}","${6}",
+"${7}","",""
+\end{lstlisting}
+
+This, as you can see, is the simpler bit. The \emph{captured} pieces from the
+pattern are numbered and accessed by \lstinline!${2}! for the second one for
+example. Here all I really want to do is put out all the parameters in the
+same order, except for the first two that are swapped. I don't have a disability
+code, nor a username, so I leave these blank for OPUS to deal with.
 
 \section{Individual Students}
 
@@ -892,7 +1081,7 @@ applications for vacancies. See below for more details.
 
 \subsubsection{Sort Criterion}
 
-The sort criterion allows you choose which field the results are to be sorted
+The sort criterion allows you to choose which field the results are to be sorted
 by, for example, sorting by placement status is convenient for placing students
 that still require placement at the top of the list.
 
@@ -912,28 +1101,28 @@ Next you will see the student's \emph{Name} and \emph{Student Number}, the next
 fields show when the student \emph{Last Accessed} OPUS, what year they expect
 to be placed in, and their current placement status.
 
-Finally you will see some options to manipulat the student, \emph{CV} is a
+Finally you will see some options to manipulate the student's record, \emph{CV} is a
 shortcut to the CV functions listed below, while \emph{Help} brings up the
 help directory which is customized for the student at hand. The \emph{Edit}
-option will bring up a detailed screen for viewing and manipulating that
-student.
+option will bring up a detailed screen for viewing and handling more 
+information on the student.
 
 \section{Adding Students}
 
-Adding students is usually done in bulk, via the \emph{Import Data} option,
+Adding students is usually done in bulk, via the \opusacademicmenu{Configuration -> Import Data} option,
 but it is possible to add individual students, even if this is not recommended
 since it is probably more error prone. You should first search for the student
 to double check they are not already in OPUS. When the search results appear
-the \emph{Add} button will be shown for adding a new student, simply complete
-the form this is displayed.
+the \opustext{add} button will be shown for adding a new student, simply complete
+the form that is displayed.
 
 \section{Editing a Student}
 
 When you edit a student, the student's name will immediately appear on the 
 top menu, to allow you to undertake actions with this student. This student
-will remain on the menu, until you select another, or \emph{drop} him or her.
+will remain on the menu, until you select another, or \opusacademicmenu{Name -> drop} him or her.
 
-You should also see the student appear in the \emph{Recent} menu at the top,
+You should also see the student appear in the \opusacademicmenu{Recent} menu at the top,
 allowing you to easily return to this student after editing others.
 
 \subsection{Main View}
@@ -943,15 +1132,15 @@ the student, such as the name, email address, registration number and placement
 year. Also listed are the placement status, the programme of study, and the
 Academic Tutor, if one is appointed.
 
-At the top, you will see options to \emph{cancel} the edit, \emph{reset the
+At the top, you will see options to \opustext{cancel} the edit, \opustext{reset the
 password}\footnote{This only assigns a new internal password, if you use
 another system to authenticate students it could be of limited use}, and
-\emph{manage the applications} made by the student.
+\opustext{manage the applications} made by the student.
 
 \subsubsection{Placement History}
 
 This section shows a summary of placement records for this student, each of
-which can be edited. To add a new placement, click on \emph{manage applications}
+which can be edited. To add a new placement, click on \opustext{manage applications}
 and pick the application for which the student should be placed.
 
 \subsubsection{Timeline}
@@ -978,8 +1167,8 @@ provide the fullsize image.
 The assessment grid for the student will be shown, if the assessment schedule
 has been defined for the programme of study concerned. The grid shows, among
 other things, the assessments that have been or will be taken, who will assess
-them, their overall weighting, recorded marks and timeliness. Simply click on
-view to view, or submit the assessment as appropriate. Assessments with marks
+them, their overall weighting, recorded marks and timelines. Simply click on
+\opustext{view} to view, or submit the assessment as appropriate. Assessments with marks
 labelled by `--' are yet to be taken, otherwise a mark will be shown (even if
 this is zero for marks with no weighting assigned).
 
@@ -998,33 +1187,37 @@ not be an exact match in all regards.
 \subsection{Vacancies}
 
 The \emph{Vacancies} item allows you to search the vacancies in the normal way.
-The student you have selected with stay attached to you, and when you
-\emph{view} a vacancy you will be given an extra option to \emph{apply with
-the selected student}.
+The student you have selected stays attached to you, and when you
+\opustext{view} a vacancy you will be given an extra option to \opustext{apply with
+the selected student} which can be used to make an application on the student's
+behalf. Note that, provided you have permission, you will be able to make an
+application even with a CV that the student would be prohibited from using by
+the CV group policy (see~\ref{CVGroups}).
 
 \subsection{CVs}
 \index{CVs}
 
 This item provides information about the CVs that a student has completed, and
 whether or not they can be used for applying for placement. The 
-\emph{Description} shows the name of the CV and where it is stored, the 
-\emph{Valid} column will show either that the CV is \emph{valid} and hence
-allowable for application for placement, or the reason why it is not valid. A
-final column will show if the CV has been \emph{approved} by a member of the
+\opustext{Description} shows the name of the CV and where it is stored, the 
+\opustext{Valid} column will show either that the CV is valid according to the
+CV Group for that student (see~\ref{CVGroups}) and hence
+allowable for application for placement, or the reason why if it is not valid. A
+final column will show if the CV has been \opustext{approved} by a member of the
 placement team. Whether or not approval is required as a prerequisite for a
-valid CV depends on the configuration of the \emph{CV Group} for the programme
+valid CV depends on the configuration of the CV Group for the programme
 of student the student is enrolled in.
 
-You can undertake a number of options with each CV, to \emph{view} them, 
-\emph{approve} them or \emph{revoke} approval. As noted above, approval has
+You can undertake a number of options with each CV, to \opustext{view} them, 
+\opustext{approve} them or \opustext{revoke} approval. As noted above, approval has
 no effect unless the CV group requires it.
 
 \subsection{Applications}
 
 This item shows all the applications the student has filed on the system, 
 together with their status and date and time of application. You can click on
-\emph{place} to place the student with one of the applications. Otherwise you
-can \emph{edit} or \emph{delete} existing applications, which should obviously
+\opustext{place} to place the student with one of the applications. Otherwise you
+can \opustext{edit} or \opustext{remove} existing applications, which should obviously
 be done with care and an appropriate reason. Consider filing a note if this is
 done.
 
@@ -1033,7 +1226,7 @@ done.
 
 The channels which the student is automatically subscribed to are shown here.
 Any errors should be handled by correcting the configuration of the channel
-itself (see~\ref{}). If you wish to specifically add a student to another
+itself (see~\ref{ChannelAssociations}). If you wish to specifically add a student to another
 channel, you can do so using the list below. Note that may not see all channels
 depending upon your permissions. It is hugely preferable to have students
 automatically added to channels so only add them directly as a last resort.
@@ -1048,7 +1241,7 @@ See more about notes elsewhere (\ref{}).
 
 \subsection{Drop}
 
-Finally you can \emph{drop} a student to remove them from your menu. This is
+Finally you can \opustext{drop} a student to remove them from your menu. This is
 not necessary since a new student will always replace the existing one.
 
 %
@@ -1056,6 +1249,7 @@ not necessary since a new student will always replace the existing one.
 %
 
 \chapter{Company Directory}
+\label{CompanyDirectory}
 
 The company directory gives you a convenient way to search the companies
 available to OPUS, as well as to edit them.
@@ -1067,13 +1261,13 @@ the activities of companies that you wish to include in your search, and
 optionally, specify a fragment to search for (which might appear in the
 company name, brief, location etc.). You can also select how you wish the
 matching companies to be sorted. For lots of day-to-day work, it can be
-more useful to use the Vacancy Directory.
+more useful to use the Vacancy Directory (see~\ref{VacancyDirectory}).
 
 \subsection{Search Results}
 
 When you perform a search, information will be presented on the names of
 matching companies, together with their locality. There are a number of 
-actions you can perform on the items in this list
+actions you can perform on the items in this list.
 
 \subsubsection{View}
 
@@ -1092,13 +1286,13 @@ in your recent items menu.
 \subsubsection{Contacts}
 
 The \opustext{contacts} option allows you to handle the contacts defined for
-this company. You can read more about contacts in Chapter~ref{}.
+this company. You can read more about contacts in Chapter~\ref{}.
 
 \subsubsection{Vacancies}
 \index{vacancies!listing for a company}
 
 Selecting \opustext{vacancies} brings up a most important screen within OPUS
-allowing you to handle all the vacancies for a given function. If there are
+allowing you to handle all the vacancies for a given company. If there are
 a large number of vacancies they will be shown a page at a time, with numbers
 to indicate other pages you can select. They are ordered chronologically so
 that the most recent, and usually most relevant will be at the top of the
@@ -1121,6 +1315,7 @@ shown) allows a fast access to all of these functions, in addition to the notes
 functionality. Full details about notes can be found here~\ref{}.
 
 Sometimes you will need to add a new company to OPUS.
+
 \opustip{It is vitally important you check if a company already exists in 
 the database before you create what might be a duplicate record.}
 
@@ -1179,13 +1374,14 @@ the vacancies will have that in common.
 \subsubsection{Type}
 
 The \opustext{Type} of vacancy should be carefully chosen. It is possible to
-add more types to OPUS (see~\ref{}).
+add more types to OPUS (see~\ref{VacancyTypes}).
 
 \subsubsection{Activities}
 
 This will indicated the activities by this vacancy, and might be totally
 unrelated to the company. (For example, a manufacturing industry might seek
-an IT placement). Multiple activities can be selected if appropriate.
+an IT placement). Multiple activities can be selected if appropriate. Again,
+the list from which this is drawn can be edited (see~\ref{ActivityTypes}).
 
 \subsubsection{Job Start Date}
 
@@ -1318,8 +1514,8 @@ channels and companies are set-up with accurate activities.
 \chapter{Contact \& Supervisor Directories}
 
 While it is usual to manipulate company contacts from within their company record as described above
-(~\ref{}), sometimes it is useful to find a contact for whom you cannot remember the company. On the
-other hand, supervisor users are generated one per placement, and it is often useful to search for
+(~\ref{}), sometimes it is useful to find a contact for whom you cannot remember the company.
+Similarly, supervisor users are generated one per placement, and it is often useful to search for
 the details of a given supervisor.
 
 \section{Searching for contacts}
@@ -1361,8 +1557,8 @@ or using a name fragment.
 \chapter{Help, Templates \& Resources}
 
 On large systems it is desireable to be able to speak directly to the
-relavent users, without cluttering the system for other users. OPUS
-allows a great deal of customisation of it's on-line help system, mail
+relevent users, without cluttering the system for other users. OPUS
+allows a great deal of customisation of its on-line help system, mail
 templates, and resources, often arranged around channels (see~\ref{Channels}).
 
 \section{Help}
@@ -1370,7 +1566,7 @@ templates, and resources, often arranged around channels (see~\ref{Channels}).
 \label{Help}
 
 Help prompts are used in various parts of the system to display messages
-and other content to users. Each help prompt has a \emph{lookup} field,
+and other content to users. Each help prompt has a \opustext{lookup} field,
 which determines where, and to whom, the help is shown. OPUS comes
 pre-installed with a number of help prompts that you can edit to your
 need. In addition, each help prompt occurs in a given channel.
@@ -1413,12 +1609,15 @@ for required or placed students.
 
 \subsection{Editing help}
 
-When you edit a help prompt, you can use the WYWIWYG editor to refine
+When you edit a help prompt, you can use the WYSIWYG editor to refine
 the content. As above, be mindful as to the audience of the specific
 prompt, and whether the content would be better placed in another
 prompt.
 
 \section{Templates}
+\index{Mail Templates}
+\index{Templates}
+\label{Templates}
 
 Templates are used by OPUS's internal mail system to customize the 
 emails it sends out periodically on certain events.
@@ -1428,6 +1627,8 @@ emails it sends out periodically on certain events.
 
 
 \section{Resources}
+\index{Resources}
+\label{Resources}
 
 Resources are files that OPUS holds for various stakeholders to allow
 them to obtain appropriate information. In theory resources can be of
@@ -1477,13 +1678,15 @@ an Adobe Acrobat file must have an extension of ``.pdf''.
 
 These fields can be used to indicate the origin of the document and any
 copyright that exists upon the contents.
+
 \opustip{This information will only be seen by a user who requests the
 full information for a resource. If there are strict copyright entanglements
 it may be advisable to include it in the file directly.}
 
 \subsection{Resource information}
 
-Resources are generally retrieved through the \opusacademicmenu{Information -> Resources}
+Resources are generally retrieved (for all users in fact other than students) 
+through the \opusacademicmenu{Information -> Resources}
 menu. On that menu all the resources that a user has access to are shown,
 subject to the restrictions of the authorisation and channels for each
 resource.
