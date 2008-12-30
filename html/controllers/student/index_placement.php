@@ -299,7 +299,7 @@
     if($_SESSION['company_id'] != $company_id)
     {
       // If this company isn't the active one, make it so
-      $company_id = (int) WA::request("company_id", true);
+      $_SESSION['company_id'] = $company_id;
       goto("placement", "view_company&company_id=$company_id");
     }
 
