@@ -4,9 +4,7 @@
 
   <script src="{$config.opus.url}/javascript/bb_code.js" type="text/javascript"></script>
   <script src="{$config.opus.url}/javascript/textcounter.js" type="text/javascript"></script>
-  <link href="{$config.opus.url}/css/CalendarControl.css"
-      rel="stylesheet" type="text/css">
-  <script src="{$config.opus.url}/javascript/CalendarControl.js"
+  <script src="{$config.opus.url}/javascript/jacs.js"
         language="javascript"></script>
 
 {* javascript to do the ajax object validation calls, this is used in the add and edit mode *}
@@ -148,27 +146,27 @@
         <input type="hidden" name="{$header}" value="{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}"/>{$nvp_array[$header]|default:$object->$header} [This will update automatically]
       {elseif $def.type == "date"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="JACS.show(document.mainform.{$header}, event);" class='calendar_button' title='click to see calendar'/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="DMY" day_value_format="%02d"}
         {/if}
       {elseif $def.type == "datetime"}
         {if $def.inputstyle == "popup"}
-          <input tabindex={$tabindex} type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%d-%m-%Y'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input tabindex={$tabindex} type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
+          <input tabindex={$tabindex} type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%d-%m-%Y'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input tabindex={$tabindex} type='button' onclick="JACS.show(document.mainform.{$header}, event);" class='calendar_button' title='click to see calendar'/>
         {else}
         {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="DMY" day_value_format="%02d"}
         {/if}
         {html_select_time use_24_hours=true display_seconds=false prefix=$def.prefix minute_interval=$def.minute_interval|default:15}
       {elseif $def.type == "isodate"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="JACS.show(document.mainform.{$header}, event);" class='calendar_button' title='click to see calendar'/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="YMD" day_value_format="%02d"}
         {/if}
         {#iso_date#}
       {elseif $def.type == "isodatetime"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="JACS.show(document.mainform.{$header}, event);" class='calendar_button' title='click to see calendar'/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="YMD" day_value_format="%02d"}
         {/if}
@@ -232,27 +230,27 @@
         <input type="hidden" name="{$header}" value="{$nvp_array[$header]|default:$object->$header}"/>{$nvp_array[$header]|default:$object->$header}
       {elseif $def.type == "date"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if} onFocus='showCalendarControl(this);'  {if $def.readonly}readonly{/if}/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if} onFocus='JACS.show(this, event);'  {if $def.readonly}readonly{/if}/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time=$object->$header start_year=$def.year_start end_year=$def.year_end field_order="DMY" day_value_format="%02d"}
         {/if}
       {elseif $def.type == "datetime"}
         {if $def.inputstyle == "popup"}
-          <input tabindex={$tabindex} type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%d-%m-%Y'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input tabindex={$tabindex} type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
+          <input tabindex={$tabindex} type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%d-%m-%Y'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input tabindex={$tabindex} type='button' onclick="JACS.show(document.mainform.{$header}, event);" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
         {else}
         {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="DMY" day_value_format="%02d" time=$nvp_array[$header]|default:$object->$header|date_format:"%Y%m%d%H%M%S"}
         {/if}
         {html_select_time use_24_hours=true display_seconds=false prefix=$def.prefix minute_interval=$def.minute_interval|default:15 time=$nvp_array[$header]|default:$object->$header|date_format:"%Y%m%d%H%M%S"}
       {elseif $def.type == "isodate"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$nvp_array[$header]|default:$object->$header}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if} onFocus='showCalendarControl(this);'  {if $def.readonly}readonly{/if}/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="JACS.show(document.mainform.{$header}, this);" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time=$object->$header start_year=$def.year_start end_year=$def.year_end field_order="DMY" day_value_format="%02d"}
         {/if}
         {#iso_date#}
       {elseif $def.type == "isodatetime"}
         {if $def.inputstyle == "popup"}
-          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="showCalendarControl(document.mainform.{$header});" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
+          <input type="text" name="{$header}" size="{$def.size|default:15}" id="{$header}_{$object->id}" value="{$date|default:$nvp_array[$header]|default:$object->$header|date_format:'%Y-%m-%d'}" onChange="getData('index.php?function=validate_field&object={$object->_get_classname()}&field={$header}&value='+DataValueByID('{$header}_{$object->id}'),'{$header}_validation');" {if $validation_messages[$header]}class="validation_failed"{/if}/> <input type='button' onclick="JACS.show(document.mainform.{$header}, this);" class='calendar_button' title='click to see calendar'  {if $def.readonly}readonly{/if}/>
         {else}
           {html_select_date prefix=$def.prefix day_empty="day" month_empty="month" year_empty="year" time="$workDate" start_year=$def.year_start|default:"1900" end_year=$def.year_end|default:"2100" field_order="YMD" day_value_format="%02d"}
         {/if}
