@@ -3,6 +3,7 @@
 // Copyright University of Ulster
 // License GPL v2
 //
+// A fix for terrible handling in IE5
 <attach event="onmouseover" handler="rollOver" />
 <attach event="onmouseout" handler="rollOff" />
 <script type="text/javascript">
