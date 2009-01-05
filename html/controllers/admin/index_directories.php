@@ -1548,9 +1548,9 @@
     $actions = array(array('edit', 'edit_staff'));
     
     // Now allow staff to be added
-    $actions = array(array('add', 'section=directories&function=add_staff'));
+    $action_links = array(array('add', 'section=directories&function=add_staff'));
     
-    $waf->assign("action_links", $actions);
+    $waf->assign("action_links", $action_links);
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
@@ -1580,9 +1580,9 @@
     $actions = array(array('edit', 'edit_staff'));
 
     // Now allow staff to be added
-    $actions = array(array('add', 'section=directories&function=add_staff'));
+    $action_links = array(array('add', 'section=directories&function=add_staff'));
     
-    $waf->assign("action_links", $actions);
+    $waf->assign("action_links", $action_links);
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
