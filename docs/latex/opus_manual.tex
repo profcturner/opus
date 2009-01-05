@@ -1237,7 +1237,7 @@ Here you can view, and file, \emph{notes} against a student. Notes are an
 important feature of OPUS, and you should ensure you understand them before
 proceeding to enter one since they \emph{cannot be edited or deleted}.
 
-See more about notes elsewhere (\ref{}).
+See more about notes elsewhere (\ref{Notes}).
 
 \subsection{Drop}
 
@@ -1536,19 +1536,63 @@ The supervisors are searched in the same way as for contacts, with an initial fr
 or using a name fragment.
 
 \section{Managing supervisors}
+
+When a search for supervisors has been performed the matching supervisors will
+be listed. It's important to remember that one supervisor account is created
+for each and every placement, and as a result, it's common for a single
+person to have several supervisor accounts.
+
+As a result, the list of supervisors shows not only the supervisor name, but
+also the company name, the vacancy description, and the student being
+supervised.
+
+Supervisors are not ``edited'' in the usual way, but two options are provided
+for each supervisor to assist you. One is to reset the password, while the
+other takes you to the student record for that supervision. From there you can
+edit the placement details. Changing the contact details for the supervisor
+will update everything appropriately, and will also send a new set of account
+details if the email address is changed.
+
 %
 %
 %
 
 \chapter{Staff Directory}
 
+Academic staff who might be possible visitors to the student while on placement
+are stored here. Note that this directory is \emph{not} used for those running
+the placement process (they are known as administrators to OPUS).
+
 \section{Searching for staff}
+
+As usual, staff may be searched for my the initial of the surname, or by a
+name fragment.
+
+\section{Adding staff}
+
+Once a search to ensure the staff member does not already exist is performed
+the opustext{add} button will appear.
 
 \section{Managing staff}
 
+Clicking on the \opustext{edit} link for the staff member in the listing will
+allow you to edit the details of the staff member, including the school they
+belong to should you need to change it.
+
+You can also use the button at the top to reset the staff member's password and
+send them new details.
+
 \section{Staff and students}
 
+Staff members are allocated to students via the student record rather than the
+other way around. However, clicking on \opustext{list students / view home}
+will show a facsimile of the staff member's home page that they see when they
+log in, and a list of the students allocated to them.
+
 \section{Staff and channels}
+
+Staff members are not specifically allocated channels. They belong to channels
+on the basis of the school they belong to only.
 
 %
 %
@@ -1712,10 +1756,158 @@ associated information.
 %
 %
 
+\chapter{Notes}
+\index{Notes}
+\label{Notes}
+
+Notes are an important part of the audit functionality of OPUS. They are
+intended as a means of permanently, irrevocably storing information on various
+items within OPUS.
+
+Notes, once created, cannot be edited or deleted, and are automatically date
+stamped. They are are attached to one or more items within OPUS. Usually there
+is a primary attachment, and a number of secondary attachments.
+
+For example, if a student experiences a significant problem with a given 
+company then a note is created against the student, and is also linked to the
+company. The note will be visible from both items in the future.
+
+\section{Viewing Notes}
+
+Some items, particularly companies and students, have a \opustext{Notes} item
+on their menu. Clicking this will show the notes that are visible to the logged
+in user.
+
+Notes are often sensitive in nature, and there is a built-in privacy mechanism
+for them. To be able to view a note the following two conditions must be met.
+
+\begin{enumerate}
+\item The note must be either tagged to you, or to an item that you already
+have permissions for. For example, a company contact will only potentially be
+able to see notes tagged against their company. An administrator will
+only be able to view notes for a student in their control, and so on.
+\item The authorization field must include the category of user attempting to
+view. The default field is ``all'' which, as the name suggests, allows all
+users (as above) to see the note.
+\end{enumerate}
+
+So, for example, if a note is filed against a company and a student, but the
+authorization field is "admin", then only the administrators for the student
+will be able to view this note in the future, and significantly, neither the
+company nor the student will be able to.
+
+When you view the list of notes for an item, you may see several notes that
+are filed against this item only in a secondary capacity. The \opustext{Primary}
+column will make it clear which these are. Such notes were filed against a
+different item in the first instance, but also attached to the one you are
+viewing.
+
+\section{Adding a Note}
+
+To add a note to an item, first view the live notes for that item, and click on
+the \opustext{add} button. There are a number of fields given and understanding
+them is important. Remember, the note \emph{cannot} be edited once created.
+
+\subsection{Authorization}
+
+This field is very important, and determines which of the associated users will
+be able to view the note. It can contain a list of appropriate types from
+
+\begin{itemize}
+\item student;
+\item company (HR Contact);
+\item supervisor (Workplace Supervisor);
+\item staff (Academic Tutor);
+\item admin (Administrator).
+\end{itemize}
+
+You can also negate a type with an exclamation mark. Administrators do not
+normally have to be explicitly added since they normally have access (if they
+do for the item in question).
+
+\subsubsection{Examples}
+
+For example,
+
+\opustext{student company}
+
+means student and company contacts have view access to the note.
+
+\opustext{all !student}
+
+means all categories but not students.
+
+\opustip{Legislation may entitle users to be able to obtain access to notes
+pertaining to them. So it is important this is remembered when notes are
+created.}
+
+\subsection{Summary}
+
+This is shown in the list of notes before one is specifically viewed, it should
+be clear and informative.
+
+\subsection{Possible Links}
+
+There may be secondary items, associated with the item you are making the note
+about, which would be useful to include. Use CTRL while clicking to add
+multiple extra links if desired.
+
+\subsection{Comments}
+
+The main body of the note itself. Again, try to make it clear so that in 
+future viewing everything is unambiguous.
+
+
+
+%
+%
+%
+
 \chapter{Obtaining other information}
 
-OPUS provides a number of mechanisms that allow you to inspect what is happening with the
-system now, and what has happened in the past, with a considerable level of detail.
+OPUS provides a number of mechanisms that allow you to inspect what is
+happening with the system now, and what has happened in the past, with a
+considerable level of detail.
+
+\section{Reports}
+
+OPUS has an extendible system for producing reports. The complete list of
+reports available to you can be found on the 
+\opusacademicmenu{Information -> Reports} menu item.
+
+\subsection{Obtaining a report}
+
+When you select a report to obtain, OPUS will go through a number of steps to
+obtain more information before collecting the data and returning it. The exact
+number of steps depends on the report in question.
+
+The \opustext{Output Format} will provide a choice of output formats, usually
+ranging from \opustext{Show Within OPUS} which means the results will be 
+provided in the web page%
+\footnote{Convenient for checking quick details, but often unwieldy in large reports.}
+or exporting in a format that can be loaded into a spreadsheet for further
+analysis or mail merge.
+
+
+\subsection{Adding new reports}
+
+For reasons of OPUS's sophisticated security mechanisms, there is no report
+builder built into the interface of OPUS. Nevertheless, adding new reports
+is a reasonably trivial programming exercise due to the framework put in place.
+
+Please file a support ticket for more information, or inspect the example report
+plug ins.
+
+\section{Status}
+
+The status page shows, at a glance, the most recent usage of the system by all categories of
+users. It is possible to specify how many users in each category it should show, but this defaults to ten.
+
+The bottom of the page shows a complete count of users in each category.
+
+\opustip{Most of the items on this page are linked, and so, for example, it can
+be useful to view which company contacts have logged in, and explore the
+company records they represent to ensure all is in order.}
 
 \section{Log files}
 
@@ -1801,12 +1993,6 @@ Only the most recent number of matching lines up to this limit will be returned.
 
 At the bottom of the log file listing, simple statistics on the log file size, and how many lines were fetched from the compressed logs and uncompressed logs are shown.
 
-\section{Status}
-
-The status page shows, at a glance, the most recent usage of the system by all categories of
-users. It is possible to specify how many users in each category it should show, but this defaults to ten.
-
-The bottom of the page shows a complete count of users in each category.
 
 %
 %
