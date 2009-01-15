@@ -165,12 +165,12 @@ class studentbroadsheet extends Report
       $new_student = array($student['placement_status'], $student['lastname'], $student['salutation'], $student['firstname'], $student['reg_number'], $student['email'], $programme->srs_ident, $programme->name, User::get_name($student['academic_user_id']));
 
       // extras as needed
-      if(in_array("disability_info", $extras)) $new_student = array_merge($new_student, array($student['disability_code']));
       if(count($extras)) // crude for now
       {
         $placement = Placement::get_most_recent($student['user_id']);
       }
       $new_student = array_merge($new_student, array($placement->email));
+      if(in_array("disability_info", $extras)) $new_student = array_merge($new_student, array($student['disability_code']));
       if(in_array("company_info", $extras)) $new_student = array_merge($new_student, $this->get_body_company($placement));
       if(in_array("vacancy_info", $extras)) $new_student = array_merge($new_student, $this->get_body_vacancy($placement));
       if(in_array("supervisor_info", $extras)) $new_student = array_merge($new_student, $this->get_body_supervisor($placement));
