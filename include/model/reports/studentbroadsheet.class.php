@@ -111,7 +111,7 @@ class studentbroadsheet extends Report
     if(empty($extras)) $extras = array();
 
     //print_r($report_options); exit;
-    $header_basic = array("Status", "Surname", "Title", "First name", "Student #", "Email", "Course Code", "Course Name", "Academic Tutor");
+    $header_basic = array("Status", "Surname", "Title", "First name", "Student #", "Email", "Course Code", "Course Name", "Academic Tutor", "Placement Email");
     $header_disability = array("Disability");
     $header_company_extra = array("Company", "Address1", "Address2", "Address3", "Town", "Locality", "Country", "Postcode", "C title", "C ftname", "C sname");
     $header_vacancy_extra = array("Vacancy", "Address1", "Address2", "Address3", "Town", "Locality", "Country", "Postcode");
@@ -170,6 +170,7 @@ class studentbroadsheet extends Report
       {
         $placement = Placement::get_most_recent($student['user_id']);
       }
+      $new_student = array_merge($new_student, array($placement->email));
       if(in_array("company_info", $extras)) $new_student = array_merge($new_student, $this->get_body_company($placement));
       if(in_array("vacancy_info", $extras)) $new_student = array_merge($new_student, $this->get_body_vacancy($placement));
       if(in_array("supervisor_info", $extras)) $new_student = array_merge($new_student, $this->get_body_supervisor($placement));
