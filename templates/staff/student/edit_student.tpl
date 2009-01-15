@@ -12,9 +12,15 @@
   <td>{$student->reg_number|escape:"htmlall"}</td>
 </tr>
 <tr>
-  <td class="property">Email</td>
+  <td class="property">University Email</td>
   <td><a href="mailto:{$student->email|escape:"htmlall"}">{$student->email|escape:"htmlall"}</a></td>
 </tr>
+{if $placements[0]->email}
+  <tr>
+    <td class="property">Work Email</td>
+    <td><a href="mailto:{$placements[0]->email|escape:"htmlall"}">{$contact->email|escape:"htmlall"}</a></td>
+  </tr>
+{/if}
 </table>
 </div>
 
