@@ -18,7 +18,7 @@
 {if $placements[0]->email}
   <tr>
     <td class="property">Work Email</td>
-    <td><a href="mailto:{$placements[0]->email|escape:"htmlall"}">{$contact->email|escape:"htmlall"}</a></td>
+    <td><a href="mailto:{$placements[0]->email|escape:"htmlall"}">{$placements[0]->email|escape:"htmlall"}</a></td>
   </tr>
 {/if}
 </table>
