@@ -14,6 +14,15 @@
   {
     $days = (int) WA::request("days");
 
+    // An installation in Edinburgh shows an odd bug caused by date_parse
+    // not being present in a version of PHP that should support it.
+    // This workaround prevents this crashing the home page, at the
+    // expense of this functionality being slightly crippled.
+    if(!function_exists("date_parse"))
+    {
+      $waf->log("date_parse not available, hardcode days to 7");
+      $days = 7;
+    }
     if($days)
     {
       // Look for activity in the last few days
