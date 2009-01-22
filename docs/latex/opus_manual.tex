@@ -360,6 +360,7 @@ it does, ensure that this is included last on the include paths.}
 
 \subsection{Database Creation}
 \index{MySQL}
+\index{database}
 
 You should now create a new database. Using your mysql client or otherwise. To use the client, launch it from the
 command line like so. If you have (correctly) configured a password for the root user add \lstinline! -p ! to this command.
@@ -381,9 +382,18 @@ source sql_patch/data.sql
 \end{lstlisting}
 
 \subsection{Logging}
+\index{logs}
 
 OPUS uses substantial logging throughout, and maintains several log files. You should ensure that you have a directory created to which
 the web server has write access. See the discussion for the templates directory above. This can be anywhere, such as \lstinline!/var/log/opus/!.
+
+%
+%
+%
+% Administrators and Policies
+%
+%
+%
 
 \chapter{Administrators \& Policies}
 \index{security}
@@ -441,6 +451,7 @@ policy. Only super-admin users can make changes, but other admin users can
 see the details of their own policy.
 
 \subsection{Adding a Policy}
+\index{policies|adding}
 
 Initially you may be happy to use the policies already provided by OPUS, but
 it may be you will wish to create more policies of your own.
@@ -469,6 +480,7 @@ In general a hierarchy of at least a couple of policies is recommended, to put
 more experienced users in the higher bracket.
 
 \section{Administrator Users}
+\index{administrators}
 
 Now you have created suitable policies, you are ready to create administrator
 users and allocate policies to them. A policy provides a ceiling on the powers
@@ -477,9 +489,10 @@ of a user - it is possible to curtail them further as needed (see~\ref{}).
 Clicking on the \opusacademicmenu{Directories -> Administrators} menu item will 
 allow you to list and create new administrator users. As is often the case 
 within OPUS, you should start by searching for the user to ensure they are not
-already present before the \emph{add} button will present itself.
+already present before the \opustext{add} button will present itself.
 
 \subsection{Creating Administrators}
+\index{administrators!adding}
 
 Adding an administrator can only be performed by a super-admin user, and quite
 a bit of information is required. Add all the required fields, and note in
@@ -491,6 +504,7 @@ If no policy is defined, this user will not be able to do anything. Select an
 appropriate policy having read the details above.
 
 \subsubsection{Institutional Admin}
+\index{administrators!institutional}
 
 Sometimes a member of staff will need rights over the whole institution, but
 not at a super-admin level. Rather than add them to each faculty, you can
@@ -543,6 +557,25 @@ create a normal admin user and promote them. This is not a bug, but an
 intentional barrier to the accidental creation of super-admin accounts.
 
 You should generally keep \emph{very few} root accounts on your system.
+
+\section{Help Directory}
+
+The help directory is a dynamic, context sensitive, list of administrators who
+should be able to help other users with queries.
+
+The quickest way to obtain the help directory is by clicking on the
+\opustext{Who can help?} link at the bottom of every page, but on other pages
+a \opustext{help} link will also take you to the directory.
+
+If possible, OPUS will try to provide useful contacts for the user by a
+careful examination of what school, programme or activity the user is
+associated with. In addition, the list may depend on the page being viewed.
+
+For example, when help is requested for a specific student, OPUS will attempt
+to work which administrators are most appropriate to help with that user.
+
+Normally, the list should be such that the most appropriate person is at the
+top, with progressively more ``distant'' administrators further down the list.
 
 \chapter{Initial Configuration}
 
@@ -703,7 +736,8 @@ used for that programme. Each one will, potentially, specify a start and end
 date. You will probably find the \emph{Default Group} is already in place with
 no defined start and end date. This will be a fall back position. If, however,
 you add your new assessment group with a start date of 2008 and no end date,
-then OPUS understands that after 2008\footnote{As elsewhere in OPUS, the year refers to the year in which placement
+then OPUS understands that after 2008%
+\footnote{As elsewhere in OPUS, the year refers to the year in which placement
 starts.} students began to be assessed in this new way. Students before that
 date will still show the default group's assessment. In this way OPUS maintains
 a history of the different assessment taken by students in the same programme
@@ -1932,7 +1966,8 @@ It is recommended you leave this at the default level (debug) until everything i
 the logs may always be useful, consider using log rotations to reduce space used (see~\ref{logging:rotation}).
 
 \begin{lstlisting}{language=PHP}
-$config['waf']['log_level'] = 7; // From 0 - emergency, to 7 - debug
+$config['waf']['log_level'] = 7;
+// From 0 - emergency, to 7 - debug
 \end{lstlisting}
 
 You can enable the waf\_debug log file if you really need to look deeply into a problem, generally this is only going
