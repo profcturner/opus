@@ -138,7 +138,6 @@ class vacancybycompany extends Report
     
     $vacancies = Vacancy::get_all("where company_id=" . $company['id']);
     
-    echo count($vacancies);
     $vacancy_offered = 0;
     $vacancy_filled = 0;
     $total_students = 0;
@@ -146,7 +145,6 @@ class vacancybycompany extends Report
     foreach($vacancies as $vacancy)
     {
       $vacancy_year = substr($vacancy->jobstart, 0, 4);
-      echo $vacancy_year;
       if($vacancy_year < $start_year) continue;
       if($vacancy_year > $end_year) continue;
       // So it was offered in this timespan
