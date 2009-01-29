@@ -2,7 +2,7 @@
 {* Header on all inputs *}
 
 <div id="table_manage">
-  <form enctype="multipart/form-data" action="" method="post">
+  <form enctype="multipart/form-data" action="" method="post" name="input_stage_{$input_stage}">
     <input type="hidden" name="section" value="information" />
     <input type="hidden" name="function" value="report_input_do" />
 {*    <input type="hidden" name="name" value="" value="{$unique_name}" />*}
