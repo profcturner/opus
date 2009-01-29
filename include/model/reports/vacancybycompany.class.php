@@ -93,7 +93,7 @@ class vacancybycompany extends Report
   */
   function get_header($report_options)
   {
-    $header = array('Company Name', 'Address 1', 'Address 2', 'Address 3', 'Locality', 'Country', 'C Title', 'C firstname', 'C lastname', 'C position', 'C voice','Vacancies Offered', 'Vacancies Filled', 'Placements Offered');
+    $header = array('Company Name', 'Address 1', 'Address 2', 'Address 3', 'Locality', 'Country', 'C Title', 'C firstname', 'C lastname', 'C position', 'C email', 'C voice','Vacancies Offered', 'Vacancies Filled', 'Placements Offered');
 
     return($header);
   }
@@ -168,7 +168,7 @@ class vacancybycompany extends Report
     $contacts = Contact::get_all_by_company($company['id']);
     $primary = $contacts[0];
     
-    return array($primary->salutation, $primary->firstname, $primary->lastname, $primary->position, $primary->voice);
+    return array($primary->salutation, $primary->firstname, $primary->lastname, $primary->position, $primary->email, $primary->voice);
   }
 
 }
