@@ -148,8 +148,9 @@ class Report
     }
     catch (RuntimeException $e)
     {
-      $this->log("Error while loading the from the report", PEAR_LOG_DEBUG, "debug");
+      $waf->log("Error while loading the from the report", PEAR_LOG_DEBUG, "debug");
     }
+    $waf->log("reports listed");
     return($report_list);
 
   }
@@ -252,6 +253,7 @@ class Report
     {
       $waf->display("main.tpl", "admin:information:list_reports:report_output", $template);
     }
+    $waf->log("report " . $this->human_name . " generated in format $format");
   }
 
   /**
