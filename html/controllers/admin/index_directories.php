@@ -540,7 +540,7 @@
     $id = (int) WA::request("id");
     if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Company", "section=directories&function=edit_company_real&id=$id&changes=1", "edit_company");
+    edit_object_do($waf, $user, "Company", "section=directories&function=edit_company_real&id=$id&changes=1", "edit_company_real");
   }
 
   function remove_company(&$waf, &$user) 
