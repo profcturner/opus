@@ -514,7 +514,7 @@
   {
     if(!Policy::check_default_policy("company", "edit")) $waf->halt("error:policy:permissions");
 
-    // Put student in session to "pick it up"
+    // Put company in session to "pick it up"
     $id = $_SESSION['company_id'] = WA::request("id");
 
     require_once("model/Company.class.php");
@@ -529,15 +529,17 @@
     if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
 
     $id = WA::request("id");
+    $waf->assign("changes", WA::request("changes"));
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company", "admin/directories/edit_company.tpl");
   }
 
   function edit_company_do(&$waf, &$user) 
   {
+    $id = (int) WA::request("id");
     if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Company", "section=directories&function=company_directory", "edit_company");
+    edit_object_do($waf, $user, "Company", "section=directories&function=edit_company_real&id=$id&changes=1", "edit_company");
   }
 
   function remove_company(&$waf, &$user) 
