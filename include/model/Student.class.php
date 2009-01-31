@@ -45,7 +45,7 @@ class Student extends DTO_Student
     'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description'),
     'voice'=>array('type'=>'text' ,'size'=>20, 'title'=>'Phone Number'),
     'address'=>array('type'=>'textarea', 'rowsize'=>5, 'colsize'=>40, 'maxsize'=>1000),
-    'quick_note'=>array('type'=>'text' ,'size'=>20, 'title'=>'Quick Note', 'header'=>true),
+    'quick_note'=>array('type'=>'text' ,'size'=>40, 'title'=>'Quick Note', 'header'=>true),
 //    'vacancy_type'=>array('type'=>'lookup', 'object'=>'vacancytype', 'value'=>'name', 'title'=>'Type', 'var'=>'vacancytypes'),
   );
 
