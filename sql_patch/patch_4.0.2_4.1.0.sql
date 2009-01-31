@@ -13,7 +13,7 @@ alter table company add column healthsafety text after allocation;
 alter table student add column voice tinytext after academic_user_id;
 alter table student add column address text after voice;
 alter table student add column quick_note tinytext after address;
-alter table student add column vacancy_type int unsigned after quick_note;
+--alter table student add column vacancy_type int unsigned after quick_note;
 
 -- a new automail template --
 

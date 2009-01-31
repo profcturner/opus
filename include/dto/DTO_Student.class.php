@@ -68,8 +68,8 @@ class DTO_Student extends DTO
     // Form Search criteria string
     if(!empty($search))
     {
-      $searchc .= " (lastname LIKE ? OR firstname LIKE ? OR reg_number LIKE ?)";
-      $parameters = array("%$search%","%$search%","%$search%");
+      $searchc .= " (lastname LIKE ? OR firstname LIKE ? OR reg_number LIKE ? OR quick_note LIKE ?)";
+      $parameters = array("%$search%","%$search%","%$search%", "%$search%");
     }
     else
     {

@@ -26,6 +26,10 @@ class Student extends DTO_Student
   var $progress         = ""; // whether the student has signed off on the disclaimer and other issues
   var $academic_user_id = ""; // user_id of the academic tutor
   var $disability_code  = "";
+  var $voice            = ""; // phone number
+  var $address          = ""; // address details
+  var $quick_note       = ""; // quick note
+//  var $vacancy_type     = ""; // the preferred vacancy type 
 
   // Several of these fields actually reside in the User table
   static $_field_defs = array
@@ -38,7 +42,11 @@ class Student extends DTO_Student
     'placement_year'=>array('type'=>'text','size'=>5, 'title'=>'Placement Year', 'mandatory'=>true),
     'placement_status'=>array('type'=>'list', 'list'=>array('Required'=>'Required','Placed'=>'Placed','Exempt Applied'=>'Exempt Applied','Exempt Given'=>'Exempt Given','No Info'=>'No Info','Left Course'=>'Left Course','Suspended'=>'Suspended','To final year'=>'To final year','Not Eligible'=>'Not Eligible')),
     'academic_user_id'=>array('type'=>'lookup', 'object'=>'staff', 'value'=>'dud', 'title'=>'Academic Tutor', 'var'=>'tutors', 'lookup_function'=>'lookup_tutors_by_school'),
-    'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
+    'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description'),
+    'voice'=>array('type'=>'text' ,'size'=>20, 'title'=>'Phone Number'),
+    'address'=>array('type'=>'textarea', 'rowsize'=>5, 'colsize'=>40, 'maxsize'=>1000),
+    'quick_note'=>array('type'=>'text' ,'size'=>20, 'title'=>'Quick Note', 'header'=>true),
+//    'vacancy_type'=>array('type'=>'lookup', 'object'=>'vacancytype', 'value'=>'name', 'title'=>'Type', 'var'=>'vacancytypes'),
   );
 
   // Root users can edit reg_numbers
