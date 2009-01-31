@@ -97,6 +97,7 @@ deb-opus: deb-opus-etc
 	cat sql_patch/data.sql >> ${debprefix}/share/dbconfig-common/data/opus/install/mysql
 	mkdir -p ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql
 	cp sql_patch/patch_3.3.x_4.0.0.sql ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql/4.0.0
+	cp sql_patch/patch_4.0.2_4.1.0.sql ${debprefix}/share/dbconfig-common/data/opus/upgrade/mysql/4.1.0
 	cp etc/load_old_database.php ${debprefix}/share/opus/include/
 
 deb-opus-etc: 
