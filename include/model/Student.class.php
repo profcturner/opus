@@ -216,7 +216,15 @@ class Student extends DTO_Student
       User::update($user_fields);
     }
 
-    $student = Student::load_by_id($fields[id]);
+    // If the status has changed, make a note to that effect
+    if(!empty($fields['placement_status']))
+    {
+      if($fields['placement_status'] != $student->placement_status)
+      {
+        require_once("model/Note.class.php");
+        Note::simple_insert_student($student->user_id, "placement status change", "status changed from " . $student->placement_status . " to " . $fields['placement_status']);
+      }
+    }
     $student->_update($fields);
 
     // Finally invalidate any timeline to ensure it is correctly regenerated

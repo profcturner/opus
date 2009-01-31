@@ -211,9 +211,9 @@ class Note extends DTO_Note
     $fields = array();
 
     $fields['auth'] = 'all'; // This is a simple, quick note.
-    $fields['summary'] = $note_summary;
+    $fields['summary'] = "Auto: " . $note_summary;
     $fields['comments'] = $note_body;    
-    $fields['main_link'] = $link_type . "_" . (int) $link_id;
+    $fields['mainlink'] = $link_type . "_" . (int) $link_id;
     
     Note::insert($fields);
   }
