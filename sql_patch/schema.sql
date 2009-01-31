@@ -331,6 +331,7 @@ CREATE TABLE `company` (
   `created` datetime default NULL,
   `modified` datetime default NULL,
   `allocation` int(10) unsigned default NULL,
+  `healthsafety` text,
   `id` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`id`),
   KEY `name` (`name`(10))
@@ -819,6 +820,9 @@ CREATE TABLE `student` (
   `disability_code` int(10) unsigned default NULL,
   `programme_id` int(10) unsigned default NULL,
   `academic_user_id` int(10) unsigned default NULL,
+  `voice` tinytext default NULL,
+  `address` text default NULL,
+  `quick_note` tinytext default NULL,
   `id` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`id`),
   KEY `stud_index` (`user_id`),
