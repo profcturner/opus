@@ -42,6 +42,7 @@ $config['opus']['patch_version']        = 0;
 $config['opus']['benchmarking']         = true;
 $config['opus']['logo']                 = "logo.png";
 $config['opus']['rows_per_page']        = 20;
+$config['opus']['required_schema_version'] = "4.1.0";
 
 $config['opus']['paths']['resources']   = '/var/lib/opus/resources/';
 $config['opus']['paths']['photos']      = '/var/lib/opus/photos/';

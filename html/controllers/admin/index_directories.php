@@ -530,6 +530,7 @@
 
     $id = WA::request("id");
     $waf->assign("changes", WA::request("changes"));
+    $waf->assign("xinha_editor", true);
 
     edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company", "admin/directories/edit_company.tpl");
   }
