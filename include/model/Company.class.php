@@ -31,6 +31,7 @@ class Company extends DTO_Company
   var $created = "";
   var $modified = "";
   var $allocation = "";
+  var $healthsafety = "";
 
   static $_field_defs = array(
     'name'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Name','header'=>true, 'mandatory'=>true),
@@ -45,9 +46,17 @@ class Company extends DTO_Company
     'www'=>array('type'=>'url', 'size'=>40, 'maxsize'=>80, 'title'=>'Web Address'),
     'voice'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Phone'),
     'fax'=>array('type'=>'text', 'size'=>20, 'maxsize'=>40, 'title'=>'Fax'),
-    'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
+    'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation', 'readonly'=>'true'),
     'brief'=>array('type'=>'textarea', 'rowsize'=>20, 'colsize'=>80, 'maxsize'=>60000,  'title'=>'Brief', 'markup'=>'xhtml', 'mandatory'=>true)
-     );
+  );
+     
+  // Admin users can edit health & safety information
+  static $_admin_field_defs_override = array
+  (
+    'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
+    'healthsafety'=>array('type'=>'textarea', 'rowsize'=>5, 'colsize'=>80, 'maxsize'=>2000,  'title'=>'Health & Safety')
+  );
+
 
   // This defines which variables are stored elsewhere
   static $_extended_fields = array
@@ -65,7 +74,12 @@ class Company extends DTO_Company
   */
   function get_field_defs()
   {
-    return(self::$_field_defs);
+    $field_defs = self::$_field_defs;
+    if(User::is_admin())
+    {
+      $field_defs = array_merge($field_defs, self::$_admin_field_defs_override);
+    }
+    return($field_defs);
   }
 
   function get_extended_fields()
@@ -130,6 +144,16 @@ class Company extends DTO_Company
 
     $company = Company::load_by_id($fields[id]);
     $fields['modified'] = date("YmdHis");
+    
+    // If the health & safety status has changed, make a note to that effect
+    if(!empty($fields['healthsafety']))
+    {
+      if($fields['healthsafety'] != $company->healthsafety)
+      {
+        require_once("model/Note.class.php");
+        Note::simple_insert_company($company->id, "health & safety details changed", "Previous details:\n\n" . $company->healthsafety);
+      }
+    }
     $company->_update($fields);
 
     $company_id = $company->id;

@@ -225,7 +225,7 @@ class Note extends DTO_Note
   
   function simple_insert_company($company_id, $note_summary, $note_body)
   {
-    Note::simple_insert("Company", $company_id, $note_sumamry, $note_body);
+    Note::simple_insert("Company", $company_id, $note_summary, $note_body);
   }
 }
 ?>
