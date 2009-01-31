@@ -66,4 +66,4 @@ Lines
 </form>
 {$fetched_uncompressed_lines|default:"0"} lines were fetched from uncompressed log files<br />
 {$fetched_compressed_lines|default:"0"} lines were fetched from compressed log files<br />
-uncomressed log file is {$log_size}
+uncompressed log file is {$log_size}
