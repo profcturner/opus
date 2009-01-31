@@ -1,3 +1,9 @@
+opus (4.1.0) unstable; urgency=low
+
+  * New upstream version
+
+ -- Colin Turner <c.turner@ulster.ac.uk>  Sat, 31 Jan 2009 16:20:13 +0000
+
 opus (4.0.2-3) unstable; urgency=low
 
   * Added ucf as a dependency
