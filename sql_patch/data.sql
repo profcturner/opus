@@ -16,7 +16,7 @@ insert into vacancytype values("Graduate Job", 30, NULL, 3);
 insert into phonehome (send_install, send_periodic, cc_on_email, timestamp_install, timestamp_periodic, admin_id, id) values('Ask', 'Ask', 'No', NULL, NULL, 0, 1);
 
 -- simple csvmapping examples --
-INSERT INTO `csvmapping` VALUES ('University of Ulster Module List','/^\"(.*)\",\"(.*)\",\"(.*), (.*) (.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/','\"${1}\",\"${2}\",\"${5}\",\"${4}\",\"${3}\",\"${11}\",\"${6}\",\"\"','',1),('University of Ulster Programme List','/^\"(.*)\",\"(.*)\",\"(.*), (.*) (.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/','\"${1}\",\"${2}\",\"${5}\",\"${4}\",\"${3}\",\"${11}\",\"\",\"\"','',2);
+INSERT INTO `csvmapping` VALUES ('University of Ulster Module List','/^Y([0-9]*),(B[0-9]*),\"([A-Za-z]*), ([A-Za-z]*)\",([0-9]*),([A-Z]*),(.*),(.*),(.*)$/','\"${1}\",\"${2}\",\"\",\"${4}\",\"${3}\",\"${9}\",\"${5}\",\"\",\"${2}\"','/^Year,.*$/',1),('University of Ulster Programme List','/^Y([0-9]*),(B[0-9]*),\"([A-Za-z\'\\-]*), ([A-Za-z\'\\-]*)\",(.*),(.*),\"(.*)\"$/ ','\"${1}\",\"${2}\",\"\",\"${4}\",\"${3}\",\"${6}\",\"\",\"\",\"${2}\"','/^Year,.*$/',2);
 
 --
 -- Dumping data for table `assessment`

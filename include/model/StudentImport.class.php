@@ -110,11 +110,21 @@ class StudentImport
       $valid_lines = 0;
       $count = 0;
       // Only look at up to the first ten lines
-      while(($line = fgets ($fp, 2048)) && ($count++ < 10))
+      while(!feof($fp) && ($count < 10))
       {
+        $line = trim(fgets ($fp, 2048));
+
+        // Ignore empty lines
+        if(empty($line)) continue;
+        // We also don't count explicit "excludes".
+        if(preg_match($csvmap->exclude, $line)) continue;
+
+        // Ok, count this line, and then see if it's valid
+        $count++;
         // Count the number of valid lines from these
         if(preg_match($csvmap->pattern, $line)) $valid_lines++;
       }
+
       // Success?
       if(($valid_lines / $count) >= 0.8)
       {
@@ -135,7 +145,7 @@ class StudentImport
   function import_csv($filename, $programme_id, $year, $status, $onlyyear, $password, $test, $csvmapping_id)
   {
     // This is the pattern OPUS expects at the end of a mapping
-    $standard_pattern = "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
+    $standard_pattern = "/^\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\",\"(.*)\"$/";
     $waf =& UUWAF::get_instance();
     require_once("model/Programme.class.php");
     require_once("model/CSVMapping.class.php");
@@ -154,6 +164,7 @@ class StudentImport
     $students = array();
     $rejected_lines = array();
     $excluded_lines = array();
+    $mismapped_lines = array();
     while($line = fgets ($fp, 2048))
     {
       $line = trim($line);
@@ -163,7 +174,7 @@ class StudentImport
         array_push($rejected_lines, $line);
         continue; // move on
       }
-      // and not be exluded
+      // and not be excluded
       if((strlen($csvmap->exclude) && preg_match($csvmap->exclude, $line)))
       {
         array_push($excluded_lines, $line);
@@ -171,9 +182,13 @@ class StudentImport
       }
 
       // Ok, do the replacement to change to standard format
-      $line = preg_replace($csvmap->pattern, $csvmap->replacement, $line);
+      $line = preg_replace($csvmap->pattern, trim($csvmap->replacement), $line);
       // Finally extract data from the standard format to an array as if from SRS
-      preg_match($standard_pattern, $line, $matches);
+      if(!preg_match($standard_pattern, $line, $matches))
+      {
+        array_push($mismapped_lines, $line);
+        continue; // move on
+      }
 
       $student = array();
       $student['year_on_course']  = $matches[1];
@@ -218,6 +233,7 @@ class StudentImport
     $waf->assign("filename", $_FILES['userfile']['tmp_name']);
     $waf->assign("rejected_lines", $rejected_lines);
     $waf->assign("excluded_lines", $excluded_lines);
+    $waf->assign("mismapped_lines", $mismapped_lines);
     if($test)
     {
       $waf->assign("action_links", array(array('cancel', 'section=configuration&function=import_data')));
