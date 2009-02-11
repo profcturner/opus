@@ -42,10 +42,18 @@ class u3_cookie
           // Only two categories for now
           case student:
           case staff:
-          $auth_user['username'] = $user->username;
-          $waf->log("cookie authenticated user is " . $user->username);
-          break;
+            $auth_user['username'] = $user->username;
+            $waf->log("cookie authenticated user is " . $user->username);
+            break;
+          default:
+            return false;
+            break;
         }
+      }
+      else
+      {
+        // We don't actually know this person
+        return false;
       }
       return $auth_user;
     }
