@@ -95,6 +95,11 @@ function help(&$waf, $parameters)
   $waf->display("cron.tpl", "cron:user_count", "cron/help.tpl");
 }
 
+function dev_help(&$waf, $parameters)
+{
+  $waf->display("cron.tpl", "cron:user_count", "cron/dev_help.tpl");
+}
+
 function check_online_users(&$waf, $parameters)
 {
   require_once("model/User.class.php");
@@ -250,6 +255,29 @@ function get_academic_year()
   return($year);
 }
 
+function change_password($waf, $parameters)
+{
+  if(empty($parameters['username'])) help($waf);
+  if(empty($parameters['password'])) help($waf);
+  
+  echo "Changing password for " . $parameters['username'] . " ... ";
+  
+  $waf->log("change password for user " . $parameters['username']);
+  require_once("model/User.class.php");
+  $user = User::load_by_username($parameters['username']);
+  if($user->id)
+  {
+    // Successfully loaded a real user
+    $user->password = md5($parameters['password']);
+    $user->_update();
+    echo "success\n";
+  }
+  else
+  {
+    $waf->log("password change failed, user could not be loaded.");
+    echo "failed\n";
+  }
+}
 
 
 function check_missing_error_prompts()
