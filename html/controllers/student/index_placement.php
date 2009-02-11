@@ -292,7 +292,6 @@
 
     $waf->assign("activities", $activities);
     $waf->assign("companies", Company::get_all_extended($search, $activities, $sort));
-    $waf->assign("action_links", array(array("add","section=directories&function=add_company")));
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "student/placement/search_companies.tpl");
   }
 
