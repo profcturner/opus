@@ -24,18 +24,7 @@ insert into `automail` (language_id, lookup, fromh, toh, cch, bcch, subject, des
 delete from csvmapping where id=1;
 delete from csvmapping where id=2;
 
-INSERT INTO `csvmapping` VALUES ('University of Ulster Module List','/^Y([0-9]*),(B[0-9]*),\"([A-Za-z]*), ([A-Za-z]*)\",([0-9]*),([A-Z]*),(.*),(.*),(.*)$/','\"${1}\",\"${2}\",\"\",\"${4}\",\"${3}\",\"${9}\",\"${5}\",\"\",\"${2}\"','/^Year,.*$/',1),('University of Ulster Programme List','/^Y([0-9]*),(B[0-9]*),\"([A-Za-z\'\\-]*), ([A-Za-z\'\\-]*)\",(.*),(.*),\"(.*)\"$/ ','\"${1}\",\"${2}\",\"\",\"${4}\",\"${3}\",\"${6}\",\"\",\"\",\"${2}\"','/^Year,.*$/',2);
-
-
-CREATE TABLE `help` (
-  `language_id` int(10) unsigned default NULL,
-  `lookup` tinytext NOT NULL,
-  `channel_id` int(10) unsigned default NULL,
-  `auth` tinytext,
-  `description` tinytext,
-  `contents` text,
-  `id` int(10) unsigned NOT NULL auto_increment,
-  PRIMARY KEY  (`i
+INSERT INTO `csvmapping` VALUES ('University of Ulster Module List','/^Y([0-9]*),(B[0-9]*),\"([A-Za-z\'\\-]*), ([A-Za-z\'\\-]*)\",([0-9]*),([A-Z]*),(.*),(.*),(.*)$/','\"${1}\",\"${2}\",\"\",\"${4}\",\"${3}\",\"${9}\",\"${5}\",\"\",\"${2}\"','/^Year,.*$/',1),('University of Ulster Programme List','/^Y([0-9]*),(B[0-9]*),\"([A-Za-z\'\\-]*), ([A-Za-z\'\\-]*)\",(.*),(.*),\"(.*)\"$/ ','\"${1}\",\"${2}\",\"\",\"${4}\",\"${3}\",\"${6}\",\"\",\"\",\"${2}\"','/^Year,.*$/',2);
   
 -- update help for new csv code --
 
