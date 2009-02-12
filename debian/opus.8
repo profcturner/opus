@@ -1,0 +1,75 @@
+.TH OPUS 8 "11 February 2009" "4.1.0"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+OPUS \- command line interface to the Online Placement university System
+.SH SYNOPSIS
+.B opus
+.SH DESCRIPTION
+This manual page documents briefly the
+.B OPUS
+command line options.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fBOPUS\fP is a web application to manage placement and work based learning. It has a command line tool which this manpage documents. The command line tool is usually called by the cron framework for OPUS but can be useful in its own right.
+.SH OPTIONS
+The syntax for opus commands is
+.PP
+opus <function> "[parameters]"
+.PP
+where parameters takes the form used for encoding cgi-scripts. Most functions take no parameters.
+.TP
+.B start
+opens OPUS to non superusers.
+.TP
+.B stop
+prevents access to OPUS for all non superusers.
+.TP
+.B user_count
+show information on the number of users in different categories.
+.TP
+.B company_count
+show the number of companies stored in the database.
+.TP
+.B vacancy_count
+show the number of vacancies storied in the database.
+.TP
+.B expire_vacancies
+finds vacancies past their closing date and closes them, notifying contacts.
+.TP
+.B phone_home_install
+determines if OPUS is permitted to send an email to the University of Ulster on installation, and if so performs this action.
+.TP
+.B phone_home_periodic
+determines if OPUS is permitted to send a regular email to the University of Ulster with item counts, and if it is due, and if so performs this action.
+.TP
+.B update_perl_config
+produced a perl version of the database configuration, which is necessary for timeline generation.
+.TP
+.B change_password
+allows an OPUS user's password to be changed. Parameters are passed in the form "username=foo&password=bar", noting that encapsulation by the quotes is necessary to prevent the ampersand to be misinterpreted by the shell.
+.TP
+.B check_missing_error_prompts
+used by OPUS developers or translators to check for error prompts used in the code that are not defined or translated.
+.TP
+.B check_missing_lang_prompts
+used by OPUS developers or translators to check for language prompts used in the code that are not defined or translated.
+
+More documentation on OPUS can be found at http://foss.ulster.ac.uk/projects/opus or by installing the opus-doc package on Debian.
+.SH AUTHOR
+OPUS is produced by the University of Ulster, under a development team led by Colin Turner <c.turner@ulster.ac.uk>.
+.PP
+This manual page was written by Colin Turner <c.turner@ulster.ac.uk>,
+for the Debian project (but may be used by others).
