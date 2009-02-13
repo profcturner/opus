@@ -1,125 +1,137 @@
-OPUS 4.0.0 - Release Notes
+OPUS 4.1.0 - Release Notes
 
-WARNING: THESE ARE DRAFT! OPUS is expected to be released in the next two weeks.
-
-This release of OPUS is one of the most significant in several years, partly
-since the application has been completely rewritten. Therefore it is more
-important that usual to read these notes carefully to understand any
-ramifications to your installed application.
+Please read the following notes for issues before upgrading your
+OPUS installation.
 
 Notes for Users
 ---------------
 
-For most users of the system, the changes will appear to be mainly visual.
-User interfaces should be more consistent and simple, and more visually
-attractive. Nevertheless, there are some minor changes to note.
+* A number of errors on navigation, mostly cosmetic have been corrected.
+  Various inconsistencies in navigation have also been fixed.
+  
+* A handful of pages that showed no page title or tagline have been
+  identified and fixed.
+  
+* The navigation for staff users has been simplified considerable and a
+  number of options that weren't allowed by policy anyway removed from
+  the menus.
+  
+* Bugs causing slow performances in textareas in some browsers have been
+  fixed (bug #371).
+  
+* Some minor errors in photograph retrieval and display have been
+  corrected (bug #412). Photos are also displayed in some other areas
+  as appropriate.
+  
+* fixed some minor issues with workflow when maniulating placements,
+  and a harmless SQL error on placement manipulation has been removed
+  (bug #391).
+  
+* The manual, while still rather incomplete, is vastly more complete
+  than it was for version 4.0.2. You can install the manual on Debian
+  by selecting the package opus-doc, or download it from the project
+  website.
+  
+* The ability to configure other assessors that existed in 3.x has been
+  reinstated.
+  
+* A number of problems editing assessment structures have been
+  identified and fixed, and textareas in assessments now show character
+  counters.
+  
+* Minor permission problems have been found and fixed.
 
-* OPUS now has a system of preferences for each user. Some of these are
-  accessible from the "preferences" option in the top right of the screen.
-  Most, however, are automatically used and saved. For example, now OPUS
-  remembers all your settings in the main, and complex, search forms, and
-  will continue to use those settings when you return to the form in the
-  same session. If you correctly logout (using the option in the top right
-  of the screen), OPUS will save these preferences for use in your next
-  session.
+* We have added a commented out line in the supplied apache2.conf for
+  Ubuntu which stores Smarty in a slightly different place.
+  
+* CV group descriptions did not "stick" when changed which has been
+  fixed.
+  
+* OPUS now can automatically create notes for the logged in user on
+  certain actions. For example, it now stores placement status changes
+  for users in notes.
+  
+* Companies now have a place for Health & Safety compliance to be
+  recorded, which are stored in notes automatically upon changes.
+  
+* A problem was identified when associations between administrators and
+  various academic units were removed, and has been fixed.
+  
+* CVs can now be emailled, several at a time (bug #390).
 
-* The menus have been completely reimplemented, and should be much more
-  clean and clear. Each function has a menu item of its own. Complex
-  functionality is in separate menus. Context sensitive menus appear in
-  certain circumstances (e.g. when editing a student). Still other 
-  improvements have been made (see bug #207, bug #196).
+* Student's can now have their internal CV store manipulated by
+  administrators on their behalf. This is true even for OPUS / PDSystem
+  combination systems.
+  
+* Instructions for dealing with applicant lists have been expanded and
+  clarified.
+  
+* Vacancy lists can now be sorted by closing date.
 
-* OPUS now knows about Faculties, which should simplify administration of
-  big systems. In the past administrators could be allocated to programmes
-  or schools, but this is now extended to Faculties and the institution at
-  large which can be useful for faculty staff and staff from central departments.
+* The popup calendar has been changed to one with no license issues.
 
-* CVs, now when "viewed" either directly, or with emails, are registered as
-  seen (closes bug #202). It will be possible for companies to select
-  a number of CVs (many at a time) that will be subsequently emailed to them.
-  (closes wishlist bug #175).
+* Various minor fixes in the reporting functionality, augmentation to
+  the existing student broadsheet to include placement email, and a new
+  report has been added to show which companies we have had vacancies
+  with.
+  
+* A number of new fields have been added to the student entry, including
+  address fields. A "quick note" has been added that allows a number of
+  keywords to be attached to a student. Students can then be searched
+  for by this field in the student directory.
+  
+* A few minor problems with cookies have been found and solved.
 
-* Reports will all be moved into one section in the Information menu, making
-  the various reports possible easier to see (although they have always been
-  there). They are more consistent in their use, remember last settings, and
-  can all be exported as inline HTML, CSV or TSV. Expect more improvements 
-  in the 4.x lifecycle. (Closes bug #167).
+Notes for Administrators
+------------------------
 
-* Supervisors now have their own directory which simplifies searching for them
-  and shows the student they are associated with (closes bug #131).
+* OPUS now requires version 1.1.0 or higher of the UU Web Application
+  Framework. If you have not yet upgraded that, do this first. You can
+  find it at
+  
+  http://foss.ulster.ac.uk/projects/uuwaf/downloads/
+  
+  but note that the Debian packaging will handle this automatically.
+  
+* OPUS now uses tiny_mce and not xinha as an embedded HTML editor, the
+  Debian packages now use the Debian packaged tiny_mce and not an
+  inbuilt version. Note that this might result in textareas not showing
+  in the editor in your Apache configuration does not contain an alias
+  for tiny_mce. If this happens add the following, or with
+  appropriately changed paths and restart apache.
+  
+  Alias /tinymce/ /usr/share/tinymce/www/
+  <Directory "/usr/share/tinymce/www/">
+    Options Indexes MultiViews FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+  
+* Some installations reported a PHP version that should support a date
+  parsing function, but did not have that function. A workaround has
+  been added.
 
-* Staff users and admin users can now be initially created by giving their
-  registration number from a SRS (Student Records System). OPUS is generally
-  more vocal about when records systems are unavailable (closes bug #109).
+* OPUS can now, within in its log viewer, handle compressed log files
+  in a totally transparent manner.
+  
+  We also provide a sample configuration for log rotation to compress
+  files automatically, which allows a very large history to be
+  maintained, easily searched and not take up excessive disk space. The
+  Debian packages will automatically enable log rotation.
 
-* It is now possible to store health & safety compliance information directly
-  in the company record, rather than just in notes as before (closes bug #102).
+* A new configuration option allows students to be emailled upon their
+  account creation (optionally). To enable this, add the following line
+  to your local configuration file.
+  
+  $config['opus']['email_students_on_creation'] = true;
 
-* Individual assessments can now be exported in one document for careful
-  analysis, previously each student had to be reviewed one at a time. (closes
-  bug #106).
-
-* Channels will allow students to be explicitly added to them by reg_number.
-  This will facilitate some internal UU work. A more elegant solution may be
-  found in time. (closes wishlist bug #214).
-
-* Vacancies will now have a type associated with them, which can be arbitrarily
-  configured by administrators. There might be for example "One Year Sandwich",
-  "one month", "summer placement", "graduate" and placement teams will be
-  able to decide which types are suitable for their groups to meet assessment
-  criteria. (closes wishlist bug #213)
-
-
-
-Notes for System Administrators
--------------------------------
-
-This version of OPUS should be, by far, the simplest to install and maintain
-yet. However there are some points to note.
-
-* OPUS now runs on a common framework with the PDSystem, and other planned
-  applications for the future. This framework UUWAF, is required to be
-  installed before OPUS can work.
-
-  UUWAF requires PHP with a version beyond 5.1, this is because it uses the
-  PDO functionality within PHP which was bundled in the core from that version on.
-  Therefore OPUS will no longer run on PHP 4, but please note PHP 4 is no longer
-  a supported product by PHP itself.
-
-  The benefit of this is that database access is now very normalised, and it is
-  in fact probably possible (but untested and not recommended) to move OPUS to any
-  database layer supported by PDO (including Oracle and Postgresql). It should
-  also close some issues (bug #194).
-
-* The database is radically changed, and though a single SQL patch file can be
-  used, a backup is strongly advised before hand. Use mysqldump.
-
-* The configuration file for OPUS is very much more simple, but radically
-  different from previous versions. You should check the whole configuration file
-  very carefully. Note that, to make upgrades simple, you should create, and
-  modify a local copy of the config file as directed, so that global configuration
-  options are preserved on upgrade. This should also resolve bug #191.
-
-* Authentication handling in OPUS 4 is much more flexible, being handled by the
-  framework. There is a directory, include/auth.d which holds "plugins" for
-  authentication. The README file in that directory will explain how to enable
-  various authentication sources, and how to write your own plugins.
-
-* Reports are also using a more flexible plugin system. See the README file in
-  include/model/reports for more details.
-
-* The cron framework for version 4 is no longer standalone code, but uses the same
-  model business logic layer. It can also provide some useful command line tools for
-  OPUS. Try "./opus.php help" in the cron directory for more information.
-
-* OPUS will ask the first super admin user for permission to "phone home". This
-  will initially be simply to report an installation, and further permission
-  will be requested to periodically send information useful to us in supporting
-  you. This will be, for example, user counts, company counts, vacancy counts,
-  BUT WILL ABSOLUTELY NOT CONTAIN ANY CONFIDENTIAL INFORMATION. This
-  information helps us to help you, and more allows us to report on the success
-  of our open sourcing effort to our management. It is entirely optional, you
-  can elect to be CCd no the emails to ensure fair play, and of course, you can
-  study the code for yourself. None of this information will be made available
-  to third parties on the basis of an individual institution, but aggregate data
-  may be so presented.
+* The standard CSV mapping now has one more, ninth parameter, which is
+  optionally a different username from the reg_number. It can be safely
+  left blank. You may need to adjust the replacement field of any
+  existing mapping, by adding
+  
+  ,""
+  
+  to it. A number of issues with the CSV handling have been improved or
+  fixed.

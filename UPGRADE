@@ -1,35 +1,56 @@
 OPUS UPGRADE NOTES
 
-0. Running Debian?
+Please read the RELEASE-NOTES *before* upgrading
+
+A. Running Debian?
 ------------------
 
 If you are running Debian, just install the new version of OPUS using the
 command in the INSTALL guide, and you are done. You might want to backup
 your database first (see step 3), but dbconfig-common does this as well for you.
 
+B. Manually Upgrading from 4.0.x to 4.1.0
+-----------------------------------------
 
-If you are not running Debian, then for upgrading from one 4.x release to
-another, things are relatively straightforward:
+B.1 Install new framework
+-------------------------
 
-  a) backup the database
+OPUS 4.1.0 now requires version 1.1.0 or higher of the UU Web
+Application Framework. If you have not yet upgraded that, do this first.
+You can find it at
+  
+  http://foss.ulster.ac.uk/projects/uuwaf/downloads/
 
-      e.g. mysqldump -u root -p opus > backup_opus.sql
-      (you will be asked for your MySQL root password).
+B.2 Upgrade the database
+------------------------
 
-  b) optionally back up any other files, configuration and so on.
+Now upgrade your database (back it up first)  
 
-  c) unarchive the new release and copy it over the old one.
+From the command prompt run (assuming your database is called opus)
 
+mysql -u root -p opus < sql_patch/patch_4.0.2_4.1.0.sql
+(type password for mysql root user)
+
+
+B.3 Unpack the new archive over the old files
+---------------------------------------------
+
+The commands used here will differ depending upon your
+  
+
+C. Manually upgrading from 3.x to 4.1.0
+---------------------------------------
 
 If you are upgrading from 3.x, the transition from version 3.x to 4.x is by
 far the most major yet, and we expect it to the most major change ever.
 
 As a result the upgrade is somewhat more tricky, so read this document
-carefully.
+carefully. Follow the instructions in this section C, followed by
+those in section B. Read them all before beginning.
 
 
-1. Prepare a new location for version 4
----------------------------------------
+C1. Prepare a new location for version 4
+----------------------------------------
 
 Since the application is quite different, we recommend a new directory is
 used to unpack the files for version 4. You can call it opus4 for now
@@ -39,8 +60,8 @@ Unpack the archive into this directory. You should put this somewhere
 sensible, such as /usr/share/opus on a *nix system.
 
 
-2. Close down your 3.x instance
--------------------------------
+C2. Close down your 3.x instance
+--------------------------------
 
 To avoid data being changed after backup, it's advisable to close OPUS 3.x.
 You can do this by editing config.php in the include directory so that
@@ -51,8 +72,8 @@ $conf['closed'] = TRUE;
 and save the file. OPUS 3.x will now be closed.
 
 
-3. Backup your database
------------------------
+C3. Backup your database
+------------------------
 
 This is *extremely* important. The transition is complex, so to ensure all
 data is intact in case of problems, ensure you do the backup. The command
@@ -66,8 +87,8 @@ You can of course archive the sql file which should compress very well. e.g.
 gzip opus_pre_4_backup.sql
 
 
-4. Create a preferences database
---------------------------------
+C4. Create a preferences database
+---------------------------------
 
 OPUS v4 uses a preference system to save various information. It is possible
 to use the existing database for this, but it's advisable to use a separate
@@ -84,8 +105,8 @@ source /usr/share/uuwaf/sql_patch/preferences-schema.sql
 adjust pathnames, usernames and passwords as needed.
 
 
-5. Upgrade the OPUS database
-----------------------------
+C5. Upgrade the OPUS database
+-----------------------------
 
 If you didn't backup the OPUS database again, I repeat, you really should do so
 (see step 3).
@@ -98,8 +119,8 @@ mysql -u root -p opus < sql_patch/patch_3.3.x_4.0.0.sql
 to patch the database to version 4.
 
 
-6. Copy all materials stored in the file system rather than the database
-------------------------------------------------------------------------
+C6. Copy all materials stored in the file system rather than the database
+-------------------------------------------------------------------------
 
 If you have made the OPUS tree in the a new directory, then copy over
 the various static files, such as resources and photos.
@@ -116,8 +137,8 @@ and rename the access log to general
 mv /var/log/opus/access.log /var/log/opus/general.log
 
 
-7. The Rest
------------
+C7. The Rest
+------------
 
 Now jump to step 8 of the install guide.
 
