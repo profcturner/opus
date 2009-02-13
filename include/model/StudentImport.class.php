@@ -117,7 +117,7 @@ class StudentImport
         // Ignore empty lines
         if(empty($line)) continue;
         // We also don't count explicit "excludes".
-        if(preg_match($csvmap->exclude, $line)) continue;
+        if(!empty($csvmap->exclude) && preg_match($csvmap->exclude, $line)) continue;
 
         // Ok, count this line, and then see if it's valid
         $count++;
