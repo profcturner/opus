@@ -257,8 +257,16 @@ function get_academic_year()
 
 function change_password($waf, $parameters)
 {
-  if(empty($parameters['username'])) help($waf);
-  if(empty($parameters['password'])) help($waf);
+  if(empty($parameters['username']) || (empty($parameters['password'])))
+  {
+    help($waf);
+    return;
+  }
+  if(posix_getuid())
+  {
+    echo "must be run as root.";
+    return;
+  }
   
   echo "Changing password for " . $parameters['username'] . " ... ";
   

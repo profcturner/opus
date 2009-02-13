@@ -202,3 +202,712 @@
 	* FAQ, INSTALL, Makefile: Minor fixes and improvements to
 	  documentation
 
+2008-04-24  colin
+
+	* INSTALL, UPGRADE, debian/opus.dirs, debian/opus.postinst,
+	  include/opus.conf.php: Ensure strict compliance with the
+	  Filesystem Hierarchy Standard, by moving photos and resources to
+	  /var/lib/opus
+
+	* Makefile, debian/changelog, debian/control, debian/docs: various
+	  packaging improvements
+
+2008-04-25  colin
+
+	* debian/copyright: Remove xinha from copyright message
+
+	* html/controllers/admin/index_directories.php: fixed a problem
+	  which could cause a fatal error when editing an admin sometimes
+
+2008-04-26  colin
+
+	* include/model/Placement.class.php: removed some inert code and
+	  commented file
+
+2008-04-28  colin
+
+	* include/model/Log_Viewer.class.php,
+	  include/model/StudentImport.class.php,
+	  templates/admin/information/log_viewer.tpl: log viewer should now
+	  support compressed (log rotated) log files
+
+	* etc/opus.logrotate.d: including a log rotate configuration now
+	  compressed reading is possible
+
+2008-04-29  colin
+
+	* debian/README.Debian, debian/opus.postinst, debian/rules: added
+	  initial readme for debian users and also configuration for
+	  logrotation, and the possibility to install apache1
+	  configurations.
+
+2008-04-30  colin
+
+	* debian/README.Debian, debian/opus.postinst, debian/opus.postrm,
+	  debian/opus.templates: more improvements to packaging, a
+	  local_en.conf will now also be installed.
+
+	* etc/local_en.conf: initial local_en.conf
+
+	* include/model/Admin.class.php: improved comments
+
+	* Makefile: updated for new debian packaging
+
+2008-05-01  colin
+
+	* templates/manage.tpl: remove overzealous checking for textareas
+	  to stop a slowdown problem visible on slower connections with
+	  firefox (bug #371)
+
+	* configs/lang_en.conf, debian/changelog,
+	  html/controllers/student/index_placement.php,
+	  html/controllers/supervisor/index_home.php, html/css/default.css,
+	  include/model/Student.class.php,
+	  templates/student/placement/placement_home.tpl,
+	  templates/supervisor/home/home.tpl: updated version, adding
+	  photos of students for supervisors, and academic tutors for
+	  students, plus some improved documentation
+
+	* html/controllers/student/index_placement.php,
+	  templates/student/placement/placement_home.tpl: small error in
+	  photo url corrected
+
+	* html/controllers/student/index_placement.php,
+	  html/controllers/supervisor/index_home.php: small error in photo
+	  url corrected
+
+	* templates/manage.tpl: accidentally removed character counter
+
+	* templates/manage.tpl: accidentally removed character counter
+
+2008-05-02  colin
+
+	* configs/lang_en.conf,
+	  html/controllers/admin/index_directories.php,
+	  include/model/Placement.class.php,
+	  include/model/Student.class.php: fixed some minor issues with
+	  workflow when maniulating placements, and a harmless SQL error on
+	  placement manipulation has been removed (see bug #391)
+
+	* include/model/Staff.class.php: stupid typo meant all staff shown
+	  in other schools in lookup for academic tutor
+
+2008-05-08  colin
+
+	* include/model/Log_Viewer.class.php: compressed log entries were
+	  merged after uncompressed, but they should have been before
+
+	* etc/opus.logrotate.d: all rotated log files will be compressed
+	  right away
+
+	* templates/admin/information/log_viewer.tpl: make it clear only
+	  the uncompressed log file is measured
+
+	* include/model/Log_Viewer.class.php: error in number of lines
+	  fetched fixed
+
+	* include/model/Log_Viewer.class.php: error in number of lines
+	  fetched fixed
+
+	* templates/admin/information/log_viewer.tpl: reporting zero lines
+	  fetched correctly
+
+	* debian/README.Debian, debian/po/templates.pot, debian/rules:
+	  various changes to Debian packaging in preparation for upload
+
+	* Makefile: various changes to Debian packaging in preparation for
+	  upload
+
+2008-05-09  colin
+
+	* html/controllers/admin/index_student.php: minor issue in linkages
+	  for assessment view by admins on students (bug #405)
+
+2008-05-12  colin
+
+	* FAQ, INSTALL, Makefile: Minor fixes and improvements to
+	  documentation
+
+	* cron/opus.php, debian/control, etc/opus-local.config.php.debian,
+	  html/controllers/admin/index_admin.php,
+	  html/controllers/admin/index_superuser.php, html/index.php,
+	  include/auth.d/40_ldap_uu.class.php,
+	  include/auth.d/50_u3_cookie.class.php,
+	  include/dto/DTO_Admin.class.php,
+	  include/dto/DTO_AssessmentGroupProgramme.class.php,
+	  include/dto/DTO_AssessmentStructure.class.php,
+	  include/dto/DTO_AssessmentTotal.class.php,
+	  include/dto/DTO_Automail.class.php,
+	  include/dto/DTO_ChannelAssociation.class.php,
+	  include/dto/DTO_Company.class.php,
+	  include/dto/DTO_CompanyActivity.class.php,
+	  include/dto/DTO_Contact.class.php,
+	  include/dto/DTO_Note.class.php,
+	  include/dto/DTO_PhoneHome.class.php,
+	  include/dto/DTO_Resource.class.php,
+	  include/dto/DTO_Staff.class.php,
+	  include/dto/DTO_Student.class.php,
+	  include/dto/DTO_Supervisor.class.php,
+	  include/dto/DTO_User.class.php,
+	  include/dto/DTO_Vacancy.class.php,
+	  include/dto/DTO_VacancyActivity.class.php,
+	  include/model/Admin.class.php,
+	  include/model/AssessmentCombined.class.php,
+	  include/model/Automail.class.php,
+	  include/model/CVCombined.class.php,
+	  include/model/Cache_Object.class.php,
+	  include/model/Contact.class.php,
+	  include/model/File_Upload.class.php,
+	  include/model/Log_Viewer.class.php,
+	  include/model/PDSystem.class.php,
+	  include/model/PhoneHome.class.php, include/model/Photo.class.php,
+	  include/model/Placement.class.php,
+	  include/model/Policy.class.php,
+	  include/model/Preference.class.php,
+	  include/model/Report.class.php, include/model/Resource.class.php,
+	  include/model/Staff.class.php, include/model/Student.class.php,
+	  include/model/StudentImport.class.php,
+	  include/model/Supervisor.class.php,
+	  include/model/Timeline.class.php, include/model/User.class.php,
+	  include/model/Vacancy.class.php, include/model/WebServices.php,
+	  include/model/reports/assessmentbreakdown.class.php,
+	  include/model/reports/companylist.class.php,
+	  include/model/reports/programmereport.class.php,
+	  include/model/reports/studentbroadsheet.class.php,
+	  include/opus.conf.php, templates/main.tpl: update to new UUWAF
+	  handling, removing global $waf, (and point at tinymce debian
+	  package)
+
+2008-05-14  colin
+
+	* html/controllers/admin/index_configuration.php: Fixed an error in
+	  CSV mapping selection, thanks for Anthony Worrall for spotting
+	  it.
+
+2008-05-15  colin
+
+	* FAQ: Adding instructions in the FAQ for debugging support
+
+2008-05-17  colin
+
+	* ChangeLog, debian/changelog, debian/control,
+	  debian/opus.postinst, debian/opus.postrm, debian/opus.templates,
+	  debian/watch: Various improvements to Debian packaging
+
+	* debian/po/templates.pot: Various improvements to Debian packaging
+
+	* debian/changelog: Various improvements to Debian packaging
+
+	* Makefile, docs/latex/Makefile: Various improvements to Debian
+	  packaging
+
+	* Makefile, debian/changelog, debian/control, debian/postinst,
+	  debian/prerm, docs/latex/Makefile: Various improvements to Debian
+	  packaging
+
+2008-05-21  colin
+
+	* docs/latex/opus_manual.tex: Some considerable updates
+
+	* docs/latex/opus_manual.tex: more new content
+
+2008-05-22  colin
+
+	* html/controllers/admin/index_directories.php,
+	  html/controllers/company/index_directories.php,
+	  html/controllers/company/index_home.php,
+	  templates/admin/directories/edit_student.tpl: Fixed a few last
+	  places with photo problems (bug #412).
+
+2008-05-25  colin
+
+	* debian/changelog, debian/control, debian/copyright,
+	  debian/opus.config, debian/opus.postinst, debian/opus.postrm,
+	  debian/opus.templates, debian/po/templates.pot: Merging the last
+	  fixed made for Debian packaging (4.0.2-3) into the trunk
+
+2008-06-08  colin
+
+	* include/model/Log_Viewer.class.php: fixing problem where
+	  compressed log files are taken out of correct sequence
+
+	* include/model/Log_Viewer.class.php: fixing problem where
+	  compressed log files are taken out of correct sequence
+
+2008-07-29  colin
+
+	* docs/latex/opus_manual.tex: More content added (contact
+	  directory, log files)
+
+2008-08-02  colin
+
+	* debian/copyright, html/controllers/staff/index_home.php,
+	  html/controllers/staff/index_staff.php,
+	  html/javascript/ie_menu_patch.htc,
+	  html/javascript/textcounter.js,
+	  include/model/AssessorOther.class.php,
+	  include/model/Programme.class.php,
+	  templates/staff/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessorOther.class.php,
+	  templates/staff/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessorOther.class.php: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessorOther.class.php: adding functionality to
+	  allow "other assessees"
+
+	* templates/staff/home/other_assessees.tpl,
+	  templates/staff/other_assessees.tpl: Moving to the correct place
+
+2008-08-03  colin
+
+	* html/controllers/staff/index_home.php: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessmentCombined.class.php: adding functionality
+	  to allow "other assessees"
+
+	* templates/staff/home/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* templates/staff/home/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessorOther.class.php: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessorOther.class.php: adding functionality to
+	  allow "other assessees"
+
+	* templates/staff/home/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* templates/staff/home/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* html/controllers/staff/index_home.php,
+	  templates/staff/home/other_assessees.tpl: adding functionality to
+	  allow "other assessees"
+
+	* include/model/AssessmentCombined.class.php: adding functionality
+	  to allow "other assessees"
+
+	* html/controllers/staff/index_home.php,
+	  include/model/AssessmentCombined.class.php: adding functionality
+	  to allow "other assessees"
+
+	* configs/lang_en.conf, templates/student/home/home.tpl: adding
+	  functionality to allow "other assessees"
+
+	* html/controllers/staff/index_home.php: adding functionality to
+	  allow "other assessees"
+
+	* html/controllers/staff/index_home.php,
+	  templates/student/home/home.tpl: adding functionality to allow
+	  "other assessees"
+
+	* templates/staff/home/home.tpl, templates/student/home/home.tpl:
+	  adding functionality to allow "other assessees"
+
+	* include/opus.conf.php: Update version number on trunk to 4.1.0
+	  (beta)
+
+2008-08-10  colin
+
+	* Makefile, configs/lang_en.conf, docs/latex/opus_manual.tex,
+	  html/controllers/admin/index_advanced.php,
+	  html/javascript/textcounter.js,
+	  include/model/AssessmentStructure.class.php,
+	  templates/assessment/uu/final_visit.tpl,
+	  templates/assessment/uu/first_visit_nomark.tpl,
+	  templates/assessment/uu/industrial_report.tpl,
+	  templates/assessment/uu/placement_report.tpl,
+	  templates/assessment/uu/presentation.tpl,
+	  templates/assessment/uu/technical_report.tpl,
+	  templates/general/assessment/assessment_header.tpl,
+	  templates/general/assessment/textarea.tpl: fixes for assessment
+	  bugs 468, 456. Assessment structures can now be edited and
+	  inserted correctly. Character limits are shown on textareas.
+
+2008-08-14  colin
+
+	* html/controllers/admin/index_directories.php: proposed fix for
+	  bug #469, permission to editStatus should only be needed to
+	  confirm changes to a placement
+
+	* cron/opus.php: added include for compatibility with uuwaf 1.1
+
+	* include/model/PhoneHome.class.php: fixed small typo in phonehome
+	  functionality that miscounts supervisors
+
+2008-08-19  colin
+
+	* docs/latex/insert_company_hr.tex,
+	  docs/latex/insert_supervisor_guide.tex,
+	  docs/latex/opus_manual.tex: Considerable added content to manual,
+	  separation of content for company hr and supervisors
+
+2008-08-23  colin
+
+	* include/model/AssessmentStructure.class.php: Incidental issue for
+	  bug #468, the assessment structure validation didn't allow more
+	  than 3 characters in the field, hence imposing a limit of 999
+	  characters.
+
+	* templates/assessment/uu/placement_report.tpl: Increase size of
+	  text boxes in placement report
+
+	* include/model/AssessmentStructure.class.php: varorder needs to be
+	  preserved on updated to structure items
+
+2008-09-02  colin
+
+	* INSTALL: Add a note for Ubuntu users
+
+	* etc/apache2.conf: Add an alternative version of the apache2
+	  include path for Ubuntu
+	  installers
+
+2008-10-01  scooter
+
+	* include/model/StudentImport.class.php,
+	  include/model/WebServices.php: Proposed ammendments for banner
+
+	* include/model/WebServices.php: Adding logging
+
+	* include/model/WebServices.php: Updating get_student_details
+
+	* include/model/WebServices.php: Removing debug logging
+
+2008-10-29  colin
+
+	* include/model/CVGroup.class.php: Proposed fix to bug #493,
+	  description not retained in CVGroup
+
+	* include/model/CVGroup.class.php: Proposed fix to bug #493,
+	  description not retained in CVGroup
+
+	* include/model/Admin.class.php: Proposed partial fix for bug #496,
+	  archive status not honoured in Admin directory
+
+	* FAQ, INSTALL, include/auth.d/40_ldap_uu.class.php,
+	  include/model/Programme.class.php: Various tweaks to
+	  configuration
+
+2008-11-07  colin
+
+	* INSTALL: testing svnmailer
+
+	* INSTALL: testing svnmailer
+
+2008-11-26  colin
+
+	* include/model/Note.class.php: Add some functions to facilitate
+	  easy creation of simple notes (to be used automatically on
+	  certain events)
+
+	* include/dto/DTO_Admin.class.php: Ensure Admin entries appear
+	  correctly ordered alphabetically
+
+2008-11-27  colin
+
+	* include/model/StudentImport.class.php: Minor fix for an incorrect
+	  field
+
+	* html/controllers/admin/index_configuration.php,
+	  include/dto/DTO_Admin.class.php, include/model/Admin.class.php:
+	  Fix for bug #495, that meant that level admins could not be
+	  correctly removed
+
+	* html/controllers/admin/index_directories.php,
+	  html/controllers/company/index_directories.php: Fix for bug #390
+	  which prevents CVs from being emailled.
+
+	* include/model/CVCombined.class.php: Fix for bug #390 which
+	  prevents CVs from being emailled.
+
+	* include/model/CVCombined.class.php: Fix for bug #390 which
+	  prevents CVs from being emailled.
+
+	* include/model/CVCombined.class.php: Fix for bug #390 which
+	  prevents CVs from being emailled.
+
+	* html/controllers/admin/index_directories.php,
+	  html/controllers/company/index_directories.php,
+	  include/model/CVCombined.class.php: Fix for bug #390 which
+	  prevents CVs from being emailled.
+
+2008-12-05  colin
+
+	* templates/assessment/uu/first_visit.tpl: The first visit form was
+	  not refactored to include the character counter. Fixed.
+
+2008-12-08  colin
+
+	* include/model/AssessmentStructure.class.php: A small bug on
+	  inserting new assessment structure items stopped them being moved
+
+	* include/dto/DTO_AssessmentStructure.class.php: A small bug on
+	  inserting new assessment structure items stopped them being moved
+
+	* templates/assessment/uu/first_visit_computing.tpl: First attempt
+	  at new computing visit 1 form
+
+2008-12-12  colin
+
+	* include/model/User.class.php: allow for a configuration item that
+	  means students are emailled account details on creation
+
+	* html/controllers/admin/index_directories.php: allow admin users
+	  to manipulate a student's (internal) CV store
+
+2008-12-19  colin
+
+	* configs/lang_en.conf: Instructions for managing applicant lists
+	  have been made more clear.
+
+	* html/controllers/company/index_directories.php: Companies could
+	  never delete vacancies, so removing that from their navigation
+
+2008-12-23  colin
+
+	* include/model/AssessmentStructure.class.php: options were not
+	  updated when an assessment structure item was edited
+
+	* templates/assessment/uu/first_visit_computing.tpl: Updated
+	  version of internal computing assessment form
+
+	* include/model/AssessmentRegime.class.php: sort lists of regime
+	  items properly in management lists
+
+	* html/controllers/admin/index_configuration.php: page counter
+	  fixed when listing assessment groups for a programme
+
+	* html/controllers/admin/index_configuration.php: Improving
+	  navigational trail for assessment group editing
+
+	* cron/opus.php: added code for developers / translators that, on a
+	  Unix/Linux system makes it easy to identify missing sections from
+	  language files
+
+	* configs/lang_en.conf,
+	  html/controllers/admin/index_configuration.php,
+	  html/controllers/admin/index_directories.php,
+	  html/controllers/staff/index_directories.php,
+	  templates/admin/advanced/manage_channelassociations.tpl:
+	  Considerable tidying of language prompts and improved navigation
+	  in places.
+
+	* configs/lang_en.conf,
+	  html/controllers/admin/index_directories.php,
+	  html/controllers/admin/index_student.php,
+	  html/controllers/staff/index_directories.php,
+	  html/controllers/staff/index_student.php,
+	  html/controllers/student/index_placement.php: More improvments to
+	  missing / incorrect language prompts
+
+	* FAQ: FAQ updated with issues on multiple logins and "missing"
+	  features
+
+	* html/controllers/admin/index_directories.php: Allow vacancies to
+	  be sorted by closing date
+
+	* html/controllers/student/index_placement.php,
+	  include/dto/DTO_Vacancy.class.php: Allow vacancies to be sorted
+	  by closing date
+
+	* include/model/Faculty.class.php,
+	  include/model/Programme.class.php,
+	  include/model/School.class.php,
+	  include/model/StudentImport.class.php,
+	  include/model/WebServices.php: Allow students to be imported with
+	  their full structure automatically
+
+	* include/model/CVCombined.class.php: Add a reminder that we would
+	  like emailled CVs to have better filenames
+
+2008-12-24  colin
+
+	* configs/lang_en.conf,
+	  html/controllers/staff/index_directories.php,
+	  html/controllers/staff/index_staff.php,
+	  templates/staff/directories,
+	  templates/staff/directories/search_companies.tpl,
+	  templates/staff/directories/search_vacancies.tpl: Removal of
+	  section of staff controller that was not permissible to access
+	  anyway, and simplied navigation
+
+2008-12-29  colin
+
+	* docs/latex/generic/Preamble.tex,
+	  docs/latex/insert_company_hr.tex, docs/latex/opus_manual.tex,
+	  include/model/StudentImport.class.php: Updates on the manual
+
+2008-12-30  colin
+
+	* html/controllers/student/index_placement.php: view company for
+	  students from activity list did not work
+
+2009-01-04  colin
+
+	* html/css/CalendarControl.css, html/javascript/CalendarControl.js,
+	  html/javascript/jacs.js, templates/manage.tpl: Important fix to
+	  use a new calendar (which is LGPL) licensed since the old
+	  calendar had license issues
+
+	* html/javascript/bb_code.js, html/javascript/ie_menu_patch.htc,
+	  templates/manage.tpl: More changes (precautionary) to avoid
+	  possible license issues
+
+2009-01-05  colin
+
+	* html/controllers/admin/index_directories.php: minor fix to links
+	  of staff directory
+
+	* docs/latex/opus_manual.tex: More updates for the manual, still
+	  much to do.
+
+2009-01-15  colin
+
+	* templates/staff/student/edit_student_contact.tpl: Allow staff to
+	  see work email if it is configured, fix for bug #521
+
+	* templates/staff/student/edit_student.tpl,
+	  templates/staff/student/edit_student_contact.tpl: Allow staff to
+	  see work email if it is configured, fix for bug #521
+
+	* templates/staff/student/edit_student.tpl: Allow staff to see work
+	  email if it is configured, fix for bug #521
+
+	* include/model/reports/studentbroadsheet.class.php: Add placement
+	  email to broadsheet, fix for bug #521
+
+	* include/model/reports/studentbroadsheet.class.php: Add placement
+	  email to broadsheet, fix for bug #521
+
+	* html/controllers/admin/index_directories.php: Incorrect page
+	  title when viewing staff page from admin account fixed
+
+	* html/controllers/student/index_placement.php: Some installations
+	  show a problem that date_parse is not available which causes a
+	  fatal error, even when PHP is recent enough to have it. See bug
+	  #422. This workaround prevents the crash.
+
+	* templates/reports/output_data_csv.tpl,
+	  templates/reports/output_data_tsv.tpl: Handle errant return
+	  characters in reports better
+
+2009-01-22  colin
+
+	* docs/latex/opus_manual.tex: Added a few index links
+
+2009-01-29  colin
+
+	* include/model/reports/vacancybycompany.class.php,
+	  templates/reports/input_header.tpl,
+	  templates/reports/vacancybycompany,
+	  templates/reports/vacancybycompany/input_stage_1.tpl: New report
+	  solves bug #464, allowing counts of vacancies by company and
+	  years
+
+	* include/model/reports/vacancybycompany.class.php: debugging
+	  removed
+
+	* include/model/reports/vacancybycompany.class.php: Adding contact
+	  email to report
+
+2009-01-30  colin
+
+	* include/model/Report.class.php: adding logging to report
+	  generation
+
+2009-01-31  colin
+
+	* include/model/Note.class.php, include/model/Student.class.php:
+	  When a student's placement status is changed, a note is made
+
+	* templates/admin/information/log_viewer.tpl: Minor typo in log
+	  viewer fixed
+
+	* include/model/Company.class.php, include/model/Note.class.php:
+	  Fix for bug #102, health and safety compliance is stored in a way
+	  that holds previous versions in notes
+
+	* html/controllers/admin/index_directories.php: fix for bug #357,
+	  after editing company details you are returned to that page
+
+	* sql_patch/patch_4.0.2_4.1.0.sql: Adding patch for SQL to 4.1.0
+
+	* include/dto/DTO_Student.class.php,
+	  include/model/Student.class.php, sql_patch/patch_4.0.2_4.1.0.sql:
+	  Adding a few new fields for students, specifically a phone
+	  number, address, and a "quick note" which is searchable from the
+	  directory
+
+	* include/model/Student.class.php: allowing more characters for
+	  quick note
+
+	* templates/admin/directories/edit_company.tpl: forgotten template
+
+	* html/controllers/admin/index_directories.php,
+	  include/opus.conf.php: workaround for xhtml bug and schema update
+
+	* html/controllers/admin/index_directories.php: Fixed an unreported
+	  bug where mis-editing a company did not produce validation
+	  feedback
+
+	* Makefile: Updated makefile to copy sql upgrade script to the
+	  correct place for Debian packaging
+
+	* sql_patch/data.sql, sql_patch/schema.sql: Updating sql files for
+	  fresh installs straight to 4.1.0
+
+	* debian/changelog: Updating Debian changelog for new upstream
+	  version
+
+	* debian/changelog, debian/control: Packaging fixes
+
+2009-02-01  colin
+
+	* include/model/StudentImport.class.php, sql_patch/data.sql,
+	  sql_patch/patch_4.0.2_4.1.0.sql: fixed some problems with
+	  automatic CSV format guessing, allowing for separate usernames,
+	  and updating mappings for Ulster
+
+	* sql_patch/data.sql, sql_patch/patch_4.0.2_4.1.0.sql: Update help
+	  for new CSV mapping code
+
+2009-02-11  colin
+
+	* html/controllers/student/index_placement.php: Removed add company
+	  button for student company directory (which just caused an error
+	  anyway)
+
+	* sql_patch/patch_4.0.2_4.1.0.sql: Removing an accidentally added
+	  inserted table
+
+	* debian/control: Updating dependencies for OPUS 4.1.0
+
+	* include/auth.d/90_testauth.class.php: This authenticator should
+	  never have made it to production
+
+	* include/auth.d/50_u3_cookie.class.php: The cookie authenticator
+	  often authenticated users who nevertheless could not be logged
+	  in, this attempts to resolve that.
+
+	* cron/opus.php, templates/cron/dev_help.tpl,
+	  templates/cron/help.tpl: Adding a command line option to change a
+	  password for a username in case you become locked out
+
+2009-02-12  colin
+
+	* debian/opus.8, debian/opus.manpages: Adding a manpage for command
+	  line script
+
+	* docs/latex/opus_manual.tex: A minor error in the latex stopped
+	  the indexing
+
