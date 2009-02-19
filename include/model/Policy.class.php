@@ -187,7 +187,7 @@ class Policy extends DTO_Policy
       $waf->log("security policy " . $policy->name . " loaded", PEAR_LOG_DEBUG);
       if($admin->inst_admin == 'yes')
       {
-        $_SESSION['user']['policy']['institutional_admin'] = true;
+        $_SESSION['user']['policy']->institutional_admin = true;
       }
     }
 
