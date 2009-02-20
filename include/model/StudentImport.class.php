@@ -364,8 +364,27 @@ class StudentImport
     $student_user_id = Student::get_user_id($student_id);
     if($student_user_id)
     {
+      // Add a note on the user
       require_once("model/Note.class.php");
       Note::simple_insert_student($student_user_id, "Automatically created", "This student was automatically created");
+      
+      // And add them to a channel if possible
+      $channel_name = $config['opus']['auto_created_student_channel'];
+      if(empty($channel_name)) $channel_name = "AutoCreatedStudents";
+      
+      require_once("model/Channel.class.php");
+      $channel = Channel::load_where("where name='$channel_name'");
+      if($channel->id)
+      {
+        // channel exists
+        require_once("model/ChannelAssociation.class.php");
+        $fields = array();
+        $fields['permission'] = 'enable';
+        $fields['channel_id'] = $channel->id;
+        $fields['type'] = 'user';
+        $fields['object_id'] = $student_user_id;
+        ChannelAssociation::insert($fields);
+      }
     }
     
     return($student_user_id);

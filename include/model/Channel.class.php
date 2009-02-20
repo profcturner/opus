@@ -51,7 +51,14 @@ class Channel extends DTO_Channel
     }
     return $channel;
   }
-
+  
+  function load_where($where_clause)
+  {
+    $channel = new Channel;
+    $channel->_load_where($where_clause);
+    return $channel;
+  }
+  
   function insert($fields) 
   {
     $channel = new Channel;
