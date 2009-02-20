@@ -244,6 +244,15 @@ class StudentImport
     }
   }
 
+  /**
+  * Attempts to add a student with relevant information
+  * 
+  * @param $student_array an array of fields to be used
+  * @param $programme_id the id of the programme
+  * @param $status the placement status to initially set
+  * @param $year the year seeking placement
+  * @return the id of the student if created, from the student table
+  */
   function add_student($student_array, $programme_id, $status, $year)
   {
     $waf =& UUWAF::get_instance();
@@ -261,6 +270,7 @@ class StudentImport
     {
       $fields['username'] = $student_array['reg_number'];      
     }
+    $fields['quick_note'] = $student_array['quick_note'];
     $fields['salutation'] = $student_array['person_title'];
     $fields['firstname'] = $student_array['first_name'];
     $fields['lastname'] = $student_array['last_name'];
@@ -270,17 +280,39 @@ class StudentImport
     $fields['programme_id']     = $programme_id;
     $fields['disability_code']  = $student_array['disability_code'];
     $fields['user_id']          = $user_id;
-    $waf->log("added student " . $fields['firstname'] . " " . $fields['surname']);
-    Student::insert($fields);
+    $waf->log("added student " . $fields['firstname'] . " " . $fields['lastname'] . " (" . $student_array['reg_number'] . ")");
+    return(Student::insert($fields));
   }
   
-  function auto_add_student($reg_number)
+  /**
+  * Attempts to add a student given nothing other than a reg_number
+  * 
+  * This function requires working web services to work, and can 
+  * optionally take a placement status and placement year. This function
+  * will attempt to create, via other code, the whole structure
+  * necessary to contain an unseen student.
+  * 
+  * @param $reg_number the reg_number of the prospective student
+  * @param $placement_status optionally the placement status, defaults to Required
+  * @param $placement_year optionally the year seeking placement, otherwise OPUS guesses
+  * @return the student user id if successful
+  * @todo improve the placement year if possible
+  */
+  function auto_add_student($reg_number, $placement_status='Required', $placement_year=0)
   {
+    global $config;
     $waf = UUWAF::get_instance();
+
+    $waf->log("Request to auto add student $reg_number");    
+    if($config['opus']['disable_auto_add_student'])
+    {
+      $waf->log('Auto creation of students is disabled in the configuration file');
+      return(0);
+    }
     
-    $waf->log("Request to auto add student $reg_number");
+    require_once("model/WebServices.php");
     require_once("model/Student.class.php");
-    if(Student::count("where reg_number='$reg_number'"))
+    if(User::count("where reg_number='$reg_number'"))
     {
       $waf->log("Student already in OPUS database, skipping");
       return;
@@ -288,21 +320,30 @@ class StudentImport
     
     // Get details on the student course
     $course_details = WebServices::get_student_course($reg_number);
-    
     $programme_code = $course_details['programme_code'];
-    require_once("model/Programme.class.php");
+    if(empty($programme_code))
+    {
+      $waf->log("Cannot obtain programme details, cannot add student");
+      return(0);
+    }
     
+    require_once("model/Programme.class.php");
     $programme = Programme::load_where("where srs_ident='$programme_code'");
-    if($programme->id)
+    if(!$programme->id)
     {
       $waf->log("Missing programme : " . $course_details['programme_title'] . "(" . $course_details['programme_code'] . ")");
+      if($config['opus']['disable_auto_add_student_on_unknown_programme'])
+      {
+        $waf->log('Automatic creation of students on unknown programmes is disabled in the configuration file');
+        return(0);
+      }
       // The course currently does not exist within OPUS
       // Try to create it
       $programme_id = Programme::auto_create($course_details);
       if($programme_id == false)
       {
         $waf->log("Cannot create base programme, so cannot add student");
-        return;
+        return(0);
       }
     }
     else $programme_id = $programme->id;
@@ -310,11 +351,24 @@ class StudentImport
     // Ok, at last, can we add the student? Get the details
     $student_array = StudentImport::import_student_via_SRS($reg_number);
     // Try to guess the placement year, which is currently a pretty
-    // primitive algorithm
-    $year_on_course = $student_array['year_on_course'];
-    $placement_year = get_academic_year() + (3 - $year_on_course);
-    StudentImport::add_student($student_array, $programme_id, "Required", $placement_year);
+    // primitive algorithm, unless we've been given it
+    if(!$placement_year)
+    {
+      $year_on_course = $student_array['year_on_course'];
+      $placement_year = get_academic_year() + (3 - $year_on_course);
+    }
     
+    $student_array['quick_note'] = 'auto_created';
+    $student_id = StudentImport::add_student($student_array, $programme_id, "Required", $placement_year);
+    
+    $student_user_id = Student::get_user_id($student_id);
+    if($student_user_id)
+    {
+      require_once("model/Note.class.php");
+      Note::simple_insert_student($student_user_id, "Automatically created", "This student was automatically created");
+    }
+    
+    return($student_user_id);
   }
 }
 

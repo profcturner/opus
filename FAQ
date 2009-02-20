@@ -51,10 +51,16 @@ OPUS supports our own activity.
 * Can we get a Demo?
 --------------------
 
-We will soon be starting a sandbox server here at UU to allow you to play with
-the software. We also hope to produce live CDs. In the mean time there are just
-some screenshots, sorry, but you can install and play with it, free of charge
-(see below).
+You can play with a working installation of OPUS, albeit with some
+functionality disabled for security reasons. Only limited information is
+added but should give you an idea of the functionality. You can find it at
+
+http://fs2.ulster.ac.uk/opus/
+
+We also hope to produce live CDs, but there are still issues to be
+resolved there.
+
+Of course you can install and play with it, free of charge (see below).
 
 
 * How much does OPUS, and its underlying technology cost?
@@ -74,6 +80,15 @@ You should read the terms of the LICENSE document for more details.
 -----------------------------------------------
 
 No, upgrades are free of charge.
+
+
+* How do we get the upgrades?
+-----------------------------
+
+We announce new releases on our mailing list. Please go to our development
+website and subcribe to opus-announce which only sees a handful of
+messages a year. If you use Debian packaging upgrades will become, and
+will be handled automatically.
 
 
 * What do I need to run OPUS?
@@ -296,6 +311,38 @@ Note that this is NOT required to run OPUS normally, only if you want to
 tailor it this way.
 
 
+* Can student accounts be created automatically?
+------------------------------------------------
+
+From version 4.1.1 this will be possible, if you have a fully featured
+web services layer (see above), since that is required to obtain full
+student information and information about the structure of the
+institution.
+
+To disable automatic student creation add
+
+$config['opus']['disable_auto_add_student'] = true;
+
+to your local configuration. You can also add
+
+$config['opus']['disable_auto_add_student_on_unknown_programme'] = true;
+
+to allow student accounts to be automatically created, only for known
+programmes.
+
+
+* How do I delete user accounts
+-------------------------------
+
+You should not, and at the time of writing you cannot. OPUS is a system
+designed to help provide audit information, and deleting user accounts
+will cause other linked information to become less useful or possibly
+inaccessible.
+
+You should archive old accounts instead. It is a feature on the wishlist
+to exceptionally allow deletion of accounts even with dire warnings.
+
+
 * Can I change how OPUS looks?
 ------------------------------
 
@@ -397,12 +444,14 @@ by us, and not altered by any third party before you receive it.
 We will sign your GPG keys with appropriate documentation if we meet in person
 and are happy to provide documentation to allow you to sign ours.
 
+
 * We get a wierd logout / second login problem
 ----------------------------------------------
 
 This is usually caused by a misconfigured fully qualified host name for your
 server in the configuration, or you using an alias (like localhost) for testing
 which is then redirected to a new name. Check the config file.
+
 
 * Feature X is missing, but I saw it in a demo?
   Is it not in the Open Source Version?
@@ -413,6 +462,7 @@ often caused by the fact that, for example, out of the box OPUS does not assume
 how you would wish to assess your students, so the default assessment group is
 empty. You need to configure that to your wishes. This is true of other
 examples too. If in doubt, please ask us.
+
 
 * Why is OPUS not sending mail?
 -------------------------------
@@ -434,6 +484,7 @@ System -> Administration -> Synaptic
 
 search for exim4-config, click on the exim4-config package, then from
 the package menu package->configure
+
 
 * Can I get more information out of OPUS, about what is happening in it?
 ------------------------------------------------------------------------

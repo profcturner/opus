@@ -234,6 +234,8 @@ class Programme extends DTO_Programme
   */ 
   function auto_create($programme_details)
   {
+    $waf = UUWAF::get_instance();
+    
     $programme_code = $programme_details['programme_code'];
     $programme = Programme::load_where("where srs_ident='$programme_code'");
     if($programme->id)
@@ -243,7 +245,7 @@ class Programme extends DTO_Programme
     
     // Ok, we don't already have it. Do we have the faculty?
     require_once("model/Faculty.class.php");
-    $faculty = Faculty::load_by_srs_ident($programme_details['faculty_code']);
+    $faculty = Faculty::load_where("where srs_ident='" . $programme_details['faculty_code'] . "'");
     if(!$faculty->id)
     {
       // Does not yet exist
@@ -251,13 +253,14 @@ class Programme extends DTO_Programme
       $fields['name'] = $programme_details['faculty_name'];
       $fields['srs_ident'] = $programme_details['faculty_code'];
       $fields['status'] = 'active';
+      $waf->log("Automatically creating faculty (" . $fields['srs_ident'] . ") " . $fields['name']);
       $faculty_id = Faculty::insert($fields);
     }
     else $faculty_id = $faculty->id;
     
     // Do we have the school?
     require_once("model/School.class.php");
-    $school = School::load_by_srs_ident($programme_details['department']);
+    $school = School::load_where("where srs_ident='" . $programme_details['department'] . "'");
     if(!$school->id)
     {
       // Does not yet exist
@@ -266,6 +269,7 @@ class Programme extends DTO_Programme
       $fields['srs_ident'] = $programme_details['department'];
       $fields['faculty_id'] = $faculty_id;
       $fields['status'] = 'active';
+      $waf->log("Automatically creating school (" . $fields['srs_ident'] . ") " . $fields['name']);      
       $school_id = School::insert($fields);
     }
     else $school_id = $school->id;
@@ -277,6 +281,7 @@ class Programme extends DTO_Programme
     $fields['school_id'] = $school_id;
     $fields['cvgroup_id'] = 1;
     $fields['status'] = 'active';
+    $waf->log("Automatically creating programme (" . $fields['srs_ident'] . ") " . $fields['name']);
     $programme_id = Programme::insert($fields);
     
     return($programme_id);
