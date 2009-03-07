@@ -285,7 +285,7 @@ class PDSystem
   function get_artefact_mime_type($student_user_id, $hash)
   {
     $archived_cvs = PDSystem::get_archived_cvs($student_user_id);
-    foreach($archived_cvs as $cv)
+    foreach((array) $archived_cvs as $cv)
     {
       //print_r($cv);
       if($cv['_hash'] == $hash) return($cv['_file_type']);

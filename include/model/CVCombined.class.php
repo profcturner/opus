@@ -99,7 +99,7 @@ class CVCombined
 
     // Finally CVs from PDSystem CV store
     $pdsystem_archived = PDSystem::get_archived_cvs($student_id);
-    foreach($pdsystem_archived as $archived)
+    foreach((array) $pdsystem_archived as $archived)
     {
       $new_cv = new CVCombined;
       $new_cv->cv_ident = "pdsystem:hash:" . $archived['_hash'];
