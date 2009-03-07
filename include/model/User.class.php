@@ -564,6 +564,33 @@ Class User extends DTO_User
   {
     return true;
   }
+  
+  function online_user_count()
+  {
+    $user = new User;
+    return($user->_online_user_count());
+  }
+  
+  function drop_online_user_count_file()
+  {
+    $waf = UUWAF::get_instance();
+    global $config;
+    
+    if($config['opus']['drop_online_user_count'])
+    {
+      $filename = $waf->var_dir . "online_users";
+      $fp = fopen($filename, "w");
+      if($fp)
+      {
+        $user_counts = User::online_user_count();
+        foreach((array) $user_counts as $key => $value)
+        {
+          fwrite($fp, "$key: $value\n");
+        }
+        fclose($fp);
+      }
+    }
+  }
 
 }
 

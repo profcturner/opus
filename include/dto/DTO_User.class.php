@@ -81,6 +81,34 @@ class DTO_User extends DTO
     }
     if ($results_row) return ($results_row['username']); else return false;
   }
+  
+  /**
+  * fetches counts of users in all categories who are online
+  * 
+  * @return an array of numbers of online users, indexed by type
+  */
+  function _online_user_count()
+  {
+    $waf =& UUWAF::get_instance();
+    $con = $waf->connections[$this->_handle]->con;
+
+    $counts = array();
+    try
+    {
+      $sql = $con->prepare("select user_type, count(*) as count from user where `online` != 'offline' group by user_type;");
+      $sql->execute();
+      while($results_row = $sql->fetch(PDO::FETCH_ASSOC))
+      {
+        $counts[$results_row['user_type']] = $results_row['count'];
+      }
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, $class, "_online_user_count()");
+    }    
+    return($counts);
+  }
+  
 }
 
 ?>

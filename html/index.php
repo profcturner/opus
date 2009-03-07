@@ -211,9 +211,13 @@ function load_user($username)
     $fields['session_hash'] = md5("sess_" . session_id());
     // Session serious misbehaves on new id if reloaded too fast (as it will be)
     session_commit();
+    
+    // Potentially update the online user statistics
+    $drop_stats = true;
   }
   $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
   User::update($fields);
+  if($drop_stats) User::drop_online_user_count_file();
   drop_cookies();
 }
 
@@ -345,6 +349,9 @@ function logout(&$waf)
     $fields['online'] = 'offline';
     User::update($fields);
   }
+  
+  // Drop the online statistics if required
+  User::drop_online_user_count_file();
 
   destroy_cookies();
   $_SESSION["currentgroup"] = "";
