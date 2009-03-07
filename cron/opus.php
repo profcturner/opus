@@ -104,6 +104,7 @@ function check_online_users(&$waf, $parameters)
 {
   require_once("model/User.class.php");
   User::check_online_users();
+  User::drop_online_user_count_file();
 }
 
 function user_count(&$waf, $parameters)

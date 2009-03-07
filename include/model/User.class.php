@@ -579,7 +579,7 @@ Class User extends DTO_User
     if($config['opus']['drop_online_user_count'])
     {
       $filename = $waf->var_dir . "online_users";
-      $fp = fopen($filename, "w");
+      $fp = @fopen($filename, "w");
       if($fp)
       {
         $user_counts = User::online_user_count();
