@@ -91,8 +91,8 @@ class DTO_User extends DTO
   {
     $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
-
-    $counts = array();
+    
+    $counts = array('student' => 0, 'staff' => 0, 'supervisor' => 0, 'company' => 0, 'supervisor' => 0, 'admin' => 0, 'root' => 0, 'application' => 0);
     try
     {
       $sql = $con->prepare("select user_type, count(*) as count from user where `online` != 'offline' group by user_type;");
