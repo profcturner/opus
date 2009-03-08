@@ -1,0 +1,46 @@
+#!/bin/sh
+
+#
+# Munin plugin for OPUS showing online users
+# Copyright Colin Turner
+# GPL V2+
+#
+
+case $1 in
+  config)
+	cat <<'EOM'
+graph_title OPUS online users
+graph_args -l 0
+graph_vlabel online users
+graph_info The number of online users on OPUS is shown.
+student.label student
+student.min 0
+student.draw AREA
+staff.label academic
+staff.min 0
+staff.draw STACK
+company.label hr staff
+company.min 0
+company.draw STACK
+supervisor.label supervisor
+supervisor.min 0
+supervisor.draw STACK
+admin.label admin
+admin.min 0
+admin.draw STACK
+root.label root
+root.min 0
+root.draw STACK
+application.label application
+application.min 0
+application.draw STACK
+EOM
+	exit 0;;
+esac
+
+if [ ! -r /var/lib/opus/online_users ] ; then
+     echo Cannot read /var/lib/opus/online_users >&2
+     exit -1
+fi
+
+cat /var/lib/opus/online_users | sed -e "s/:/.value/"
