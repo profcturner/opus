@@ -40,32 +40,44 @@
 <div id="table_manage">
   <table>
     <tr>
+      <th>User class</th>
+      <th>Number</th>
+      <th>Online</th>
+    </tr>
+    <tr>
       <td class="property">Root Users</td>
       <td>{$root_count}</td>
+      <td>{$online_user_count.root}</td>
     </tr>
     <tr>
       <td class="property">Admin Users</td>
       <td>{$admin_count}</td>
+      <td>{$online_user_count.admin}</td>
     </tr>
     <tr>
       <td class="property">Company HR Users</td>
       <td>{$company_count}</td>
+      <td>{$online_user_count.company}</td>
     </tr>
     <tr>
       <td class="property">Workplace Supervisor Users</td>
       <td>{$supervisor_count}</td>
+      <td>{$online_user_count.supervisor}</td>
     </tr>
     <tr>
       <td class="property">Academic Staff Users</td>
       <td>{$staff_count}</td>
+      <td>{$online_user_count.staff}</td>
     </tr>
     <tr>
       <td class="property">Student Users</td>
       <td>{$student_count}</td>
+      <td>{$online_user_count.student}</td>
     </tr>
     <tr>
       <td class="property">Total</td>
       <td><strong>{$total_count}</strong></td>
+      <td></td>
     </tr>
   </table>
 </div>

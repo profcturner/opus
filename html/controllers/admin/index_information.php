@@ -127,6 +127,7 @@
     $waf->assign("max_users", $max_users);
 
     require_once("model/User.class.php");
+    $online_user_count = User::online_user_count();
 
     // ignore limits on root users
     require_once("model/SystemStatus.class.php");
@@ -167,6 +168,7 @@
     $student_count    = User::count("where user_type='student'");
     $total_count = $root_count + $admin_count + $company_count + $supervisor_count + $staff_count + $student_count;
 
+    $waf->assign("online_user_count", $online_user_count);
     $waf->assign("headings", $headings);
 
     $waf->assign("root_users", $root_users);
