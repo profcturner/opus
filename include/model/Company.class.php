@@ -54,7 +54,7 @@ class Company extends DTO_Company
   static $_admin_field_defs_override = array
   (
     'allocation'=>array('type'=>'numeric', 'size'=>10, 'title'=>'Space Allocation'),
-    'healthsafety'=>array('type'=>'textarea', 'rowsize'=>5, 'colsize'=>80, 'maxsize'=>2000,  'title'=>'Health & Safety')
+    'healthsafety'=>array('type'=>'textarea', 'rowsize'=>5, 'colsize'=>80, 'maxsize'=>2000,  'title'=>'Health, Safety & Insurance')
   );
 
 
@@ -145,6 +145,9 @@ class Company extends DTO_Company
     $company = Company::load_by_id($fields[id]);
     $fields['modified'] = date("YmdHis");
     
+    require_once("model/User.class.php");
+    // Non admins cannot change the health and safety fields
+    if(!User::is_admin()) unset($fields['healthsafety']);
     // If the health & safety status has changed, make a note to that effect
     if(!empty($fields['healthsafety']))
     {
