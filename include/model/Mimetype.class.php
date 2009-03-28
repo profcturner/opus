@@ -44,18 +44,18 @@ class Mimetype extends DTO_Mimetype
   {
     $mimetype = new Mimetype;
     $mimetype->id = $id;
-    if($id)
-    {
-      $mimetype->_load_by_id();
-    }
-    else
-    {
-      $mimetype->name="Global";
-      $mimetype->description="Visible to all";
-    }
+    $mimetype->_load_by_id();
+
     return $mimetype;
   }
-
+  
+  function load_where($where_clause)
+  {
+    $mimetype = new Mimetype;
+    $mimetype->_load_where($where_clause);
+    return $mimetype;
+  }
+    
   function insert($fields) 
   {
     $mimetype = new Mimetype;
@@ -68,9 +68,6 @@ class Mimetype extends DTO_Mimetype
     $mimetype->_update($fields);
   }
   
-  /**
-  * Wasteful
-  */
   function exists($id) 
   {
     $mimetype = new Mimetype;
@@ -78,9 +75,6 @@ class Mimetype extends DTO_Mimetype
     return $mimetype->_exists();
   }
   
-  /**
-  * Wasteful
-  */
   function count($where_clause="") 
   {
     $mimetype = new Mimetype;
@@ -92,11 +86,14 @@ class Mimetype extends DTO_Mimetype
     global $config;
     $mimetype = new Mimetype;
 
-    if ($page <> 0) {
+    if ($page <> 0)
+    {
       $start = ($page-1)*$config['opus']['rows_per_page'];
       $limit = $config['opus']['rows_per_page'];
       $mimetypes = $mimetype->_get_all($where_clause, $order_by, $start, $limit);
-    } else {
+    }
+    else
+    {
       $mimetypes = $mimetype->_get_all($where_clause, $order_by, 0, 1000);
     }
     return $mimetypes;
@@ -106,10 +103,9 @@ class Mimetype extends DTO_Mimetype
   {
     $mimetype = new Mimetype;
     $mimetype_array = $mimetype->_get_id_and_field($fieldname, $where_clause);
-    $mimetype_array[0] = 'Global';
+
     return $mimetype_array;
   }
-
 
   function remove($id=0) 
   {  
@@ -122,19 +118,30 @@ class Mimetype extends DTO_Mimetype
     $mimetype = new Mimetype;
     return  $mimetype->_get_fieldnames($include_id); 
   }
+  
   function request_field_values($include_id = false) 
   {
     $fieldnames = Mimetype::get_fields($include_id);
     $nvp_array = array();
  
-    foreach ($fieldnames as $fn) {
- 
+    foreach ($fieldnames as $fn)
+    {
       $nvp_array = array_merge($nvp_array, array("$fn" => WA::request("$fn")));
- 
     }
 
     return $nvp_array;
-
+  }
+  
+  function get_extension_for_type($type)
+  {
+    $mimetype = Mimetype::load_where("where type='$type'");
+    if($mimetype->id)
+    {
+      // A match was found
+      $extensions = explode(" ", $mimetype->extensions);
+      return($extensions[0]);
+    }
+    return "";
   }
 }
 ?>

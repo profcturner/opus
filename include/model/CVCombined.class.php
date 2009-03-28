@@ -201,7 +201,6 @@ class CVCombined
   * @param int $recipient_user_id the user_id of the recipient
   * @param int $application_id the application that was used
   * @todo would be nice to drive this from a template
-  * @todo use an appropriate filename, based on mime type
   */
   function email_cv($recipient_user_id, $application_id = 0)
   {
@@ -237,8 +236,9 @@ class CVCombined
     $cv_ident_parts = explode(":", $application->cv_ident);
     if($cv_ident_parts[1] == 'hash')
     {
+      require_once("model/Mimetype.class.php");
       $cv_mime_type = $application->archive_mime_type;
-      $cv_format = "";
+      $cv_format = Mimetype::get_extension_for_type($cv_mime_type);
     }
     $waf->log("emailing CV for application by $student_name for $vacancy_name");
 
@@ -251,7 +251,7 @@ class CVCombined
     // Finally package it up
     require_once("model/OPUSMail.class.php");
     $mail = new OPUSMail($recipient->email, "CV: $student_name", $body, "", $recipient->email);
-    $mail->add_direct_attachment($cv, $cv_mime_type);
+    $mail->add_direct_attachment($cv, $cv_mime_type, $student_name . "." . $cv_format);
     $mail->send();
     // Make sure this is tagged as seen if need be
     Application::ensure_seen($application_id);
@@ -335,9 +335,21 @@ class CVCombined
     $cv_ident_parts = explode(":", $cv_ident);
     if($cv_ident_parts[1] == 'hash')
     {
-      require_once("model/PDSystem.class.php"); // bug?
-      $cv_mime_type = PDSystem::get_artefact_mime_type($student_user_id, $cv_ident_parts[2]); // needs modded for internal
-      $cv_format = "";
+      require_once("model/Mimetype.class.php");
+      switch($cv_ident_parts[0])
+      {
+        case 'pdsystem':
+          require_once("model/PDSystem.class.php");
+          $cv_mime_type = PDSystem::get_artefact_mime_type($student_user_id, $cv_ident_parts[2]); // needs modded for internal
+          $cv_format = Mimetype::get_extension_for_type($cv_mime_type);
+          break;
+        case 'internal':
+          require_once("model/Artefact.class.php");
+          $artefact = Artefact::load_by_hash($cv_ident_parts[2]);
+          $cv_mime_type = $artefact->file_type;
+          $cv_format = Mimetype::get_extension_for_type($cv_mime_type);
+          break;
+      }
     }
     $waf->log("viewing CV for $student_name");
     header("Content-type: $cv_mime_type");
