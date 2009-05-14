@@ -288,6 +288,22 @@ function change_password($waf, $parameters)
   }
 }
 
+function auto_add_students($waf, $parameters)
+{
+  if(empty($parameters['filename']))
+  {
+    help($waf);
+    return;
+  }
+  if(posix_getuid())
+  {
+    echo "must be run as root.";
+    return;
+  }
+
+  require_once("model/StudentImport.class.php");
+  StudentImport::auto_add_by_file($parameters['filename']);
+}
 
 function check_missing_error_prompts()
 {

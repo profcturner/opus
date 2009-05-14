@@ -312,6 +312,7 @@ class StudentImport
     
     require_once("model/WebServices.php");
     require_once("model/Student.class.php");
+    require_once("model/User.class.php");
     if(User::count("where reg_number='$reg_number'"))
     {
       $waf->log("Student already in OPUS database, skipping");
@@ -388,6 +389,46 @@ class StudentImport
     }
     
     return($student_user_id);
+  }
+
+  /**
+  * Calls auto_add_student repeatedly for each student number in a file
+  * 
+  * @param $filename the file, containing one student number per line
+  * @param $placement_status optionally the placement status, defaults to Required
+  * @param $placement_year optionally the year seeking placement, otherwise OPUS guesses
+  * @return the number of automatically added students
+  * @see auto_add_student()
+  */  
+  function auto_add_by_file($filename, $placement_status='Required', $placement_year = 0)
+  {
+    $waf = UUWAF::get_instance();
+    $line = 0;
+    $imported = 0;
+
+    $fp = fopen($filename, "r");
+    if($fp)
+    {
+      while(!feof($fp))
+      {
+        $reg_number = trim(fgets($fp, 1024));
+        $line++;
+        if(StudentImport::auto_add_student($reg_number, $placement_status, $placement_year))
+        {
+          $imported++;
+        }
+        else
+        {
+          $waf->log("Warning: failed to auto add student at line $line in $filename"); 
+        }
+      }
+      fclose($fp);
+    }
+    else
+    {
+      $waf->log("cannot open file $filename for auto adding students");
+    }
+    return($imported);
   }
 }
 
