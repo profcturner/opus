@@ -68,6 +68,11 @@ class Note extends DTO_Note
     $fields['date'] = date("YmdHis");
     // Author is always logged in user
     $fields['author_id'] = User::get_id();
+    if(empty($fields['author_id']))
+    {
+      // cron job, 1 is best guess
+      $fields['author_id'] = 1;
+    }
 
     $mainlink = $fields['mainlink'];
     $notelinks = $fields['notelinks'];
