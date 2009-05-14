@@ -77,7 +77,7 @@
     <tr>
       <td class="property">Total</td>
       <td><strong>{$total_count}</strong></td>
-      <td></td>
+      <td>{$online_user_count.total}</td>
     </tr>
   </table>
 </div>
