@@ -6,8 +6,14 @@
 # GPL V2+
 #
 
+# Munin plugins, at their simplest, are run either with "config" or
+# no parameters (I plan to add auto configuration later).
 case $1 in
   config)
+  # In config mode, we spout out details of the graphs we will have
+  # I want one graph, with lots of stacked values. The first one is
+  # an AREA, and the others are stacked above them. I also (-l 0)
+  # make sure the graph shows everything down to zero.
 	cat <<'EOM'
 graph_title OPUS online users
 graph_args -l 0
@@ -38,9 +44,11 @@ EOM
 	exit 0;;
 esac
 
+# Now the plugin is being run for data. Bail if the file is unavailable
 if [ ! -r /var/lib/opus/online_users ] ; then
      echo Cannot read /var/lib/opus/online_users >&2
      exit -1
 fi
 
+# Otherwise, a quick sed converts the default format to what Munin needs
 cat /var/lib/opus/online_users | sed -e "s/:/.value/"
