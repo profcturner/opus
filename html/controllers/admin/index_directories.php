@@ -157,7 +157,12 @@
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
-    add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student");
+    global $config_sensitive;
+
+    if(!empty($config_sensitive['ws']['url'])) $waf->assign("ws_enabled", true);
+    else $waf->assign("ws_enabled", false);
+
+    add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student", "admin/directories/add_student.tpl");
   }
 
   function add_student_do(&$waf, &$user) 
@@ -165,6 +170,26 @@
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "Student", "section=directories&function=student_directory", "add_student");
+  }
+  
+  function auto_add_student_do(&$waf, &$user)
+  {
+    $reg_number = WA::request("reg_number");
+    
+    require_once("model/StudentImport.class.php");
+    $student_user_id = StudentImport::auto_add_student($reg_number);
+    
+    if($student_user_id)
+    {
+      // We were able to add them, let's "edit" for better info
+      $SESSION['student_id'] = $student_user_id;
+      goto("directories", "edit_student&student_id=$student_user_id");
+    }
+    else
+    {
+      // Something went wrong...
+      $waf->halt("error:student_import:cannot_import");
+    }
   }
 
   /**
