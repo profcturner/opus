@@ -5,6 +5,3 @@ clean:
 
 all:
 	pdflatex opus_manual
-	pdflatex opus_manual
-	makeindex opus_manual
-	pdflatex opus_manual

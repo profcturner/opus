@@ -911,3 +911,85 @@
 	* docs/latex/opus_manual.tex: A minor error in the latex stopped
 	  the indexing
 
+2009-02-19  colin
+
+	* include/model/Policy.class.php: Fixed an error in institutional
+	  admin policy code
+
+	* include/opus.conf.php: Updating version number to 4.1.1
+
+2009-02-20  colin
+
+	* FAQ, include/model/Programme.class.php,
+	  include/model/StudentImport.class.php: Correcting and refining
+	  functionality to allow student users to be automatically added
+
+	* Makefile, include/model/Channel.class.php,
+	  include/model/StudentImport.class.php,
+	  sql_patch/patch_4.1.0_4.1.1.sql: Automatically added students are
+	  added to a special channel to allow announcements to brief them
+	  appropriately
+
+2009-03-07  colin
+
+	* include/model/CVCombined.class.php,
+	  include/model/PDSystem.class.php: Explicitly casting what may be
+	  empty containers to type array to stop annoying (and harmless)
+	  PHP warnings
+
+	* html/index.php, include/dto/DTO_User.class.php,
+	  include/model/User.class.php: Code to allow the dropping of a
+	  file giving online user counts added
+
+	* cron/opus.php, include/model/User.class.php: Code to allow the
+	  dropping of a file giving online user counts added
+
+2009-03-08  colin
+
+	* include/dto/DTO_User.class.php: Code to allow the dropping of a
+	  file giving online user counts added
+
+	* etc/opus_online_users_munin_plugin: An experimental plugin for
+	  munin
+
+	* html/controllers/admin/index_information.php,
+	  templates/admin/information/system_status.tpl: Show counts of
+	  online users in status page
+
+2009-03-28  colin
+
+	* include/model/CVCombined.class.php,
+	  include/model/Mimetype.class.php: improvement to coding
+	  standards, allow file types to be mapped to extensions on cv
+	  downloads. Fix a problem downloading internal CVs. See Bug #537
+
+	* include/model/Company.class.php: Fixing a bug where companies
+	  updating their own records inadvertantly wipe health and safety
+	  information (and move it to a note). See bug #540
+
+2009-05-14  colin
+
+	* html/controllers/admin/index_configuration.php: Ensure lists of
+	  units in organisational structure are alphabetical by name
+
+	* cron/opus.php, include/model/StudentImport.class.php: Enhanced
+	  functionality for automatically adding students, given one
+	  student number per line of a text file.
+
+	* etc/opus_online_users_munin_plugin: Munin plugin is now better
+	  documented
+
+	* templates/admin/information/system_status.tpl: Add online user
+	  count to the status list
+
+	* include/model/Note.class.php: Notes with no author (no logged in
+	  user, default to user 1, probably the main admin).
+
+2009-05-20  colin
+
+	* configs/lang_en.conf,
+	  html/controllers/admin/index_directories.php,
+	  templates/admin/directories/add_student.tpl: An interface has
+	  been added to let admins create new student accounts by reg
+	  number only (if web services exist)
+
