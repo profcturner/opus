@@ -61,6 +61,9 @@ produced a perl version of the database configuration, which is necessary for ti
 .B change_password
 allows an OPUS user's password to be changed. Parameters are passed in the form "username=foo&password=bar", noting that encapsulation by the quotes is necessary to prevent the ampersand to be misinterpreted by the shell.
 .TP
+.B auto_add_students
+takes a file with one registration number per line and tries, using web services, to add these students into OPUS.
+.TP
 .B check_missing_error_prompts
 used by OPUS developers or translators to check for error prompts used in the code that are not defined or translated.
 .TP

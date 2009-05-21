@@ -5,12 +5,16 @@ INSERT INTO `user` (real_name, salutation, firstname, lastname, username, passwo
 INSERT INTO `admin` (position, user_id) values('administrator', 1);
 
 -- new application is stopped --
-insert into service values('stopped', '4.1.0', 1);
+insert into service values('stopped', '4.1.1', 1);
 
 -- sensible basic vacancytypes --
 insert into vacancytype values("One Year, Full Time", 10, NULL, 1);
 insert into vacancytype values("Summer Job", 20, NULL, 2);
 insert into vacancytype values("Graduate Job", 30, NULL, 3);
+
+-- built in channels --
+
+insert into channel (name, description) values('AutoCreatedStudents', 'Students automatically added to OPUS');
 
 -- make sure we initially ask to phone home --
 insert into phonehome (send_install, send_periodic, cc_on_email, timestamp_install, timestamp_periodic, admin_id, id) values('Ask', 'Ask', 'No', NULL, NULL, 0, 1);
