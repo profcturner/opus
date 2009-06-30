@@ -37,8 +37,8 @@ $config['opus']['title']                = 'OPUS';
 $config['opus']['title_short']          = 'OPUS';
 $config['opus']['tagline']              = 'Online Placement University System';
 $config['opus']['version']              = 4;
-$config['opus']['minor_version']        = 1;
-$config['opus']['patch_version']        = 1;
+$config['opus']['minor_version']        = 2;
+$config['opus']['patch_version']        = 0;
 $config['opus']['benchmarking']         = true;
 $config['opus']['logo']                 = "logo.png";
 $config['opus']['rows_per_page']        = 20;
@@ -55,6 +55,9 @@ $config['opus']['session']['navigation'] = 'OPUS_Navigation';
 $config['opus']['pref_ident'] = 'preferences';
 
 $config['opus']['tinymce_url'] = '/opus/javascript/tinymce/tiny_mce.js';
+
+// OPUSnet settings
+$config['opus']['opusnet_url'] = 'http://opusnet.ulster.ac.uk';
 
 // now include the local configuration file
 // create this file locally and add any variation to the above configuration

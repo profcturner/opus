@@ -37,8 +37,6 @@ class ldap_uu
     {
       $username = strtolower($username);
 
-      // Backwards compatibility for no prefix
-      if(preg_match("/^[0-9]+$/", $username)) $username = "s" . $username;
       $r = @ldap_bind($ds, "uid=$username,ou=People,dc=ulster,dc=ac,dc=uk","$password");
       $sr = @ldap_search($ds, "ou=People,dc=ulster,dc=ac,dc=uk", "uid=$username");
       $entry = @ldap_first_entry($ds, $sr);
@@ -47,18 +45,19 @@ class ldap_uu
       if ($r === TRUE) 
       {
         $auth_user['valid'] = true;
-        // Remove s for OPUS db
-        if(preg_match("/^s[0-9]+$/", $username))
+				// LDAP returns little b, but we need B for web services
+        if(preg_match("/^b[0-9]+$/", $username))
         {
-          $auth_user['username'] = substr($username, 1);
+          $auth_user['username'] = 'B' . substr($username, 1);
         }
-        else
-        {
-          $auth_user['username'] = $username;
-        }
+				else
+				{
+        	$auth_user['username'] = $username;
+				}
+
         return($auth_user);
       }
-    return false;
+    	return false;
     }
   }
 }

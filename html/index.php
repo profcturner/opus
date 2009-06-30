@@ -150,8 +150,11 @@ function main()
 
 function load_user($username)
 {
+	global $config;
+	
   $waf =& UUWAF::get_instance();
   $now = date("YmdHis");
+	
 
   require_once("model/User.class.php");
 
@@ -167,10 +170,44 @@ function load_user($username)
     else
     {
       $waf->log("no user account found for authenticated user [$username]");
-      $waf->logout_user();
-      unset($_SESSION);
-      session_destroy();
-      $waf->halt("error:no_user");
+			if($config['opus']['enable_self_service_user_creation'])
+			{
+				$waf->log("self service creation of users is enabled");
+				// Self service creation is enabled. So far, only for students
+				if(preg_match($config['opus']['student_username_regexp'], $username))
+				{
+					$waf->log("username looks like a valid student username");
+					// And it is a student...
+					require_once("model/StudentImport.class.php");
+					$student_user_id = StudentImport::auto_add_student($username);
+					if($student_user_id)
+					{
+						$waf->log("a student account was created");
+						// Apparent success... try again
+						$user = User::load_by_username($username);
+					}
+					else
+					{
+						$waf->log("no student account could be created");
+					}
+				}
+				else
+				{
+					$waf->log("username doesn't match student username format, and only student creation supported");
+				}
+			}
+			else
+			{
+				$waf->log("self service creation of users is disabled");
+			}
+			// Check again, because the above may have worked!
+			if($user == false)
+			{
+      	$waf->logout_user();
+      	unset($_SESSION);
+      	session_destroy();
+      	$waf->halt("error:no_user");
+		  }
     }
   }
 
