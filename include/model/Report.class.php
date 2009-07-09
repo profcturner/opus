@@ -227,6 +227,7 @@ class Report
   */
   function output_data()
   {
+		$start_time = microtime(true);
     $waf =& UUWAF::get_instance();
 
     // Get any options
@@ -253,7 +254,10 @@ class Report
     {
       $waf->display("main.tpl", "admin:information:list_reports:report_output", $template);
     }
-    $waf->log("report " . $this->human_name . " generated in format $format");
+		$end_time = microtime(true);
+		$time_taken = sprintf("%.2f", ($end_time - $start_time));
+		
+    $waf->log("report " . $this->human_name . " generated in format $format ($time_taken s)");
   }
 
   /**
