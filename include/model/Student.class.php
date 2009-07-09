@@ -655,6 +655,48 @@ class Student extends DTO_Student
 
     return $application->created;
   }
+	
+	/**
+	* returns if it is permissible for a student to apply for placement
+	* 
+	* @param int $user_id the id of the student from the user table
+	* @return true if applications are allowed, false otherwise
+	* @todo return more detailed information about why for ui dislay
+	* @todo date_compare would be better here, but that is problematic
+	*/
+	function is_application_allowed($user_id)
+	{
+		$student = Student::load_by_user_id($user_id);
+		
+		// Fast return in simplest case
+		if($student->placement_status == 'Required') return true;
+		
+		if($student->placement_status == 'Placed')
+		{
+			// But are these all over?
+			require_once("model/Placement.class.php");
+			$placement = Placement::get_most_recent($user_id);
+			
+			if(!$placement)
+			{
+				return false; // no placement found
+			}
+			else
+			{
+				// If we are missing the jobend, we can't make assumptions
+				if(empty($placement->jobend)) return false;
+				
+				// Are we past the end of the jobend date?
+				// Nasty, possible problematic (see todo)
+				if(strcmp($placement->jobend, date("Y-m-d")) < 0) return true;
+				
+				// Finally, we aren't, so we're still "placed" now.
+				return false;
+			}
+		}
+		
+		return false; // otherwise no...
+	}
 
   /**
   * obtains the full name of the student

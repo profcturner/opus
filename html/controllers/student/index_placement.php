@@ -418,9 +418,8 @@
     $student_id = User::get_id();
 
     require_once("model/Student.class.php");
-    $student = Student::load_by_user_id($student_id);
-    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
-
+    if(!Student::is_application_allowed($student_id)) $waf->halt("error:student:not_required");
+		
     // Get the available CVs, both good and bad
     require_once("model/CVCombined.class.php");
     $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
@@ -460,8 +459,7 @@
   {
     $student_id = User::get_id();
     require_once("model/Student.class.php");
-    $student = Student::load_by_user_id($student_id);
-    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+    if(!Student::is_application_allowed($student_id)) $waf->halt("error:student:not_required");
 
     // Check the proposed CV is valid
     require_once("model/CVCombined.class.php");
