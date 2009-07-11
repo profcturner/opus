@@ -351,25 +351,14 @@ class Vacancy extends DTO_Vacancy
   }
 	
 	/**
-	* returns the first year of a vacancy on the system
-	* @return returns the first year of a vacancy on the system
+	* returns an array of the years vacancies have been posted
+	* @return returns an array of the years vacancies have been posted
 	*/ 
-	function get_first_year()
+	function get_years_of_use()
 	{
 		$vacancy = new Vacancy;
-		return($vacancy->_get_first_year());
+		return($vacancy->_get_years_of_use());
 	}
-
-	/**
-	* returns the last year of a vacancy on the system
-	* @return returns the last year of a vacancy on the system
-	*/ 
-	function get_last_year()
-	{
-		$vacancy = new Vacancy;
-		return($vacancy->_get_last_year());
-	}
-
 
   function complete_url($url)
   {

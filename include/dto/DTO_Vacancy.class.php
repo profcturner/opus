@@ -107,42 +107,27 @@ class DTO_Vacancy extends DTO
     return $activities;
   }
 	
-	function _get_first_year()
+	function _get_years_of_use()
 	{
 	  $waf =& UUWAF::get_instance();
     $con = $waf->connections[$this->_handle]->con;
 
+		$years = array();
     try
     {
-      $sql = $con->prepare('select min(year(jobstart)) from vacancy');
+      $sql = $con->prepare('select distinct(year(jobstart)) from vacancy order by year(jobstart)');
       $sql->execute();
 
-      $results = $sql->fetch(PDO::FETCH_NUM);
+      while($result_row = $sql->fetch(PDO::FETCH_NUM))
+			{
+				array_push($years, $result_row[0]);
+			}
     }
     catch (PDOException $e)
     {
-      $this->_log_sql_error($e, $class, "_get_first_year()");
+      $this->_log_sql_error($e, $class, "_get_years_of_use()");
     }
-    return $results[0];		
-	}
-
-	function _get_last_year()
-	{
-	  $waf =& UUWAF::get_instance();
-    $con = $waf->connections[$this->_handle]->con;
-
-    try
-    {
-      $sql = $con->prepare('select max(year(jobstart)) from vacancy');
-      $sql->execute();
-
-      $results = $sql->fetch(PDO::FETCH_NUM);
-    }
-    catch (PDOException $e)
-    {
-      $this->_log_sql_error($e, $class, "_get_last_year()");
-    }
-    return $results[0];		
+    return $years;
 	}
 
   function if_any_in_array($needles, $haystack)
