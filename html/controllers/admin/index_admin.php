@@ -49,7 +49,8 @@ function nav_admin()
       array("resources", "information", "list_resources", "list_resources"),
       array("help directory", "information", "help_directory", "help_directory"), 
       array("reports", "information", "list_reports", "list_reports"),
-      array("system status", "information", "system_status", "system_status"), 
+      array("system status", "information", "system_status", "system_status"),
+			array("system statistics", "information", "system_statistics", "system_statistics"), 
       array("view logs", "information", "view_logs", "view_logs") 
     ),
     "Configuration"=>array

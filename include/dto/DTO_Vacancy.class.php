@@ -106,6 +106,44 @@ class DTO_Vacancy extends DTO
     }
     return $activities;
   }
+	
+	function _get_first_year()
+	{
+	  $waf =& UUWAF::get_instance();
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare('select min(year(jobstart)) from vacancy');
+      $sql->execute();
+
+      $results = $sql->fetch(PDO::FETCH_NUM);
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, $class, "_get_first_year()");
+    }
+    return $results[0];		
+	}
+
+	function _get_last_year()
+	{
+	  $waf =& UUWAF::get_instance();
+    $con = $waf->connections[$this->_handle]->con;
+
+    try
+    {
+      $sql = $con->prepare('select max(year(jobstart)) from vacancy');
+      $sql->execute();
+
+      $results = $sql->fetch(PDO::FETCH_NUM);
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, $class, "_get_last_year()");
+    }
+    return $results[0];		
+	}
 
   function if_any_in_array($needles, $haystack)
   {

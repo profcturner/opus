@@ -204,6 +204,23 @@
     $waf->display("main.tpl", "admin:information:system_status:system_status", "admin/information/system_status.tpl");
   }
 
+  function system_statistics(&$waf)
+  {
+    // ignore limits on root users
+    require_once("model/SystemStatistics.class.php");
+		
+		$start_year = SystemStatistics::get_first_year();
+		$end_year = SystemStatistics::get_last_year();
+
+		$annual_statistics = SystemStatistics::get_statistics_by_year($start_year, $end_year);		
+		
+		$waf->assign("start_year", $start_year);
+		$waf->assign("end_year", $end_year);
+		$waf->assign("annual_statistics", $annual_statistics);
+
+    $waf->display("main.tpl", "admin:information:system_statistics:system_statistics", "admin/information/system_statistics.tpl");
+  }
+
   function about(&$waf)
   {
     $waf->assign("show_banners", true);
