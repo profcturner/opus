@@ -39,7 +39,7 @@ class SystemStatistics
 			$element['vacancy'] = $vacancy_statistics[$year];
 			$element['application'] = $application_statistics[$year];
 			$element['placement'] = $placement_statistics[$year];
-			$element['assessment'] = $asessment_statistics[$year];
+			$element['assessment'] = $assessment_statistics[$year];
 			
 			$vacancy_total += $element['vacancy'];
 			$application_total += $element['application'];

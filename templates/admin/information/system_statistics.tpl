@@ -14,7 +14,7 @@
 </tr>
 {foreach from=$annual_statistics key=year item=value}
 <tr class="{cycle values="dark_row,light_row"}">
-  <td>{$year}</td>
+  <td>{$year|default:"Invalid"}</td>
 	<td>{$value.vacancy|default:"0"}</td>
 	<td>{$value.application|default:"0"}</td>
 	<td>{$value.placement|default:"0"}</td>
