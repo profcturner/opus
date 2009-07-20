@@ -666,10 +666,12 @@ class Student extends DTO_Student
 	*/
 	function is_application_allowed($user_id)
 	{
+		$allowed_status =  array('Required','Exempt Applied','Exempt Given','To final year');
+
 		$student = Student::load_by_user_id($user_id);
 		
 		// Fast return in simplest case
-		if($student->placement_status == 'Required') return true;
+		if(in_array($student->placement_status, $allowed_status)) return true;
 		
 		if($student->placement_status == 'Placed')
 		{
