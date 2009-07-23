@@ -112,6 +112,20 @@ class Cache_Object extends DTO
       $this->_update();
     }
   }
+	
+	/**
+	* delete old data from the cache
+	* 
+	* @param int the maximum age in seconds (defaults to 30 days)
+	*/ 
+	function garbage_collect($age = 2592000)
+	{
+		// Work out the date from which we want to trim cache data
+		$from_date = date("Y-m-d H:i:s", time() - $age);
+		
+		$cache = new Cache_Object;
+		$cache->_remove_where("where `timestamp` < '$from_date'");
+	}
 }
 
 ?>

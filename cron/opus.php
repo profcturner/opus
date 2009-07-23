@@ -305,6 +305,14 @@ function auto_add_students($waf, $parameters)
   StudentImport::auto_add_by_file($parameters['filename']);
 }
 
+
+function expire_cache($waf, $parameters)
+{
+	require_once("model/Cache_Object.class.php");
+	Cache_Object::garbage_collect();
+}
+
+
 function check_missing_error_prompts()
 {
   $halt_command = "grep -Ihor \"halt(\\\"error:.*.*\\\")\" ../* | sed -e \"s/halt(\\\"//\" -e \"s/\\\")//\" | sort | uniq";
