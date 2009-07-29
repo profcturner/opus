@@ -65,20 +65,21 @@ function nav_student()
       ), 
       "myDevelopment"=>array
       (
-        array("skills", "development", "", "", "", "$pds_url?section=development&function=view_skills"),
-        array("goals", "development","", "", "", "$pds_url?section=development&function=view_goals"),
-        array("plans", "development","", "", "", "$pds_url?section=development&function=view_plans"),
-        array("journals", "development", "", "", "",  "$pds_url?section=development&function=view_journals"),
-        array("learning styles", "development", "", "", "",  "$pds_url?section=development&function=view_learning_styles")
+        array("skills", "development", "", "", "", "$pds_url?section=development&function=manage_skills"),
+        array("goals", "development","", "", "", "$pds_url?section=development&function=manage_goals"),
+        array("plans", "development","", "", "", "$pds_url?section=development&function=manage_plans"),
+        array("journals", "development", "", "", "",  "$pds_url?section=development&function=manage_journals"),
+        array("learning styles", "development", "", "", "",  "$pds_url?section=development&function=manage_learning_styles")
       ), 
       "myCareer"=>array
       (
         array("CV Builder", "career", "", "", "", "$pds_url?section=career&function=cv_builder"),
-        array("CV Store", "career", "", "", "",  "$pds_url?section=career&function=list_stored_cvs"),
-        array("Covering Letters", "career", "", "", "",  "$pds_url?section=career&function=list_covering_letters"),
-        array("Applications", "career", "", "", "",  "$pds_url?section=career&function=list_applications"),
-        array("interviews", "career", "", "", "",  "$pds_url?section=career&function=list_interviews"),
-        array("Personal Statements", "career", "", "", "",  "$pds_url?section=career&function=list_personal_statements")
+        array("CV Store", "career", "", "", "",  "$pds_url?section=career&function=manage_cvs"),
+        array("Covering Letters", "career", "", "", "",  "$pds_url?section=career&function=manage_covering_letters"),
+        array("Applications", "career", "", "", "",  "$pds_url?section=career&function=manage_applications"),
+        array("interviews", "career", "", "", "",  "$pds_url?section=career&function=manage_interviews"),
+        array("Personal Statements", "career", "", "", "",  "$pds_url?section=career&function=manage_personal_statements"),
+				array("Manage Psychometric Tests", "career", "", "", "",  "$pds_url?section=career&function=manage_psychometric_tests")
       ), 
       "myPlacement"=>array
       (
@@ -96,8 +97,8 @@ function nav_student()
         array("portfolios", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_portfolios"),
         array("shared to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_shares"),
         array("submitted to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_submissions"),
-        array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=shared_portfolios"),
-        array("submissions from others", "portfolios", "", "", "", "$pds_url?section=portfolios&function=submitted_portfolios")
+        array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=shared_portfolios&mode=visible"),
+        array("submissions from others", "portfolios", "", "", "", "$pds_url?section=portfolios&function=submitted_portfolios&mode=visible")
       )
     );
   }
