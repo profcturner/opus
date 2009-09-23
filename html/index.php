@@ -393,7 +393,7 @@ function logout(&$waf)
   destroy_cookies();
   $_SESSION["currentgroup"] = "";
   $waf->logout_user();
-  session_destroy();
+  @session_destroy();
   unset($_SESSION);
   $waf->display("login.tpl", "login");  
 }
