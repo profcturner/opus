@@ -77,8 +77,12 @@ class Student extends DTO_Student
   */
   function get_field_defs()
   {
+		global $config;
+		
     $field_defs = self::$_field_defs;
-    if(User::is_root())
+    // Root users should be able to edit reg_numbers
+    // Admin users can unless specifically instructed otherwise in the config
+    if(User::is_root() || (User::is_admin() && !$config['opus']['only_root_can_edit_regnumbers']))
     {
       $field_defs = array_merge($field_defs, self::$_root_field_defs_override);
     }
