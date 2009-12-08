@@ -25,6 +25,11 @@
 
     // Get the student
     $student = Student::load_by_id($id);
+    
+    if(!$student->id)
+    {
+			$waf->halt("error:staff:invalid_student");
+		}
     // And the staff member
     require_once("model/Staff.class.php");
     $staff = Staff::load_by_user_id(User::get_id());
