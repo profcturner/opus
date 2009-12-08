@@ -94,7 +94,13 @@ class contactlist extends Report
   */
   function get_header($report_options)
   {
-    return(array("salutation", "firstname", "lastname", "position","email","voice","fax"));
+    return(array("salutation", "firstname", "lastname", "position","email","voice","fax", "Company Name", "Address 1", "Address 2", "Address 3", "Town/City", "Locality", "Country"));
+  }
+
+  private function get_body_company($company)
+  {
+
+    return(array($company->name, $company->address1, $company->address2, $company->address3, $company->town, $company->locality, $company->country));
   }
 
   /**
@@ -105,6 +111,9 @@ class contactlist extends Report
     $results = array();
 
     require_once("model/Contact.class.php");
+    require_once("model/Company.class.php");
+    
+    
 
     // Very primitive proof of concept code
     $contact = new Contact;
@@ -112,7 +121,14 @@ class contactlist extends Report
 
     foreach($contacts as $contact)
     {
-      array_push($results, array($contact->salutation, $contact->firstname, $contact->lastname, $contact->position, $contact->email, $contact->voice, $contact->fax));
+			// Find all the companies the contact acts for
+			$companies = Contact::get_companies_for_contact($contact->user_id);
+			// And select the first one only
+			$company = Company::load_by_id(key($companies));
+			
+			$row = array($contact->salutation, $contact->firstname, $contact->lastname, $contact->position, $contact->email, $contact->voice, $contact->fax);
+      $row = array_merge($row, $this->get_body_company($company));
+      array_push($results, $row);
     }
     return $results;
   }
