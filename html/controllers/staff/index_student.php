@@ -142,14 +142,14 @@
   function drop_student(&$waf)
   {
     unset($_SESSION['student_id']);
-    goto("home", "home");
+    goto_section("home", "home");
   }
 
   function list_notes(&$waf)
   {
     require_once("model/Student.class.php");
 
-    goto("home", "list_notes&object_type=Student&object_id=" . Student::get_user_id($_SESSION['student_id']));
+    goto_section("home", "list_notes&object_type=Student&object_id=" . Student::get_user_id($_SESSION['student_id']));
   }
 
 

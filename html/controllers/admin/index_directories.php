@@ -235,7 +235,7 @@
     $student_name = User::get_name($student_id);
     $_SESSION['lastitems']->add_here("s:$student_name", "s:$student_id", "Student: $student_name");
 
-    goto("directories", "edit_student_real&id=$id&changes=$changes");
+    goto_section("directories", "edit_student_real&id=$id&changes=$changes");
   }
 
   /**
@@ -320,7 +320,7 @@
         AssessorOther::insert($fields);
       }
     }
-    goto("directories", "edit_student_real&id=$student_id&changes=1");
+    goto_section("directories", "edit_student_real&id=$student_id&changes=1");
   }
 
   function remove_student(&$waf, &$user) 
@@ -394,7 +394,7 @@
     require_once("model/CVApproval.class.php");
     CVApproval::approve_cv($student_id, $cv_ident);
 
-    goto("directories", "list_student_cvs");
+    goto_section("directories", "list_student_cvs");
   }
 
   function revoke_cv(&$waf)
@@ -407,7 +407,7 @@
     require_once("model/CVApproval.class.php");
     CVApproval::revoke_cv($student_id, $cv_ident);
 
-    goto("directories", "list_student_cvs");
+    goto_section("directories", "list_student_cvs");
   }
 
   // Timelines
@@ -546,7 +546,7 @@
     $company_name = Company::get_name($id);
     $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
 
-    goto("directories", "edit_company_real&id=$id");
+    goto_section("directories", "edit_company_real&id=$id");
   }
 
   function edit_company_real(&$waf, &$user) 
@@ -589,7 +589,7 @@
     {
       // If this company isn't the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "view_company&company_id=$company_id");
+      goto_section("directories", "view_company&company_id=$company_id");
     }
 
     $action_links = array(array("edit", "section=directories&function=edit_company&id=$company_id"));
@@ -636,7 +636,7 @@
     {
       // If this company isn't the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "manage_vacancies&company_id=$company_id&page=$page");
+      goto_section("directories", "manage_vacancies&company_id=$company_id&page=$page");
     }
 
     require_once("model/Vacancy.class.php");
@@ -720,7 +720,7 @@
       }
     }
     // Ok, all should now be safe...
-    goto("directories", "clone_vacancy_real&id=$id&changes=$changes");
+    goto_section("directories", "clone_vacancy_real&id=$id&changes=$changes");
   }
 
 
@@ -789,7 +789,7 @@
       }
     }
     // Ok, all should now be safe...
-    goto("directories", "edit_vacancy_real&id=$id&changes=$changes");
+    goto_section("directories", "edit_vacancy_real&id=$id&changes=$changes");
   }
 
 
@@ -1112,7 +1112,7 @@
     else
     {
       // No changes, back to same screen
-      goto("directories", "manage_applicants&id=$vacancy_id");
+      goto_section("directories", "manage_applicants&id=$vacancy_id");
     }
   }
 
@@ -1230,7 +1230,7 @@
 
     require_once("model/Placement.class.php");
     $placement = Placement::load_by_id($placement_id);
-    goto('directories', 'view_vacancy&id=' . $placement->vacancy_id);
+    goto_section('directories', 'view_vacancy&id=' . $placement->vacancy_id);
   }
 
 
@@ -1333,7 +1333,7 @@
     {
       // If this company isn't the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "manage_contacts&company_id=$company_id");
+      goto_section("directories", "manage_contacts&company_id=$company_id");
     }
     elseif(!$company_id && $_SESSION['company_id'])
     {
@@ -1905,7 +1905,7 @@
     $fields['user_type'] = 'root';
 
     User::update($fields);
-    goto("directories", "manage_super_admins");
+    goto_section("directories", "manage_super_admins");
   }
 
   function demote_admin(&$waf, &$user)
@@ -1938,7 +1938,7 @@
     $fields['user_type'] = 'admin';
 
     User::update($fields);
-    goto("directories", "manage_super_admins");
+    goto_section("directories", "manage_super_admins");
   }
 
 
@@ -2088,7 +2088,7 @@
     {
       // If this company isn't already the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "manage_company_resources&company_id=$company_id");
+      goto_section("directories", "manage_company_resources&company_id=$company_id");
     }
     $company_id = (int) WA::request("company_id", true);
 
@@ -2241,12 +2241,12 @@
 
     if($success || empty($error_function))
     {
-      if(!empty($done_function)) goto("directories", "$done_function");
+      if(!empty($done_function)) goto_section("directories", "$done_function");
       else header("location:" . $_SERVER['HTTP_REFERER'] . "&changes=true");
     }
     else
     {
-      goto("directories", "$error_function");
+      goto_section("directories", "$error_function");
     }
   }
 

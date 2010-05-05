@@ -14,7 +14,7 @@
   function edit_student(&$waf)
   {
     $student_id = $_SESSION['student_id'];
-    goto("directories", "edit_student&student_id=$student_id");
+    goto_section("directories", "edit_student&student_id=$student_id");
   }
 
   /**
@@ -33,7 +33,7 @@
 
   function vacancy_directory(&$waf)
   {
-    goto("directories", "vacancy_directory");
+    goto_section("directories", "vacancy_directory");
   }
 
   function manage_applications(&$waf, $user, $title)
@@ -41,7 +41,7 @@
     $student_id = (int) WA::request("student_id", true);
     $page = (int) WA::request("page", true);
 
-    goto('directories', 'manage_applications');
+    goto_section('directories', 'manage_applications');
 
     //manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application', 'directories')), "get_all", array("where student_id=$student_id", "order by created", $page), "student:placement:list_applications:list_applications");
   }
@@ -62,17 +62,17 @@
 
   function list_student_channels(&$waf)
   {
-    goto("directories", "list_student_channels");
+    goto_section("directories", "list_student_channels");
   }
 
   function list_student_cvs(&$waf)
   {
-    goto("directories", "list_student_cvs");
+    goto_section("directories", "list_student_cvs");
   }
 
   function list_notes(&$waf)
   {
-    goto("directories", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);
+    goto_section("directories", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);
   }
 
   /**
@@ -81,7 +81,7 @@
   function drop_student(&$waf)
   {
     unset($_SESSION['student_id']);
-    goto("home", "home");
+    goto_section("home", "home");
   }
 
 ?>

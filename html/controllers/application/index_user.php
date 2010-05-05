@@ -70,7 +70,7 @@ function kill_session(&$waf)
   if($interactive)
   {
     // API user logged in interactively
-    goto("user", "form_kill_session&session_killed=$session_id");
+    goto_section("user", "form_kill_session&session_killed=$session_id");
   }
 }
 

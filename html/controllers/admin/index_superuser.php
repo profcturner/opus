@@ -133,7 +133,7 @@
     $fields['user_type'] = 'application';
 
     User::insert($fields);
-    goto("superuser", "manage_api_users");
+    goto_section("superuser", "manage_api_users");
   }
 
   function user_directory(&$waf)
@@ -222,23 +222,23 @@
       case 'student':
         require_once("model/Student.class.php");
         $student = Student::load_by_user_id($id);
-        goto("directories", "edit_student&student_id=" . $student->user_id);
+        goto_section("directories", "edit_student&student_id=" . $student->user_id);
         break;
       case 'staff':
         require_once("model/Staff.class.php");
         $staff = Staff::load_by_user_id($id);
-        goto("directories", "edit_staff&id=" . $staff->id);
+        goto_section("directories", "edit_staff&id=" . $staff->id);
         break;
       case 'company':
         require_once("model/Contact.class.php");
         $contact = Contact::load_by_user_id($id);
-        goto("directories", "edit_contact&id=" . $contact->id);
+        goto_section("directories", "edit_contact&id=" . $contact->id);
         break;
       case 'admin':
       case 'root':
         require_once("model/Admin.class.php");
         $admin = Admin::load_by_user_id($id);
-        goto("directories", "edit_admin&id=" . $admin->id);
+        goto_section("directories", "edit_admin&id=" . $admin->id);
         break;
       default:
         $waf->halt("error:edit_user:category_not_supported_for_edit");

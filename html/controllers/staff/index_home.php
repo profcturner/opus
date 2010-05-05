@@ -100,7 +100,7 @@
     $_SESSION['student_id'] = $id;
 
     // Jump to the context menu
-    goto("student", "edit_student");
+    goto_section("student", "edit_student");
   }
 
   /**
@@ -151,7 +151,7 @@
     // Must be ok...
     $user->password = md5($new_password);
     $user->_update();
-    goto("home", "home");
+    goto_section("home", "home");
   }
 
   /**

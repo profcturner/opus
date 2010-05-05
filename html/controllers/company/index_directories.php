@@ -101,7 +101,7 @@
     $company_name = Company::get_name($id);
     $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
 
-    goto("directories", "edit_company_real&id=$id");
+    goto_section("directories", "edit_company_real&id=$id");
   }
 
   function edit_company_real(&$waf, &$user) 
@@ -133,7 +133,7 @@
     {
       // If this company isn't the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "view_company&company_id=$company_id");
+      goto_section("directories", "view_company&company_id=$company_id");
     }
 
     $action_links = array(array("edit", "section=directories&function=edit_company&id=$company_id"));
@@ -180,7 +180,7 @@
     {
       // If this company isn't the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "manage_vacancies&company_id=$company_id&page=$page");
+      goto_section("directories", "manage_vacancies&company_id=$company_id&page=$page");
     }
     require_once("model/Contact.class.php");
     if(!Contact::is_auth_for_company($company_id)) $waf->die("error:contact:not_your_company");
@@ -437,7 +437,7 @@
     else
     {
       // No changes, back to same screen
-      goto("directories", "manage_applicants&id=$vacancy_id");
+      goto_section("directories", "manage_applicants&id=$vacancy_id");
     }
   }
 
@@ -514,7 +514,7 @@
     {
       // If this company isn't the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "manage_contacts&company_id=$company_id");
+      goto_section("directories", "manage_contacts&company_id=$company_id");
     }
     require_once("model/Contact.class.php");
 
@@ -647,7 +647,7 @@
     {
       // If this company isn't already the active one, make it so
       $company_id = (int) WA::request("company_id", true);
-      goto("directories", "manage_company_resources&company_id=$company_id");
+      goto_section("directories", "manage_company_resources&company_id=$company_id");
     }
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -734,12 +734,12 @@
 
     if($success || empty($error_function))
     {
-      if(!empty($done_function)) goto("directories", "$done_function");
+      if(!empty($done_function)) goto_section("directories", "$done_function");
       else header("location:" . $_SERVER['HTTP_REFERER'] . "&changes=true");
     }
     else
     {
-      goto("directories", "$error_function");
+      goto_section("directories", "$error_function");
     }
   }
 

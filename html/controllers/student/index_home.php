@@ -13,7 +13,7 @@
 
 function home(&$pds) 
 {
-  goto("placement", "placement_home");
+  goto_section("placement", "placement_home");
   $pds->display("main.tpl", "student:home:home:home");
 }
 

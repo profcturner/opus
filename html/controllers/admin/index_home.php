@@ -31,7 +31,7 @@
         require_once("model/PhoneHome.class.php");
         if(PhoneHome::ask_later())
         {
-          goto("superuser", "edit_phonehome");
+          goto_section("superuser", "edit_phonehome");
         }
       }
     }
@@ -86,7 +86,7 @@
     // Must be ok...
     $user->password = md5($new_password);
     $user->_update();
-    goto("home", "home");
+    goto_section("home", "home");
   }
 
   /**

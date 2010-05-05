@@ -397,7 +397,7 @@
     }
     else
     {
-      goto("directories", "$error_function");
+      goto_section("directories", "$error_function");
     }
   }
 

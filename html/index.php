@@ -32,6 +32,7 @@ function main()
 
   require_once("opus.conf.php");
   require_once("WA.class.php");
+  require_once("UUWAF.class.php");
 
   if($config['opus']['benchmarking'])
   {
@@ -345,7 +346,7 @@ function nav_default()
  * @param string $function
  */
 
-function goto($section, $function) 
+function goto_section($section, $function) 
 {
   global $config;
 

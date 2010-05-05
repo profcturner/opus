@@ -308,7 +308,7 @@
     {
       // If this company isn't the active one, make it so
       $_SESSION['company_id'] = $company_id;
-      goto("placement", "view_company&company_id=$company_id");
+      goto_section("placement", "view_company&company_id=$company_id");
     }
 
     require_once("model/Company.class.php");
