@@ -470,10 +470,58 @@
     $school = School::load_by_id($school_id);
 
     add_navigation_history($waf, $school->name);
+    
+    $other_actions = array(
+    	array("add","section=configuration&function=add_programme"),
+    	array("bulk change assessment","section=configuration&function=bulk_change_assessment_group"),
+		);
 
 
-    manage_objects($waf, $user, "Programme", array(array("add","section=configuration&function=add_programme")), array(array('admins', 'manage_programmeadmins'), array('assessment', 'manage_assessmentgroupprogrammes'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", array("where school_id=$school_id", "order by name", $page), "admin:configuration:organisation_details:manage_programmes");
+    manage_objects($waf, $user, "Programme", $other_actions, array(array('admins', 'manage_programmeadmins'), array('assessment', 'manage_assessmentgroupprogrammes'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", array("where school_id=$school_id", "order by name", $page), "admin:configuration:organisation_details:manage_programmes");
   }
+  
+  function bulk_change_assessment_group(&$waf, $user, $title)
+  {
+		if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
+		
+		$school_id = (int) WA::request("school_id", true);
+		require_once("model/Programme.class.php");
+		require_once("model/AssessmentGroup.class.php");
+		
+		$assessmentgroups = AssessmentGroup::get_id_and_field("name");		
+		$programmes = Programme::get_id_and_description("where school_id=" . $school_id);
+		
+		$waf->assign("assessmentgroups", $assessmentgroups);
+		$waf->assign("programmes", $programmes);
+		
+    $waf->display("main.tpl", "admin:configuration:organisation_details:bulk_change_assessment_group", "admin/configuration/bulk_change_assessment_group.tpl");		
+	}
+
+  function bulk_change_assessment_group_do(&$waf, $user, $title)
+  {
+		if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
+		
+		$school_id = (int) WA::request("school_id", true);
+		require_once("model/Programme.class.php");
+		
+		$new_group_id      = WA::request("new_group_id");
+		$from_year         = WA::request("from_year");
+		$programme_ids_raw = WA::request("programme_ids");
+		$programme_ids = array();
+		
+		foreach($programme_ids_raw as $item)
+		{
+			foreach($item as $key => $value)
+			{
+				array_push($programme_ids, $value);
+			}
+		}
+		
+		require_once("model/AssessmentGroupProgramme.class.php");
+		AssessmentGroupProgramme::bulk_change_assessment_group($programme_ids, $new_group_id, $from_year);
+		goto_section("configuration", "manage_programmes&id=$school_id");
+
+	}
 
   function add_programme(&$waf, &$user) 
   {
@@ -861,7 +909,7 @@
     $cvgroup = CVGroup::load_by_id($group_id);
     $cvgroup->default_template = $default_template;
     $cvgroup->_update();
-    goto("configuration", "manage_cvgroups");
+    goto_section("configuration", "manage_cvgroups");
   }
 
 

@@ -147,6 +147,58 @@ class AssessmentGroupProgramme extends DTO_AssessmentGroupProgramme
     $assessmentgroupprogramme->_load_where($where_clause);
     return($assessmentgroupprogramme);
   }
+  
+  /**
+  * Changes the assessment group for an individual course from a given year
+  * 
+  * @param $programme_id the id of the programme
+  * @param $new_group_id the id of the new assessment group
+  * @param $from_year the first year of the new assessment group
+  * @return boolean success indicator
+  */
+  function change_assessment_group($programme_id, $new_group_id, $from_year)
+  {
+		if(!is_numeric($from_year)) return false;
+		// Get any matching groups
+		$groups = AssessmentGroupProgramme::get_all("where programme_id=" . (int) $programme_id);
+		
+		// If there is a group with an open endpoint, but defined start, we need to close it
+		foreach($groups as $group)
+		{
+			if(!empty($group->startyear) && empty($group->endyear))
+			{
+				$fields = array();
+				$fields["id"] = $group->id;
+				$fields["endyear"] = $from_year - 1;
+				$group->update($fields);
+			}
+		}
+		
+		// Now write the new entry
+		$fields = array();
+		$fields["startyear"] = $from_year;
+		$fields["group_id"] = $new_group_id;
+		$fields["programme_id"] = $programme_id;
+		
+		AssessmentGroupProgramme::insert($fields);
+		return true;
+	}
+  
+  /**
+  * Changes the assessment group for many courses at once
+  * 
+  * @param $programme_ids the id of the programme
+  * @param $new_group_id the id of the new assessment group
+  * @param $from_year the first year of the new assessment group
+  * @return boolean success indicator
+  */
+  function bulk_change_assessment_group($programme_ids, $new_group_id, $from_year)
+  {
+		foreach($programme_ids as $programme_id)
+		{
+			AssessmentGroupProgramme::change_assessment_group($programme_id, $new_group_id, $from_year);
+		}
+	}
 
 
   function request_field_values($include_id = false) 
