@@ -445,6 +445,20 @@ We will sign your GPG keys with appropriate documentation if we meet in person
 and are happy to provide documentation to allow you to sign ours.
 
 
+* OPUS produces a blank screen somewhere. What's happening?
+-----------------------------------------------------------
+
+This may be a PHP fatal error, and on screen reporting of errors is usually
+disabled for security reasons. Try editing the Apache (or similar)
+configuration and turn display_errors on, or alternatively enable the logging
+of errors (examples are shown commented out in the standard configuration),
+and restart the server. Now report a bug with the results of the problem if
+it doesn't reveal how to fix it.
+
+Don't forget to turn display_errors back to off, but you can leave logging of
+errors on if you like.
+
+
 * We get a wierd logout / second login problem
 ----------------------------------------------
 
