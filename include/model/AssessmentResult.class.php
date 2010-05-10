@@ -132,5 +132,11 @@ class AssessmentResult extends DTO_AssessmentResult
     }
     return $nvp_array;
   }
+  
+  function copy_results($old_regime_id, $new_regime_id)
+  {
+    $assessmentresult = new AssessmentResult;
+    $assessmentresult->_copy_results($old_regime_id, $new_regime_id);	  
+  }
 }
 ?>

@@ -130,5 +130,11 @@ class AssessmentTotal extends DTO_AssessmentTotal
     }
     return $nvp_array;
   }
+  
+  function copy_results($old_regime_id, $new_regime_id)
+  {
+    $assessmenttotal = new AssessmentTotal;
+    $assessmenttotal->_copy_results($old_regime_id, $new_regime_id);	  
+  }
 }
 ?>
