@@ -265,7 +265,7 @@ function change_password($waf, $parameters)
   }
   if(posix_getuid())
   {
-    echo "must be run as root.";
+    echo "must be run as root.\n";
     return;
   }
   
@@ -379,6 +379,34 @@ function check_missing_lang_prompts()
     
   }
   pclose($fp);
+}
+
+function copy_assessment_results($waf, $parameters)
+{
+  if(empty($parameters['old_regime_id']))
+  {
+    help($waf);
+    return;
+  }
+  if(empty($parameters['new_regime_id']))
+  {
+    help($waf);
+    return;
+  }  
+  if(posix_getuid())
+  {
+    echo "must be run as root.\n";
+    return;
+  }
+	require_once("model/AssessmentResult.class.php");
+	require_once("model/AssessmentTotal.class.php");
+	
+	echo "Copying assessment totals...";
+	AssessmentTotal::copy_results($parameters['old_regime_id'], $parameters['new_regime_id']);
+	echo "done\n";
+	echo "Copying assessment results...";
+	AssessmentTotal::copy_results($parameters['old_regime_id'], $parameters['new_regime_id']);
+	echo "done\n";	
 }
 
 ?>
