@@ -27,6 +27,8 @@
     {
       // Look for activity in the last few days
       $waf->assign("days", $days);
+      // Limit the search to a year
+      if($days > 365) $days = 365;
       $unixtime = time();
       $unixtime -= ($days * 24 * 60 * 60);
       $since = date("YmdHis", $unixtime);
@@ -35,8 +37,19 @@
     {
       // since the last login
       $last_login = $waf->user['opus']['last_login'];
-      $pd = date_parse($last_login);
-      $since = sprintf("%04u%02u%02u%02u%02u%02u", $pd['year'], $pd['month'], $pd['day'], $pd['hour'], $pd['minute'], $pd['second']);
+      if(!$last_login)
+      {
+				// New logins, try to restrict search a little...
+      	$days = 60;
+      	$unixtime = time();
+      	$unixtime -= ($days * 24 * 60 * 60);
+      	$since = date("YmdHis", $unixtime);
+			}
+			else
+			{
+      	$pd = date_parse($last_login);
+      	$since = sprintf("%04u%02u%02u%02u%02u%02u", $pd['year'], $pd['month'], $pd['day'], $pd['hour'], $pd['minute'], $pd['second']);
+			}
     }
     $waf->assign("since", $since);
 
