@@ -1,8 +1,8 @@
-OPUS 4.1.1 - Release Notes
+OPUS 4.2 - Release Notes
 
 Please read the following notes for issues before upgrading your
-OPUS installation. These notes only discuss changes from 4.1.0. You should
-NOT upgrade straight to 4.1.1 from a version before 4.1.0 unless you are using
+OPUS installation. These notes only discuss changes from 4.2. You should
+NOT upgrade straight to 4.2 from a version before 4.1.1 unless you are using
 the Debian packaging. Or at least read the release notes from intervening
 versions.
 
@@ -11,34 +11,46 @@ This is a relatively minor update.
 Notes for Users
 ---------------
 
-* Institutional admins did not work correctly, this is fixed.
+* Search for companies is more limited on an initial login to provide
+  years of data being presented.
+  
+* Appropriate users can now change the assessment regime for a whole
+  school at a time (see "bulk change assessment" button) in the
+  programme listing for a whole school. Use with caution.
+  
+* New report added: Contact List
 
-* With working web services, students can now be added automatically,
-  individually with reg number, or with a file containing one reg number per
-  line. This will also automatically create programmes, schools and faculties.
+* A new set of statistical reports is added on the information menu for
+  admin users.  
   
-* An error with downloading internal CVs is fixed.
-
-* OPUS is more intelligent about appending appropriate filenames to CVs based
-  on their mime type when sending them in email.
-  
-* Fixed a bug where companies editing their own record inadvertantly wiped the
-  health and safety field (though information was retained in a note).
-  
-* Organisational units are listed alphabetically now in the configuration menu.
+* Students tagged as placed can now apply again for vacancies, once
+  their placement has expired.
 
 
 Notes for Administrators
 ------------------------
 
-* Minor changes to reduce harmless (but annoying) PHP warnings in some places.
+* A command line interface has been added to copy assessement data from
+  one regime to another. This is not documented and shouldn't be used
+  unless really needed.
 
-* Minor update in database schema to introduce a channel for catching students
-  who are added automatically.
+* Removed references to an internal goto() function that is a reserved
+  keyword in recent versions of PHP.
   
-* This is new code allowing a file containing counts of online users to be
-  automatically dropped if required.
+* Regular admin users can now edit student registration numbers, which
+  can be overridden in the config file. See the README.config file in
+  the include directory for more details.
   
-* Additionally a munin plugin has been added to etc/ that allows munin to use
-  this functionality if you desire.
+* Old cache items were not correctly cleaned out, causing performance
+  issues in some cases. A new cron task undertakes this. You may need
+  to manually add this if not using packaging (look at the cron.d
+  provided in etc).  
+  
+* A number of spurious PHP warnings silenced.  
+
+* Considerable functionality to allow automatic creation of users if
+  your webservices are sufficiently fully featured. See README.config
+  in the include directory for information on how to enable and
+  configure this feature.
+
 
