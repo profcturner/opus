@@ -107,7 +107,6 @@ class File_Upload
 
     if(move_uploaded_file($_FILES[$file_var_name]['tmp_name'], $new_name))
     {
-      $waf->log("Move of uploaded file failed, destination was [$new_name]", PEAR_LOG_DEBUG, 'debug');
       $waf->log("Upload of file successful", PEAR_LOG_INFO);
     }
     else
