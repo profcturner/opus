@@ -183,7 +183,7 @@
     {
       // We were able to add them, let's "edit" for better info
       $SESSION['student_id'] = $student_user_id;
-      goto("directories", "edit_student&student_id=$student_user_id");
+      goto_page("directories", "edit_student&student_id=$student_user_id");
     }
     else
     {
