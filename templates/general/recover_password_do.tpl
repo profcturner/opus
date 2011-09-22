@@ -5,6 +5,9 @@
 {if $disabled_password_reset}
 {#disabled_password_reset#}
 {/if}
+{if $disabled_password_reset_by_user}
+{#disabled_password_reset_by_user#}
+{/if}
 {if $expired_hash}
 {#expired_hash#}
 {/if}

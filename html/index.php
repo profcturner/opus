@@ -307,7 +307,16 @@ function recover_password_do()
     return false;
   }
   
+  require_once("model/User.class.php");
   $user_id = $_REQUEST['user_id'];
+  $type = User::get_type($user_id);
+  if(in_array($type, $config['opus']['disable_selfservice_password_reset_by_category']))
+  {
+    $waf->log("Self service password reset is disabled by configuration for $type users");
+    $waf->assign("disabled_password_reset_by_user", true);
+    $waf->display("bounded.tpl", "recover_password_do", "general/recover_password_do.tpl");
+    return false;    
+  }
   $hash = $_REQUEST['hash'];
 	
   $key = "user:reset_password:$user_id";

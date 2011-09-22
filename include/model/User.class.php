@@ -131,6 +131,23 @@ Class User extends DTO_User
   {
     return(User::is_type("staff", $user_id));
   }
+  
+  function get_type($user_id = 0)
+  {
+    if($user_id == 0)
+    {
+      // Currently logged in user
+      if($_SESSION['waf']['user']['opus']['user_type'] == $type) return true;
+      else return false;
+    }
+    else
+    {
+      // Another user
+      $user = User::load_by_id($user_id);
+      if($user->user_type) return $user->user_type;
+      else return false;
+    }    
+  }
 
   function is_type($type, $user_id = 0)
   {
