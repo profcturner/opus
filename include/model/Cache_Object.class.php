@@ -52,7 +52,7 @@ class Cache_Object extends DTO
   * @param string $key the unique key for the cache item
   * @param boolean $return_stale whether stale data should be returned (defaults to false)
   *
-  * @return a boolean value for success
+  * @return value on success, false otherwise
   * @see cache
   */
   function load_from_cache($key, $return_stale = false)
@@ -93,7 +93,8 @@ class Cache_Object extends DTO
     $waf->log("update cache on key $key", PEAR_LOG_DEBUG, 'debug');
     $wscache = new Cache_Object;
 
-    if ($wscache->_count("WHERE `key`=\"$key\"") == 0)
+    $this->_load_by_field_value("key", $key);
+    if (!$this->id)
     {
       // insert
       $wscache->key = $key;
@@ -105,7 +106,7 @@ class Cache_Object extends DTO
     else
     {
       // update
-      $this->key = $key;
+      $this->_load_by_field_value("key", $key);
       $this->cache = serialize($cache);
       $this->timestamp = date("Y-m-d H:i:s");
       $this->refresh_count = $this->refresh_count + 1;
