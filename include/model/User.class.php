@@ -250,6 +250,7 @@ Class User extends DTO_User
     $fields['lastname']   = $user->lastname;
     $fields['username']   = $user->username;
     $fields['email']      = $user->email;
+    $fields['user_type']  = $user->user_type;
 
     User::email_password($fields, $password);
     $waf->log($user->real_name . " has been sent a new password to " . $user->email);
