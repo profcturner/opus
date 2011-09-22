@@ -79,13 +79,15 @@
 
   {if $failed_login}
     <div id="warning">{#failed_login#}</div><br />
-    {if !$config[opus][disable_selfservice_password_reset]}
-      <a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
-    {/if}
   {/if}
                       
     <div class="groups"><input class="submit" type="submit" name="Submit" value="{#login_phrase#}" /></div>
-    <br><span class='text'>{#link_text_to_external_password_reset#}</span>
+    <br /><span class='text'>{#link_text_to_external_password_reset#}</span>
+    <br />
+    {if !$config[opus][disable_selfservice_password_reset]}
+      <a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
+    {/if}
+
     {if $opus_closed}<br /><h2>{#opus_closed#}</h2>{/if}
     <br><span class="important">{$error}</span>
       
