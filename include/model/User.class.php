@@ -238,7 +238,7 @@ Class User extends DTO_User
     $waf->log($user->real_name . " has been sent a new password to " . $user->email);
     return(true);
   }
-
+  
   function email_password($fields, $password)
   {
     global $config;
@@ -262,6 +262,15 @@ Class User extends DTO_User
         Automail::sendmail("NewPassword_Staff", $mailfields);
         break;
       case "supervisor" :
+        // Need to get information about the supervisee
+        require_once("model/Supervisor.class.php");
+        $student_user_id = Supervisor::get_supervisee_id($fields['id']);
+        require_once("model/Student.class.php");
+        $student = Student::load_by_user_id($student_user_id);
+        $mailfields["student_title"] = $student->salutation;
+        $mailfields["student_firstname"] = $student->firstname;
+        $mailfields["student_surname"] = $student->lastname;
+
         Automail::sendmail("NewPassword_Supervisor", $mailfields);
         break;
       case "student" :
@@ -274,6 +283,69 @@ Class User extends DTO_User
       default:
         Automail::sendmail("NewPassword", $mailfields);
     }
+  }
+
+
+  /**
+  * Initiates the process to recover a password via email
+  * 
+  * @param $recovery_email the email address to check
+  * @return number of valid accounts found 
+  */
+  function send_recovery_email($recovery_email)
+  {
+    global $config;
+    
+    // We cache the random numbers for a day
+    require_once("model/Cache_Object.class.php");
+    $cache = new Cache_Object('default', 60*60*24);
+
+    $user = new User;
+    $users = $user->_lookup_password_recovery_accounts($recovery_email);
+    if(!count($users))
+    {
+      return 0;
+    }
+
+    $mailfields = array();
+    $mailfields["rtitle"]     = $users[0]['salutation'];
+    $mailfields["rfirstname"] = $users[0]['firstname'];
+    $mailfields["rsurname"]   = $users[0]['lastname'];
+    $mailfields["remail"]     = $users[0]['email'];
+
+    $block = "";
+    $count = 0;
+    foreach($users as $user)
+    {
+      // Create a random number
+      $user['random'] = mt_rand();
+      $key = "user:reset_password:" . $user['id'];
+      $cache->update_cache($key, $user['random']);
+
+      $count++;
+      $block .= "$count. ";
+      $block .= $user['salutation'];
+      $block .= (" " . $user['firstname']);
+      $block .= (" " . $user['lastname']);
+      $block .= (" [" . $user['user_type'] . "] ");
+      if($user['user_type'] == 'supervisor')
+      {
+        require_once("model/Supervisor.class.php");
+        $student_user_id = Supervisor::get_supervisee_id($user['id']);
+        require_once("model/Student.class.php");
+        $student = Student::load_by_user_id($student_user_id);
+        $block .= " (" . $student->salutation . " " . $student->firstname . " " .$student->lastname . ") ";
+      }
+      $block . "\r\n";
+      
+      $block .= $config['opus']['url'] . "?function=recover_password_do&user_id=" . $user['id'] . "&hash=" . $user['random'];
+      $block .= "\r\n\r\n";
+    }
+    
+    require_once("model/Automail.class.php");
+    $mailfields["block"] = $block;
+    Automail::sendmail("StartPasswordRecovery", $mailfields);
+    return(count($users));
   }
 
 

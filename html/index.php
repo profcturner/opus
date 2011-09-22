@@ -7,7 +7,7 @@
  * @package OPUS
  * @author Colin Turner <c.turner@ulster.ac.uk>
  * @author Gordon Crawford <g.crawford@ulster.ac.uk>
- * @copyright Copyright (c) 2007-2008 Colin Turner, Gordon Crawford and the University of Ulster
+ * @copyright Copyright (c) 2007-2011 Colin Turner, Gordon Crawford and the University of Ulster
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @uses opus.conf.php The main opus configuration file.
  * @uses WA.class.php
@@ -124,29 +124,38 @@ function main()
   }
   else
   {
-    // Not authenticated
-    if(WA::request("guest"))
+    // Some special functions don't require login
+    $function = $waf->get_function($config['opus']['cleanurls']);
+    unauthenticated_functions($function);
+    // Then, they might be trying to go somewhere
+    // Show the login screen, no valid user, keep any redirected URI
+    $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
+    if(WA::request("username"))
     {
-      // but deliberately... so we use a special guest controller, otherwise as above
-      $currentgroup = "guest";
-
-      $section =  $waf->get_section($config['opus']['cleanurls']);
-      $function = $waf->get_function($config['opus']['cleanurls']);
-      if(empty($section)) $section="home";
-      if(empty($function)) $function="home";
-      $nav = $waf->load_group_controller($currentgroup);
-      $waf->load_section_controller($currentgroup,$section);
-      $waf->assign("nav", $nav);
-      $waf->call_user_function($user, $section, $function, "home", "error");
+      // Someone *tried* to login
+      $waf->assign("failed_login", true);
     }
-    else
-    {
-      // Then, they might be trying to go somewhere
-      // Show the login screen, no valid user, keep any redirected URI
-      $_SESSION['redirect'] = $_SERVER['REQUEST_URI'];
-      login($waf);
-    }
+    login($waf);
   }
+}
+
+function unauthenticated_functions($function)
+{
+  switch($function)
+  {
+    case "request_recover_password":
+      request_recover_password();
+      break;
+    case "request_recover_password_do":
+      request_recover_password_do();
+      break;
+    case "recover_password_do":
+      recover_password_do();
+      break;
+    default:
+      return;
+  }
+  exit;
 }
 
 function load_user($username)
@@ -257,6 +266,86 @@ function load_user($username)
   User::update($fields);
   if($drop_stats) User::drop_online_user_count_file();
   drop_cookies();
+}
+
+
+function request_recover_password()
+{  
+  $waf =& UUWAF::get_instance();
+
+  $waf->assign("show_banners", true);
+  $waf->display("bounded.tpl", "request_recover_password", "general/request_recover_password.tpl");
+}
+
+function request_recover_password_do()
+{
+  $waf =& UUWAF::get_instance();
+
+  require_once("model/User.class.php");
+  $recovery_email = WA::request("recovery_email");
+  $count = User::send_recovery_email($recovery_email);
+  $waf->assign("count", $count);
+  $waf->assign("show_banners", true);
+  $waf->display("bounded.tpl", "request_recover_password_do", "general/request_recover_password_do.tpl");
+
+
+}
+ 
+function recover_password_do()
+{
+  global $config;
+
+  $waf =& UUWAF::get_instance();
+  $waf->assign("show_banners", true);
+  $waf->assign("password_reset", false);
+  
+  if($config['opus']['disable_selfservice_password_reset'])
+  {
+    $waf->log("Self service password reset is disabled by configuration");
+    $waf->assign("disabled_password_reset", true);
+    $waf->display("bounded.tpl", "recover_password_do", "general/recover_password_do.tpl");
+    return false;
+  }
+  
+  $user_id = $_REQUEST['user_id'];
+  $hash = $_REQUEST['hash'];
+	
+  $key = "user:reset_password:$user_id";
+  require_once("model/Cache_Object.class.php");
+
+  $cache = new Cache_Object();
+  $cached = $cache->load_from_cache($key);
+
+  if($cached)
+  {
+    // A valid user id and hash was presented, call the reset
+    // function, and override the admin only functionality
+    if($cached = serialize($hash))
+    {
+      $waf->log("Self service password reset has been successfully requested");
+    
+      require_once("model/User.class.php");
+      User::reset_password($user_id, true);
+      $waf->assign("password_reset", true);
+      $waf->display("bounded.tpl", "recover_password_do", "general/recover_password_do.tpl");
+      return(true);
+    }
+    else
+    {
+      $waf->log("Invalid hash on self service password request");
+      $waf->assign("expired_hash", true);
+      $waf->display("bounded.tpl", "recover_password_do", "general/recover_password_do.tpl");
+      return(false);
+    }
+  }
+  else
+  {
+    // presumably expired ticket
+    $waf->log("Self service password reset has been rejected (invalid or expired)");
+    $waf->assign("expired_hash", true);
+    $waf->display("bounded.tpl", "recover_password_do", "general/recover_password_do.tpl");
+    return(false);
+  }
 }
 
 /**

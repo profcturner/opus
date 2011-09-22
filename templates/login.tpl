@@ -74,10 +74,18 @@
   <td width="90"><div class="groups">{#password_text#}</div></td>
   <td><input type="password" name="password" class="input" size="20"/></td>
   </tr>
+  
 </table><br/>
+
+  {if $failed_login}
+    <div id="warning">{#failed_login#}</div><br />
+    {if !$config[opus][disable_selfservice_password_reset]}
+      <a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
+    {/if}
+  {/if}
                       
     <div class="groups"><input class="submit" type="submit" name="Submit" value="{#login_phrase#}" /></div>
-    <br><span class='text'>{#link_text_to_password_reset#}</span>
+    <br><span class='text'>{#link_text_to_external_password_reset#}</span>
     {if $opus_closed}<br /><h2>{#opus_closed#}</h2>{/if}
     <br><span class="important">{$error}</span>
       
