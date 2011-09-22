@@ -1,12 +1,15 @@
 {#instructions#}<br /><br />
 
-<form method=POST action="{#application_url#}?section=home&function=request_recover_password_do">
-<table width="300" border="0" cellspacing="0" cellpadding="0">
+<form method="POST" action="{#application_url#}?section=home&function=request_recover_password_do">
  
- <tr>
-  <td width="150"><div class="groups">{#email_text#}</div></td>
-  <td width="150"><input type="text" name="recovery_email" class="input" size="20"/></td>
-</tr>
-<tr colspan="2"><input type="submit" name="submit" /></tr>
-  
+     <table id="table_manage">
+      <tr>
+        <td class="property">{#email_text#}</td>
+        <td>
+          <input type="text" name="recovery_email" size="20" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="button"><input type="submit" class="submit" value="recover" /></td>
+      </tr>  
 </table>
