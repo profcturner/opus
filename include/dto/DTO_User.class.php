@@ -109,6 +109,29 @@ class DTO_User extends DTO
     return($counts);
   }
   
+  function _lookup_password_recovery_accounts($email)
+  {
+    $waf =& UUWAF::get_instance();
+    $con = $waf->connections[$this->_handle]->con; 
+    
+    $users = array();
+
+    try
+    {
+      $sql = $con->prepare("SELECT * FROM `user` WHERE email IS NOT NULL AND email = ?;");
+      $sql->execute(array($email));
+      while($results_row = $sql->fetch(PDO::FETCH_ASSOC))
+      {
+        array_push($users, $results_row);        
+      }
+    }
+    catch (PDOException $e)
+    {
+      $this->_log_sql_error($e, $class, "_lookup_password_recovery_accounts()");
+    }
+    return $users;
+  }
+  
 }
 
 ?>

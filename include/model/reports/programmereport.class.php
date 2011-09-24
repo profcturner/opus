@@ -153,7 +153,7 @@ class programmereport extends Report
     // snip off last comma
     $countries_text = substr($countries_text, 0, -2);
 
-    return(array($programme->srs_ident, $programme->name, count($students), $status['Required'], $status['Placed'], $status['LeftCourse'], $status['ExemptApplied'], $status['ExemptGiven'], $status['NoInfo'], $status['Suspended'], $status['FinalYear'], $countries_text)); //implode(",", $countries)));
+    return(array($programme->srs_ident, $programme->name, count($students), $status['Required'], $status['Placed'], $status['LeftCourse'], $status['ExemptApplied'], $status['ExemptGiven'], $status['NoInfo'], $status['Suspended'], $status['Tofinalyear'], $countries_text)); //implode(",", $countries)));
   }
 
 }

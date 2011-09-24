@@ -11,7 +11,7 @@ This is a relatively minor update.
 Notes for Users
 ---------------
 
-* Search for companies is more limited on an initial login to provide
+* Search for companies is more limited on an initial login to prevent
   years of data being presented.
   
 * Appropriate users can now change the assessment regime for a whole
@@ -26,13 +26,19 @@ Notes for Users
 * Students tagged as placed can now apply again for vacancies, once
   their placement has expired.
 
+* Self service password recovery has been added, this can be disabled
+  completely, or for various classes of users.
+  
+* Emails to Workplace Supervisors now specify the student supervised
+  since many supervisors deal with multiple students (and OPUS gives
+  one account for each).
 
 Notes for Administrators
 ------------------------
 
 * A command line interface has been added to copy assessement data from
-  one regime to another. This is not documented and shouldn't be used
-  unless really needed.
+  one regime to another. This is not documented (deliberately) and
+  shouldn't be used unless really needed.
 
 * Removed references to an internal goto() function that is a reserved
   keyword in recent versions of PHP.

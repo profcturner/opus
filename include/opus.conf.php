@@ -42,7 +42,7 @@ $config['opus']['patch_version']        = 0;
 $config['opus']['benchmarking']         = true;
 $config['opus']['logo']                 = "logo.png";
 $config['opus']['rows_per_page']        = 20;
-$config['opus']['required_schema_version'] = "4.1.0";
+$config['opus']['required_schema_version'] = "4.2.0";
 
 $config['opus']['paths']['resources']   = '/var/lib/opus/resources/';
 $config['opus']['paths']['photos']      = '/var/lib/opus/photos/';
@@ -58,6 +58,9 @@ $config['opus']['tinymce_url'] = '/opus/javascript/tinymce/tiny_mce.js';
 
 // OPUSnet settings
 $config['opus']['opusnet_url'] = 'http://opusnet.ulster.ac.uk';
+
+// By default, root users cannot recover passwords by email
+$config['opus']['disable_selfservice_password_reset_by_category'] = array("root");
 
 // now include the local configuration file
 // create this file locally and add any variation to the above configuration

@@ -8,11 +8,11 @@ Build-Depends-Indep: texlive
 Homepage: http://foss.ulster.ac.uk/projects/opus
 Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/?root=opus
 Vcs-Svn: svn://foss.ulster.ac.uk/svn/opus/trunk
-Standards-Version: 3.8.0
+Standards-Version: 3.9.2
 
 Package: opus
 Architecture: all
-Depends: uuwaf (>= 1.1), debconf, dbconfig-common, ucf, uuwaf-preferences, php5-cli, tinymce
+Depends: uuwaf (>= 1.1), debconf, dbconfig-common, ucf, uuwaf-preferences, php5-cli, tinymce, ${misc:Depends}
 Recommends: php5-gd, php5-ldap, libgd-gd2-perl
 Description: On-line Placement University System
  OPUS is a comprehensive web based tool for managing all aspects of placement.
@@ -27,7 +27,7 @@ Description: On-line Placement University System
 Package: opus-doc
 Architecture: all
 Section: doc
-Depends:
+Depends: ${misc:Depends}
 Description: On-line Placement University System Documentation
  OPUS is a comprehensive web based tool for managing all aspects of placement.
  .
