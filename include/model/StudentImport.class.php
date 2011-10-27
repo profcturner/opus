@@ -40,7 +40,7 @@ class StudentImport
     require_once("model/User.class.php");
     foreach($srs_students as $student)
     {
-      $student_array = StudentImport::import_student_via_SRS($student[1]);
+      $student_array = StudentImport::import_student_via_SRS($student[0]);
 
       // Are they already present?
       if(User::count("where reg_number='" . $student['reg_number'] . "'"))
