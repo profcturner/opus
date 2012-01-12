@@ -12,7 +12,7 @@
   function manage_cvs(&$waf, $user)
   {
     $page = WA::request('page', true);
-    manage_objects($waf, User::get_id(), "CV", array(array("add","section=career&function=add_cv")), array(array('edit', 'edit_cv'), array('remove','remove_cv')), "get_all", array("WHERE `user_id`=\"".User::get_id()."\"", "", $page, True), "student:career:cv_store:manage_cvs");
+    manage_objects($waf, User::get_id(), "CV", array(array("add CV","section=career&function=add_cv","thickbox")), array(array('edit', 'edit_cv'), array('remove','remove_cv')), "get_all", array("WHERE `user_id`=\"".User::get_id()."\"", "", $page, True), "student:career:cv_store:manage_cvs");
   }
 
   function add_cv(&$waf, $user) 

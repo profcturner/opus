@@ -75,8 +75,8 @@
       'locality'=>array('type'=>'list','size'=>30, 'header'=>true)
     );
 
-    $vacancy_actions = array(array('view', 'view_vacancy', 'placement'));
-    $company_actions = array(array('view', 'view_company', 'placement'));
+    $vacancy_actions = array(array('view', 'view_vacancy', 'no'));
+    $company_actions = array(array('view', 'view_company'));
 
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id(User::get_id());
@@ -160,7 +160,7 @@
     require_once("model/AssessmentCombined.class.php");
     $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
     $waf->assign("assessment", $assessment);
-    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+    $waf->display("main.tpl", "admin:directories:list_assessments:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
   /**
@@ -175,7 +175,7 @@
     require_once("model/AssessmentCombined.class.php");
     $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id(), true); // try to save
     $waf->assign("assessment", $assessment);
-    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+    $waf->display("main.tpl", "admin:directories:list_assessments:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
 
@@ -350,7 +350,7 @@
     $waf->assign("company", $company);
     $waf->assign("company_activity_names", $company_activity_names);
 
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
   function view_company_resource(&$waf, &$user)
@@ -392,7 +392,7 @@
     }
 
     $company_id = $vacancy->company_id;
-    $action_links = array(array("apply", "section=placement&function=add_application&id=$id"));
+    $action_links = array(array("apply", "section=placement&function=add_application&id=$id", "thickbox"));
 
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
@@ -465,7 +465,7 @@
     $waf->assign("cv_options", $cv_options);
     $waf->assign("valid", $valid);
     $waf->assign("invalid", $invalid);
-    $waf->display("main.tpl", "student:placement:list_applications:add_application", "admin/directories/edit_application.tpl");
+    $waf->display("popup.tpl", "student:placement:list_applications:add_application", "admin/directories/edit_application.tpl");
   }
 
   function add_application_do(&$waf, &$user) 
@@ -535,7 +535,7 @@
     $waf->assign("cv_options", $cv_options);
     $waf->assign("invalid", $invalid);
     $waf->assign("selected_cv_ident", $application->cv_ident);
-    $waf->display("main.tpl", "student:placement:list_applications:edit_application", "admin/directories/edit_application.tpl");
+    $waf->display("popup.tpl", "student:placement:list_applications:edit_application", "admin/directories/edit_application.tpl");
   }
 
   function edit_application_do(&$waf, &$user) 
@@ -598,7 +598,7 @@
     $object_type = "Student";
     $object_id = User::get_id();
 
-    $action_links = array(array("add", "section=placement&function=add_note&object_type=$object_type&object_id=$object_id"));
+    $action_links = array(array("add note", "section=placement&function=add_note&object_type=$object_type&object_id=$object_id","thickbox"));
     require_once("model/Note.class.php");
     $notes = Note::get_all_by_links($object_type, $object_id);
     $waf->assign("notes", $notes);
@@ -633,7 +633,7 @@
     $waf->assign("note", $note);
     $waf->assign("note_links", $note_links);
 
-    $waf->display("main.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
   function add_note(&$waf, &$user) 
