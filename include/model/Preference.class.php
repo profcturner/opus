@@ -124,4 +124,34 @@ class Preference extends DTO_Preference
   }
 }
 
+  function get_system_theme($reg_number)
+  {
+     $waf =& UUWAF::get_instance($config['waf']);
+    $application = $waf->title;
+    /*if(empty($reg_number))
+    {
+      log_to_debug("preferences cannot be loaded for this user without a reg_number");
+      $system_theme = "blue";
+      return $system_theme;
+    }
+
+		if(empty($application))
+    {
+      log_to_debug("preferences cannot be loaded for this user without an application name");
+      $system_theme = "blue";
+      return $system_theme;
+    }*/
+	$preferences = $_SESSION['waf'][$waf->title]['preferences'];
+	
+	
+	$system_theme = $preferences['system_theme'];
+
+    if ($system_theme == "")
+    {	
+    	$system_theme = "blue";
+    }
+    
+    return $system_theme;
+  }
+  
 ?>

@@ -85,7 +85,7 @@ class SystemStatus
   function get_student_actions()
   {
     return array(
-      array('edit', 'edit_student', 'directories')
+      array('edit', 'edit_student', 'directories', 'no')
     );
   }
 
@@ -151,7 +151,7 @@ class SystemStatus
   function get_staff_actions()
   {
     return array(
-      array('edit', 'edit_staff', 'directories')
+      array('edit', 'edit_staff', 'directories', 'no')
     );
   }
 
