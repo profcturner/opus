@@ -13,6 +13,7 @@
  * @uses WA.class.php
  *
  */
+require_once('model/Student_Detail.class.php');
 
 main();
 
@@ -33,6 +34,8 @@ function main()
   require_once("opus.conf.php");
   require_once("WA.class.php");
   require_once("UUWAF.class.php");
+  require_once("model/Preference.class.php");
+
 
   if($config['opus']['benchmarking'])
   {
@@ -97,6 +100,10 @@ function main()
     //assignment of user
     $waf->assign_by_ref("user", $waf->user);
     $waf->assign_by_ref("currentgroup", $currentgroup);
+    $preference_id = $waf->user['pds']['reg_number'];
+    $preferences = get_system_theme($preference_id);
+    $waf->assign("system_theme", $preferences);
+    $waf->assign("sidebar", true);
 
     // Is there any redirect, if so, get it, unset it and go there
     if(isset($_SESSION['redirect']))
@@ -589,14 +596,14 @@ function add_navigation_history(&$waf, $title)
  *
  */
 
-function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl') 
+function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl',$popup=no) 
 {
     $page = WA::request("page", true);
     
     $pages = array();
     $waf->assign("page", $page);
     $waf->assign("objects", $objects);
-
+	$waf->assign("popup", $popup);
     $waf->display("main.tpl", $config_section, $list_tpl);
 
 }
@@ -660,16 +667,18 @@ function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values,
  * @uses generate_table
  * 
  */
-function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $get_all_method, $get_all_parameter='', $config_section, $list_tpl='list.tpl', $field_def_param=null)
-{
 
+function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $get_all_method, $get_all_parameter='', $config_section, $list_tpl='list.tpl', $field_def_param=null, $object_num=null, $popup=no)
+{
+	$objects = array();
     $object = str_replace(" ", "_", ucwords($object_name));
 
     require_once("model/".$object.".class.php");
 
     $instance = new $object;
-    $object_num = $instance->count($get_all_parameter[0]);
+	if (is_null($object_num)) $object_num = $instance->count($get_all_parameter[0]);
 
+	$waf->assign("popup", $popup);
     $waf->assign("action_links", $action_links);
     $waf->assign("headings", $instance->get_field_defs($field_def_param));
     $waf->assign("actions", $actions);
@@ -684,7 +693,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
     {
       $objects = call_user_func(array($object, $get_all_method), $get_all_parameter);
     }
-    generate_table($waf, $objects, $config_section, $list_tpl);
+    generate_table($waf, $objects, $config_section, $list_tpl, $popup);
   }
 
 /**
@@ -715,7 +724,8 @@ function add_object(&$waf, &$user, $object_name, $action_button, $action_links, 
 
   $headings = $instance->get_field_defs($field_def_param);
   if (is_array($additional_fields)) $headings = array_merge($headings, $additional_fields);
-
+ 
+  $errors = $waf->errors;
   $waf->assign("action_button", $action_button);
   $waf->assign("action_links", $action_links);
   $waf->assign("mode", "add");
@@ -723,10 +733,15 @@ function add_object(&$waf, &$user, $object_name, $action_button, $action_links, 
   $waf->assign("headings", $headings);
   assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
   $waf->assign("hidden_values", $hidden_values);
-  $content = $waf->fetch($manage_tpl);
   $waf->assign("content", $content);
-  $waf->display("main.tpl", $config_section, $manage_tpl);
-
+    if($errors != "yes")
+    {
+    	$waf->display("popup.tpl", $config_section, $manage_tpl);
+    }
+    else
+    {
+    	$waf->display("main.tpl", $config_section, $manage_tpl);
+    }
 }
 
 /**
@@ -775,6 +790,7 @@ function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
   {
     if ($goto_error == "") $goto_error = "add_".strtolower($object);
     $waf->assign("nvp_array", $nvp_array);
+    $waf->errors = "yes";
     $waf->assign("validation_messages", $validation_messages);
     $goto_error($waf, $user);
   }
@@ -801,14 +817,14 @@ function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
  */
 function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
 {
-
   $object = str_replace(" ", "_", ucwords($object_name));  
   require_once("model/".$object.".class.php");
   $instance = new $object;
 
   $headings = $instance->get_field_defs($field_def_param);
   if (is_array($additional_fields)) $headings = array_merge($headings, $additional_fields);
-
+  
+  $errors = $waf->errors;
   $id = WA::request("id");
   $object = call_user_func(array($object, "load_by_id"), $id);
   $waf->assign("action_button", $action_button);
@@ -821,8 +837,14 @@ function edit_object(&$waf, $user, $object_name, $action_button, $action_links, 
   $waf->assign("hidden_values", $hidden_values);
   $content = $waf->fetch($manage_tpl);
   $waf->assign("content", $content);
-  $waf->display("main.tpl", $config_section, $manage_tpl);
-
+     if($errors != "yes" && $object_name != "Service" && $object_name != "PhoneHome" && $object_name != "Staff" && $object_name != "Student" && $object_name != "Company" && $object_name != "Vacancy")
+    {
+		$waf->display("popup.tpl", $config_section, $manage_tpl);
+    }
+    else
+    {
+    	$waf->display("main.tpl", $config_section, $manage_tpl);
+    }
   // Log view
   if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
   $waf->log("editing $object_name $human_name");
@@ -860,6 +882,7 @@ function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
     if ($goto_error == "") $goto_error = "edit_".strtolower($object);
     $waf->assign("nvp_array", $nvp_array);
     $waf->assign("validation_messages", $validation_messages);
+    $waf->errors = "yes";
     $goto_error($waf, $user);
   }
 
@@ -907,7 +930,7 @@ function remove_object(&$waf, &$user, $object_name, $action_button, $action_link
   $waf->assign("hidden_values", $hidden_values);
   $content = $waf->fetch($manage_tpl);
   $waf->assign("content", $content);
-  $waf->display("main.tpl", $config_section, $manage_tpl);
+  $waf->display("popup.tpl", $config_section, $manage_tpl);
 
   // Log view
   if(method_exists($instance, "get_name")) $human_name = "(" .$instance->get_name($id) .")";
@@ -1095,6 +1118,60 @@ function get_academic_year()
     else $year = date("Y");
   }
   return($year);
+}
+
+
+function edit_preferences(&$waf, $user_id)
+{
+  require_once('model/Student_Detail.class.php');
+
+  $student_detail = Student_Detail::load_by_user_id($user_id);
+
+	if ( strlen($student_detail->email_alt) > 0 )
+  	$email_accounts = array($student_detail->email_uni => $student_detail->email_uni, $student_detail->email_alt => $student_detail->email_alt);
+	else
+		$email_accounts = array($student_detail->email_uni => $student_detail->email_uni);
+  $referrer = $_SERVER["HTTP_REFERER"];
+  $cancel = explode('?', $referrer);
+
+  $preferences = $_SESSION['waf'][$waf->title]['preferences'];
+  if (is_array($preferences))
+  {
+    foreach ($preferences as $name => $value)
+    {
+      $waf->assign($name, $value);
+    }
+  }
+
+  $waf->assign('email_accounts', $email_accounts);
+  $waf->assign('action_links', array(array('cancel', $cancel[1])));
+  $waf->assign('referrer', $referrer);
+  $waf->display('popup.tpl', 'preferences', 'preferences.tpl');
+
+}
+
+
+function edit_preferences_do()
+{
+   $waf =& UUWAF::get_instance($config['waf']);
+  require_once('model/Preference.class.php');
+
+  Preference::set_preference('resources_active', WA::request('resources_active'));
+  Preference::set_preference('bookmarks_active', WA::request('bookmarks_active'));
+  Preference::set_preference('trails_active', WA::request('trails_active'));
+  Preference::set_preference('calendar_active', WA::request('calendar_active'));
+  Preference::set_preference('system_theme', WA::request('system_theme'));
+  Preference::set_preference('preferred_email_account', WA::request('preferred_email_account'));
+  Preference::set_preference('calendar_day_starts', WA::request('calendar_day_starts'));
+  Preference::set_preference('calendar_day_ends', WA::request('calendar_day_ends'));
+  Preference::set_preference('hide_read_messages', WA::request('hide_read_messages'));
+
+  Preference::save_all($waf->user['opus']['reg_number']);
+
+  $goto = WA::request('referrer');
+
+  header("location: $goto");
+
 }
 
 ?>
