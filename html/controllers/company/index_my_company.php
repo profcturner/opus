@@ -25,6 +25,7 @@
 
   function manage_company_resources(&$waf)
   {
+    $id = $_SESSION['company_id'];
     goto_section("directories", "manage_company_resources&company_id=" . $_SESSION['company_id']);
   }
 

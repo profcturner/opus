@@ -91,10 +91,12 @@
 
   function edit_company(&$waf, &$user)
   {
+    $id = $_SESSION['company_id'];
+    
     require_once("model/Contact.class.php");
 
     // Put company in session to "pick it up"
-    $id = $_SESSION['company_id'] = WA::request("id");
+//$id = $_SESSION['company_id'] = WA::request("id");
     if(!Contact::is_auth_for_company($id)) $waf->die("error:contact:not_your_company");
 
     require_once("model/Company.class.php");
@@ -111,7 +113,7 @@
     require_once("model/Contact.class.php");
     if(!Contact::is_auth_for_company($id)) $waf->die("error:contact:not_your_company");
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "company:my_company:edit_company:edit_company");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=home&function=home&page=1"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "company:directories:edit_company:edit_company", "admin/directories/edit_company.tpl");
   }
 
   function edit_company_do(&$waf, &$user) 
@@ -136,7 +138,7 @@
       goto_section("directories", "view_company&company_id=$company_id");
     }
 
-    $action_links = array(array("edit", "section=directories&function=edit_company&id=$company_id"));
+    $action_links = array(array("edit company", "section=directories&function=edit_company&id=$company_id"));
 
     require_once("model/Company.class.php");
     $company = Company::load_by_id($company_id);
@@ -165,7 +167,7 @@
     $waf->assign("company", $company);
     $waf->assign("company_activity_names", $company_activity_names);
 
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
+    $waf->display("main.tpl", "admin:directories:view_company:view_company", "admin/directories/view_company.tpl");
   }
 
   /**
@@ -203,15 +205,15 @@
       'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special"), 'header'=>true)
     );
 
-    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants'), array('clone', 'clone_vacancy'));
+    $actions = array(array('edit', 'edit_vacancy', 'no'), array('applicants', 'manage_applicants', 'no'), array('clone', 'clone_vacancy'));
 
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
     $waf->assign("object_num", $object_num);
     $waf->assign("actions", $actions);
-    $waf->assign("action_links", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
+    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id", "thickbox"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
 
-    $waf->display("main.tpl", "admin:directories:vacancies:manage_vacancies", "list.tpl");
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_vacancies", "list.tpl");
   }
 
   function add_vacancy(&$waf, &$user) 
@@ -284,7 +286,7 @@
     $company_id = (int) WA::request("company_id", true);
     $waf->assign("xinha_editor", true);
 
-    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
+    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view vacancy","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
   function edit_vacancy_do(&$waf, &$user) 
@@ -331,7 +333,7 @@
     }
 
     $company_id = $vacancy->company_id;
-    $action_links = array(array("edit", "section=directories&function=edit_vacancy&id=$id"), array("edit company", "section=directories&function=edit_company&id=$company_id"));
+    $action_links = array(array("edit vacancy", "section=directories&function=edit_vacancy&id=$id"), array("edit company", "section=directories&function=edit_company&id=$company_id"));
     if($student_id)
     {
       array_push($action_links, array("apply with student", "section=directories&function=add_application&id=$id"));
@@ -574,7 +576,7 @@
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
 
-    $action_links = array(array("add", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id"));
+    $action_links = array(array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id", "thickbox"));
     require_once("model/Note.class.php");
     $notes = Note::get_all_by_links($object_type, $object_id);
     $waf->assign("notes", $notes);
@@ -608,7 +610,7 @@
     $waf->assign("note", $note);
     $waf->assign("note_links", $note_links);
 
-    $waf->display("main.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
   function add_note(&$waf, &$user) 
@@ -656,7 +658,7 @@
     // Ignore pagination for complex reasons
     $waf->assign("nopage", true);
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "contact:directories:manage_company_resources:manage_company_resources", "list.tpl", "company");
+    manage_objects($waf, $user, "Resource", array(array("add company resource","section=directories&function=add_company_resource&company_id=$company_id","thickbox")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "contact:directories:manage_company_resources:manage_company_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)

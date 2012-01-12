@@ -62,10 +62,10 @@ function nav_company()
     (
       $company_name=>array
       (
-        array("edit", "my_company", "edit_company", "edit_company"),
+        array("edit", "directories", "edit_company", "edit_company"),
         array("view", "my_company", "view_company", "view_company"),
-        array("vacancies", "my_company", "manage_vacancies", "manage_vacancies"),
-        array("contacts", "my_company", "manage_contacts", "manage_contacts"),
+        array("vacancies", "my_company", "vacancy_directory", "manage_vacancies"),
+        array("contacts", "my_company", "contact_directory", "manage_contacts"),
         array("resources", "my_company", "manage_company_resources", "manage_company_resources"),
         array("notes", "my_company", "list_notes", "list_notes")
       )
