@@ -29,7 +29,7 @@
     $staff = Staff::load_by_user_id(User::get_id());
     $waf->assign("staff", $staff);
 
-    manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "staff:home:home:home", "staff/home/home.tpl");
+    manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student', 'no')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "staff:home:home:home", "staff/home/home.tpl");
   }
   
   function other_assessees(&$waf)
@@ -222,8 +222,8 @@
       'locality'=>array('type'=>'list','size'=>30, 'header'=>true)
     );
 
-    $vacancy_actions = array(array('edit', 'edit_vacancy', 'directories'));
-    $company_actions = array(array('edit', 'edit_company', 'directories'));
+    $vacancy_actions = array(array('edit', 'edit_vacancy', 'directories', 'no'));
+    $company_actions = array(array('edit', 'edit_company', 'directories', 'no'));
 
     $waf->assign("vacancies_created", $vacancies_created);
     $waf->assign("vacancies_modified", $vacancies_modified);
@@ -248,7 +248,7 @@
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
 
-    $action_links = array(array("add", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id"));
+    $action_links = array(array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id", "thickbox"));
     require_once("model/Note.class.php");
     $notes = Note::get_all_by_links($object_type, $object_id);
     $waf->assign("notes", $notes);
@@ -282,7 +282,7 @@
     $waf->assign("note", $note);
     $waf->assign("note_links", $note_links);
 
-    $waf->display("main.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
   function add_note(&$waf, &$user) 

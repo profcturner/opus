@@ -86,7 +86,7 @@
     $waf->display("main.tpl", "staff:student:edit_student:edit_student", "staff/student/edit_student.tpl");
   }
 
-  function view_assessments(&$waf)
+  function list_assessments(&$waf)
   {
     $id = $_SESSION['student_id'];
 
@@ -118,7 +118,8 @@
     require_once("model/AssessmentCombined.class.php");
     $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id());
     $waf->assign("assessment", $assessment);
-    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+    
+    $waf->display("main.tpl", "admin:directories:list_assessments:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
   /**
@@ -133,7 +134,7 @@
     require_once("model/AssessmentCombined.class.php");
     $assessment = new AssessmentCombined($regime_id, $assessed_id, User::get_id(), true); // try to save
     $waf->assign("assessment", $assessment);
-    $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
+    $waf->display("main.tpl", "admin:directories:list_assessments:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
   /**
@@ -148,9 +149,40 @@
   function list_notes(&$waf)
   {
     require_once("model/Student.class.php");
+    $object_type = "Student";
+    $object_id = Student::get_user_id($_SESSION['student_id']);
 
-    goto_section("home", "list_notes&object_type=Student&object_id=" . Student::get_user_id($_SESSION['student_id']));
+    $action_links = array(array("add note", "section=home&function=add_note&object_type=$object_type&object_id=$object_id","thickbox"));
+    require_once("model/Note.class.php");
+    $notes = Note::get_all_by_links($object_type, $object_id);
+    $waf->assign("notes", $notes);
+    $waf->assign("action_links", $action_links);
+
+    $waf->display("main.tpl", "admin:directories:list_notes:list_notes", "admin/directories/search_notes.tpl");
+    /*goto_section("home", "list_notes&object_type=Student&object_id=" . Student::get_user_id($_SESSION['student_id']));*/
   }
 
+  function view_note(&$waf, &$user)
+  {
+    $note_id = (int) WA::request("id");
+
+    // Because notes are accessed from all over the place, we don't know where
+    // to go back to. So, try and get the referring URL
+    if(preg_match("/^.*?(section=.*)$/", $_SERVER['HTTP_REFERER'], $matches))
+    {
+      $action_links = array(array("back", $matches[1]));
+      $waf->assign("action_links", $action_links);
+    }
+    require_once("model/Note.class.php");
+    require_once("model/Notelink.class.php");
+
+    $note = Note::load_by_id($note_id);
+    $note_links = Notelink::get_all("where note_id=$note_id");
+
+    $waf->assign("note", $note);
+    $waf->assign("note_links", $note_links);
+
+    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+  }
 
 ?>

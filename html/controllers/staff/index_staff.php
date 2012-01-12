@@ -29,7 +29,7 @@ function nav_staff()
     (
       array("companies", "directories", "company_directory", "company_directory"),
       array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
-      array("administrators", "directories", "manage_admins", "manage_admins")
+      array("administrators", "directories", "admin_directory", "manage_admins")
     ), 
     "Information"=>array
     (
@@ -49,7 +49,7 @@ function nav_staff()
       $student_name=>array
       (
         array("edit", "student", "edit_student", "edit_student"),
-        array("assessment", "student", "view_assessments", "view_assessments"),
+        array("assessment", "student", "list_assessments", "list_assessments"),
         array("notes", "student", "list_notes", "list_notes"),
         array("drop", "student", "drop_student", "drop_student")
       )

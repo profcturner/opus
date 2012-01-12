@@ -186,7 +186,7 @@
   {
     $id = (int) WA::request("company_id");
 
-    $action_links = array(array("edit", "section=directories&function=edit_company&id=$id"));
+    $action_links = array(array("edit company", "section=directories&function=edit_company&id=$id"));
 
     require_once("model/Company.class.php");
     $company = Company::load_by_id($id);
@@ -207,7 +207,7 @@
     $waf->assign("company", $company);
     $waf->assign("company_activity_names", $company_activity_names);
 
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
   /**
@@ -234,12 +234,12 @@
       'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special"), 'header'=>true)
     );
 
-    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy'));
+    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants','no'), array('clone', 'clone_vacancy','no'), array('remove','remove_vacancy'));
 
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
     $waf->assign("actions", $actions);
-    $waf->assign("action_links", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
+    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id","thickbox"), array("edit company", "section=directories&function=edit_company&id=$company_id","thickbox")));
 
     $waf->display("main.tpl", "admin:directories:vacancies:manage_vacancies", "list.tpl");
   }
@@ -275,7 +275,7 @@
     }
 
     $company_id = $vacancy->company_id;
-    $action_links = array(array("view company", "section=directories&function=view_company&id=$company_id"));
+    $action_links = array(array("view company", "section=directories&function=view_company&id=$company_id","thickbox"));
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
@@ -284,7 +284,7 @@
     $waf->assign("company_activity_names", $company_activity_names);
     $waf->assign("show_heading", true);
 
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
   }
 
   // Admin
@@ -318,7 +318,7 @@
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
 
-    $action_links = array(array("add", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id"));
+    $action_links = array(array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id","thickbox"));
     require_once("model/Note.class.php");
     $notes = Note::get_all_by_links($object_type, $object_id);
     $waf->assign("notes", $notes);
@@ -352,7 +352,7 @@
     $waf->assign("note", $note);
     $waf->assign("note_links", $note_links);
 
-    $waf->display("main.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
   function add_note(&$waf, &$user) 
@@ -370,7 +370,7 @@
       $waf->assign("nvp_array", $nvp_array);
     }
 
-    add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
+    add_object($waf, $user, "Note", array("add note", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }
 
   function add_note_do(&$waf, &$user) 
