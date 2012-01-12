@@ -65,7 +65,7 @@
   {
     $page = WA::request("page");
 
-    manage_objects($waf, $user, "CSVMapping", array(array("add","section=superuser&function=add_csvmapping")), array(array('edit', 'edit_csvmapping'), array('remove','remove_csvmapping')), "get_all", array("", "order by name", $page), "admin:superuser:manage_csvmappings:manage_csvmappings");
+    manage_objects($waf, $user, "CSVMapping", array(array("add CSV mapping","section=superuser&function=add_csvmapping","thickbox")), array(array('edit', 'edit_csvmapping'), array('remove','remove_csvmapping')), "get_all", array("", "order by name", $page), "admin:superuser:manage_csvmappings:manage_csvmappings");
   }
 
   function add_csvmapping(&$waf, &$user) 
@@ -100,7 +100,7 @@
 
   function manage_api_users(&$waf)
   {
-    manage_objects($waf, $user, "User", array(array("add","section=superuser&function=add_api_user")), array(array('remove', 'remove_api_user')), "get_all", array("where user_type='application'", "order by real_name", $page), "admin:superuser:manage_api_users:manage_api_users", "list.tpl", "application");
+    manage_objects($waf, $user, "User", array(array("add API user","section=superuser&function=add_api_user","thickbox")), array(array('remove', 'remove_api_user')), "get_all", array("where user_type='application'", "order by real_name", $page), "admin:superuser:manage_api_users:manage_api_users", "list.tpl", "application");
   }
 
   function remove_api_user(&$waf, &$user) 
@@ -261,7 +261,7 @@
     $waf->assign("pref_user", $user);
     $waf->assign("preferences", $preferences);
 
-    $waf->display("main.tpl", "super:home:user_directory:view_preferences", "super/home/view_preferences.tpl");
+    $waf->display("popup.tpl", "super:home:user_directory:view_preferences", "super/home/view_preferences.tpl");
   }
 
 

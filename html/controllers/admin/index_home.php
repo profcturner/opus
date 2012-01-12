@@ -157,8 +157,8 @@
       'locality'=>array('type'=>'list','size'=>30, 'header'=>true)
     );
 
-    $vacancy_actions = array(array('edit', 'edit_vacancy', 'directories'));
-    $company_actions = array(array('edit', 'edit_company', 'directories'));
+    $vacancy_actions = array(array('edit', 'edit_vacancy', 'directories', 'no'));
+    $company_actions = array(array('edit', 'edit_company', 'directories', 'no'));
 
     $waf->assign("vacancies_created", $vacancies_created);
     $waf->assign("vacancies_modified", $vacancies_modified);
@@ -169,6 +169,8 @@
     $waf->assign("vacancy_actions", $vacancy_actions);
     $waf->assign("company_actions", $company_actions);
     $waf->assign("since", $since);
+    
+    $section = "directories";
 
     $waf->display("main.tpl", "admin:home:company_activity:company_activity", "admin/home/company_activity.tpl");
   }

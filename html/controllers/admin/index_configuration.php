@@ -17,7 +17,8 @@
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
     $waf->assign("nopage", true);
-    manage_objects($waf, $user, "Resource", array(array("add","section=configuration&function=add_resource")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", array("where lookup NOT LIKE 'PRIVATE%'"), "admin:configuration:resources:manage_resources");
+
+    manage_objects($waf, $user, "Resource", array(array("add resource","section=configuration&function=add_resource","thickbox")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", array("where lookup NOT LIKE 'PRIVATE%'"), "admin:configuration:resources:manage_resources");
   }
 
   function add_resource(&$waf, &$user) 
@@ -84,7 +85,7 @@
 
     $page = WA::request("page", true);
 
-    manage_objects($waf, $user, "Faculty", array(array("add","section=configuration&function=add_faculty")), array(array('admins', 'manage_facultyadmins'), array('schools', 'manage_schools'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", array("", "order by name", $page), "admin:configuration:organisation_details:manage_faculties");
+    manage_objects($waf, $user, "Faculty", array(array("add faculty","section=configuration&function=add_faculty","thickbox")), array(array('admins', 'manage_facultyadmins','no'), array('schools', 'manage_schools','no'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", array("", "order by name", $page), "admin:configuration:organisation_details:manage_faculties");
   }
 
   function add_faculty(&$waf, &$user) 
@@ -145,7 +146,7 @@
 
     add_navigation_history($waf, $faculty->name);
 
-    manage_objects($waf, $user, "School", array(array("add","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins'), array('programmes', 'manage_programmes'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", array("where faculty_id=$faculty_id", "order by name", $page), "admin:configuration:organisation_details:manage_schools");
+    manage_objects($waf, $user, "School", array(array("add school","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins','no'), array('programmes', 'manage_programmes','no'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", array("where faculty_id=$faculty_id", "order by name", $page), "admin:configuration:organisation_details:manage_schools");
   }
 
   function add_school(&$waf, &$user) 
@@ -221,7 +222,7 @@
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
-    $action_links = array(array('add', "section=configuration&function=add_facultyadmin&faculty_id=$faculty_id"));
+    $action_links = array(array('add faculty admin', "section=configuration&function=add_facultyadmin&faculty_id=$faculty_id","thickbox"));
     $actions = array(array('remove', "remove_facultyadmin&faculty_id=$faculty_id"));
 
     $waf->assign("actions", $actions);
@@ -254,7 +255,7 @@
     $waf->assign("admins", $admins);
     $waf->assign("policies", $policies);
 
-    $waf->display("main.tpl", "admin:configuration:organisation_details:add_facultyadmin", "admin/configuration/add_level_admin.tpl");
+    $waf->display("popup.tpl", "admin:configuration:organisation_details:add_facultyadmin", "admin/configuration/add_level_admin.tpl");
   }
 
   function add_facultyadmin_do(&$waf, &$user) 
@@ -304,7 +305,7 @@
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
-    $action_links = array(array('add', "section=configuration&function=add_schooladmin&school_id=$school_id"));
+    $action_links = array(array('add school admin', "section=configuration&function=add_schooladmin&school_id=$school_id","thickbox"));
     $actions = array(array('remove', "remove_schooladmin&school_id=$school_id"));
 
     $waf->assign("actions", $actions);
@@ -337,7 +338,7 @@
     $waf->assign("admins", $admins);
     $waf->assign("policies", $policies);
 
-    $waf->display("main.tpl", "admin:configuration:organisation_details:add_schooladmin", "admin/configuration/add_level_admin.tpl");
+    $waf->display("popup.tpl", "admin:configuration:organisation_details:add_schooladmin", "admin/configuration/add_level_admin.tpl");
   }
 
   function add_schooladmin_do(&$waf, &$user) 
@@ -387,8 +388,8 @@
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
-    $action_links = array(array('add', "section=configuration&function=add_programmeadmin&programme_id=$programme_id"));
-    $actions = array(array('remove', "remove_programmeadmin&programme_id=$programme_id"));
+    $action_links = array(array('add programme admin', "section=configuration&function=add_programmeadmin&programme_id=$programme_id", "thickbox"));
+    $actions = array(array('remove', "remove_programmeadmin&programme_id=$programme_id", "thickbox"));
 
     $waf->assign("actions", $actions);
     $waf->assign("action_links", $action_links);
@@ -420,7 +421,7 @@
     $waf->assign("admins", $admins);
     $waf->assign("policies", $policies);
 
-    $waf->display("main.tpl", "admin:configuration:organisation_details:add_programmeadmin", "admin/configuration/add_level_admin.tpl");
+    $waf->display("popup.tpl", "admin:configuration:organisation_details:add_programmeadmin", "admin/configuration/add_level_admin.tpl");
   }
 
   function add_programmeadmin_do(&$waf, &$user) 
@@ -472,12 +473,12 @@
     add_navigation_history($waf, $school->name);
     
     $other_actions = array(
-    	array("add","section=configuration&function=add_programme"),
-    	array("bulk change assessment","section=configuration&function=bulk_change_assessment_group"),
+    	array("add programme","section=configuration&function=add_programme","thickbox"),
+    	array("bulk change assessment","section=configuration&function=bulk_change_assessment_group","thickbox")
 		);
 
 
-    manage_objects($waf, $user, "Programme", $other_actions, array(array('admins', 'manage_programmeadmins'), array('assessment', 'manage_assessmentgroupprogrammes'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", array("where school_id=$school_id", "order by name", $page), "admin:configuration:organisation_details:manage_programmes");
+    manage_objects($waf, $user, "Programme", $other_actions, array(array('admins', 'manage_programmeadmins', 'no'), array('assessment', 'manage_assessmentgroupprogrammes', 'no'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", array("where school_id=$school_id", "order by name", $page), "admin:configuration:organisation_details:manage_programmes");
   }
   
   function bulk_change_assessment_group(&$waf, $user, $title)
@@ -494,7 +495,7 @@
 		$waf->assign("assessmentgroups", $assessmentgroups);
 		$waf->assign("programmes", $programmes);
 		
-    $waf->display("main.tpl", "admin:configuration:organisation_details:bulk_change_assessment_group", "admin/configuration/bulk_change_assessment_group.tpl");		
+    $waf->display("popup.tpl", "admin:configuration:organisation_details:bulk_change_assessment_group", "admin/configuration/bulk_change_assessment_group.tpl");		
 	}
 
   function bulk_change_assessment_group_do(&$waf, $user, $title)
@@ -591,7 +592,7 @@
   {
     if(!Policy::check_default_policy("assessmentgroup", "list")) $waf->halt("error:policy:permissions");
 
-    manage_objects($waf, $user, "AssessmentGroup", array(array("add","section=configuration&function=add_assessmentgroup")), array(array('regime', 'manage_assessmentregimes'), array('edit', 'edit_assessmentgroup'), array('remove','remove_assessmentgroup')), "get_all", "", "admin:configuration:manage_assessmentgroups:manage_assessmentgroups");
+    manage_objects($waf, $user, "AssessmentGroup", array(array("add assessment group","section=configuration&function=add_assessmentgroup","thickbox")), array(array('regime', 'manage_assessmentregimes','no'), array('edit', 'edit_assessmentgroup'), array('remove','remove_assessmentgroup')), "get_all", "", "admin:configuration:manage_assessmentgroups:manage_assessmentgroups");
   }
 
   function add_assessmentgroup(&$waf, &$user) 
@@ -647,7 +648,7 @@
     if(empty($group_id)) $group_id = (int) WA::request('id');
     $_SESSION['group_id'] = $group_id;
 
-    manage_objects($waf, $user, "AssessmentRegime", array(array("add","section=configuration&function=add_assessmentregime")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", array("where group_id=$group_id", "ORDER BY student_description", $page), "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
+    manage_objects($waf, $user, "AssessmentRegime", array(array("add assessment regime","section=configuration&function=add_assessmentregime","thickbox")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", array("where group_id=$group_id", "ORDER BY student_description", $page), "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
   }
 
   function add_assessmentregime(&$waf, &$user) 
@@ -709,7 +710,7 @@
 
     add_navigation_history($waf, Programme::get_name($programme_id));
 
-    manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add","section=configuration&function=add_assessmentgroupprogramme")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", array("where programme_id=$programme_id", "", $page), "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
+    manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add programme","section=configuration&function=add_assessmentgroupprogramme", "thickbox")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", array("where programme_id=$programme_id", "", $page), "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
   }
 
   function add_assessmentgroupprogramme(&$waf, &$user) 
@@ -773,7 +774,7 @@
       array_push($actions, array('templates', 'manage_cvgroup_templates'));
     }
 
-    manage_objects($waf, $user, "CVGroup", array(array("add","section=configuration&function=add_cvgroup")), $actions , "get_all", "", "admin:configuration:manage_cvgroups:manage_cvgroups");
+    manage_objects($waf, $user, "CVGroup", array(array("add CV group","section=configuration&function=add_cvgroup","thickbox")), $actions , "get_all", "", "admin:configuration:manage_cvgroups:manage_cvgroups");
   }
 
   function add_cvgroup(&$waf, &$user) 
@@ -922,7 +923,7 @@
 
     if(!Policy::check_default_policy("help", "list")) $waf->halt("error:policy:permissions");
 
-    manage_objects($waf, $user, "Help", array(array("add","section=configuration&function=add_help")), array(array('edit', 'edit_help'), array('remove','remove_help')), "get_all", array("", "order by lookup, channel_id", $page), "admin:configuration:manage_help:manage_help");
+    manage_objects($waf, $user, "Help", array(array("add help","section=configuration&function=add_help","thickbox")), array(array('edit', 'edit_help'), array('remove','remove_help')), "get_all", array("", "order by lookup, channel_id", $page), "admin:configuration:manage_help:manage_help");
   }
 
   function add_help(&$waf, &$user) 

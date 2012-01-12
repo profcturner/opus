@@ -14,7 +14,7 @@
   {
     set_navigation_history($waf, "Policies");
 
-    manage_objects($waf, $user, "Policy", array(array("add","section=advanced&function=add_policy")), array(array('permissions','edit_policy_permissions'), array('edit', 'edit_policy'), array('remove','remove_policy')), "get_all", "", "admin:advanced:manage_policies:manage_policies");
+    manage_objects($waf, $user, "Policy", array(array("add policy","section=advanced&function=add_policy","thickbox")), array(array('permissions','edit_policy_permissions'), array('edit', 'edit_policy'), array('remove','remove_policy')), "get_all", "", "admin:advanced:manage_policies:manage_policies");
   }
 
   function edit_policy_permissions(&$waf, $user, $title)
@@ -167,7 +167,7 @@
     // Run the template
 
     $waf->assign("policy", $policy);
-    $waf->display("main.tpl", "admin:advanced:manage_policies:edit_policy_permissions", "admin/advanced/edit_policy_permissions.tpl");
+    $waf->display("popup.tpl", "admin:advanced:manage_policies:edit_policy_permissions", "admin/advanced/edit_policy_permissions.tpl");
   }
 
   function edit_policy_permissions_do(&$waf, $user, $title)
@@ -235,7 +235,7 @@
 
   function manage_languages(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Language", array(array("add","section=advanced&function=add_language")), array(array('edit', 'edit_language'), array('remove','remove_language')), "get_all", "", "admin:advanced:manage_languages:manage_languages");
+    manage_objects($waf, $user, "Language", array(array("add language","section=advanced&function=add_language","thickbox")), array(array('edit', 'edit_language'), array('remove','remove_language')), "get_all", "", "admin:advanced:manage_languages:manage_languages");
   }
 
   function add_language(&$waf, &$user) 
@@ -282,7 +282,7 @@
 
   function manage_activitytypes(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Activitytype", array(array("add","section=advanced&function=add_activitytype")), array(array('edit', 'edit_activitytype'), array('remove','remove_activitytype')), "get_all", "", "admin:advanced:manage_activitytypes:manage_activitytypes");
+    manage_objects($waf, $user, "Activitytype", array(array("add activity type","section=advanced&function=add_activitytype","thickbox")), array(array('edit', 'edit_activitytype'), array('remove','remove_activitytype')), "get_all", "", "admin:advanced:manage_activitytypes:manage_activitytypes");
   }
 
   function add_activitytype(&$waf, &$user) 
@@ -329,7 +329,7 @@
 
   function manage_vacancytypes(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Vacancytype", array(array("add","section=advanced&function=add_vacancytype")), array(array('edit', 'edit_vacancytype'), array('remove','remove_vacancytype')), "get_all", "", "admin:advanced:manage_vacancytypes:manage_vacancytypes");
+    manage_objects($waf, $user, "Vacancytype", array(array("add vacancy type","section=advanced&function=add_vacancytype","thickbox")), array(array('edit', 'edit_vacancytype'), array('remove','remove_vacancytype')), "get_all", "", "admin:advanced:manage_vacancytypes:manage_vacancytypes");
   }
 
   function add_vacancytype(&$waf, &$user) 
@@ -380,7 +380,7 @@
 
     set_navigation_history($waf, "Channels");
 
-    manage_objects($waf, $user, "Channel", array(array("add","section=advanced&function=add_channel")), array(array('edit', 'edit_channel'), array('associations', 'manage_channelassociations'), array('remove','remove_channel')), "get_all", "", "admin:advanced:manage_channels:manage_channels");
+    manage_objects($waf, $user, "Channel", array(array("add channel","section=advanced&function=add_channel","thickbox")), array(array('edit', 'edit_channel'), array('associations', 'manage_channelassociations','no'), array('remove','remove_channel')), "get_all", "", "admin:advanced:manage_channels:manage_channels");
   }
 
   function add_channel(&$waf, &$user) 
@@ -445,17 +445,17 @@
     require_once("model/ChannelAssociation.class.php");
 
     $action_links = array(
-      array("add programme", "section=advanced&function=add_channelassociation_programme&channel_id=$channel_id"),
-      array("add school", "section=advanced&function=add_channelassociation_school&channel_id=$channel_id"),
-      array("add assessmentgroup", "section=advanced&function=add_channelassociation_assessmentgroup&channel_id=$channel_id"),
-      array("add activity", "section=advanced&function=add_channelassociation_activity&channel_id=$channel_id")
+      array("add programme", "section=advanced&function=add_channelassociation_programme&channel_id=$channel_id","thickbox"),
+      array("add school", "section=advanced&function=add_channelassociation_school&channel_id=$channel_id","thickbox"),
+      array("add assessment group", "section=advanced&function=add_channelassociation_assessmentgroup&channel_id=$channel_id","thickbox"),
+      array("add activity", "section=advanced&function=add_channelassociation_activity&channel_id=$channel_id","thickbox")
     );
 
     $waf->assign("channel_id", $channel_id);
     $waf->assign("objects", ChannelAssociation::get_all_extended($channel_id));
     $waf->assign("action_links", $action_links);
 
-    $waf->display("main.tpl", "admin:advanced:manage_channelassociations:manage_channelassociations", "admin/advanced/manage_channelassociations.tpl");
+    $waf->display("main.tpl", "admin:advanced:manage_channels:manage_channelassociations", "admin/advanced/manage_channelassociations.tpl");
 
   }
 
@@ -471,7 +471,7 @@
     $waf->assign("type_array", array('course'=>'programme'));
     $waf->assign("id_array", Programme::get_id_and_description());
 
-    $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_programme", "admin/advanced/add_channelassociation.tpl");
+    $waf->display("popup.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_programme", "admin/advanced/add_channelassociation.tpl");
   }
 
   function add_channelassociation_school(&$waf)
@@ -486,7 +486,7 @@
     $waf->assign("type_array", array('school'=>'school'));
     $waf->assign("id_array", School::get_id_and_field("name"));
 
-    $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_school", "admin/advanced/add_channelassociation.tpl");
+    $waf->display("popup.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_school", "admin/advanced/add_channelassociation.tpl");
   }
 
   function add_channelassociation_activity(&$waf)
@@ -501,7 +501,7 @@
     $waf->assign("type_array", array('activity'=>'activity'));
     $waf->assign("id_array", ActivityType::get_id_and_field("name"));
 
-    $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_activity", "admin/advanced/add_channelassociation.tpl");
+    $waf->display("popup.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_activity", "admin/advanced/add_channelassociation.tpl");
   }
 
   function add_channelassociation_assessmentgroup(&$waf)
@@ -516,7 +516,7 @@
     $waf->assign("type_array", array('assessmentgroup'=>'assessmentgroup'));
     $waf->assign("id_array", AssessmentGroup::get_id_and_field("name"));
 
-    $waf->display("main.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_assessmentgroup", "admin/advanced/add_channelassociation.tpl");
+    $waf->display("popup.tpl", "admin:advanced:manage_channelassociations:add_channelassociation_assessmentgroup", "admin/advanced/add_channelassociation.tpl");
   }
 
   function add_channelassociation_student(&$waf)
@@ -592,7 +592,7 @@
 
   function manage_mimetypes(&$waf, $user, $title)
   {
-    manage_objects($waf, $user, "Mimetype", array(array("add","section=advanced&function=add_mimetype")), array(array('edit', 'edit_mimetype'), array('remove','remove_mimetype')), "get_all", "", "admin:advanced:manage_mimetypes:manage_mimetypes");
+    manage_objects($waf, $user, "Mimetype", array(array("add mime type","section=advanced&function=add_mimetype","thickbox")), array(array('edit', 'edit_mimetype'), array('remove','remove_mimetype')), "get_all", "", "admin:advanced:manage_mimetypes:manage_mimetypes");
   }
 
   function add_mimetype(&$waf, &$user) 
@@ -643,7 +643,7 @@
   {
     if(!Policy::check_default_policy("automail", "list")) $waf->halt("error:policy:permissions");
 
-    manage_objects($waf, $user, "Automail", array(array("add","section=advanced&function=add_automail")), array(array('edit', 'edit_automail'), array('remove','remove_automail')), "get_all", "", "admin:advanced:manage_automail:manage_automail");
+    manage_objects($waf, $user, "Automail", array(array("add automail","section=advanced&function=add_automail","thickbox")), array(array('edit', 'edit_automail'), array('remove','remove_automail')), "get_all", "", "admin:advanced:manage_automail:manage_automail");
   }
 
   function add_automail(&$waf, &$user) 
@@ -694,7 +694,7 @@
   {
     set_navigation_history($waf, "Assessments");
 
-    manage_objects($waf, $user, "Assessment", array(array("add","section=advanced&function=add_assessment")), array(array('edit', 'edit_assessment'), array('structure', 'manage_assessmentstructure'), array('remove','remove_assessment')), "get_all", "", "admin:advanced:manage_assessments:manage_assessments");
+    manage_objects($waf, $user, "Assessment", array(array("add assessment","section=advanced&function=add_assessment","thickbox")), array(array('edit', 'edit_assessment'), array('structure', 'manage_assessmentstructure','no'), array('remove','remove_assessment')), "get_all", "", "admin:advanced:manage_assessments:manage_assessments");
   }
 
   function add_assessment(&$waf, &$user) 
@@ -743,7 +743,7 @@
     $assessment = Assessment::load_by_id($assessment_id);
     add_navigation_history($waf, $assessment->description);
 
-    manage_objects($waf, $user, "AssessmentStructure", array(array("add","section=advanced&function=add_assessmentstructure")), array(array('edit', 'edit_assessmentstructure'), array('up', "move_assessmentstructure_up&assessment_id=$assessment_id"), array('down', "move_assessmentstructure_down&assessment_id=$assessment_id"), array('remove','remove_assessmentstructure')), "get_all", array("where assessment_id=$assessment_id", "order by varorder", $page), "admin:advanced:manage_assessments:manage_assessmentstructure");
+    manage_objects($waf, $user, "AssessmentStructure", array(array("add assessment structure","section=advanced&function=add_assessmentstructure","thickbox")), array(array('edit', 'edit_assessmentstructure'), array('up', "move_assessmentstructure_up&assessment_id=$assessment_id",'no'), array('down', "move_assessmentstructure_down&assessment_id=$assessment_id",'no'), array('remove','remove_assessmentstructure')), "get_all", array("where assessment_id=$assessment_id", "order by varorder", $page), "admin:advanced:manage_assessments:manage_assessmentstructure");
   }
 
   function move_assessmentstructure_up(&$waf, &$user)

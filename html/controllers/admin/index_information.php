@@ -32,7 +32,7 @@
     $resource = Resource::load_by_id($id);
 
     $opus->assign("resource", $resource);
-    $opus->display("main.tpl", "admin:information:list_resources:info_resource", "general/information/info_resource.tpl");
+    $opus->display("popup.tpl", "admin:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
   function list_reports(&$waf, $user, $title)

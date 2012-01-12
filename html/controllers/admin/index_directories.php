@@ -59,7 +59,7 @@
     if(in_array("ShowTimelines", $other_options)) $waf->assign("show_timelines", true);
 
     $waf->assign("students", $objects);
-    $waf->assign("action_links", array(array('add', 'section=directories&function=add_student')));
+    $waf->assign("action_links", array(array('add student', 'section=directories&function=add_student', 'thickbox')));
     $waf->assign("student_count", count($objects));
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
@@ -82,7 +82,7 @@
     if(in_array("ShowTimelines", $other_options)) $waf->assign("show_timelines", true);
 
     $waf->assign("students", $objects);
-    $waf->assign("action_links", array(array('add', 'section=directories&function=add_student')));
+    $waf->assign("action_links", array(array('add student', 'section=directories&function=add_student', 'thickbox')));
     $waf->assign("student_count", count($objects));
     $waf->display("main.tpl", "admin:directories:student_directory:search_students", "admin/directories/search_students.tpl");
   }
@@ -162,7 +162,7 @@
     if(!empty($config_sensitive['ws']['url'])) $waf->assign("ws_enabled", true);
     else $waf->assign("ws_enabled", false);
 
-    add_object($waf, $user, "Student", array("add", "directories", "add_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student", "admin/directories/add_student.tpl");
+    add_object($waf, $user, "Student", array("add student", "directories", "add_student_do"), array(array("cancel","section=directories&function=student_directory")), array(array("user_id",$user["user_id"])), "admin:directories:student_directory:add_student", "admin/directories/add_student.tpl");
   }
 
   function add_student_do(&$waf, &$user) 
@@ -517,7 +517,7 @@
 
     $waf->assign("activities", $activities);
     $waf->assign("companies", Company::get_all_extended($search, $activities, $sort));
-    $waf->assign("action_links", array(array("add","section=directories&function=add_company")));
+    $waf->assign("action_links", array(array("add company","section=directories&function=add_company","thickbox")));
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "admin/directories/search_companies.tpl");
   }
 
@@ -557,15 +557,16 @@
     $waf->assign("changes", WA::request("changes"));
     $waf->assign("xinha_editor", true);
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:companies:edit_company", "admin/directories/edit_company.tpl");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:company_directory:edit_company", "admin/directories/edit_company.tpl");
   }
 
   function edit_company_do(&$waf, &$user) 
   {
     $id = (int) WA::request("id");
+    $waf->assign("changes", WA::request("changes"));
     if(!Policy::check_default_policy("company", "create")) $waf->halt("error:policy:permissions");
 
-    edit_object_do($waf, $user, "Company", "section=directories&function=edit_company_real&id=$id&changes=1", "edit_company_real");
+    edit_object_do($waf, $user, "Company", "section=directories&function=company_directory", "edit_company_real");
   }
 
   function remove_company(&$waf, &$user) 
@@ -592,7 +593,7 @@
       goto_section("directories", "view_company&company_id=$company_id");
     }
 
-    $action_links = array(array("edit", "section=directories&function=edit_company&id=$company_id"));
+    $action_links = array(array("edit company", "section=directories&function=edit_company&id=$company_id"));
 
     require_once("model/Company.class.php");
     $company = Company::load_by_id($company_id);
@@ -629,7 +630,6 @@
   */
   function manage_vacancies(&$waf, $user, $title)
   {
-    $page = (int) WA::request("page", true);
 
     $company_id = (int) WA::request("company_id", true);
     if($company_id && ($_SESSION['company_id'] != $company_id))
@@ -657,15 +657,15 @@
       'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special"), 'header'=>true)
     );
 
-    $actions = array(array('edit', 'edit_vacancy'), array('applicants', 'manage_applicants'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy'));
+    $actions = array(array('edit', 'edit_vacancy', 'no'), array('applicants', 'manage_applicants', 'no'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy'));
 
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
     $waf->assign("object_num", $object_num);
     $waf->assign("actions", $actions);
-    $waf->assign("action_links", array(array("add","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
+    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id", "thickbox"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
 
-    $waf->display("main.tpl", "admin:directories:vacancies:manage_vacancies", "list.tpl");
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_vacancies", "list.tpl");
   }
 
   function add_vacancy(&$waf, &$user) 
@@ -872,7 +872,7 @@
     }
 
     $company_id = $vacancy->company_id;
-    $action_links = array(array("edit", "section=directories&function=edit_vacancy&id=$id"), array("edit company", "section=directories&function=edit_company&id=$company_id"));
+    $action_links = array(array("edit vacancy", "section=directories&function=edit_vacancy&id=$id"));
     if($student_id)
     {
       array_push($action_links, array("apply with student", "section=directories&function=add_application&id=$id"));
@@ -1000,7 +1000,7 @@
     $waf->assign("cv_options", $cv_options);
     $waf->assign("invalid", $invalid);
     $waf->assign("selected_cv_ident", $application->cv_ident);
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:add_application", "admin/directories/edit_application.tpl");
   }
 
   function edit_application_do(&$waf, &$user) 
@@ -1358,7 +1358,7 @@
       $waf->assign("headings", $headings);
       $waf->assign("objects", $objects);
       $waf->assign("actions", $actions);
-      $waf->assign("action_links", array(array("add", "section=directories&function=add_contact")));
+      $waf->assign("action_links", array(array("add contact", "section=directories&function=add_contact", "thickbox")));
     }
     $waf->display("main.tpl", "admin:directories:contact_directory:company_contacts", "list.tpl");
   }
@@ -1573,10 +1573,10 @@
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
-    $actions = array(array('edit', 'edit_staff'));
+    $actions = array(array('edit', 'edit_staff', 'no'));
     
     // Now allow staff to be added
-    $action_links = array(array('add', 'section=directories&function=add_staff'));
+    $action_links = array(array('add staff', 'section=directories&function=add_staff', 'thickbox'));
     
     $waf->assign("action_links", $action_links);
     $waf->assign("actions", $actions);
@@ -1605,10 +1605,10 @@
       'email'=>array('type'=>'email','size'=>40, 'header'=>true),
       'voice'=>array('type'=>'text','size'=>40, 'header'=>true, title=>'Phone')
     );
-    $actions = array(array('edit', 'edit_staff'));
+    $actions = array(array('edit', 'edit_staff', 'no'));
 
     // Now allow staff to be added
-    $action_links = array(array('add', 'section=directories&function=add_staff'));
+    $action_links = array(array('add staff', 'section=directories&function=add_staff','thickbox'));
     
     $waf->assign("action_links", $action_links);
     $waf->assign("actions", $actions);
@@ -1687,7 +1687,7 @@
     $waf->assign("alt_headings", $alt_headings);
     $waf->assign("staff", $staff);
 
-    manage_objects($waf, $user, "Student", array(array("back", "section=directories&function=edit_staff&id=" . $id)), array(array('edit', 'edit_student')), "get_all", array("where academic_user_id = " . $staff->user_id, "order by placement_year desc, lastname", $page), "staff:home:home:home", "staff/home/home.tpl");
+    manage_objects($waf, $user, "Student", array(array("back", "section=directories&function=edit_staff&id=" . $id)), array(array('edit', 'edit_student', 'no')), "get_all", array("where academic_user_id = " . $staff->user_id, "order by placement_year desc, lastname", $page), "staff:home:home:home", "staff/home/home.tpl");
   }
 
   // Admin
@@ -1739,7 +1739,7 @@
     {
       $actions = array(array('edit', 'edit_admin'));
     }
-    $action_links = array(array('add', 'section=directories&function=add_admin'));
+    $action_links = array(array('add admin', 'section=directories&function=add_admin', 'thickbox'));
 
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
@@ -1771,7 +1771,7 @@
     {
       $actions = array(array('edit', 'edit_admin'));
     }
-    $action_links = array(array('add', 'section=directories&function=add_admin'));
+    $action_links = array(array('add admin', 'section=directories&function=add_admin', 'thickbox'));
 
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);
@@ -1886,7 +1886,7 @@
 
     $waf->assign("admin", $admin);
     $waf->assign("action_links", array(array("cancel", "section=directories&function=manage_super_admins")));
-    $waf->display("main.tpl", "admin:directories:admin_directory:promote_admin", "admin/directories/promote_admin.tpl");
+    $waf->display("popup.tpl", "admin:directories:admin_directory:promote_admin", "admin/directories/promote_admin.tpl");
   }
 
   function promote_admin_do(&$waf, &$user)
@@ -1918,7 +1918,7 @@
 
     $waf->assign("admin", $admin);
     $waf->assign("action_links", array(array("cancel", "section=directories&function=manage_super_admins")));
-    $waf->display("main.tpl", "admin:directories:admin_directory:demote_admin", "admin/directories/demote_admin.tpl");
+    $waf->display("popup.tpl", "admin:directories:admin_directory:demote_admin", "admin/directories/demote_admin.tpl");
   }
 
 
@@ -2013,13 +2013,13 @@
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
 
-    $action_links = array(array("add", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id"));
+    $action_links = array(array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id", "thickbox"));
     require_once("model/Note.class.php");
     $notes = Note::get_all_by_links($object_type, $object_id);
     $waf->assign("notes", $notes);
     $waf->assign("action_links", $action_links);
 
-    $waf->display("main.tpl", "admin:directories:list_notes:list_notes", "admin/directories/search_notes.tpl");
+    $waf->display("main.tpl", "admin:directories:company_directory:list_notes", "admin/directories/search_notes.tpl");
   }
 
   /**
@@ -2047,7 +2047,7 @@
     $waf->assign("note", $note);
     $waf->assign("note_links", $note_links);
 
-    $waf->display("main.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
+    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
   function add_note(&$waf, &$user) 
@@ -2098,7 +2098,7 @@
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add","section=directories&function=add_company_resource&company_id=$company_id")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources", "list.tpl", "company");
+    manage_objects($waf, $user, "Resource", array(array("add resource","section=directories&function=add_company_resource&company_id=$company_id", "thickbox")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)
@@ -2171,7 +2171,7 @@
     if(!Policy::is_auth_for_student($student_id, "student", "editStatus")) $waf->halt("error:policy:permissions");
     
     $page = WA::request('page', true);
-    manage_objects($waf, User::get_id(), "CV", array(array("add","section=directories&function=add_cv")), array(array('edit', 'edit_cv'), array('remove','remove_cv')), "get_all", array("WHERE `user_id`=\"".$student_id."\"", "", $page, True), "student:career:cv_store:manage_cvs");
+    manage_objects($waf, User::get_id(), "CV", array(array("add CV","section=directories&function=add_cv", "thickbox")), array(array('edit', 'edit_cv'), array('remove','remove_cv')), "get_all", array("WHERE `user_id`=\"".$student_id."\"", "", $page, True), "student:career:student_directory:manage_cvs");
   }
 
   function add_cv(&$waf, $user) 
