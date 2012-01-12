@@ -53,7 +53,7 @@ pages
 
 {section loop=$actions name=action}
     <td class="action">
-      <a href="?section={if $actions[action][2]}{$actions[action][2]}{else}{$section}{/if}&function={$actions[action][1]}&id={$objects[object]->id}&page={$page}">{$actions[action][0]}</a>&nbsp;
+      <a {if $actions[action][2] !="no" && $actions[action][2] !="_blank" && $actions[action][3] !="no"} class="thickbox" title="{$actions[action][1]|replace:"_":" "|capitalize}" {/if} href="?section={if $actions[action][2] === "directories"}directories{else}{$section}{/if}&function={$actions[action][1]}&id={$objects[object]->id}&page={$page}">{$actions[action][0]}</a>&nbsp;
     </td>
 {/section}
   </tr>

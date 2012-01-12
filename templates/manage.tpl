@@ -4,9 +4,11 @@
 
   {* BBCode is not currently used in OPUS, and the JS may have license issues, so removing for now *}
   {* <script src="{$config.opus.url}/javascript/bb_code.js" type="text/javascript"></script> *}
-  <script src="{$config.opus.url}/javascript/textcounter.js" type="text/javascript"></script>
-  <script src="{$config.opus.url}/javascript/jacs.js"
-        language="javascript"></script>
+ <script src="{$config.opus.url}/javascript/textcounter.js" type="text/javascript"></script>
+  {*<script src="{$config.opus.url}/javascript/jacs.js" language="javascript"></script>*}
+    <script src="{$config.opus.url}/javascript/dhtmlxcommon.js" type="text/javascript"></script>
+    <script src="{$config.opus.url}/javascript/dhtmlxcalendar.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="{$config.opus.url}/css/dhtmlxcalendar.css"/>
 
 {* javascript to do the ajax object validation calls, this is used in the add and edit mode *}
 
