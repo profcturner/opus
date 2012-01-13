@@ -13,7 +13,6 @@
  * @uses WA.class.php
  *
  */
-require_once('model/Student_Detail.class.php');
 
 main();
 
@@ -100,7 +99,7 @@ function main()
     //assignment of user
     $waf->assign_by_ref("user", $waf->user);
     $waf->assign_by_ref("currentgroup", $currentgroup);
-    $preference_id = $waf->user['pds']['reg_number'];
+    $preference_id = $waf->user['opus']['reg_number'];
     $preferences = get_system_theme($preference_id);
     $waf->assign("system_theme", $preferences);
     $waf->assign("sidebar", true);
