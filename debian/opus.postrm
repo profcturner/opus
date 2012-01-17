@@ -50,11 +50,18 @@ then
   then
     rm /usr/share/opus/include/local.conf.php
   fi
-  # and finally any language localisation
+  # and any language localisation
   if [ -e /usr/share/opus/configs/local_en.conf ]
   then
     rm /usr/share/opus/configs/local_en.conf
   fi
+  # and finally any jquery link
+  if [ -e /usr/share/opus/javascript/jquery.js ]
+  then
+    rm /usr/share/opus/javascript/jquery.js
+  fi
+  
+  
 
   # Remove compiled templates
   if [ -e /var/lib/opus/templates_c ]

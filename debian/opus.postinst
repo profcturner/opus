@@ -134,6 +134,13 @@ EOF
   then
     ln -s /etc/opus/local_en.conf /usr/share/opus/configs/local_en.conf
   fi
+  
+  # Install a symlink for jquery
+  if [ ! -e /usr/share/opus/html/javascript/jquery.js ]
+  then
+    echo "Linking jquery ..."
+    ln -s /usr/share/javascript/jquery/jquery.js /usr/share/opus/html/javascript/jquery.js
+  fi
 
   # Ensure log file stubs are present, have the right ownership and permissions
   chown www-data:root /var/log/opus

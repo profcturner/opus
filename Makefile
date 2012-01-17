@@ -77,8 +77,10 @@ deb-opus: deb-opus-etc
 	mkdir -p ${debvarlib}/opus/templates_cache
 	mkdir -p ${debvarlib}/opus/sessions
 	cp -rf html ${debprefix}/share/opus
-	# Remove tiny_mce
+	# Remove tiny_mce (which is Debian packaged)
 	rm -rf ${debprefix}/share/opus/html/javascript/tiny_mce
+	# Remove jquery (which is Debian packaged)
+	rm ${debprefix}/share/opus/html/javascript/jquery.js
 	# Remove extra license for tiny_mce when doing debian package (it's elsewhere)
 	#rm ${debprefix}/share/opus/html/javascript/tiny_mce/license.txt
 	cp -rf include ${debprefix}/share/opus
