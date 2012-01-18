@@ -182,7 +182,6 @@
   </div>
   <div id="footer">
   <p>
-    <a href="?section=information&function=help_directory">{#help_directory#}</a> |
     <a href="?section=information&function=copyright">{#copyright#}</a> |
     <a href="?section=information&function=privacy">{#privacy#}</a> |
     <a href="?section=information&function=terms_conditions">{#terms_conditions#}</a> |
