@@ -426,7 +426,7 @@ text-decoration: none;
   margin-left:50px;
   margin-right:50px;
   clear:left;
-  background-color: #f7f7f7;
+  /*background-color: #f7f7f7;*/
   border: 0px #f7f7f7 solid;
   min-height:500px;
   display:block;
