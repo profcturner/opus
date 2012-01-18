@@ -45,19 +45,19 @@ class Preference extends DTO_Preference
     return($preferences);
   }
 
-  function load_all($reg_number)
+  function load_all($user_id)
   {
     $waf =& UUWAF::get_instance();
     $application = $waf->title;
-    if(empty($reg_number))
+    if(empty($user_id))
     {
-      $waf->log("preferences cannot be loaded for this user without a reg_number", PEAR_LOG_DEBUG, 'debug');
+      $waf->log("preferences cannot be loaded for this without a reg_number", PEAR_LOG_DEBUG, 'debug');
       return;
     }
 
     $pref = new Preference;
 
-    $preferences = $pref->_get_all("where application='$application' and reg_number='$reg_number'");
+    $preferences = $pref->_get_all("where application='$application' and reg_number='$user_id'");
 
     // Unwind into the session
     foreach($preferences as $preference)
@@ -67,29 +67,62 @@ class Preference extends DTO_Preference
     $waf->log(count($preferences) . " preference values loaded", PEAR_LOG_DEBUG, 'debug');
   }
 
-  function save_all($reg_number)
+  function get_system_theme($user_id)
+  {
+    $waf =& UUWAF::get_instance($config['waf']);
+
+    $application = $waf->title;
+  
+    if(empty($user_id))
+    {
+      $waf->log("preferences cannot be loaded for this user without a user id", PEAR_LOG_DEBUG, 'debug');
+      $system_theme = "blue";
+      return $system_theme;
+    }
+
+		if(empty($application))
+    {
+      $waf->log("preferences cannot be loaded for  user id".$user_id." without an application name", PEAR_LOG_DEBUG, 'debug');
+      $system_theme = "blue";
+      return $system_theme;
+    }
+
+	$preferences = $_SESSION['waf'][$waf->title]['preferences'];
+
+	$system_theme = $preferences['system_theme'];
+	
+    if ($system_theme == "")
+    {	
+    	$system_theme = "blue";
+    }
+    return $system_theme;
+  }
+
+  function save_all($user_id)
   {
     $waf =& UUWAF::get_instance();
     $application = $waf->title;
 
-    if(empty($reg_number))
+
+    if(empty($user_id))
     {
-      $waf->log("preferences cannot be saved for this user without a reg_number", PEAR_LOG_DEBUG, 'debug');
+      $waf->log("preferences cannot be saved for this user without a user id", PEAR_LOG_DEBUG, 'debug');
       return;
     }
     // Nothing to save?
     if(!isset($_SESSION['waf'][$application]['preferences'])) return;
 
     // Remove what's there
-    $pref = new Preference;
-    $pref->_remove_where("where application='$application' and reg_number='$reg_number'");
+    $pref = new Preference; 
+    //$pref->_remove_where("where application='$application' and reg_number='$user_id'");
+    $pref->_remove_where("where application='$application' and reg_number='$user_id'");
     $count = 0;
 
     foreach($_SESSION['waf'][$application]['preferences'] as $name => $value)
     {
       $fields = array();
       $fields['application'] = $application;
-      $fields['reg_number'] = $reg_number;
+      $fields['reg_number'] = $user_id;
       $fields['name'] = $name;
       $fields['value'] = serialize($value);
 
@@ -122,36 +155,7 @@ class Preference extends DTO_Preference
     $preference->_load_by_id();
     return $preference;
   }
+
 }
 
-  function get_system_theme($reg_number)
-  {
-     $waf =& UUWAF::get_instance($config['waf']);
-    $application = $waf->title;
-    /*if(empty($reg_number))
-    {
-      log_to_debug("preferences cannot be loaded for this user without a reg_number");
-      $system_theme = "blue";
-      return $system_theme;
-    }
-
-		if(empty($application))
-    {
-      log_to_debug("preferences cannot be loaded for this user without an application name");
-      $system_theme = "blue";
-      return $system_theme;
-    }*/
-	$preferences = $_SESSION['waf'][$waf->title]['preferences'];
-	
-	
-	$system_theme = $preferences['system_theme'];
-
-    if ($system_theme == "")
-    {	
-    	$system_theme = "blue";
-    }
-    
-    return $system_theme;
-  }
-  
 ?>
