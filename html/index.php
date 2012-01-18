@@ -98,10 +98,12 @@ function main()
 
     //assignment of user
     $waf->assign_by_ref("user", $waf->user);
+    $user_id = $waf->user['opus']['user_id'];
+	$preference_id = $user_id;
+	$preferences = Preference::get_system_theme($preference_id);//print_r($preferences);die;
+	$waf->assign("system_theme", $preferences);
     $waf->assign_by_ref("currentgroup", $currentgroup);
-    $preference_id = $waf->user['opus']['reg_number'];
-    $preferences = get_system_theme($preference_id);
-    $waf->assign("system_theme", $preferences);
+    
     $waf->assign("sidebar", true);
 
     // Is there any redirect, if so, get it, unset it and go there
@@ -255,7 +257,7 @@ function load_user($username)
 
     $waf->log("logging in");
     require_once("model/Preference.class.php");
-    Preference::load_all($user->reg_number);
+    Preference::load_all($user->id);
 
     $_SESSION['lastitems'] = new Lastitems(10);
     $_SESSION['waf']['user'] = $waf->user;
@@ -1120,16 +1122,11 @@ function get_academic_year()
 }
 
 
-function edit_preferences(&$waf, $user_id)
+function edit_preferences(&$waf, $id)
 {
-  require_once('model/Student_Detail.class.php');
+  require_once('model/Student.class.php');
 
-  $student_detail = Student_Detail::load_by_user_id($user_id);
-
-	if ( strlen($student_detail->email_alt) > 0 )
-  	$email_accounts = array($student_detail->email_uni => $student_detail->email_uni, $student_detail->email_alt => $student_detail->email_alt);
-	else
-		$email_accounts = array($student_detail->email_uni => $student_detail->email_uni);
+  
   $referrer = $_SERVER["HTTP_REFERER"];
   $cancel = explode('?', $referrer);
 
@@ -1142,7 +1139,7 @@ function edit_preferences(&$waf, $user_id)
     }
   }
 
-  $waf->assign('email_accounts', $email_accounts);
+  /*$waf->assign('email_accounts', $email_accounts);*/
   $waf->assign('action_links', array(array('cancel', $cancel[1])));
   $waf->assign('referrer', $referrer);
   $waf->display('popup.tpl', 'preferences', 'preferences.tpl');
@@ -1150,9 +1147,11 @@ function edit_preferences(&$waf, $user_id)
 }
 
 
-function edit_preferences_do()
+function edit_preferences_do(&$waf, $id)
 {
    $waf =& UUWAF::get_instance($config['waf']);
+   $user_id = $id['opus']['user_id'];
+
   require_once('model/Preference.class.php');
 
   Preference::set_preference('resources_active', WA::request('resources_active'));
@@ -1164,8 +1163,9 @@ function edit_preferences_do()
   Preference::set_preference('calendar_day_starts', WA::request('calendar_day_starts'));
   Preference::set_preference('calendar_day_ends', WA::request('calendar_day_ends'));
   Preference::set_preference('hide_read_messages', WA::request('hide_read_messages'));
+  
+  Preference::save_all($user_id);
 
-  Preference::save_all($waf->user['opus']['reg_number']);
 
   $goto = WA::request('referrer');
 
