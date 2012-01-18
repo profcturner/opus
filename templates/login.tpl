@@ -21,7 +21,7 @@
 
   <div id="slideshow">
   
-  <img src="{$config.opus.url}/images/mainslide2.png" alt="Application Overview Image" width="950" height="270" />				
+  <img src="{$config.opus.url}/images/mainslide.png" alt="Application Overview Image" width="950" height="270" />				
   
   </div>
   
@@ -34,7 +34,7 @@
   	<img src="{$config.opus.url}/images/login.jpg" width="285" height="34" style="display:inline; float:left; padding-right:10px; padding-left:6px;" alt="Login Arrow Image"/>
   </td>
   <td style="float:right;">
-  	  <form method=POST action="{if $config[opus][cleanurls]}{#application_url#}home/home/{else}{#application_url#}?section=welcome&function=home{/if}">
+  	  <form method=POST action="{if $config[opus][cleanurls]}{#application_url#}home/home/{else}{#application_url#}?section=home&function=home{/if}">
 		<input type="hidden" name="section" value="{$referrer_section}" />
 		<input type="hidden" name="function" value="{$referrer_function}" />
 		<input type="hidden" name="id" value="{$referrer_id}" />
@@ -47,7 +47,14 @@
 		  <td><input type="password" name="password" class="input" size="20"/></td>
 	  	  <td><input type="image" alt="Submit" align="left" src="{$config.opus.url}/images/loginbutton.png" value="{#login_phrase#}"/></td>
 	  	</tr>
-		</table><span class="important">{$error}</span>
+		</table>
+		
+		  {if $failed_login}
+    <div id="warning">{#failed_login#}</div><br />
+		  {/if}
+
+    {if $opus_closed}<br /><h2>{#opus_closed#}</h2>{/if}
+    <br><span class="important">{$error}</span>
 
       </form>
     </td>
@@ -57,41 +64,42 @@
   
   <div class="splashbox">
   
-      <!--<h3><img src="{$config.opus.url}/images/guest_login.jpg" width="285" height="34" alt="" /></h3>-->
+      <img src="{$config.opus.url}/images/students_login.png" width="285" height="34" alt="" /></h3>
       
-      <img src="{$config.opus.url}/images/employerwe.png" alt="Employer Image"/>
+      <img src="{$config.opus.url}/images/doforyou.jpg" width="285" alt="Students Image" />
       
       <br/><br/>
-		<div class='splashtext'>{#login_instructions_guest#}</div>
+		<div class='splashtext'>{#login_instructions_students#}</div>
 	</div>
 	
 	<div class="splashbox">
   
-      <!--<h3><img src="{$config.opus.url}/images/graduate_login.jpg" width="285" height="34" alt=""/></h3>-->
+      <img src="{$config.opus.url}/images/staff_login.png" width="285" height="34" alt=""/>
       
-      <img src="{$config.opus.url}/images/graduates.png" alt="Graduates Image" />	
+      <img src="{$config.opus.url}/images/employerwe.png" width="285" alt="Employer Image"/>
       
       <br/><br/>
          
-		<div class='splashtext'>{#login_instructions_graduates#}</div>
+		<div class='splashtext'>{#login_instructions_staff#}</div>
 	</div>
   
  	<div class="splashbox">
   
-      <!--<h3><img src="{$config.opus.url}/images/staff_student_login.jpg" width="285" height="34" alt=""/></h3>-->
+      <img src="{$config.opus.url}/images/others_login.png" width="285" height="34" alt=""/></h3>
       
-      <img src="{$config.opus.url}/images/doforyou.jpg" alt="Students Image" />	
+      <img src="{$config.opus.url}/images/handonkeyboard.jpg" width="285" alt="Students Image" />	
       
       <br/><br/>
       
-		<div class='splashtext'>{#login_instructions_staff_students#}</div>
+		<div class='splashtext'>{#login_instructions_others#}</div>
 		
 	</div>
-	
-  {if $failed_login}
-    <div id="warning">{#failed_login#}</div><br />
-  {/if}
- 
+	    
+	<span class='text'>{#link_text_to_external_password_reset#}</span>
+    <br />
+    {if !$config[opus][disable_selfservice_password_reset]}
+      <a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
+    {/if}
   <p>&nbsp;</p>
   <p>&nbsp;</p>
 </div>
