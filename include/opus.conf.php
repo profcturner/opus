@@ -35,12 +35,12 @@ $config['opus']['url']                  = 'http://opus.ulster.ac.uk/opus';
 $config['opus']['cleanurls']            = False;
 $config['opus']['title']                = 'OPUS';
 $config['opus']['title_short']          = 'OPUS';
-$config['opus']['tagline']              = "opus_test4.png";
+$config['opus']['tagline']              = "opus.png";
 $config['opus']['version']              = 4;
 $config['opus']['minor_version']        = 3;
 $config['opus']['patch_version']        = 0;
 $config['opus']['benchmarking']         = true;
-$config['opus']['logo']                 = "ulster.png";
+$config['opus']['logo']                 = "UU.png";
 $config['opus']['rows_per_page']        = 20;
 $config['opus']['required_schema_version'] = "4.2.0";
 
