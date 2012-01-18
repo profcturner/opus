@@ -38,7 +38,7 @@
       <tr valign="top">
         <td>
           <div align="left"><img src="{if $ulster_logo}{#uu_logo#}{else}{#institution_logo#}{/if}" width="{if $ulster_lgo}{#uu_logo_width#}{else}{#institution_logo_width#}{/if}"></div></td>
-          <td width="350"><div align="right"><a href="{$config.opus.url}"><img src="{$config.opus.url}/images/{#application_logo#}" width="115" height="66" border="0"></a></div></td>
+          <td width="350"><div align="right"><a href="{$config.opus.url}"><img src="{$config.opus.url}/images/opus_blue.png" border="0"></a></div></td>
       </tr>
     </table>
     <br/>
