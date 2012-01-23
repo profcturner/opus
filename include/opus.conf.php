@@ -29,18 +29,18 @@ $config['waf']['app_error_function']    = 'error';
 
 // OPUS related settings
 
-$config['opus']['institution']          = 'University of Ulster';
-$config['opus']['official_url']         = 'http://opus.ulster.ac.uk';
-$config['opus']['url']                  = 'http://opus.ulster.ac.uk/opus';
+$config['opus']['institution']          = 'Your Institution';
+$config['opus']['official_url']         = 'http://opus.edu.ac.uk';
+$config['opus']['url']                  = 'http://opus.edu.ac.uk/opus';
 $config['opus']['cleanurls']            = False;
 $config['opus']['title']                = 'OPUS';
 $config['opus']['title_short']          = 'OPUS';
-$config['opus']['tagline']              = "opus.png";
+$config['opus']['tagline']              = 'Online Placement University System';
 $config['opus']['version']              = 4;
 $config['opus']['minor_version']        = 3;
 $config['opus']['patch_version']        = 0;
 $config['opus']['benchmarking']         = true;
-$config['opus']['logo']                 = "UU.png";
+$config['opus']['logo']                 = "logo.png";
 $config['opus']['rows_per_page']        = 20;
 $config['opus']['required_schema_version'] = "4.2.0";
 
