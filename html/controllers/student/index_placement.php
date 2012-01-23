@@ -342,7 +342,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=$company_id");
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "placement"));
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
     $waf->assign("resources", $resources);
     $waf->assign("resource_headings", $resource_headings);
@@ -397,7 +397,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "placement"));
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
