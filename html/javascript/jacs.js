@@ -362,7 +362,7 @@
                              is first used. So this array may not hold all dynamic
                              calendar IDs that are defined on the page.  If you
                              want to be sure that the array does show all of them,
-                             explicitly invoke  JACs.make(<<ID>>); for each ID on
+                             explicitly invoke  JACS.make(<<ID>>); for each ID on
                              page load.
 
 *///*****************************************************************************
@@ -817,17 +817,12 @@ var JACS = new function()
 
                 // Displayed "Today" date format
 
-                // CT CHANGE, we need ISO for now, which is a shame.
-                // @todo we will need to revisit this.
-                cal.dateDisplayFormat = 'YYYY-MM-DD';
-                //cal.dateDisplayFormat = 'dd/mm/yyyy';     // e.g. 'MMM-DD-YYYY' for the US
+                cal.dateDisplayFormat = 'dd/mm/yyyy';     // e.g. 'MMM-DD-YYYY' for the US
 
                 // Output date format
 
-                //cal.dateFormat  = 'DD-MMM-YYYY'; // e.g. 'MMM-DD-YYYY' for the US
+                cal.dateFormat  = 'DD-MMM-YYYY'; // e.g. 'MMM-DD-YYYY' for the US
                 // Note: The delimiters used should be in cal.delimiters.
-                cal.dateFormat = 'YYYY-MM-DD';
-                // END CT CHANGE
 
                 // Personally I like the fact that entering 31-Sep-2005 (a date
                 // that doesn't exist) displays 1-Oct-2005, however you may want
