@@ -37,14 +37,14 @@
     $waf->assign("admin_headings", $admin_headings);
     $waf->assign("root_headings", $root_headings);
 
-    $waf->display("main.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
+    $waf->display("main.tpl", "student:placement:help_directory:help_directory", "admin/information/help_directory.tpl");
   }
 
   function about(&$waf)
   {
     $waf->assign("show_banners", true);
     $waf->assign("ulster_logo", true);
-    $waf->display("bounded.tpl", "general:information:information:about", "general/information/about.tpl");
+    $waf->display("popup.tpl", "general:information:information:about", "general/information/about.tpl");
   }
 
   function privacy(&$waf)
