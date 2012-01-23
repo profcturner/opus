@@ -87,9 +87,9 @@
 {/if}
 <div id="page_wrapper">
   <div id="header">  {* start of the header div *}
-    <div id="app_title">{if $config.opus.logo}<img src="images/{$config.opus.logo}" title="{$config.opus.title}"/>{else}{$config.opus.title}{/if}
+    <div id="institution_logo">{if $#instituion_logo#}<img src="{#institution_logo#}" title="Institution Logo"/>{else}{$config.opus.institution}{/if}
     </div>
-    <div id="app_tagline">{if $config.opus.tagline}<img src="images/{$config.opus.tagline}" title="{$config.opus.title}"/>{else}{$config.opus.title}{/if}
+    <div id="application_logo">{if $config.opus.logo}<img src="images/{$config.opus.logo}" title="Application Logo"/>{else}{$config.opus.title}{/if}
     </div>
     <div id="mini_menu">
       {* Currently off <div id="mini_menu_item"><a href="">preferences</a></div>
@@ -182,10 +182,10 @@
   </div>
   <div id="footer">
   <p>
-    <a href="?section=information&function=copyright">{#copyright#}</a> |
-    <a href="?section=information&function=privacy">{#privacy#}</a> |
-    <a href="?section=information&function=terms_conditions">{#terms_conditions#}</a> |
-    <a href="?section=information&function=about">{#about#}</a> |
+    <a href="?section=information&function=about" class="thickbox">{#about#}</a> |
+    <a href="?section=information&function=copyright" target="_blank">{#copyright#}</a> |
+    <a href="?section=information&function=privacy" target="_blank">{#privacy#}</a> |
+    <a href="?section=information&function=terms_conditions" target="_blank">{#terms_conditions#}</a> |
     <a href="http://foss.ulster.ac.uk/support/?func=additem&group=opus" target="_blank">{#get_support#}</a> |
     <a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus" target="_blank">{#report_a_bug#}</a>
 
