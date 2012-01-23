@@ -70,7 +70,7 @@
   {
     $waf->assign("show_banners", true);
     $waf->assign("ulster_logo", true);
-    $waf->display("bounded.tpl", "general:information:information:about", "general/information/about.tpl");
+    $waf->display("popup.tpl", "general:information:information:about", "general/information/about.tpl");
   }
 
   function privacy(&$waf)
