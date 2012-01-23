@@ -16,11 +16,11 @@
 	color:#666666;
 }
 
-#TB_window a:link {color: #333;}
-#TB_window a:visited {color: #333;}
+#TB_window a:link {color: #564BB9;}
+#TB_window a:visited {color: #564BB9;}
 #TB_window a:hover {color: #000;}
-#TB_window a:active {color: #fff;}
-#TB_window a:focus{color: #fff;}
+#TB_window a:active {color: #333;}
+#TB_window a:focus{color: #333;}
 
 /* ----------------------------------------------------------------------------------------------------------------*/
 /* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
