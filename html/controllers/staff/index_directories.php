@@ -202,12 +202,27 @@
     {
       array_push($company_activity_names, Activitytype::get_name($activity_type));
     }
+    require_once("model/Resource.class.php");
+    $resources = Resource::get_all("where company_id=$id");
+    $resource_headings = Resource::get_field_defs("company");
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
+    $waf->assign("resources", $resources);
+    $waf->assign("resource_headings", $resource_headings);
+    $waf->assign("resource_actions", $resource_actions);
     $waf->assign("action_links", $action_links);
     $waf->assign("company", $company);
     $waf->assign("company_activity_names", $company_activity_names);
 
     $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
+  }
+
+  function view_company_resource(&$waf, &$user)
+  {
+    $id = (int) $_REQUEST["id"];
+    require_once("model/Resource.class.php");
+
+    Resource::view($id); 
   }
 
   /**
@@ -276,7 +291,14 @@
 
     $company_id = $vacancy->company_id;
     $action_links = array(array("view company", "section=directories&function=view_company&id=$company_id","thickbox"));
+    require_once("model/Resource.class.php");
+    $resources = Resource::get_all("where company_id=$company_id");
+    $resource_headings = Resource::get_field_defs("company");
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
+    $waf->assign("resources", $resources);
+    $waf->assign("resource_headings", $resource_headings);
+    $waf->assign("resource_actions", $resource_actions);
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
     $waf->assign("company", $company);

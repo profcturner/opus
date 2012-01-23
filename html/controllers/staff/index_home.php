@@ -222,8 +222,8 @@
       'locality'=>array('type'=>'list','size'=>30, 'header'=>true)
     );
 
-    $vacancy_actions = array(array('edit', 'edit_vacancy', 'directories', 'no'));
-    $company_actions = array(array('edit', 'edit_company', 'directories', 'no'));
+    $vacancy_actions = array(array('view', 'view_vacancy'));
+    $company_actions = array(array('view', 'view_company'));
 
     $waf->assign("vacancies_created", $vacancies_created);
     $waf->assign("vacancies_modified", $vacancies_modified);
@@ -236,6 +236,99 @@
     $waf->assign("since", $since);
 
     $waf->display("main.tpl", "staff:home:company_activity:company_activity", "staff/home/company_activity.tpl");
+  }
+
+  function view_vacancy(&$waf, &$user)
+  {
+    $id = (int) WA::request("id");
+    $student_id = $_SESSION["student_id"];
+
+    require_once("model/Vacancy.class.php");
+    $vacancy = Vacancy::load_by_id($id);
+
+    // Make a "recent" menu item
+    $vacancy_desc = $vacancy->description;
+    $_SESSION['lastitems']->add_here("v:$vacancy_desc", "v:$id", "Vacancy: $vacancy_desc");
+
+    // Some lookups
+    require_once("model/Activitytype.class.php");
+    $vacancy_activity_names = array();
+    foreach($vacancy->activity_types as $activity_type)
+    {
+      array_push($vacancy_activity_names, Activitytype::get_name($activity_type));
+    }
+
+    require_once("model/Company.class.php");
+    $company = new Company;
+    $company = Company::load_by_id($vacancy->company_id);
+
+    $company_activity_names = array();
+    foreach($company->activity_types as $activity_type)
+    {
+      array_push($company_activity_names, Activitytype::get_name($activity_type));
+    }
+
+    $company_id = $vacancy->company_id;
+    $action_links = array(array("view company", "section=directories&function=view_company&id=$company_id","thickbox"));
+    require_once("model/Resource.class.php");
+    $resources = Resource::get_all("where company_id=$company_id");
+    $resource_headings = Resource::get_field_defs("company");
+    $resource_actions = array(array("view", "view_company_resource", "no"));
+
+    $waf->assign("resources", $resources);
+    $waf->assign("resource_headings", $resource_headings);
+    $waf->assign("resource_actions", $resource_actions);
+    $waf->assign("action_links", $action_links);
+    $waf->assign("vacancy", $vacancy);
+    $waf->assign("company", $company);
+    $waf->assign("vacancy_activity_names", $vacancy_activity_names);
+    $waf->assign("company_activity_names", $company_activity_names);
+    $waf->assign("show_heading", true);
+
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
+  }
+  
+  function view_company_resource(&$waf, &$user)
+  {
+    $id = (int) $_REQUEST["id"];
+    require_once("model/Resource.class.php");
+
+    Resource::view($id); 
+  }
+
+  function view_company(&$waf, &$user)
+  {
+    $id = (int) WA::request("id");
+
+    $action_links = array(array("edit company", "section=directories&function=edit_company&id=$id"));
+
+    require_once("model/Company.class.php");
+    $company = Company::load_by_id($id);
+
+    // Make "recent" menu entry
+    $company_name = $company->name;
+    $_SESSION['lastitems']->add_here("c:$company_name", "c:$id", "Company: $company_name");
+
+    // Some lookups
+    require_once("model/Activitytype.class.php");
+    $company_activity_names = array();
+    foreach($company->activity_types as $activity_type)
+    {
+      array_push($company_activity_names, Activitytype::get_name($activity_type));
+    }
+    require_once("model/Resource.class.php");
+    $resources = Resource::get_all("where company_id=$id");
+    $resource_headings = Resource::get_field_defs("company");
+    $resource_actions = array(array("view", "view_company_resource", "no"));
+
+    $waf->assign("resources", $resources);
+    $waf->assign("resource_headings", $resource_headings);
+    $waf->assign("resource_actions", $resource_actions);
+    $waf->assign("action_links", $action_links);
+    $waf->assign("company", $company);
+    $waf->assign("company_activity_names", $company_activity_names);
+
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
   // Notes
