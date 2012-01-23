@@ -158,7 +158,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=$company_id");
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "directories"));
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
     $waf->assign("resources", $resources);
     $waf->assign("resource_headings", $resource_headings);
@@ -286,7 +286,7 @@
     $company_id = (int) WA::request("company_id", true);
     $waf->assign("xinha_editor", true);
 
-    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies"), array("view vacancy","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
+    edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies&company_id=$company_id"), array("view vacancy","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
   function edit_vacancy_do(&$waf, &$user) 
@@ -342,7 +342,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "directories"));
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
@@ -378,7 +378,7 @@
     $waf->assign("unavailable", $all_applications[2]);
     $waf->assign("status_values", $possible_status);
     $waf->assign("vacancy_id", $vacancy_id);
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/manage_applicants.tpl");
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/company_applicants.tpl");
   }
 
   function manage_applicants_do(&$waf)
@@ -658,7 +658,7 @@
     // Ignore pagination for complex reasons
     $waf->assign("nopage", true);
 
-    manage_objects($waf, $user, "Resource", array(array("add company resource","section=directories&function=add_company_resource&company_id=$company_id","thickbox")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "contact:directories:manage_company_resources:manage_company_resources", "list.tpl", "company");
+    manage_objects($waf, $user, "Resource", array(array("add company resource","section=directories&function=add_company_resource&company_id=$company_id","thickbox")), array(array('view', 'view_company_resource', 'no'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "contact:directories:manage_company_resources:manage_company_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)
