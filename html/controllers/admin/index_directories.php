@@ -881,7 +881,7 @@
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
     $resource_headings = Resource::get_field_defs("company");
-    $resource_actions = array(array("view", "view_company_resource", "directories"));
+    $resource_actions = array(array("view", "view_company_resource", "no"));
 
     $waf->assign("action_links", $action_links);
     $waf->assign("vacancy", $vacancy);
@@ -2098,7 +2098,7 @@
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add resource","section=directories&function=add_company_resource&company_id=$company_id", "thickbox")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:configuration:resources:manage_resources", "list.tpl", "company");
+    manage_objects($waf, $user, "Resource", array(array("add resource","section=directories&function=add_company_resource&company_id=$company_id", "thickbox")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:directories:company_directory:manage_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)
