@@ -39,7 +39,7 @@ function help_directory(&$waf)
 
   $waf->assign("show_banners", true);
 
-  $waf->display("bounded.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
+  $waf->display("popup.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
 }
 
 function about(&$waf)
