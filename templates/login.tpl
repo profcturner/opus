@@ -14,9 +14,9 @@
 <div id="splashcontainer">
 
 <p>  &nbsp;
- 		<img src="images/{$config.opus.logo}" alt="Institution Logo" />
+ 		<img src="{#institution_logo#}" alt="Institution Logo" />
   
-  		<img src="images/{$config.opus.tagline}" align="right" alt="Application Logo" />
+  		<img src="images/{$config.opus.logo}" align="right" alt="Application Logo" />
 </p>
 
   <div id="slideshow">
@@ -94,12 +94,13 @@
 		<div class='splashtext'>{#login_instructions_others#}</div>
 		
 	</div>
-	    
-	<span class='text'>{#link_text_to_external_password_reset#}</span>
-    <br />
+	
     {if !$config[opus][disable_selfservice_password_reset]}
       <a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
     {/if}
+    <br />
+    <span class='text'>{#link_text_to_external_password_reset#}</span>
+    
   <p>&nbsp;</p>
   <p>&nbsp;</p>
 </div>
