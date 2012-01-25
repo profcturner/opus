@@ -431,41 +431,46 @@
     $student_id = User::get_id();
 
     require_once("model/Student.class.php");
-    if(!Student::is_application_allowed($student_id)) $waf->halt("error:student:not_required");
-		
-    // Get the available CVs, both good and bad
-    require_once("model/CVCombined.class.php");
-    $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
-    foreach($cv_list as $cv)
-    {
-      if($cv->valid) $valid++;
-      else $invalid++;
-    }
-    // Convert the valid ones to a pull down
-    $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
+    if(!Student::is_application_allowed($student_id)) //$waf->halt("error:student:not_required");
+		{
+			$waf->display("popup.tpl", "error:student:not_required", "error.tpl");
+		}
+	else
+	{
+		// Get the available CVs, both good and bad
+		require_once("model/CVCombined.class.php");
+		$cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
+		foreach($cv_list as $cv)
+		{
+		  if($cv->valid) $valid++;
+		  else $invalid++;
+		}
+		// Convert the valid ones to a pull down
+		$cv_options = CVCombined::convert_cv_list_to_options($cv_list);
 
-    $eportfolio_list = array("none:none:none" => 'None Available');
+		$eportfolio_list = array("none:none:none" => 'None Available');
 
-    require_once("model/Application.class.php");
-    $application = new Application;
+		require_once("model/Application.class.php");
+		$application = new Application;
 
-    require_once("model/Vacancy.class.php");
-    require_once("model/Company.class.php");
-    $application->student_id = $student_id;
-    $application->vacancy_id = $vacancy_id;
-    $application->company_id = Vacancy::get_company_id($vacancy_id);
-    $application->_vacancy_id = Vacancy::get_name($vacancy_id);
-    $application->_company_id = Company::get_name($application->company_id);
+		require_once("model/Vacancy.class.php");
+		require_once("model/Company.class.php");
+		$application->student_id = $student_id;
+		$application->vacancy_id = $vacancy_id;
+		$application->company_id = Vacancy::get_company_id($vacancy_id);
+		$application->_vacancy_id = Vacancy::get_name($vacancy_id);
+		$application->_company_id = Company::get_name($application->company_id);
 
-    $waf->assign("mode", "add");
-    $waf->assign("is_student", true);
-    $waf->assign("application", $application);
-    $waf->assign("eportfolio_list", $eportfolio_list);
-    $waf->assign("cv_list", $cv_list);
-    $waf->assign("cv_options", $cv_options);
-    $waf->assign("valid", $valid);
-    $waf->assign("invalid", $invalid);
-    $waf->display("popup.tpl", "student:placement:list_applications:add_application", "admin/directories/edit_application.tpl");
+		$waf->assign("mode", "add");
+		$waf->assign("is_student", true);
+		$waf->assign("application", $application);
+		$waf->assign("eportfolio_list", $eportfolio_list);
+		$waf->assign("cv_list", $cv_list);
+		$waf->assign("cv_options", $cv_options);
+		$waf->assign("valid", $valid);
+		$waf->assign("invalid", $invalid);
+		$waf->display("popup.tpl", "student:placement:list_applications:add_application", "admin/directories/edit_application.tpl");
+	}
   }
 
   function add_application_do(&$waf, &$user) 
@@ -503,39 +508,49 @@
     $vacancy_id = $application->vacancy_id;
     $student_id = $application->student_id;
 
-    if($student_id != User::get_id()) $waf->halt("error:student:not_your_user");
+    //if($student_id != User::get_id()) $waf->halt("error:student:not_your_user");
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id($student_id);
-    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
-
-    // Get the available CVs, and *do* filter them
-    require_once("model/CVCombined.class.php");
-    $cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
-    foreach($cv_list as $cv)
-    {
-      if(!$cv->valid) $invalid++;
+    //if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+	if($student->placement_status != 'Required')
+	{
+		$waf->display("popup.tpl", "error:student:not_required", "error.tpl");
     }
-    $cv_options = CVCombined::convert_cv_list_to_options($cv_list);
+    elseif($student_id != User::get_id())
+    {
+		$waf->display("popup.tpl", "error:student:not_your_user", "error.tpl");
+    }
+    else
+    {
+		// Get the available CVs, and *do* filter them
+		require_once("model/CVCombined.class.php");
+		$cv_list = CVCombined::fetch_cvs_for_student($student_id, true);
+		foreach($cv_list as $cv)
+		{
+		  if(!$cv->valid) $invalid++;
+		}
+		$cv_options = CVCombined::convert_cv_list_to_options($cv_list);
 
-    $eportfolio_list = array("none:none:none" => 'None Available');
+		$eportfolio_list = array("none:none:none" => 'None Available');
 
-    require_once("model/Vacancy.class.php");
-    require_once("model/Company.class.php");
-    $application->student_id = $student_id;
-    $application->vacancy_id = $vacancy_id;
-    $application->company_id = Vacancy::get_company_id($vacancy_id);
-    $application->_vacancy_id = Vacancy::get_name($vacancy_id);
-    $application->_company_id = Company::get_name($application->company_id);
+		require_once("model/Vacancy.class.php");
+		require_once("model/Company.class.php");
+		$application->student_id = $student_id;
+		$application->vacancy_id = $vacancy_id;
+		$application->company_id = Vacancy::get_company_id($vacancy_id);
+		$application->_vacancy_id = Vacancy::get_name($vacancy_id);
+		$application->_company_id = Company::get_name($application->company_id);
 
-    $waf->assign("mode", "edit");
-    $waf->assign("is_student", true);
-    $waf->assign("application", $application);
-    $waf->assign("eportfolio_list", $eportfolio_list);
-    $waf->assign("cv_list", $cv_list);
-    $waf->assign("cv_options", $cv_options);
-    $waf->assign("invalid", $invalid);
-    $waf->assign("selected_cv_ident", $application->cv_ident);
-    $waf->display("popup.tpl", "student:placement:list_applications:edit_application", "admin/directories/edit_application.tpl");
+		$waf->assign("mode", "edit");
+		$waf->assign("is_student", true);
+		$waf->assign("application", $application);
+		$waf->assign("eportfolio_list", $eportfolio_list);
+		$waf->assign("cv_list", $cv_list);
+		$waf->assign("cv_options", $cv_options);
+		$waf->assign("invalid", $invalid);
+		$waf->assign("selected_cv_ident", $application->cv_ident);
+		$waf->display("popup.tpl", "student:placement:list_applications:edit_application", "admin/directories/edit_application.tpl");
+	}
   }
 
   function edit_application_do(&$waf, &$user) 
@@ -549,7 +564,7 @@
     if($student_id != User::get_id()) $waf->halt("error:student:not_your_user");
     require_once("model/Student.class.php");
     $student = Student::load_by_user_id($student_id);
-    if($student->placement_status != 'Required') $waf->halt("error:student:not_required");
+    if($student->placement_status != 'Required') $waf->errors = "yes";//$waf->halt("error:student:not_required");
 
     edit_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
   }
@@ -570,9 +585,14 @@
     require_once("model/Placement.class.php");
     $placement = Placement::load_by_id($placement_id);
 
-    if($placement->student_id != User::get_id()) $waf->halt("error:student:not_your_user");
-
-    edit_object($waf, $user, "Placement", array("confirm", "placement", "edit_placement_do"), array(array("cancel","section=placement&function=list_placements")), array(array("user_id", $student->user_id)), "student:placement:list_placements:edit_placement");
+    if($placement->student_id != User::get_id()) //$waf->halt("error:student:not_your_user");
+	{
+		$waf->display("popup.tpl", "error:student:not_your_user", "error.tpl");
+	}
+	else
+	{
+		edit_object($waf, $user, "Placement", array("confirm", "placement", "edit_placement_do"), array(array("cancel","section=placement&function=list_placements")), array(array("user_id", $student->user_id)), "student:placement:list_placements:edit_placement");
+	}
   }
 
   function edit_placement_do(&$waf, &$user)
