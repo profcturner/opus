@@ -27,63 +27,67 @@
     $student = Student::load_by_id($id);
     
     if(!$student->id)
-    {
-			$waf->halt("error:staff:invalid_student");
+		{
+			//$waf->halt("error:staff:invalid_student");
+			$waf->display("popup.tpl", "error:staff:invalid_student", "error.tpl");
 		}
-    // And the staff member
-    require_once("model/Staff.class.php");
-    $staff = Staff::load_by_user_id(User::get_id());
+	else
+	{
+		// And the staff member
+		require_once("model/Staff.class.php");
+		$staff = Staff::load_by_user_id(User::get_id());
 
-    //$assessment_group_id = Student::get_assessment_group_id($student->user_id);
-    $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
-    require_once("model/Placement.class.php");
+		//$assessment_group_id = Student::get_assessment_group_id($student->user_id);
+		$regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
+		require_once("model/Placement.class.php");
 
-    $placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart desc");
-    $placement_fields = array(
-       'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
-       'company_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'title'=>'Company','header'=>true),
-       'jobstart'=>array('type'=>'text', 'size'=>20, 'title'=>'Start','header'=>true),
-       'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
-    );
-    $placement_options = array();
+		$placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart desc");
+		$placement_fields = array(
+		   'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
+		   'company_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'title'=>'Company','header'=>true),
+		   'jobstart'=>array('type'=>'text', 'size'=>20, 'title'=>'Start','header'=>true),
+		   'jobend'=>array('type'=>'text', 'size'=>20, 'title'=>'End','header'=>true)
+		);
+		$placement_options = array();
 
-    // Some more information about the most recent placement...
-    if(count($placements)) // Should *always* be true!*
-    {
-      // Get the associated company and vacancy records
-      require_once("model/Company.class.php");
-      $company = Company::load_by_id($placements[0]->company_id);
-      require_once("model/Vacancy.class.php");
-      $vacancy = Vacancy::load_by_id($placements[0]->vacancy_id);
+		// Some more information about the most recent placement...
+		if(count($placements)) // Should *always* be true!*
+		{
+		  // Get the associated company and vacancy records
+		  require_once("model/Company.class.php");
+		  $company = Company::load_by_id($placements[0]->company_id);
+		  require_once("model/Vacancy.class.php");
+		  $vacancy = Vacancy::load_by_id($placements[0]->vacancy_id);
 
-      // Get a contact, for preference, get the one for the vacancy
-      require_once("model/Contact.class.php");
-      if($vacancy->contact_id) $contact = Contact::load_by_user_id($vacancy->contact_id);
-      else
-      {
-        $contacts = Contact::get_all_by_company($placements[0]->company_id);
-        $contact = $contacts[0]; // Will be a primary if one exists
-      }
+		  // Get a contact, for preference, get the one for the vacancy
+		  require_once("model/Contact.class.php");
+		  if($vacancy->contact_id) $contact = Contact::load_by_user_id($vacancy->contact_id);
+		  else
+		  {
+			$contacts = Contact::get_all_by_company($placements[0]->company_id);
+			$contact = $contacts[0]; // Will be a primary if one exists
+		  }
 
-      $waf->assign("company", $company);
-      $waf->assign("vacancy", $vacancy);
-      $waf->assign("contact", $contact);
-    }
+		  $waf->assign("company", $company);
+		  $waf->assign("vacancy", $vacancy);
+		  $waf->assign("contact", $contact);
+		}
 
-    $waf->assign("student", $student);
-    $waf->assign("staff", $staff);
-    $waf->assign("assessment_section", "student");
-    $waf->assign("mode", "view");
-    $waf->assign("assessment_group_id", $assessment_group_id);
-    $waf->assign("regime_items", $regime_items);
-    $waf->assign("assessed_id", $student->user_id);
-    $waf->assign("aggregate_total", $aggregate_total);
-    $waf->assign("weighting_total", $weighting_total);
-    $waf->assign("placements", $placements);
-    $waf->assign("placement_fields", $placement_fields);
-    $waf->assign("placement_options", $placement_options);
+		$waf->assign("student", $student);
+		$waf->assign("staff", $staff);
+		$waf->assign("assessment_section", "student");
+		$waf->assign("mode", "view");
+		$waf->assign("assessment_group_id", $assessment_group_id);
+		$waf->assign("regime_items", $regime_items);
+		$waf->assign("assessed_id", $student->user_id);
+		$waf->assign("aggregate_total", $aggregate_total);
+		$waf->assign("weighting_total", $weighting_total);
+		$waf->assign("placements", $placements);
+		$waf->assign("placement_fields", $placement_fields);
+		$waf->assign("placement_options", $placement_options);
 
-    $waf->display("main.tpl", "staff:student:edit_student:edit_student", "staff/student/edit_student.tpl");
+		$waf->display("main.tpl", "staff:student:edit_student:edit_student", "staff/student/edit_student.tpl");
+	}
   }
 
   function list_assessments(&$waf)
