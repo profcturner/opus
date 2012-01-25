@@ -838,7 +838,7 @@ function edit_object(&$waf, $user, $object_name, $action_button, $action_links, 
   $waf->assign("hidden_values", $hidden_values);
   $content = $waf->fetch($manage_tpl);
   $waf->assign("content", $content);
-     if($errors != "yes" && $object_name != "Service" && $object_name != "PhoneHome" && $object_name != "Staff" && $object_name != "Student" && $object_name != "Company" && $object_name != "Vacancy")
+     if($errors != "yes" && $object_name != "Service" && $object_name != "PhoneHome" && $object_name != "Staff" && $object_name != "Student" && $object_name != "Company" && $object_name != "Vacancy" && $object_name != "Admin" && $object_name != "Contact")
     {
 		$waf->display("popup.tpl", $config_section, $manage_tpl);
     }
