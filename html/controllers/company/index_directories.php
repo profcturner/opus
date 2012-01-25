@@ -546,11 +546,17 @@
     $id = WA::request("id");
     $contact = Contact::load_by_id($id);
 
-    if($contact->user_id != User::get_id()) $waf->halt("error:policy:not_your_account");
-    $changes = WA::request("changes");
-    $waf->assign("changes", $changes);
+    if($contact->user_id != User::get_id()) //$waf->halt("error:policy:not_your_account");
+    {
+		$waf->display("popup.tpl", "error:policy:not_your_account", "error.tpl");
+	}
+    else
+    {
+		$changes = WA::request("changes");
+		$waf->assign("changes", $changes);
 
-    edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact", "admin/directories/edit_contact.tpl");
+		edit_object($waf, $user, "Contact", array("confirm", "directories", "edit_contact_do"), array(array("cancel","section=directories&function=manage_contacts")), array(array("user_id", $contact->user_id)), "admin:directories:contact_directory:edit_contact", "admin/directories/edit_contact.tpl");
+	}
   }
 
   function edit_contact_do(&$waf, &$user) 
