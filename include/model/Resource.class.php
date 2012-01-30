@@ -102,11 +102,17 @@ class Resource extends DTO_Resource
     $absolute_name = $config['opus']['paths']['resources'] . $id;
 
     if(!file_exists($absolute_name))
-      $waf->halt("error:resources:missing_file");
-
+      //$waf->halt("error:resources:missing_file");
+	{
+		$waf->display("popup.tpl", "error:resources:missing_file", "error.tpl");
+	}
+	
     if(!is_readable($absolute_name))
-      $waf->halt("error:resources:cannot_access_file");
-
+      //$waf->halt("error:resources:cannot_access_file");
+	{
+		$waf->display("popup.tpl", "error:resources:cannot_access_file", "error.tpl");
+	}
+	
     $filesize = filesize($absolute_name);
     $mime_type = $mime->type;
 
