@@ -95,14 +95,17 @@
 		
 	</div>
 	
-    {if !$config[opus][disable_selfservice_password_reset]}
-      <a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
-    {/if}
-    <br />
-    <span class='text'>{#link_text_to_external_password_reset#}</span>
+	<p align="center">
+			{if !$config[opus][disable_selfservice_password_reset]}
+				<a href="{$config.opus.url}?function=request_recover_password">{#link_text_to_internal_password_reset#}</a>
+			{/if}
+		<br />
+		<span class='text'>{#link_text_to_external_password_reset#}</span>
+    </p>
     
   <p>&nbsp;</p>
   <p>&nbsp;</p>
+  
 </div>
 </body>
 </html>
