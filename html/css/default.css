@@ -121,7 +121,8 @@ em.validation_message {
   background-repeat: no-repeat;
   padding: 0.0em;
   border:0px #666 solid;
-  float:center;
+  min-width:1200px;
+  /*float:center;*/
 }
 
 #groups {
@@ -212,7 +213,7 @@ text-decoration: none;*/
 }
 
 #menu li.logout {
-  float:right;
+  float:left;
   padding-right: 20px;
   background-color:transparent;
 }
