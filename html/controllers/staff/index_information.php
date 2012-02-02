@@ -12,7 +12,7 @@
   {
     $opus->assign("nopage", true);
 
-    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("where company_id = 0 or company_id is null"), "supervisor:information:list_resources:list_resources");
+    manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource', 'no'), array('info','info_resource')), "get_all", array("where company_id = 0 or company_id is null"), "supervisor:information:list_resources:list_resources");
   }
 
   function view_resource(&$opus, $user, $title)
@@ -31,7 +31,7 @@
     $resource = Resource::load_by_id($id);
 
     $opus->assign("resource", $resource);
-    $opus->display("main.tpl", "supervisor:information:list_resources:info_resource", "general/information/info_resource.tpl");
+    $opus->display("popup.tpl", "supervisor:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
   function help_directory(&$waf)
