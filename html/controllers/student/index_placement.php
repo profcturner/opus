@@ -198,7 +198,7 @@
   {
     $waf->assign("nopage", true);
 
-    manage_objects($waf, $user, "Resource", array(), array(array('view', 'view_resource'), array('info','info_resource')), "get_all", array("WHERE `company_id` is null or `company_id` = 0", "order by channel_id, description", 0), "student:placement:list_resources:list_resources");
+    manage_objects($waf, $user, "Resource", array(), array(array('view', 'view_resource', 'no'), array('info','info_resource')), "get_all", array("WHERE `company_id` is null or `company_id` = 0", "order by channel_id, description", 0), "student:placement:list_resources:list_resources");
   }
 
   function view_resource(&$opus, $user, $title)
