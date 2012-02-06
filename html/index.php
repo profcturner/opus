@@ -73,7 +73,7 @@ function main()
 
   // Try to authenticate any username and password credentials
   $user = $waf->login_user(WA::request('username'), WA::request('password')); 
-
+  //print_r($user);die;
   //assign configuration to smarty
   $waf->assign_by_ref("config", $config);
 
