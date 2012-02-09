@@ -1,8 +1,8 @@
 {* Smarty *}
 
 {*<div id="action_area">*}
-Actions 
-  <span id="action_button"><a href="?section=advanced&function=manage_policies">cancel</a></span>
+{*Actions 
+  <span id="action_button"><a href="?section=advanced&function=manage_policies">cancel</a></span>*}
 {*</div>
 <br />*}
 <div id="table_manage">
