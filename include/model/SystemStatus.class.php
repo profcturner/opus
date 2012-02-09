@@ -53,7 +53,7 @@ class SystemStatus
   function get_admin_actions()
   {
     return array(
-      array('edit', 'edit_admin', 'directories')
+      array('edit', 'edit_admin', 'directories', 'no')
     );
   }
 
@@ -124,7 +124,7 @@ class SystemStatus
   function get_contact_actions()
   {
     return array(
-      array('edit', 'edit_contact', 'directories')
+      array('edit', 'edit_contact', 'directories', 'no')
     );
   }
 
@@ -180,7 +180,7 @@ class SystemStatus
   function get_supervisor_actions()
   {
     return array(
-      array('edit', 'edit_supervisor', 'directories')
+      array('edit', 'edit_supervisor', 'directories', 'no')
     );
   }
 
