@@ -203,7 +203,7 @@
 
     $objects = User::get_all($where_clause);
     $headings = User::get_user_list_headings();
-    $actions = array(array('edit', 'edit_user'), array('preferences', 'view_preferences'));
+    $actions = array(array('edit', 'edit_user', 'no'), array('preferences', 'view_preferences'));
 
     $waf->assign("actions", $actions);
     $waf->assign("headings", $headings);

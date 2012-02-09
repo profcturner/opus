@@ -178,7 +178,7 @@
 
     add_navigation_history($waf, $faculty->name);
 
-    manage_objects($waf, $user, "School", array(array("add school","section=configuration&function=add_school")), array(array('admins', 'manage_schooladmins','no'), array('programmes', 'manage_programmes','no'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", array("where faculty_id=$faculty_id", "order by name", $page), "admin:configuration:organisation_details:manage_schools");
+    manage_objects($waf, $user, "School", array(array("add school","section=configuration&function=add_school","thickbox")), array(array('admins', 'manage_schooladmins','no'), array('programmes', 'manage_programmes','no'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", array("where faculty_id=$faculty_id", "order by name", $page), "admin:configuration:organisation_details:manage_schools");
   }
 
   function add_school(&$waf, &$user) 

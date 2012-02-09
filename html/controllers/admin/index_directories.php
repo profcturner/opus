@@ -2062,7 +2062,7 @@
 
     if(User::is_root())
     {
-      $actions = array(array('edit', 'edit_admin'), array('demote', 'demote_admin'));
+      $actions = array(array('edit', 'edit_admin', 'no'), array('demote', 'demote_admin'));
     }
     else
     {
