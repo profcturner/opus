@@ -163,10 +163,12 @@
 	{/if}
 *}
 
+   {if !$welcome_page}
     <div id="tag_line">
     {#tag_line#|default:$tag_line|default:"No \$tag_line"}
     </div>
-    
+   {/if}
+   
 	{if ($opus_closed)}
 	  <div id="warning">{#opus_closed#}{if $user.opus.user_type == 'root'}{#opus_closed_root#}{/if}</div>
 	{/if}
@@ -185,12 +187,24 @@
     </div>
 {/if}
 
+{if $welcome_page}
+	<div class="content_block">
+{else}
     <div id="content_block">
+{/if}
 {$content} 
     </div>
 
 {config_load file=lang_en.conf section=footer}
 </div> {* end of main content div *}
+
+{*{if $trails || $resources || $bookmarks }
+	<div id="tools">
+		{if $currentgroup == "student" || $currentgroup == "academic"}
+			{include file=tools/tools.tpl}
+		{/if}
+	</div>
+{/if}*}
 
   <div id="footer">
 	  <p>

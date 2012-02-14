@@ -64,7 +64,7 @@
   
   <div class="splashbox">
   
-      <img src="{$config.opus.url}/images/students_login.png" width="285" height="34" alt="" /></h3>
+      <img src="{$config.opus.url}/images/students_login.png" width="285" height="34" alt="" />
       
       <img src="{$config.opus.url}/images/doforyou.jpg" width="285" alt="Students Image" />
       
@@ -85,7 +85,7 @@
   
  	<div class="splashbox">
   
-      <img src="{$config.opus.url}/images/others_login.png" width="285" height="34" alt=""/></h3>
+      <img src="{$config.opus.url}/images/others_login.png" width="285" height="34" alt=""/>
       
       <img src="{$config.opus.url}/images/handonkeyboard.jpg" width="285" alt="Students Image" />	
       
