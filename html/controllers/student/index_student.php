@@ -10,15 +10,19 @@ function nav_student()
   {
     return array
     (
-      "home"=>array
+      "Welcome"=>array
       (
-        array("home", "home", "placement_home", "placement_home"), 
-      ), 
-      "career"=>array
+        array("welcome", "welcome", "welcome", "home")
+      ),
+      "Dashboard"=>array
       (
-        array("CV Store", "career", "cv_store", "manage_cvs"),
+        array("home", "home", "home", "home")
+      ),
+      "Career"=>array
+      (
+        array("CV Store", "career", "cv_store", "manage_cvs")
       ), 
-      "placement"=>array
+      "Placement"=>array
       (
         array("Placement Home", "placement", "placement_home", "placement_home"),
         array("Companies", "placement", "company_directory", "company_directory"),

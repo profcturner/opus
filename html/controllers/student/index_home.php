@@ -8,13 +8,14 @@
 */
 
 /**
-* Controller for the Student User, Home Section
+* Controller for the Student User, Home/Dashboard Section
 */
 
-function home(&$pds) 
+function home(&$waf) 
 {
-  goto_section("placement", "placement_home");
-  $pds->display("main.tpl", "student:home:home:home");
+  $waf->display("main.tpl", "student:home:home:home", 'student/home/home.tpl');
+  //goto_section("placement", "placement_home");
+  //$pds->display("main.tpl", "student:home:home:home");
 }
 
 ?>
