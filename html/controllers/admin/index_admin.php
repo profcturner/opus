@@ -137,7 +137,7 @@ function nav_admin()
   }
 
   // Get the Recent items
-  $last_item_nav = $_SESSION['lastitems']->get_nav();
+  //$last_item_nav = $_SESSION['lastitems']->get_nav();
 
   // Merge in root functionality if appropriate
   if(User::is_root())
@@ -160,7 +160,8 @@ function nav_admin()
   }
 
   // Finally add the recent items
-  return(array_merge_recursive($nav, $last_item_nav));
+  //return(array_merge_recursive($nav, $last_item_nav));
+  return $nav;
 }
 
 
