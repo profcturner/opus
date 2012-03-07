@@ -164,7 +164,7 @@ float:left;
 
 #menu li.welcome
 {
-  border-left-width: 53px;
+  /*border-left-width: 53px;*/
   border-left-style: solid;
   border-left-color: transparent;
 }
