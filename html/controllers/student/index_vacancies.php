@@ -1,16 +1,16 @@
 <?php
 
   /**
-  * displays student placement home page
+  * displays student vacancies home page
   * 
   * this displays information about recently created / changes companies and
-  * vacancies, as well as general announcements and details of the current
-  * placement if any, and academic tutor if any
+  * vacancies
+  * 
   * 
   * @param $waf reference to the waf object
   * @todo this function is now getting too large, we will soon need to reduce
   */
-  function placement_home(&$waf)
+  function vacancy_home(&$waf)
   {
     $days = (int) WA::request("days");
 
@@ -130,7 +130,7 @@
     $waf->assign("company_actions", $company_actions);
     $waf->assign("since", $since);
 
-    $waf->display("main.tpl", "student:placement:placement_home:placement_home", "student/placement/placement_home.tpl");
+    $waf->display("main.tpl", "student:vacancies:vacancy_home:vacancy_home", "student/vacancies/vacancy_home.tpl");
   }
   
   // Photos
@@ -241,6 +241,7 @@
     $waf->assign("vacancy_types", $vacancy_types);
     $waf->assign("other_options", $other_options);
     $waf->assign("form_options", $form_options);
+$section = "vacancies";
 
     $waf->display("main.tpl", "admin:directories:vacancy_directory:vacancy_directory", "admin/directories/vacancy_directory.tpl");
   }
@@ -269,7 +270,7 @@
     $waf->assign("activities", $activities);
     $waf->assign("vacancy_types", $vacancy_types);
     $waf->assign("vacancies", Vacancy::get_all_extended($search, $year, $activities, $vacancy_types, $sort, $other_options));
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "student/placement/search_vacancies.tpl");
+    $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "student/vacancies/search_vacancies.tpl");
   }
 
   function company_directory(&$waf, $user, $title)
@@ -305,7 +306,7 @@
 
     $waf->assign("activities", $activities);
     $waf->assign("companies", Company::get_all_extended($search, $activities, $sort));
-    $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "student/placement/search_companies.tpl");
+    $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "student/vacancies/search_companies.tpl");
   }
 
   function view_company(&$waf, &$user)
@@ -321,7 +322,7 @@
     {
       // If this company isn't the active one, make it so
       $_SESSION['company_id'] = $company_id;
-      goto_section("placement", "view_company&company_id=$company_id");
+      goto_section("vacancies", "view_company&company_id=$company_id");
     }
 
     require_once("model/Company.class.php");
@@ -392,7 +393,7 @@
     }
 
     $company_id = $vacancy->company_id;
-    $action_links = array(array("apply", "section=placement&function=add_application&id=$id", "thickbox"));
+    $action_links = array(array("apply", "section=vacancies&function=add_application&id=$id", "thickbox"));
 
     require_once("model/Resource.class.php");
     $resources = Resource::get_all("where company_id=" . $vacancy->company_id);
@@ -493,7 +494,7 @@
     require_once("model/Application.class.php");
     if(Application::count("where vacancy_id=$vacancy_id and student_id=$student_id")) $waf->halt("error:student:cannot_apply_twice");
 
-    add_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
+    add_object_do($waf, $user, "Application", "section=vacancies&function=list_applications", "add_application");
   }
 
   /**
@@ -566,171 +567,7 @@
     $student = Student::load_by_user_id($student_id);
     if($student->placement_status != 'Required') $waf->errors = "yes";//$waf->halt("error:student:not_required");
 
-    edit_object_do($waf, $user, "Application", "section=placement&function=list_applications", "add_application");
-  }
-
-  // Placements
-
-  function list_placements(&$waf, $user, $title)
-  {
-    require_once("model/Vacancy.class.php");
-    require_once("model/Company.class.php");
-    
-    require_once("model/Student.class.php");
-    $student = Student::load_by_user_id(User::get_id());
-
-    if($student->placement_status == 'Placed')
-    {
-      require_once("model/Placement.class.php");
-      $placement = Placement::get_most_recent($student->user_id);
-      if($placement == false)
-      {
-        // should never happen!
-        $waf->log("can't find most recent placement for placed student");
-      }
-      else
-      {
-        $waf->assign("placement", $placement);
-        $waf->assign("placement_headings", Placement::get_field_defs());
-        $waf->assign("placement_action", array("edit", "placement", "edit_placement"));
-        
-        $academic_user_id = Student::get_academic_user_id(User::get_id());
-        if($academic_user_id)
-        {
-          // Academic tutor has been allocated
-          require_once("model/Staff.class.php");
-          $academic_tutor = Staff::load_by_user_id($academic_user_id);
-          $waf->assign("academic_tutor", $academic_tutor);
-          $academic_headings = array
-          (
-            'real_name'=>array('type'=>'text', 'size'=>50, 'title'=>'Name'),
-            'school_id'=>array('type'=>'lookup', 'object'=>'school', 'value'=>'name', 'title'=>'School', 'size'=>20, 'var'=>'schools'),
-            'position'=>array('type'=>'text','size'=>50,'header'=>true),
-            'email'=>array('type'=>'email','size'=>40, 'header'=>true, 'mandatory'=>true),
-            'voice'=>array('type'=>'text','size'=>40),
-            'room'=>array('type'=>'text', 'size'=>10, 'header'=>true),
-            'address'=>array('type'=>'textarea', 'rowsize'=>6, 'colsize'=>40),
-            'postcode'=>array('type'=>'text', 'size'=>10),
-          );
-          $waf->assign("academic_headings", $academic_headings);
-        }
-      }
-    }
-     
-    $student_id = User::get_id();
-    $page = (int) WA::request("page", true);
-
-    manage_objects($waf, $user, "Placement", array(), array(array('edit', 'edit_placement')), "get_all", array("where student_id=$student_id", "", $page), "student:placement:list_placements:list_placements");
-  }
-
-  function edit_placement(&$waf, &$user)
-  {
-    $placement_id = (int) WA::request("id");
-    require_once("model/Placement.class.php");
-    $placement = Placement::load_by_id($placement_id);
-
-    if($placement->student_id != User::get_id()) //$waf->halt("error:student:not_your_user");
-	{
-		$waf->display("popup.tpl", "error:student:not_your_user", "error.tpl");
-	}
-	else
-	{
-		edit_object($waf, $user, "Placement", array("confirm", "placement", "edit_placement_do"), array(array("cancel","section=placement&function=list_placements")), array(array("user_id", $student->user_id)), "student:placement:list_placements:edit_placement");
-	}
-  }
-
-  function edit_placement_do(&$waf, &$user)
-  {
-    $placement_id = (int) WA::request("id");
-    require_once("model/Placement.class.php");
-    $placement = Placement::load_by_id($placement_id);
-
-    if($placement->student_id != User::get_id()) $waf->halt("error:student:not_your_user");
-
-    edit_object_do($waf, $user, "Placement", "section=placement&function=list_placements", "edit_placement");
-  }
-
-
-
-  // Notes
-
-  /**
-  * lists all notes associated with a given item
-  */
-  function list_notes(&$waf, &$user)
-  {
-    $object_type = "Student";
-    $object_id = User::get_id();
-
-    $action_links = array(array("add note", "section=placement&function=add_note&object_type=$object_type&object_id=$object_id","thickbox"));
-    require_once("model/Note.class.php");
-    $notes = Note::get_all_by_links($object_type, $object_id);
-    $waf->assign("notes", $notes);
-    $waf->assign("action_links", $action_links);
-    $waf->assign("section", "placement");
-
-    $waf->display("main.tpl", "admin:directories:list_notes:list_notes", "admin/directories/search_notes.tpl");
-  }
-
-  /**
-  * views a specific note
-  * @todo show other linked items
-  * @todo modify referer code to allow cleanurls
-  */
-  function view_note(&$waf, &$user)
-  {
-    $note_id = (int) WA::request("id");
-
-    // Because notes are accessed from all over the place, we don't know where
-    // to go back to. So, try and get the referring URL
-    if(preg_match("/^.*?(section=.*)$/", $_SERVER['HTTP_REFERER'], $matches))
-    {
-      $action_links = array(array("back", $matches[1]));
-      $waf->assign("action_links", $action_links);
-    }
-    require_once("model/Note.class.php");
-    require_once("model/Notelink.class.php");
-
-    $note = Note::load_by_id($note_id);
-    $note_links = Notelink::get_all("where note_id=$note_id");
-
-    $waf->assign("note", $note);
-    $waf->assign("note_links", $note_links);
-
-    $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
-  }
-
-  function add_note(&$waf, &$user) 
-  {
-    $object_type = WA::request("object_type");
-    $object_id = WA::request("object_id");
-
-    $mainlink = $object_type . "_" . $object_id;
-
-    // Get any inbound variables (validation fail), and make the default auth all
-    $nvp_array = $waf->get_template_vars("nvp_array");
-    if(!strlen($nvp_array['all']))
-    {
-      $nvp_array['auth'] = 'all';
-      $waf->assign("nvp_array", $nvp_array);
-    }
-
-    add_object($waf, $user, "Note", array("add", "placement", "add_note_do"), array(array("cancel","section=placement&function=view_notes")), array(array("mainlink",$mainlink)), "admin:directories:list_notes:add_note");
-  }
-
-  function add_note_do(&$waf, &$user) 
-  {
-    add_object_do($waf, $user, "Note", "section=placement&function=list_notes", "add_note");
-  }
-
-  function view_work_experience(&$waf, $user_id)
-  {
-	$waf->display("main.tpl", "student:placement:work_experience:view_work_experience", 'student/placement/work_experience.tpl');
-  }
-
-  function view_work_and_learn_ilink(&$waf, $user_id)
-  {
-	$waf->display("main.tpl", "student:placement:work_and_learn_ilink:view_work_and_learn_ilink", 'student/placement/ilink.tpl');
+    edit_object_do($waf, $user, "Application", "section=vacancies&function=list_applications", "add_application");
   }
 
 ?>

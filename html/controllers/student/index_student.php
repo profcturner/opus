@@ -14,24 +14,31 @@ function nav_student()
       (
         array("welcome", "welcome", "welcome", "home")
       ),
-      "Dashboard"=>array
+      "myDashboard"=>array
       (
         array("home", "home", "home", "home")
       ),
-      "Career"=>array
+      "myCareer"=>array
       (
-        array("CV Store", "career", "cv_store", "manage_cvs")
+        array("CV Store", "career", "cv_store", "manage_cvs"),
+        array("Portfolios", "career", "portfolio_store", "manage_portfolios")
       ), 
-      "Placement"=>array
+      "myPlacement"=>array
       (
         array("Placement Home", "placement", "placement_home", "placement_home"),
-        array("Companies", "placement", "company_directory", "company_directory"),
-        array("Vacancies", "placement", "vacancy_directory", "vacancy_directory"),
-        array("Applications", "placement", "list_applications", "list_applications"),
         array("Placements", "placement", "list_placements", "list_placements"),
         array("Assessment", "placement", "list_assessments", "list_assessments"),
+        array("Work Experience", "placement", "work_experience", "view_work_experience"),
+        array("Work & Learn ILink", "placement", "work_and_learn_ilink", "view_work_and_learn_ilink"),
         array("Resources", "placement", "list_resources", "list_resources"),
         array("Notes", "placement", "list_notes", "list_notes")
+      ),
+      "Vacancies"=>array
+      (
+        array("Recent Activity", "vacancies", "vacancy_home", "vacancy_home"),
+        array("Vacancies", "vacancies", "vacancy_directory", "vacancy_directory"),
+        array("Companies", "vacancies", "company_directory", "company_directory"),
+        array("Applications", "vacancies", "list_applications", "list_applications")
       )
     );
   }
@@ -39,13 +46,17 @@ function nav_student()
   {
     return array
     (
-      "myPDS"=>array
+      "Welcome"=>array
+      (
+        array("welcome", "welcome", "home", "home")
+      ),
+      "myDashboard"=>array
       (
         array("home", "home", "", "", "", "$pds_url?section=home&function=home"), 
         array("messages", "home", "", "", "", "$pds_url?section=home&function=list_messages"), 
         array("calendar", "home", "", "", "", "$pds_url?section=home&function=view_calendar"), 
         array("contacts", "home", "", "", "", "$pds_url?section=home&function=list_contacts"), 
-        //array("email", "home", "", "", "", "$pds_url?section=home&function=open_email"), 
+        array("email", "home", "", "", "", "$pds_url?section=home&function=open_email"), 
         array("artefact files", "home", "", "", "", "$pds_url?section=home&function=manage_artefact_files"),
         array("artefact urls", "home", "", "", "", "$pds_url?section=home&function=manage_artefact_urls")
       ), 
@@ -83,19 +94,8 @@ function nav_student()
         array("Applications", "career", "", "", "",  "$pds_url?section=career&function=manage_applications"),
         array("interviews", "career", "", "", "",  "$pds_url?section=career&function=manage_interviews"),
         array("Personal Statements", "career", "", "", "",  "$pds_url?section=career&function=manage_personal_statements"),
-				array("Manage Psychometric Tests", "career", "", "", "",  "$pds_url?section=career&function=manage_psychometric_tests")
-      ), 
-      "myPlacement"=>array
-      (
-        array("Placement Home", "placement", "placement_home", "placement_home"),
-        array("Companies", "placement", "company_directory", "company_directory"),
-        array("Vacancies", "placement", "vacancy_directory", "vacancy_directory"),
-        array("Applications", "placement", "list_applications", "list_applications"),
-        array("Placements", "placement", "list_placements", "list_placements"),
-        array("Assessment", "placement", "list_assessments", "list_assessments"),
-        array("Resources", "placement", "list_resources", "list_resources"),
-        array("Notes", "placement", "manage_notes", "list_notes")
-      ), 
+		array("Manage Psychometric Tests", "career", "", "", "",  "$pds_url?section=career&function=manage_psychometric_tests")
+      ),
       "myPortfolios"=>array
       (
         array("portfolios", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_portfolios"),
@@ -103,6 +103,23 @@ function nav_student()
         array("submitted to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_submissions"),
         array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=shared_portfolios&mode=visible"),
         array("submissions from others", "portfolios", "", "", "", "$pds_url?section=portfolios&function=submitted_portfolios&mode=visible")
+      ),
+      "myPlacements"=>array
+      (
+        array("Placement Home", "placement", "placement_home", "placement_home"),
+        array("Placements", "placement", "list_placements", "list_placements"),
+        array("Assessment", "placement", "list_assessments", "list_assessments"),
+        array("Work Experience", "placement", "work_experience", "view_work_experience"),
+        array("Work & Learn ILink", "placement", "work_and_learn_ilink", "view_work_and_learn_ilink"),
+        array("Resources", "placement", "list_resources", "list_resources"),
+        array("Notes", "placement", "list_notes", "list_notes")
+      ),
+      "Vacancies"=>array
+      (
+        array("Recent Activity", "vacancies", "vacancy_home", "vacancy_home"),
+        array("Vacancies", "vacancies", "vacancy_directory", "vacancy_directory"),
+        array("Companies", "vacancies", "company_directory", "company_directory"),
+        array("Applications", "vacancies", "list_applications", "list_applications")
       )
     );
   }
