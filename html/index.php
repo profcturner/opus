@@ -119,7 +119,7 @@ function main()
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
 
     // Make sure we take them somewhere!
-    if(empty($section)) $section="welcome";
+    if(empty($section)) $section="home";
     if(empty($function)) $function="home";  
     // load controllers based on groups and capture the navigational structure
     $nav = $waf->load_group_controller($currentgroup);
