@@ -99,8 +99,8 @@ function main()
     //assignment of user
     $waf->assign_by_ref("user", $waf->user);
     $user_id = $waf->user['opus']['user_id'];
-	$preference_id = $user_id;
-	$preferences = Preference::get_system_theme($preference_id);//print_r($preferences);die;
+	$preference_id = $waf->user['opus']['reg_number'];
+	$preferences = Preference::get_system_theme($preference_id);
 	$waf->assign("system_theme", $preferences);
     $waf->assign_by_ref("currentgroup", $currentgroup);
     
@@ -119,7 +119,7 @@ function main()
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
 
     // Make sure we take them somewhere!
-    if(empty($section)) $section="home";
+    if(empty($section)) $section="welcome";
     if(empty($function)) $function="home";  
     // load controllers based on groups and capture the navigational structure
     $nav = $waf->load_group_controller($currentgroup);
@@ -257,7 +257,8 @@ function load_user($username)
 
     $waf->log("logging in");
     require_once("model/Preference.class.php");
-    Preference::load_all($user->id);
+    $preference_id = $waf->user['opus']['reg_number'];
+    Preference::load_all($preference_id);
 
     $_SESSION['lastitems'] = new Lastitems(10);
     $_SESSION['waf']['user'] = $waf->user;
@@ -1150,22 +1151,22 @@ function edit_preferences(&$waf, $id)
 function edit_preferences_do(&$waf, $id)
 {
    $waf =& UUWAF::get_instance($config['waf']);
-   $user_id = $id['opus']['user_id'];
+   $preference_id = $waf->user['opus']['reg_number'];
 
   require_once('model/Preference.class.php');
 
-  Preference::set_preference('resources_active', WA::request('resources_active'));
-  Preference::set_preference('bookmarks_active', WA::request('bookmarks_active'));
-  Preference::set_preference('trails_active', WA::request('trails_active'));
-  Preference::set_preference('calendar_active', WA::request('calendar_active'));
+  //Preference::set_preference('resources_active', WA::request('resources_active'));
+  //Preference::set_preference('bookmarks_active', WA::request('bookmarks_active'));
+  //Preference::set_preference('trails_active', WA::request('trails_active'));
+  //Preference::set_preference('calendar_active', WA::request('calendar_active'));
   Preference::set_preference('system_theme', WA::request('system_theme'));
-  Preference::set_preference('preferred_email_account', WA::request('preferred_email_account'));
-  Preference::set_preference('calendar_day_starts', WA::request('calendar_day_starts'));
-  Preference::set_preference('calendar_day_ends', WA::request('calendar_day_ends'));
-  Preference::set_preference('hide_read_messages', WA::request('hide_read_messages'));
+  Preference::set_theme('system_theme', WA::request('system_theme'));
+  //Preference::set_preference('preferred_email_account', WA::request('preferred_email_account'));
+  //Preference::set_preference('calendar_day_starts', WA::request('calendar_day_starts'));
+  //Preference::set_preference('calendar_day_ends', WA::request('calendar_day_ends'));
+  //Preference::set_preference('hide_read_messages', WA::request('hide_read_messages'));
   
-  Preference::save_all($user_id);
-
+  Preference::save_all($preference_id);
 
   $goto = WA::request('referrer');
 
