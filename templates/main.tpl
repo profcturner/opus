@@ -83,7 +83,9 @@
 {else}
 </head>
 <body>
+
 {/if}
+
 <div id="page_wrapper">
   <div id="header">  {* start of the header div *}
     <div id="institution_logo">{if $#instituion_logo#}<img src="{#institution_logo#}" title="Institution Logo"/>{else}{$config.opus.institution}{/if}
@@ -126,29 +128,33 @@
 	{/foreach}
       </ul>
     </div>
-    
-	{foreach from=$nav key="sec_name" item="sec" name="sec_loop"}
-		{if $section == $sec[0][1]}
-		<div id="submenu">
-		  <ul>
-		{section loop=$sec name="subsec"}
-			<li> 
-		{if $config[opus][cleanurls]} 
-			  <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}{$sec[subsec][1]}/{$sec[subsec][3]}{/if}">{$sec[subsec][0]|capitalize}</a>
-		{else}
-			  <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1{/if}">{$sec[subsec][0]|capitalize}</a>
-		{/if} 
-			</li>
-		{/section}
-			<li><a title= "Preferences" href="?section=main&function=edit_preferences" class="thickbox">Preferences</a></li>
-			
-	<div id="username">{$user.opus.salutation} {$user.opus.firstname} {$user.opus.lastname}</div>
-		  </ul>
-		 </div>
-	  
-	{/if}
-	{/foreach}
+   
 
+		<div id="submenu">
+			{foreach from=$nav key="sec_name" item="sec" name="sec_loop"}
+				{if $section == $sec[0][1]}
+					 <ul> 
+						{section loop=$sec name="subsec"}
+							<li> 
+								{if $config[opus][cleanurls]} 
+									  <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}{$sec[subsec][1]}/{$sec[subsec][3]}{/if}">{$sec[subsec][0]|capitalize}</a>
+								{else}
+									  <a title="go to subsection: {$sec[subsec][0]|capitalize}" {if $subsection == "$sec[subsec][2]"}class="current"{/if} href="{if $sec[subsec][5]}{$sec[subsec][5]}{else}?section={$sec[subsec][1]}&function={$sec[subsec][3]}&page=1{/if}">{$sec[subsec][0]|capitalize}</a>
+								{/if} 
+							</li>
+						{/section}
+							<li><a title= "Preferences" href="?section=main&function=edit_preferences" class="thickbox">Preferences</a></li>
+							
+							<div id="username">{$test}{$user.opus.salutation} {$user.opus.firstname} {$user.opus.lastname}</div>
+					
+					  </ul>
+					  
+				 
+				  
+				{/if}
+		{/foreach}
+         
+         </div>	
     </div>
     
 <div id="main_content">
