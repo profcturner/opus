@@ -117,10 +117,19 @@ function main()
     // Ok, on with the show
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
-
+    
     // Make sure we take them somewhere!
-    if(empty($section)) $section="home";
-    if(empty($function)) $function="home";  
+    if($currentgroup == "student")
+    {
+		if(empty($section)) $section="welcome";
+		if(empty($function)) $function="home"; 
+	} 
+	else
+	{
+		if(empty($section)) $section="home";
+		if(empty($function)) $function="home"; 
+	}
+	
     // load controllers based on groups and capture the navigational structure
     $nav = $waf->load_group_controller($currentgroup);
     // load controller based on the object being managed
