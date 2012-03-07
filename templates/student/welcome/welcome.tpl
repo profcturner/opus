@@ -28,11 +28,11 @@
 		{/literal}
 	</script>
 
-
+{*
 <div id="splashnews">
 		{include file=splash_news.tpl}
 </div>
-
+*}
 
   <div id="slideshow">
 	<img src="{$config.opus.url}/images/mainslide.png" width="950" height="270" />
