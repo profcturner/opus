@@ -2,6 +2,7 @@
 
 <script type="text/javascript" src='../../opus/javascript/jquery.js'/></script>
 <script type="text/javascript" src="../../opus/javascript/jquery_login.js"></script>
+<script type="text/javascript" src="../../pds/javascript/newsTicker.js"></script>
 		
 	<script type="text/javascript">
 		{literal}
@@ -28,11 +29,14 @@
 	</script>
 
 
+<div id="splashnews">
+		{include file=splash_news.tpl}
+</div>
+
+
   <div id="slideshow">
-  <img src="{$config.opus.url}/images/mainslide.png" width="950" height="270" />
-  <img src="{$config.opus.url}/images/studentMainSlide.png" width="950" height="270" />		
-  		
-  
+	<img src="{$config.opus.url}/images/mainslide.png" width="950" height="270" />
+	<img src="{$config.opus.url}/images/studentMainSlide.png" width="950" height="270" />
   </div>
 
 
@@ -57,13 +61,13 @@
        
        <p><img src="{$config.opus.url}/images/deliver.jpg"  /></p>
        
-       <p style="margin-bottom:2px";>OPUS .... :</p>
+       <p style="margin-bottom:2px";>OPUS will allow you to:</p>
        	<ul style="padding-left:15px; margin-top:0px;">
-       		<li>...</li>
-			<li>...</li>
-			<li>...</li>
-			<li>...</li>
-			<li>...</li>
+       		<li>Browse international placement opportunities</li>
+       		<li>Browse placement companies and vacancies</li>
+			<li>Attach your CV or e-Portfolio to vacancies</li>
+			<li>Recieve vacancy updates via SMS and Twitter</li>
+			<li>and more.</li>
 		</ul>
 		
        
@@ -77,6 +81,7 @@
       <p><img src="{$config.opus.url}/images/trails.jpg"  /></p>
       <p>The user trails below will help you learn how to drive OPUS: </p>
 
+	<p style="padding-left:80px; margin-top:0px;"><b>Under Construction!</b></p>
   {*{include file='splashtrails.tpl'}*}
 
        
