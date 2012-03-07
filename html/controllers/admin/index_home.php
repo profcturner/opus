@@ -19,7 +19,7 @@
   */
   function home(&$waf)
   {
-    $waf->assign("user", $waf->user['opus']);
+   
     require_once("model/User.class.php");
 
     // Check, is it a superuser?
