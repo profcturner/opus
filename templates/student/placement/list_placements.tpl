@@ -12,7 +12,7 @@
 {$help_prompter->display($student_year, $student->user_id)}
 {/if}
 {if $student->placement_status == 'Placed'}
-{*{$help_prompter->display("StudentHomePlaced", $student->user_id)}*}
+
 {if $placement}
 {#placement_details#}
 {include file="manage.tpl" mode="view" headings=$placement_headings object=$placement action_button=$placement_action}
@@ -37,4 +37,3 @@
 {if $student->placement_status == 'Placed'}
 {$help_prompter->display($student_year, $student->user_id)}
 {/if}
-

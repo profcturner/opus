@@ -11,7 +11,7 @@
     <td>{$vacancies[vacancies].description|escape:"htmlall"}</td>
     <td>{$vacancies[vacancies].company_name|escape:"htmlall"}</td>
     <td>{$vacancies[vacancies].locality|escape:"htmlall"}</td>
-    <td rowspan="2" class="action"><a href="?section=placement&function=view_vacancy&id={$vacancies[vacancies].id}">view</a></td>
+    <td rowspan="2" class="action"><a href="?section=vacancies&function=view_vacancy&id={$vacancies[vacancies].id}">view</a></td>
   </tr>
   <tr class="{cycle name="cycle2" values="dark_row,light_row"}">
     <td colspan="3"><small><span class="status_{$vacancies[vacancies].status}">Status: {$vacancies[vacancies].status|default:"None"}</span> Close Date: {$vacancies[vacancies].closedate|default:"None Specified"}</small></td>

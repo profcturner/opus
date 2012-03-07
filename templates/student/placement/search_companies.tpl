@@ -9,7 +9,7 @@
   <tr class="{cycle name="cycle1" values="dark_row,light_row"}">
     <td>{$companies[companies].name|escape:"htmlall"}</td>
     <td>{$companies[companies].locality|escape:"htmlall"}</td>
-    <td class="action"><a class="thickbox" href="?section=placement&function=view_company&company_id={$companies[companies].id}">view</a></td>
+    <td class="action"><a class="thickbox" href="?section=vacancies&function=view_company&company_id={$companies[companies].id}">view</a></td>
   </tr>
   {/section}
 </table>
