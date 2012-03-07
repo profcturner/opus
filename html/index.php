@@ -13,7 +13,33 @@
  * @uses WA.class.php
  *
  */
+$login_type = $_GET["login_type"];
 
+
+ 	//
+	// phpCAS simple client
+	//
+
+	// import phpCAS lib
+	include_once('CAS.php');
+
+	phpCAS::setDebug();
+
+	// initialize phpCAS
+	phpCAS::client( SAML_VERSION_1_1, 'login.ulster.ac.uk', 443, '');
+
+	// no SSL validation for the CAS server
+	phpCAS::setNoCasServerValidation();
+	phpCAS::setExtraCurlOption(CURLOPT_SSL_VERIFYPEER, FALSE);
+
+if ($login_type == 'CAS')
+{
+	// force CAS authentication
+  	phpCAS::forceAuthentication();
+  	
+}
+  		// at this step, the user has been authenticated by the CAS server
+	// and the user's login name can be read with phpCAS::getUser().
 main();
 
 /**
@@ -70,10 +96,17 @@ function main()
   $waf->register_data_connection('preferences', $config_sensitive['opus']['preference']['dsn'], $config_sensitive['opus']['preference']['username'], $config_sensitive['opus']['preference']['password']);
 
   $system_status = check_system_status($waf);
-
+  $username = WA::request('username');
+  $password = WA::request('password');
   // Try to authenticate any username and password credentials
-  $user = $waf->login_user(WA::request('username'), WA::request('password')); 
-  //print_r($user);die;
+  	if(phpCAS::isAuthenticated())
+	{		
+			$username = phpCAS::getUser();
+			$password = 'CASauthenticated';	
+	}
+  $user = $waf->login_user($username, $password); 
+
+  
   //assign configuration to smarty
   $waf->assign_by_ref("config", $config);
 
@@ -84,9 +117,11 @@ function main()
 
     // Authentication works, now get all the details, use the username returned
     // by authentication, which might be different
-    load_user($user['username']);
+    load_user($username, $password);
 
     $currentgroup = $waf->user['opus']['user_type'];
+
+    
 
     // When closed, only root users can login
     if(!$system_status && $currentgroup != "root")
@@ -175,7 +210,7 @@ function unauthenticated_functions($function)
   exit;
 }
 
-function load_user($username)
+function load_user($username, $password)
 {
 	global $config;
 	
@@ -184,9 +219,16 @@ function load_user($username)
 	
 
   require_once("model/User.class.php");
+  $username = strtoupper($username);
 
   // Load the user from the table, these next actions are done each access
   $user = User::load_by_username($username);
+  if($user == false)
+  {
+	  //Try by reg_number, in case they are using their reg_number
+	  $user = User::load_by_reg_number($username);
+  }
+
   if($user == false)
   {
     if(WA::request("function") == 'logout')
@@ -196,12 +238,13 @@ function load_user($username)
     }
     else
     {
+      
       $waf->log("no user account found for authenticated user [$username]");
 			if($config['opus']['enable_self_service_user_creation'])
 			{
 				$waf->log("self service creation of users is enabled");
 				// Self service creation is enabled. So far, only for students
-				if(preg_match($config['opus']['student_username_regexp'], $username))
+				if(preg_match($config['opus']['student_username_regexp'], strtoupper($username)))
 				{
 					$waf->log("username looks like a valid student username");
 					// And it is a student...
@@ -218,9 +261,27 @@ function load_user($username)
 						$waf->log("no student account could be created");
 					}
 				}
+				elseif (preg_match($config['opus']['staff_username_regexp'], strtoupper($username)))
+				{
+					$waf->log("username looks like a valid staff username");
+					// And it is staff...
+					require_once("model/StaffImport.class.php");
+					
+					$staff_user_id = StaffImport::auto_add_staff($username, $password);
+					if($staff_user_id)
+					{
+						$waf->log("a staff account was created");
+						// Apparent success... try again
+						$user = User::load_by_id($staff_user_id);
+					}
+					else
+					{
+						$waf->log("no staff account could be created. Got $staff_user_id as a user_id ");
+					}
+				}
 				else
 				{
-					$waf->log("username doesn't match student username format, and only student creation supported");
+					$waf->log("username doesn't match student or staff username format; pattern was ".$config['opus']['staff_username_regexp']."uername was ".strtoupper($username));
 				}
 			}
 			else
@@ -256,6 +317,8 @@ function load_user($username)
     $opus_user['opus']['last_login']  = $user->login_time;
     $opus_user['opus']['reg_number']  = $user->reg_number;
 
+
+    
     // Get, and cache, the complete list of channels
     //$opus_user['opus']['channels'] = User::get_channels($user->id);
 
@@ -263,6 +326,7 @@ function load_user($username)
     $fields['online'] = "online";
 
     $waf->user = array_merge($waf->user, $opus_user);
+    
 
     $waf->log("logging in");
     require_once("model/Preference.class.php");
@@ -489,6 +553,10 @@ function login(&$waf)
 function logout(&$waf) 
 {
   $waf =& UUWAF::get_instance();
+  if(phpCAS::isAuthenticated())
+  {
+  	$CASlogout = 'True';
+  }
 
   $id = $waf->user['opus']['user_id'];
 
@@ -512,6 +580,10 @@ function logout(&$waf)
   $waf->logout_user();
   @session_destroy();
   unset($_SESSION);
+  if($CASlogout === 'True')
+  {
+  	phpCAS::logout();
+  }
   $waf->display("login.tpl", "login");  
 }
 
