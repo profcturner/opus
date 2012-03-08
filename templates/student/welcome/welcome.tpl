@@ -62,14 +62,18 @@
        <p><img src="{$config.opus.url}/images/deliver.jpg"  /></p>
        
        <p style="margin-bottom:2px";>OPUS will allow you to:</p>
+       
+       <p style="padding-left:80px; margin-top:0px;"><b>Under Construction!</b></p>
+       {*
+       	
        	<ul style="padding-left:15px; margin-top:0px;">
        		<li>Browse international placement opportunities</li>
        		<li>Browse placement companies and vacancies</li>
 			<li>Attach your CV or e-Portfolio to vacancies</li>
-			<li>Recieve vacancy updates via SMS and Twitter</li>
+			<li>Receive vacancy updates via SMS and Twitter</li>
 			<li>and more.</li>
 		</ul>
-		
+		*}
        
       
   </div>
