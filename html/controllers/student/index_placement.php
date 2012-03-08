@@ -725,11 +725,15 @@
 
   function view_work_experience(&$waf, $user_id)
   {
+	$work_experience = 'yes';
+	$waf->assign("work_experience", $work_experience);
 	$waf->display("main.tpl", "student:placement:work_experience:view_work_experience", 'student/placement/work_experience.tpl');
   }
 
   function view_work_and_learn_ilink(&$waf, $user_id)
   {
+	$work_ilink = 'yes';
+	$waf->assign("work_ilink", $work_ilink);
 	$waf->display("main.tpl", "student:placement:work_and_learn_ilink:view_work_and_learn_ilink", 'student/placement/ilink.tpl');
   }
 
