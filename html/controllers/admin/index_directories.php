@@ -282,7 +282,7 @@
     $waf->assign("placement_options", $placement_options);
     $waf->assign("academic_tutors", $academic_tutors);
 
-    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("manage applications", "section=directories&function=manage_applications&page=")), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
+    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("CVs", "section=directories&function=list_student_cvs"), array("manage applications", "section=directories&function=manage_applications&page="), array("notes", "section=directories&function=list_notes&object_type=Student&object_id=" . $_SESSION['student_id'])), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   /**
@@ -632,7 +632,7 @@
     $waf->assign("company", $company);
     $waf->assign("company_activity_names", $company_activity_names);
 
-    $waf->display("main.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
+    $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
   /**
@@ -2122,13 +2122,33 @@
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
 
-    $action_links = array(array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id", "thickbox"));
-    require_once("model/Note.class.php");
-    $notes = Note::get_all_by_links($object_type, $object_id);
-    $waf->assign("notes", $notes);
-    $waf->assign("action_links", $action_links);
+		if($object_type == "Student")
+		{
+			$function_name = "edit_student";
+			$action_links = array(array("back", "section=student&function=$function_name&page=1"), array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id", "thickbox"));
+			require_once("model/Note.class.php");
+			$notes = Note::get_all_by_links($object_type, $object_id);
+			$waf->assign("notes", $notes);
+			$waf->assign("action_links", $action_links);
 
-    $waf->display("main.tpl", "admin:directories:company_directory:list_notes", "admin/directories/search_notes.tpl");
+			$waf->display("main.tpl", "admin:directories:student_directory:student_notes", "admin/directories/search_notes.tpl");
+		}
+		elseif($object_type == "Company")
+		{
+			$function_name = "edit_company";
+			$action_links = array(array("back", "section=company&function=$function_name&page=1"), array("add note", "section=directories&function=add_note&object_type=$object_type&object_id=$object_id", "thickbox"));
+			require_once("model/Note.class.php");
+			$notes = Note::get_all_by_links($object_type, $object_id);
+			$waf->assign("notes", $notes);
+			$waf->assign("action_links", $action_links);
+
+			$waf->display("main.tpl", "admin:directories:company_directory:list_notes", "admin/directories/search_notes.tpl");
+		}
+		else
+		{
+			$waf->log("error loading notes");
+			$waf->halt("error:admin:notes");
+		}
   }
 
   /**

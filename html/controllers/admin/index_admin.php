@@ -27,7 +27,11 @@ function nav_admin()
 {
   $basic_nav = array
   (
-    "Home"=>array
+    "Welcome"=>array
+    (
+      array("welcome", "welcome", "welcome", "home")
+    ),
+    "Dashboard"=>array
     (
       array("home", "home", "home", "home"),
       array("company activity", "home", "company_activity", "company_activity"),
@@ -137,7 +141,7 @@ function nav_admin()
   }
 
   // Get the Recent items
-  //$last_item_nav = $_SESSION['lastitems']->get_nav();
+  $last_item_nav = $_SESSION['lastitems']->get_nav();
 
   // Merge in root functionality if appropriate
   if(User::is_root())
@@ -160,8 +164,8 @@ function nav_admin()
   }
 
   // Finally add the recent items
-  //return(array_merge_recursive($nav, $last_item_nav));
-  return $nav;
+  return(array_merge_recursive($nav, $last_item_nav));
+  //return $nav;
 }
 
 
