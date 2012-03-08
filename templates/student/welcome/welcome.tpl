@@ -37,7 +37,7 @@
 
   <div id="slideshow">
 	<img src="{$config.opus.url}/images/mainslide.png" width="950" height="270" />
-	<img src="{$config.opus.url}/images/studentMainSlide.png" width="950" height="270" />
+	{*<img src="{$config.opus.url}/images/studentMainSlide.png" width="950" height="270" />*}
   </div>
 
 
