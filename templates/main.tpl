@@ -193,7 +193,7 @@
     </div>
 {/if}
 
-{if $welcome_page}
+{if $welcome_page || $work_experience || $work_ilink}
 	<div class="content_block">
 {else}
     <div id="content_block">
