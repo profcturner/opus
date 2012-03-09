@@ -282,7 +282,7 @@
     $waf->assign("placement_options", $placement_options);
     $waf->assign("academic_tutors", $academic_tutors);
 
-    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("CVs", "section=directories&function=list_student_cvs"), array("manage applications", "section=directories&function=manage_applications&page="), array("notes", "section=directories&function=list_notes&object_type=Student&object_id=" . $_SESSION['student_id'])), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
+    edit_object($waf, $user, "Student", array("confirm", "directories", "edit_student_do"), array(array("cancel","section=directories&function=student_directory"), array("reset password", "section=directories&function=reset_password&user_id=" . $student->user_id), array("Student Home", "section=student&function=placement_home"), array("CVs", "section=directories&function=list_student_cvs"), array("manage applications", "section=directories&function=manage_applications&page="), array("notes", "section=directories&function=list_notes&object_type=Student&object_id=" . $_SESSION['student_id'])), array(array("user_id", $student->user_id)), "admin:directories:student_directory:edit_student", "admin/directories/edit_student.tpl");
   }
 
   /**
@@ -2227,7 +2227,7 @@
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
 
-    manage_objects($waf, $user, "Resource", array(array("add resource","section=directories&function=add_company_resource&company_id=$company_id", "thickbox")), array(array('view', 'view_company_resource'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:directories:company_directory:manage_resources", "list.tpl", "company");
+    manage_objects($waf, $user, "Resource", array(array("add resource","section=directories&function=add_company_resource&company_id=$company_id", "thickbox")), array(array('view', 'view_company_resource', 'no'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "admin:directories:company_directory:manage_resources", "list.tpl", "company");
   }
 
   function view_company_resource(&$waf, &$user)
