@@ -522,7 +522,7 @@
 
     $waf->assign("activities", $activities);
     $waf->assign("companies", Company::get_all_extended($search, $activities, $sort));
-    $waf->assign("action_links", array(array("add company","section=directories&function=add_company","thickbox")));
+    $waf->assign("action_links", array(array("add company","section=directories&function=add_company")));
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "admin/directories/search_companies.tpl");
   }
 
@@ -534,7 +534,7 @@
 	}
 	else
 	{
-    add_object($waf, $user, "Company", array("add", "directories", "add_company_do"), array(array("cancel","section=directories&function=company_directory")), array(array("user_id",$user["user_id"])), "admin:directories:companies:add_company");
+    add_object($waf, $user, "Company", array("add", "directories", "add_company_do"), array(array("cancel","section=directories&function=company_directory")), array(array("user_id",$user["user_id"])), "admin:directories:company_directory:add_company");
 	}
   }
 
@@ -673,7 +673,7 @@
     $waf->assign("objects", $objects);
     $waf->assign("object_num", $object_num);
     $waf->assign("actions", $actions);
-    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id", "thickbox"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
+    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
 
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_vacancies", "list.tpl");
   }
@@ -702,7 +702,7 @@
 		}
 		$waf->assign("page_title_extra", " (" . $company->name . ")");
 
-		add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:add_vacancy");
+		add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:add_vacancy");
 	}
   }
 
