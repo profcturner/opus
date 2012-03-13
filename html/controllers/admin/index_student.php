@@ -28,7 +28,7 @@
     $student = Student::load_by_user_id($student_id);
 
     $waf->assign("student", $student);
-    $waf->display("main.tpl", "student:home:home:home", "student/home/home.tpl");
+    $waf->display("main.tpl", "student:home:placement_home:placement_home", "student/placement/placement_home.tpl");
   }
 
   function vacancy_directory(&$waf)
@@ -57,7 +57,7 @@
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("weighting_total", $weighting_total);
 
-    $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
+    $waf->display("main.tpl", "student:placement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
   }
 
   function list_student_channels(&$waf)
