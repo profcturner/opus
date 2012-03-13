@@ -745,7 +745,7 @@ function add_object(&$waf, &$user, $object_name, $action_button, $action_links, 
   assign_lookups($waf, $instance);// check for lookups and populate the required smarty objects
   $waf->assign("hidden_values", $hidden_values);
   $waf->assign("content", $content);
-    if($errors != "yes" && $object_name != "Vacancy")
+    if($errors != "yes" && $object_name != "Vacancy" && $object_name != "Company")
     {
     	$waf->display("popup.tpl", $config_section, $manage_tpl);
     }
