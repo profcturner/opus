@@ -42,9 +42,16 @@
 	</td>
 	</tr>
   
-    <tr>
-    <td>
-			<table>
+</table>
+      
+    </td>
+    </tr>
+</table>
+  
+</div><!-- dashboard ends -->
+      
+      <div id="dashboard_buttons">
+      		<table>
               <tr>
 					<td colspan="2" align="center" style="padding-bottom:30px; font-weight:bold">
 						<em>These are your short-cut buttons</em> 
@@ -63,15 +70,6 @@
          
               </tr></center>
 			</table>
-            <br><br>
-        
-   </td>
-   </tr>
-</table>
+      </div>
       
-    </td>
-    </tr>
-</table>
-  
-  </div><!-- dashboard ends -->
-      </div> <!-- main content area end-->
+</div> <!-- main content area end-->
