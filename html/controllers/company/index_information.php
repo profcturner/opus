@@ -64,7 +64,7 @@
     $waf->assign("admin_headings", $admin_headings);
     $waf->assign("root_headings", $root_headings);
 
-    $waf->display("main.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
+    $waf->display("popup.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
   }
 
   function about(&$waf)
