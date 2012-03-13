@@ -1077,7 +1077,7 @@
 
     if(!Policy::check_default_policy("help", "list")) $waf->halt("error:policy:permissions");
 
-    manage_objects($waf, $user, "Help", array(array("add help","section=configuration&function=add_help","thickbox")), array(array('edit', 'edit_help'), array('remove','remove_help')), "get_all", array("", "order by lookup, channel_id", $page), "admin:configuration:manage_help:manage_help");
+    manage_objects($waf, $user, "Help", array(array("add help","section=configuration&function=add_help","thickbox")), array(array('edit', 'edit_help', 'no'), array('remove','remove_help')), "get_all", array("", "order by lookup, channel_id", $page), "admin:configuration:manage_help:manage_help");
   }
 
   function add_help(&$waf, &$user) 
