@@ -567,7 +567,7 @@
     $waf->assign("changes", WA::request("changes"));
     $waf->assign("xinha_editor", true);
 
-    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:company_directory:edit_company", "admin/directories/edit_company.tpl");
+    edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=directories&function=company_directory"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("resources", "section=directories&function=manage_company_resources&company_id=$id&page=1"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "admin:directories:company_directory:edit_company", "admin/directories/edit_company.tpl");
   }
 
   function edit_company_do(&$waf, &$user) 
@@ -667,7 +667,7 @@
       'status'=>array('type'=>'list', 'list'=>array("open", "closed", "special"), 'header'=>true)
     );
 
-    $actions = array(array('edit', 'edit_vacancy', 'no'), array('applicants', 'manage_applicants', 'no'), array('clone', 'clone_vacancy'), array('remove','remove_vacancy'));
+    $actions = array(array('edit', 'edit_vacancy', 'no'), array('applicants', 'manage_applicants', 'no'), array('clone', 'clone_vacancy', 'no'), array('remove','remove_vacancy'));
 
     $waf->assign("headings", $headings);
     $waf->assign("objects", $objects);
