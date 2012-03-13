@@ -394,18 +394,15 @@ text-decoration: none;*/
 }
 
 #content_block {
-  /*width:70%;
+  width:90%;
   margin-left:50px;
   margin-right:50px;
   clear:left;
-  background-color: #f7f7f7;
+  /*background-color: #f7f7f7;*/
   border: 0px #f7f7f7 solid;
   min-height:500px;
   display:block;
-  float:left;*/
-  width:70%;
-  clear:left;
-  padding-left: 10px;
+  float:left;
 }
 
 #page h1 {
@@ -721,7 +718,7 @@ textarea {
   font-weight:normal;
   color: #444444;
   border-bottom: 0px #cccccc solid;
-  margin-left: 50px;
+  margin-left: 40px;
   margin-top: 30px;
   margin-right: 50px;
   margin-bottom: 20px;
@@ -755,7 +752,7 @@ textarea {
   padding-bottom: 0.6em;
   float:left;
   font-size:0.9em;
-  margin-left: 50px;
+  margin-left: 40px;
 }
 
 #action_button a{
@@ -1002,7 +999,7 @@ textarea {
 }
 
 #php_info .e{
-background: #ffffff;
+  background: #ffffff;
   color: #443333;
   text-align:right;
   padding-right:1em;
@@ -1039,9 +1036,24 @@ td.vacancy_description {
 
 .user_details {
   float:left;
-  padding-right: 30px;
+  width: 25%;
+}
+
+.placement_details {
+  float:left;
+  width: 50%;
 }
 
 .user_photo {
-  padding-left: 30px;
+  /*float:left;*/
+  padding-left:30px;
+}
+
+.academic_tutor {
+  text-align:center;
+  margin:20px 20px 20px 20px;
+}
+
+.assess_details {
+  float:left;
 }

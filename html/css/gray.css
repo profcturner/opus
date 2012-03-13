@@ -422,13 +422,13 @@ text-decoration: none;
 
 #content_block 
 {
-  width:70%;
+  width:90%;
   margin-left:50px;
   margin-right:50px;
   clear:left;
-  /*background-color: #f2f2f2;*/
+  /*background-color: #f7f7f7;*/
   border: 0px #f7f7f7 solid;
-  min-height:500px;
+  min-height:400px;
   display:block;
   float:left;
 }
@@ -930,6 +930,7 @@ textarea {
     text-shadow: 1px 1px #666;
     margin-top: 14px;
     margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 #buttons a{
@@ -1697,17 +1698,25 @@ td.data_title_bright {
   padding: 0em 1em;
 }
 
-#dashboard{
+#dashboard
+{
   border: 3px #f2f2f2 solid;
   background: #ffffff;
   padding: 10px;
-  /*background-image: url(/pds/images/style_images/student/drops/textbox.png);*/
   color:#000000;
-  width:750px;
-	margin-bottom: 40px;
+  width:100%;
+  margin-bottom: 40px;
+}
+
+#dashboard_buttons
+{
+  background: #ffffff;
+  padding: 10px;
+  color:#000000;
+  width:55%;
+  margin-bottom: 40px;
 }
 	
-
 #new_messages{
   color:red;
 }
