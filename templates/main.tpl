@@ -193,12 +193,8 @@
     </div>
 {/if}
 
-{if $welcome_page || $work_experience || $work_ilink}
-	<div class="content_block">
-{else}
     <div id="content_block">
-{/if}
-{$content} 
+		{$content} 
     </div>
 
 {config_load file=lang_en.conf section=footer}
@@ -214,6 +210,11 @@
 
   <div id="footer">
 	  <p>
+	{if $currentgroup == "admin"}
+		<a href="?section=information&function=help_directory">{#help_directory#}</a> |
+	{else}
+		<a href="?section=information&function=help_directory" class="thickbox">{#help_directory#}</a> |
+	{/if}
 		<a href="?section=information&function=about" class="thickbox">{#about#}</a> |
 		<a href="?section=information&function=copyright" target="_blank">{#copyright#}</a> |
 		<a href="?section=information&function=privacy" target="_blank">{#privacy#}</a> |
