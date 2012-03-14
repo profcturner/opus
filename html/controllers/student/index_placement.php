@@ -191,7 +191,7 @@
     $waf->assign("aggregate_total", $aggregate_total);
     $waf->assign("weighting_total", $weighting_total);
 
-    $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
+    $waf->display("main.tpl", "student:placement:list_assessments:view_assessments", "general/assessment/assessment_results.tpl");
   }
 
   function list_resources(&$waf)
