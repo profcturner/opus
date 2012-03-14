@@ -2,8 +2,8 @@
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>
     <th>Description</th>
-    <th>Close Date</th>
     <th>Status</th>
+    <th>Close Date</th>
     <th>Company Name</th>
     <th>Locality</th>
     <th class="action">View</th>
@@ -12,8 +12,8 @@
   {section name=vacancies loop=$vacancies}
   <tr class="{cycle name="cycle1" values="dark_row,light_row"}">
     <td>{$vacancies[vacancies].description|escape:"htmlall"}</td>
-    <td>{$vacancies[vacancies].closedate|default:"None Specified"}</td>
     <td><span class="status_{$vacancies[vacancies].status}">{$vacancies[vacancies].status|default:"None"}</span></td>
+    <td>{$vacancies[vacancies].closedate|default:"None Specified"}</td>
     <td>{$vacancies[vacancies].company_name|escape:"htmlall"}</td>
     <td>{$vacancies[vacancies].locality|escape:"htmlall"}</td>
     <td class="action"><a href="?section=directories&function=view_vacancy&id={$vacancies[vacancies].id}">view</a></td>
@@ -37,5 +37,3 @@
 {sectionelse}
 {#no_vacancies_selected#}
 {/section}
-
-
