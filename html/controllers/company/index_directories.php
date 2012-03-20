@@ -211,7 +211,7 @@
     $waf->assign("objects", $objects);
     $waf->assign("object_num", $object_num);
     $waf->assign("actions", $actions);
-    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id", "thickbox"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
+    $waf->assign("action_links", array(array("add vacancy","section=directories&function=add_vacancy&company_id=$company_id"), array("edit company", "section=directories&function=edit_company&id=$company_id")));
 
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_vacancies", "list.tpl");
   }
