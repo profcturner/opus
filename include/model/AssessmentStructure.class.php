@@ -163,7 +163,7 @@ class AssessmentStructure extends DTO_AssessmentStructure
       {
         if(empty($value) || $value="")
         {
-          array_push($error, $this->human . " cannot by empty");
+          array_push($error, $this->human . " cannot be empty");
         }
       }
     }
