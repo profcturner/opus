@@ -526,6 +526,24 @@ $config['waf']['debug_only_on_IP'] = array("127.0.0.1", "your ip");
 // Enables extra logging (HUGE!!!!)
 $config['waf']['waf_debug'] = True;
 
+
+* CVs can't be downloading in IE6,7 and 8, but are fine in other browsers
+-------------------------------------------------------------------------
+
+(With thanks to John Voss:)
+
+Functionality works find with HTTP but not when SSL is enabled:
+
+Try adding the following line to local.conf.php:
+
+session_cache_limiter('none');
+
+See
+
+http://bytes.com/topic/php/answers/554529-internet-explorer-6-refusing-let-me-download
+
+for more details.
+
 -=-
 
 ---
