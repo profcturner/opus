@@ -1,6 +1,8 @@
 #!/usr/bin/php -q
 <?php
 
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 // php scripts, very irritatingly, use the directory they were called from,
 // not the one the script is in. Try to rectify this. We use __FILE__ since
 // (at least in my testing), it seems to follow symlinks and still show the
