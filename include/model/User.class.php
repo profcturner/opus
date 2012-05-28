@@ -194,7 +194,11 @@ Class User extends DTO_User
     $fields['real_name'] = $user->form_real_name($fields);
     $user_id = $user->_insert($fields);
 
-    User::email_password($fields, $password);
+    // We send emails to all users but only to students on creation if so configured...
+    if(!($fields['user_type'] == 'student' && $config['opus']['email_students_on_creation']))
+    {
+      User::email_password($fields, $password);
+    }
     return($user_id);
   }
 
@@ -292,11 +296,7 @@ Class User extends DTO_User
         Automail::sendmail("NewPassword_Supervisor", $mailfields);
         break;
       case "student" :
-        // We send emails to students if so configured...
-        if($config['opus']['email_students_on_creation'])
-        {
-          Automail::sendmail("NewPassword_Student", $mailfields);
-        }
+        Automail::sendmail("NewPassword_Student", $mailfields);
         break;
       default:
         Automail::sendmail("NewPassword", $mailfields);
