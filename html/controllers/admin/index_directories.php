@@ -256,7 +256,7 @@
 
     if(!Policy::is_auth_for_student($student->user_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
     $assessment_group_id = Student::get_assessment_group_id($student->user_id);
-    $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
+    $regime_items = Student::get_assessment_regime($student->user_id, $aggregate_total, $weighting_total);
     $other_items = Student::get_other_assessors($student->user_id);
     require_once("model/Placement.class.php");
     $placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart");

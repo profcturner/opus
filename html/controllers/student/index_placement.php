@@ -184,7 +184,7 @@
   {
     $student_user_id = User::get_id();
     require_once("model/Student.class.php");
-    $regime_items = Student::get_assessment_regime($student_user_id,  &$aggregate_total, &$weighting_total);
+    $regime_items = Student::get_assessment_regime($student_user_id,  $aggregate_total, $weighting_total);
     $waf->assign("assessment_section", "placement");
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", $student_user_id);
@@ -481,7 +481,7 @@
 
     // Check the proposed CV is valid
     require_once("model/CVCombined.class.php");
-    if(!CVCombined::check_cv_permission($student_id, WA::request('cv_ident'), &$problem)) $waf->halt("error:student:invalid_cv");
+    if(!CVCombined::check_cv_permission($student_id, WA::request('cv_ident'), $problem)) $waf->halt("error:student:invalid_cv");
 
     // Check the vacancy...
     $vacancy_id = (int) WA::request('vacancy_id');

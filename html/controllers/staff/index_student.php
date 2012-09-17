@@ -13,7 +13,7 @@
   // Ensure, before anything else happens, that we have the rights to this student
   if(Student::get_academic_user_id(Student::get_user_id($_SESSION['student_id'])) != User::get_id())
   {
-    drop_student(&$waf);
+    drop_student($waf);
   }
 
   /**
@@ -38,7 +38,7 @@
 		$staff = Staff::load_by_user_id(User::get_id());
 
 		//$assessment_group_id = Student::get_assessment_group_id($student->user_id);
-		$regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
+		$regime_items = Student::get_assessment_regime($student->user_id, $aggregate_total, $weighting_total);
 		require_once("model/Placement.class.php");
 
 		$placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart desc");
@@ -95,7 +95,7 @@
     $id = $_SESSION['student_id'];
 
     require_once("model/Student.class.php");
-    $regime_items = Student::get_assessment_regime(Student::get_user_id($id), &$aggregate_total, &$percentage_total);
+    $regime_items = Student::get_assessment_regime(Student::get_user_id($id), $aggregate_total, $percentage_total);
     $waf->assign("regime_items", $regime_items);
     $waf->assign("assessed_id", Student::get_user_id($id));
     $waf->assign("aggregate_total", $aggregate_total);

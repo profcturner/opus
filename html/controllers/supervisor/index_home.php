@@ -25,7 +25,7 @@
       'programme_id'=>array('type'=>'lookup', 'object'=>'programme', 'value'=>'name', 'title'=>'Programme', 'var'=>'programmes', 'lookup_function'=>'get_id_and_description')
     );
     $assessment_group_id = Student::get_assessment_group_id($student->user_id);
-    $regime_items = Student::get_assessment_regime($student->user_id, &$aggregate_total, &$weighting_total);
+    $regime_items = Student::get_assessment_regime($student->user_id, $aggregate_total, $weighting_total);
 
     // Get details about the placement
     if(!(preg_match("/^supervisor_([0-9]+)$/", $waf->user['username'], $matches)))

@@ -90,12 +90,12 @@
 
   function organisation_details(&$waf, &$user, $title) 
   {
-    manage_faculties(&$waf, &$user, $title);
+    manage_faculties($waf, $user, $title);
   }
 
   // Faculties
 
-  function manage_faculties(&$waf, $user, $title)
+  function manage_faculties(&$waf, &$user, $title)
   {
     if(!Policy::check_default_policy("faculty", "list")) $waf->halt("error:policy:permissions");
     set_navigation_history($waf, "Faculties");
@@ -1141,7 +1141,7 @@
 
   function import_data(&$waf, &$user)
   {
-    import_students(&$waf, &$user);
+    import_students($waf, $user);
   }
 
   function import_students(&$waf)
