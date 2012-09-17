@@ -67,7 +67,7 @@ class CVCombined
       $new_cv->student_user_id = $student_id;
       $new_cv->mime_type = $cv->_file_type;
       $new_cv->description = $cv->title;
-      $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, &$problem);
+      $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, $problem);
       $new_cv->problem = $problem;
       $new_cv->approval = CVApproval::check_approval($student_id, $new_cv->cv_ident);
       array_push($final_cvs, $new_cv);
@@ -90,7 +90,7 @@ class CVCombined
       }
       else
       {
-        $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, &$problem);
+        $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, $problem);
         $new_cv->problem = $problem;
       }
       $new_cv->approval = CVApproval::check_approval($student_id, $new_cv->cv_ident);
@@ -106,7 +106,7 @@ class CVCombined
       $new_cv->student_user_id = $student_id;
       $new_cv->mime_type = $archived['_file_type'];
       $new_cv->description = trim($archived['title'] . " " . $archived['description']) . " (PDSystem Store)";
-      $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, &$problem);
+      $new_cv->valid = CVCombined::check_cv_permission($student_id, $new_cv->cv_ident, $problem);
       $new_cv->problem = $problem;
       $new_cv->approval = CVApproval::check_approval($student_id, $new_cv->cv_ident);
       array_push($final_cvs, $new_cv);
