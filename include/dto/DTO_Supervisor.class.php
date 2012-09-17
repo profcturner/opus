@@ -81,7 +81,7 @@ class DTO_Supervisor extends DTO_NoData
   function _load_by_username($username="")
   {
     $matches = array();
-    preg_match("/^supervisor_([0-9]+)$/", $username, &$matches);
+    preg_match("/^supervisor_([0-9]+)$/", $username, $matches);
     $this->_load_by_placement_id($matches[1]);
   }
 
