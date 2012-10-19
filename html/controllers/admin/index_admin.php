@@ -25,57 +25,60 @@ $waf->set_default_log("admin");
 */
 function nav_admin() 
 {
+	$waf = UUWAF::get_instance();
+	$waf->language_load();
+
   $basic_nav = array
   (
     "Welcome"=>array
     (
-      array("welcome", "welcome", "welcome", "home")
+      array($waf->T('welcome'), "welcome", "welcome", "home")
     ),
     "Dashboard"=>array
     (
-      array("home", "home", "home", "home"),
-      array("company activity", "home", "company_activity", "company_activity"),
-      array("change password", "home", "change_password", "change_password")
+      array($waf->T('home'), "home", "home", "home"),
+      array($waf->T('company_activity'), "home", "company_activity", "company_activity"),
+      array($waf->T('change_password'), "home", "change_password", "change_password")
     ),
     "Directories"=>array
     (
-      array("students","directories", "student_directory", "student_directory"), 
-      array("companies", "directories", "company_directory", "company_directory"),
-      array("vacancies", "directories", "vacancy_directory", "vacancy_directory"),
-      array("academic staff","directories","staff_directory","staff_directory"),
-      array("contacts", "directories", "contact_directory", "contact_directory"),
-      array("supervisors", "directories", "supervisor_directory", "supervisor_directory"),
-      array("administrators", "directories", "admin_directory", "admin_directory"),
-      array("superusers", "directories", "manage_super_admins", "manage_super_admins")
+      array($waf->T('students'),"directories", "student_directory", "student_directory"), 
+      array($waf->T('companies'), "directories", "company_directory", "company_directory"),
+      array($waf->T('vacancies'), "directories", "vacancy_directory", "vacancy_directory"),
+      array($waf->T('academic_staff'),"directories","staff_directory","staff_directory"),
+      array($waf->T('contacts'), "directories", "contact_directory", "contact_directory"),
+      array($waf->T('supervisors'), "directories", "supervisor_directory", "supervisor_directory"),
+      array($waf->T('administrators'), "directories", "admin_directory", "admin_directory"),
+      array($waf->T('superusers'), "directories", "manage_super_admins", "manage_super_admins")
     ), 
     "Information"=>array
     (
-      array("resources", "information", "list_resources", "list_resources"),
-      array("help directory", "information", "help_directory", "help_directory"), 
-      array("reports", "information", "list_reports", "list_reports"),
-      array("system status", "information", "system_status", "system_status"),
-			array("system statistics", "information", "system_statistics", "system_statistics"), 
-      array("view logs", "information", "view_logs", "view_logs") 
+      array($waf->T('resources'), "information", "list_resources", "list_resources"),
+      array($waf->T('help_directory'), "information", "help_directory", "help_directory"), 
+      array($waf->T('reports'), "information", "list_reports", "list_reports"),
+      array($waf->T('system_status'), "information", "system_status", "system_status"),
+			array($waf->T('system_statistics'), "information", "system_statistics", "system_statistics"), 
+      array($waf->T('view_logs'), "information", "view_logs", "view_logs") 
     ),
     "Configuration"=>array
     (
-      array("manage resources", "configuration", "resources", "manage_resources"),
-      array("organisation details", "configuration", "organisation_details", "organisation_details"),
-      array("CV groups", "configuration", "manage_cvgroups", "manage_cvgroups"),
-      array("Assessment groups", "configuration", "manage_assessmentgroups", "manage_assessmentgroups"),
-      array("manage help", "configuration", "manage_help", "manage_help"),
-      array("import data", "configuration", "import_data", "import_data"),
+      array($waf->T('manage_resources'), "configuration", "resources", "manage_resources"),
+      array($waf->T('organisation_details'), "configuration", "organisation_details", "organisation_details"),
+      array($waf->T('CV_groups'), "configuration", "manage_cvgroups", "manage_cvgroups"),
+      array($waf->T('assessment_groups'), "configuration", "manage_assessmentgroups", "manage_assessmentgroups"),
+      array($waf->T('manage_help'), "configuration", "manage_help", "manage_help"),
+      array($waf->T('import_data'), "configuration", "import_data", "import_data"),
     ),
     "Advanced"=>array
     (
-      array("assessments", "advanced", "manage_assessments", "manage_assessments"),
-      array("activity types", "advanced", "manage_activitytypes", "manage_activitytypes"),
-      array("vacancy types", "advanced", "manage_vacancytypes", "manage_vacancytypes"),
-      array("channels", "advanced", "manage_channels", "manage_channels"),
-      array("languages", "advanced", "manage_languages", "manage_languages"),
-      array("mime types", "advanced", "manage_mimetypes", "manage_mimetypes"),
-      array("mail templates", "advanced", "manage_automail", "manage_automail"),
-      array("policies", "advanced", "manage_policies", "manage_policies")
+      array($waf->T('assessments'), "advanced", "manage_assessments", "manage_assessments"),
+      array($waf->T('activity_types'), "advanced", "manage_activitytypes", "manage_activitytypes"),
+      array($waf->T('vacancy_types'), "advanced", "manage_vacancytypes", "manage_vacancytypes"),
+      array($waf->T('channels'), "advanced", "manage_channels", "manage_channels"),
+      array($waf->T('languages'), "advanced", "manage_languages", "manage_languages"),
+      array($waf->T('mime_types'), "advanced", "manage_mimetypes", "manage_mimetypes"),
+      array($waf->T('mail_templates'), "advanced", "manage_automail", "manage_automail"),
+      array($waf->T('policies'), "advanced", "manage_policies", "manage_policies")
     )
   );
 
