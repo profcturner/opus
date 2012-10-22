@@ -45,7 +45,7 @@ function nav_admin()
       array($waf->T('students'),"directories", "student_directory", "student_directory"), 
       array($waf->T('companies'), "directories", "company_directory", "company_directory"),
       array($waf->T('vacancies'), "directories", "vacancy_directory", "vacancy_directory"),
-      array($waf->T('academic_staff'),"directories","staff_directory","staff_directory"),
+      array($waf->T('academic_staff_plural'),"directories","staff_directory","staff_directory"),
       array($waf->T('contacts'), "directories", "contact_directory", "contact_directory"),
       array($waf->T('supervisors'), "directories", "supervisor_directory", "supervisor_directory"),
       array($waf->T('administrators'), "directories", "admin_directory", "admin_directory"),
