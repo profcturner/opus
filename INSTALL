@@ -72,8 +72,8 @@ Debian install, at a root command prompt type
 dpkg-reconfigure exim4-config
 
 
-2a. Are you running Ubunutu?
-----------------------------
+2a. Are you running Ubuntu?
+---------------------------
 
 Ubuntu installers have reported success installing the Debian packages
 as noted above. However, the location of the Smarty libraries is
