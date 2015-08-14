@@ -6,7 +6,11 @@
 */
 require_once("dto/DTO_Preference.class.php");
 /**
-* Handles the storage of user preferences, possibly in a different database 
+* Handles the storage of user preferences, possibly in a different database
+*
+* It is important to note the key used to store preferences has to be
+* specific to the user across several applications. Therefore the user id
+* from OPUS should not be used. 
 *
 * @author Colin Turner <c.turner@ulster.ac.uk>
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
@@ -29,6 +33,15 @@ class Preference extends DTO_Preference
     parent::__construct($config['opus']['pref_ident']);
   }
 
+  /**
+  * return the preferences for a given user
+  *
+  * This function does not deposit them into the session, it is used to
+  * interrogate the preferences of other uses.
+  *
+  * @param $reg_number the student or staff number of the user
+  * @return an array of preference objects for the user
+  */
   function fetch_all($reg_number)
   {
     $waf =& UUWAF::get_instance();
@@ -45,19 +58,17 @@ class Preference extends DTO_Preference
     return($preferences);
   }
 
-  function load_all($preference_id)
+  /**
+  * load preferences for a given user into the session
+  *
+  * Usually called only at initial login, since preferences are then
+  * stored in the session until being saved at logout.
+  *
+  * @param $reg_number the student or staff number of the user
+  */
+  function load_all($reg_number)
   {
-    $waf =& UUWAF::get_instance();
-    $application = $waf->title;
-    if(empty($preference_id))
-    {
-      $waf->log("preferences cannot be loaded for this without a reg number", PEAR_LOG_DEBUG, 'debug');
-      return;
-    }
-
-    $pref = new Preference;
-
-    $preferences = $pref->_get_all("where application='$application' and reg_number='$preference_id'");
+    $preferences = Preferences::fetch_all($reg_number);
 
     // Unwind into the session
     foreach($preferences as $preference)
@@ -67,39 +78,20 @@ class Preference extends DTO_Preference
     $waf->log(count($preferences) . " preference values loaded", PEAR_LOG_DEBUG, 'debug');
   }
 
-  function get_system_theme($preference_id)
-  {
-    $waf =& UUWAF::get_instance($config['waf']);
+  /**
+  * fetches the system theme, as it was potentially shared by applications.
+  *
+  * For a time the system theme was dictated by PACE and handled rather inelegantly
+  * by not being stored in a "common" application area.
+  *
+  * @deprecated since PACE and OPUS will part company.
+  * @return the system theme for OPUS or "blue" if not set
+  */
+  function get_system_theme($reg_number)
+  {	
+	  $preferences = $_SESSION['waf'][$waf->title]['preferences'];
 
-    $application = $waf->title;
-  
-    if(empty($preference_id))
-    {
-      $waf->log("preferences cannot be loaded for this user without a reg number", PEAR_LOG_DEBUG, 'debug');
-      $system_theme = "blue";
-      return $system_theme;
-    }
-
-		if(empty($application))
-    {
-      $waf->log("preferences cannot be loaded for user ".$preference_id." without an application name", PEAR_LOG_DEBUG, 'debug');
-      $system_theme = "blue";
-      return $system_theme;
-    }
-
-	$pref = new Preference;
-
-    $preferences = $pref->_get_all("where application='$application' and reg_number='$preference_id'");
-
-    // Unwind into the session
-    foreach($preferences as $preference)
-    {
-      Preference::set_preference($preference->name, unserialize($preference->value));
-    }
-	
-	$preferences = $_SESSION['waf'][$waf->title]['preferences'];
-
-	$system_theme = $preferences['system_theme'];
+	  $system_theme = $preferences['system_theme'];
 	
     if ($system_theme == "")
     {	
@@ -108,13 +100,18 @@ class Preference extends DTO_Preference
     return $system_theme;
   }
 
-  function save_all($preference_id)
+  /**
+  * commits preference values held in the session to the database
+  *
+  * @param $reg_number the staff or student number of the user involved
+  */
+  function save_all($reg_number)
   {
     require_once("model/User.class.php");
     $waf =& UUWAF::get_instance();
     $application = $waf->title;
 
-    if(empty($preference_id))
+    if(empty($reg_number))
     {
       $waf->log("preferences cannot be saved for this user without a reg number", PEAR_LOG_DEBUG, 'debug');
       return;
@@ -125,36 +122,31 @@ class Preference extends DTO_Preference
 
     // Remove what's there
     $pref = new Preference; 
-    //$pref->_remove_where("where application='$application' and reg_number='$preference_id'");
-    $pref->_remove_where("where application='$application' and reg_number='$preference_id'");
-    $pref->_remove_where("where application='pace' and reg_number='$preference_id' and name='system_theme'");
+    $pref->_remove_where("where application='$application' and reg_number='$reg_number'");
     $count = 0;
 
     foreach($_SESSION['waf'][$application]['preferences'] as $name => $value)
     {
       $fields = array();
       $fields['application'] = $application;
-      $fields['reg_number'] = $preference_id;
+      $fields['reg_number'] = $reg_number;
       $fields['name'] = $name;
       $fields['value'] = serialize($value);
 
       $pref->_insert($fields);
       $count++;
-        //Write the same theme for PACE
-		if($name == 'system_theme')
-		{ 
-		  $pace_fields = array();
-		  
-		  $pace_fields['application'] = 'pace';
-		  $pace_fields['reg_number'] = $preference_id;
-		  $pace_fields['name'] = $name;
-		  $pace_fields['value'] = serialize($value);
-		  $pref->_insert($pace_fields);
-		}
     }
-    $waf->log("$count preference values saved $preference_id", PEAR_LOG_DEBUG, 'debug');
+    $waf->log("$count preference values saved for user $reg_number", PEAR_LOG_DEBUG, 'debug');
   }
 
+  /**
+  * sets a preference into the session
+  *
+  * Note that sessions are not stored in the database until the save_all()
+  *
+  * @param $name the name or key for the preference
+  * @param $value the value of the preference which can be any PHP object
+  */  
   function set_preference($name, $value)
   {
     $waf =& UUWAF::get_instance();
@@ -163,14 +155,25 @@ class Preference extends DTO_Preference
     $_SESSION['waf'][$application]['preferences'][$name] = $value;
   }
 
+  /**
+  * an old function for setting the theme
+  *
+  * @see get_system_theme()
+  * @deprecated see comments on get_system_theme()
+  */
   function set_theme($name, $value)
   {
-     $waf =& UUWAF::get_instance($config['waf']);
-    $application = 'pace';
+    $waf =& UUWAF::get_instance($config['waf']);
 
     $_SESSION['waf'][$application]['preferences'][$name] = $value;
   }
-
+  
+  /**
+  * returns a given preference from the session
+  *
+  * @param $name the name of the preference to return
+  * @return the value of the preference
+  */
   function get_preference($name)
   {
     $waf =& UUWAF::get_instance();
