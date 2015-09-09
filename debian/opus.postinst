@@ -165,7 +165,8 @@ EOF
   if [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/opus.conf ]
   then
     echo "Installing OPUS apache2 configuration..."
-    ln -s /etc/opus/apache2.conf /etc/apache2/conf.d/opus.conf
+    ln -s /etc/opus/apache2.conf /etc/apache2/conf-available/opus.conf
+    a2enconf opus.conf
   fi
 
   # If Apache 2 is running restart it, important in case folks are using apache1
