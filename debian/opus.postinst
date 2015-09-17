@@ -162,7 +162,7 @@ EOF
   fi
 
   # Install the apache2 configuration if required
-  if [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf.d/opus.conf ]
+  if [ -e /etc/apache2/ ] && [ ! -e /etc/apache2/conf-available/opus.conf ]
   then
     echo "Installing OPUS apache2 configuration..."
     ln -s /etc/opus/apache2.conf /etc/apache2/conf-available/opus.conf
