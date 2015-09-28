@@ -6,9 +6,9 @@ Build-Depends: debhelper (>= 5),
   po-debconf
 Build-Depends-Indep: texlive
 Homepage: http://foss.ulster.ac.uk/projects/opus
-Vcs-Browser: http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/?root=opus
-Vcs-Svn: svn://foss.ulster.ac.uk/svn/opus/trunk
-Standards-Version: 3.9.2
+Vcs-Browser: http://foss.ulster.ac.uk/redmine/projects/opus/repository
+Vcs-Git: git://foss.ulster.ac.uk/git/opus
+Standards-Version: 3.9.6
 
 Package: opus
 Architecture: all
