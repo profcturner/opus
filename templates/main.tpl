@@ -88,7 +88,7 @@
 
 <div id="page_wrapper">
   <div id="header">  {* start of the header div *}
-    <div id="institution_logo">{if $#instituion_logo#}<img src="{#institution_logo#}" title="Institution Logo"/>{else}{$config.opus.institution}{/if}
+    <div id="institution_logo">{if $#instituion_logo#}<img src="{#institution_logo#}" if {$#institution_logo_height}height="{#institution_logo_height}"{/if} title="Institution Logo"/>{else}{$config.opus.institution}{/if}
     </div>
     <div id="application_logo">{if $config.opus.logo}<img src="images/{$config.opus.logo}" title="Application Logo"/>{else}{$config.opus.title}{/if}
     </div>
