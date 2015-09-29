@@ -35,6 +35,8 @@ function main()
   require_once("UUWAF.class.php");
   require_once("model/Preference.class.php");
 
+//  error_reporting(E_ALL & ~E_NOTICE);
+
 
   if($config['opus']['benchmarking'])
   {
@@ -49,6 +51,8 @@ function main()
   // Initialise the Web Application Framework
   $waf =& UUWAF::get_instance($config['waf']);
 
+
+
   // We want an extra log file for admin users
   $waf->create_log_file("admin");
 
@@ -62,8 +66,10 @@ function main()
   // Make a help prompter object to access XHTML help objects
   require_once("model/HelpPrompter.class.php");
   $help_prompter = new HelpPrompter;
-  $waf->assign_by_ref("help_prompter", $help_prompter);
-  $waf->assign_by_ref("benchmark", $benchmark);
+
+  $waf->assignByRef("help_prompter", $help_prompter);
+  $waf->assignByRef("benchmark", $benchmark);
+
 
   // Tell UUWAF about our database connections - there are two
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);
@@ -72,10 +78,10 @@ function main()
   $system_status = check_system_status($waf);
 
   // Try to authenticate any username and password credentials
-  $user = $waf->login_user(WA::request('username'), WA::request('password')); 
-  //print_r($user);die;
+  $user = $waf->login_user(WA::request('username'), WA::request('password'));
+
   //assign configuration to smarty
-  $waf->assign_by_ref("config", $config);
+  $waf->assignByRef("config", $config);
 
   // If the authenticators worked...
   if ($user['valid']) 
@@ -85,7 +91,6 @@ function main()
     // Authentication works, now get all the details, use the username returned
     // by authentication, which might be different
     load_user($user['username']);
-
     $currentgroup = $waf->user['opus']['user_type'];
 
     // When closed, only root users can login
@@ -97,13 +102,12 @@ function main()
     if($currentgroup == "root") $currentgroup="admin";
 
     //assignment of user
-    $waf->assign_by_ref("user", $waf->user);
+    $waf->assignByRef("user", $waf->user);
     $user_id = $waf->user['opus']['user_id'];
 	$preference_id = $waf->user['opus']['reg_number'];
 	$preferences = Preference::get_system_theme($preference_id);
 	$waf->assign("system_theme", $preferences);
-    $waf->assign_by_ref("currentgroup", $currentgroup);
-    
+    $waf->assignByRef("currentgroup", $currentgroup);
     $waf->assign("sidebar", true);
 
     // Is there any redirect, if so, get it, unset it and go there
@@ -113,11 +117,10 @@ function main()
       unset($_SESSION['redirect']);
       header("Location: $redirect");
     }
-
     // Ok, on with the show
     $section =  $waf->get_section($config['opus']['cleanurls']); // this is the object relating to the object controller that should be loaded via the user tyle controller
     $function = $waf->get_function($config['opus']['cleanurls']); // this is the function that should be called
-    
+
     // Make sure we take them somewhere!
     if($currentgroup == "student" || $currentgroup == "admin")
     {
@@ -129,7 +132,7 @@ function main()
 		if(empty($section)) $section="home";
 		if(empty($function)) $function="home"; 
 	}
-	
+
     // load controllers based on groups and capture the navigational structure
     $nav = $waf->load_group_controller($currentgroup);
     // load controller based on the object being managed
@@ -180,9 +183,8 @@ function load_user($username)
 	global $config;
 	
   $waf =& UUWAF::get_instance();
-  $now = date("YmdHis");
+  $now =date("YmdHis");
 	
-
   require_once("model/User.class.php");
 
   // Load the user from the table, these next actions are done each access
@@ -264,13 +266,18 @@ function load_user($username)
 
     $waf->user = array_merge($waf->user, $opus_user);
 
-    $waf->log("logging in");
-    require_once("model/Preference.class.php");
-    $preference_id = $waf->user['opus']['reg_number'];
-    Preference::load_all($preference_id);
 
+    $waf->log("logging in");
+
+    require_once("model/Preference.class.php");
+
+    $preference_id = $waf->user['opus']['reg_number'];
+
+    Preference::load_all($preference_id);
     $_SESSION['lastitems'] = new Lastitems(10);
+
     $_SESSION['waf']['user'] = $waf->user;
+
     require_once("model/Policy.class.php");
     Policy::load_default_policy();
     $fields['session_hash'] = md5("sess_" . session_id());
@@ -280,7 +287,7 @@ function load_user($username)
     // Potentially update the online user statistics
     $drop_stats = true;
   }
-  $waf->assign_by_ref("lastitems", $_SESSION['lastitems']);
+  $waf->assignByRef("lastitems", $_SESSION['lastitems']);
   User::update($fields);
   if($drop_stats) User::drop_online_user_count_file();
   drop_cookies();
