@@ -229,19 +229,19 @@
   function privacy($waf)
   {
     $waf->assign("show_banners", true);
-    $waf->display("bounded.tpl", "general:information:information:privacy", "general/information/privacy.tpl");
+    $waf->display("popup.tpl", "general:information:information:privacy", "general/information/privacy.tpl");
   }
 
   function copyright($waf)
   {
     $waf->assign("show_banners", true);
-    $waf->display("bounded.tpl", "general:information:information:copyright", "general/information/copyright.tpl");
+    $waf->display("popup.tpl", "general:information:information:copyright", "general/information/copyright.tpl");
   }
 
   function terms_conditions($waf)
   {
     $waf->assign("show_banners", true);
-    $waf->display("bounded.tpl", "general:information:information:terms_conditions", "general/information/terms.tpl");
+    $waf->display("popup.tpl", "general:information:information:terms_conditions", "general/information/terms.tpl");
   }
 
 

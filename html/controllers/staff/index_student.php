@@ -19,7 +19,7 @@
   /**
   * link back to the edit student page
   */
-  function edit_student(&$waf)
+  function edit_student($waf)
   {
     $id = $_SESSION['student_id'];
 
@@ -90,7 +90,7 @@
 	}
   }
 
-  function list_assessments(&$waf)
+  function list_assessments($waf)
   {
     $id = $_SESSION['student_id'];
 
@@ -110,7 +110,7 @@
   /**
   * show an assessment for viewing or editing
   */
-  function edit_assessment(&$waf, &$user)
+  function edit_assessment($waf, $user)
   {
     // Note security is handled internally by the AssessmentCombined object
 
@@ -129,7 +129,7 @@
   /**
   * process inbound assessment information
   */
-  function edit_assessment_do(&$waf, &$user)
+  function edit_assessment_do($waf, $user)
   {
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("regime_id");
@@ -144,13 +144,13 @@
   /**
   * removes the student from the session
   */
-  function drop_student(&$waf)
+  function drop_student($waf)
   {
     unset($_SESSION['student_id']);
     goto_section("home", "home");
   }
 
-  function list_notes(&$waf)
+  function list_notes($waf)
   {
     require_once("model/Student.class.php");
     $object_type = "Student";
@@ -166,7 +166,7 @@
     /*goto_section("home", "list_notes&object_type=Student&object_id=" . Student::get_user_id($_SESSION['student_id']));*/
   }
 
-  function view_note(&$waf, &$user)
+  function view_note($waf, &$user)
   {
     $note_id = (int) WA::request("id");
 

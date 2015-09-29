@@ -2,6 +2,10 @@
 
     <!-- Main Body table (text area's) -->
     <table width="700"  border="0" align="center" cellpadding="0" cellspacing="0">
+	  <tr valign="top">
+        <td><div align="left"><img src="{#uu_logo#}"></div></td>
+        <td width="350"><div align="right"><img src="{$config.opus.url}/images/{#application_logo#}"></div></td>
+      </tr>
       <tr>
         <!-- Text area (left) -->
         <td width="325" valign="top" class="text"><div align="left"><span class="titles"><br>
@@ -22,7 +26,7 @@
         <td width="300" valign="top">
           <strong>{$config.opus.title_short}, Version {$config.opus.version}.{$config.opus.minor_version}.{$config.opus.patch_version}</strong>
           <br /><br />
-          Principal Developer: Dr Colin Turner
+          Principal Developer: Professor Colin Turner
           <br><br>
 
         OPUS is released as Free and Open Source Software under the
