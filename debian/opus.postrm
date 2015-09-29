@@ -41,9 +41,9 @@ esac
 if [ $1 = "remove" ]
 then
   # Remove any symlink we may have added to apache2
-  if [ -e /etc/apache2/conf.d/opus.conf ]
+  if [ -e /etc/apache2/conf-available/opus.conf ]
   then
-    rm /etc/apache2/conf.d/opus.conf
+    rm /etc/apache2/conf-available/opus.conf
   fi
   # And similarly, one from the include directory
   if [ -e /usr/share/opus/include/local.conf.php ]
