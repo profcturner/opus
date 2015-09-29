@@ -14,16 +14,16 @@ function nav_student()
       (
         array("welcome", "welcome", "welcome", "home")
       ),
-      "myDashboard"=>array
+      "Home"=>array
       (
         array("home", "home", "home", "home")
       ),
-      "myCareer"=>array
+      "Career"=>array
       (
         array("CV Store", "career", "cv_store", "manage_cvs"),
         array("Portfolios", "career", "portfolio_store", "manage_portfolios")
       ), 
-      "myPlacement"=>array
+      "Placement"=>array
       (
         array("Placement Home", "placement", "placement_home", "placement_home"),
         array("Placements", "placement", "list_placements", "list_placements"),
@@ -50,7 +50,7 @@ function nav_student()
       (
         array("welcome", "welcome", "home", "home")
       ),
-      "myDashboard"=>array
+      "Home"=>array
       (
         array("home", "home", "", "", "", "$pds_url?section=home&function=home"), 
         array("messages", "home", "", "", "", "$pds_url?section=home&function=list_messages"), 
@@ -60,7 +60,7 @@ function nav_student()
         array("artefact files", "home", "", "", "", "$pds_url?section=home&function=manage_artefact_files"),
         array("artefact urls", "home", "", "", "", "$pds_url?section=home&function=manage_artefact_urls")
       ), 
-      "myProfile"=>array
+      "Profile"=>array
       (
         array("personal details", "profile", "", "", "", "$pds_url?section=profile&function=view_personal_details"),
         array("qualifications", "profile", "", "", "", "$pds_url?section=profile&function=manage_qualifications"),
@@ -70,7 +70,7 @@ function nav_student()
         array("publications", "profile", "", "", "", "$pds_url?section=profile&function=manage_publications"),
         array("conferences", "profile", "", "", "", "$pds_url?section=profile&function=manage_conferences")
       ), 
-      "myProgramme"=>array
+      "Programme"=>array
       (
         array("team", "programme", "", "", "", "$pds_url?section=programme&function=view_programme_team"),
         array("resources", "programme", "", "", "", "$pds_url?section=programme&function=list_resources"),
@@ -78,7 +78,7 @@ function nav_student()
         array("meetings", "programme", "", "", "", "$pds_url?section=programme&function=list_meetings"),
         array("transcript", "programme", "", "", "", "$pds_url?section=programme&function=view_transcript")
       ), 
-      "myDevelopment"=>array
+      "Development"=>array
       (
         array("skills", "development", "", "", "", "$pds_url?section=development&function=manage_skills"),
         array("goals", "development","", "", "", "$pds_url?section=development&function=manage_goals"),
@@ -86,7 +86,7 @@ function nav_student()
         array("journals", "development", "", "", "",  "$pds_url?section=development&function=manage_journals"),
         array("learning styles", "development", "", "", "",  "$pds_url?section=development&function=manage_learning_styles")
       ), 
-      "myCareer"=>array
+      "Career"=>array
       (
         array("CV Builder", "career", "", "", "", "$pds_url?section=career&function=cv_builder"),
         array("CV Store", "career", "", "", "",  "$pds_url?section=career&function=manage_cvs"),
@@ -96,7 +96,7 @@ function nav_student()
         array("Personal Statements", "career", "", "", "",  "$pds_url?section=career&function=manage_personal_statements"),
 		array("Manage Psychometric Tests", "career", "", "", "",  "$pds_url?section=career&function=manage_psychometric_tests")
       ),
-      "myPortfolios"=>array
+      "Portfolios"=>array
       (
         array("portfolios", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_portfolios"),
         array("shared to others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=manage_shares"),
@@ -104,7 +104,7 @@ function nav_student()
         array("portfolios from others", "portfolios", "", "", "",  "$pds_url?section=portfolios&function=shared_portfolios&mode=visible"),
         array("submissions from others", "portfolios", "", "", "", "$pds_url?section=portfolios&function=submitted_portfolios&mode=visible")
       ),
-      "myPlacements"=>array
+      "Placements"=>array
       (
         array("Placement Home", "placement", "placement_home", "placement_home"),
         array("Placements", "placement", "list_placements", "list_placements"),

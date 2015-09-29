@@ -8,7 +8,7 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  function mass_email(&$waf)
+  function mass_email($waf)
   {
     $users = WA::request('users');
     $message = WA::request('message');
@@ -75,7 +75,7 @@
 
   // Timelines
 
-  function display_timeline(&$waf, &$user)
+  function display_timeline($waf, $user)
   {
     $student_id = (int) WA::request("student_id");
     require_once("model/Timeline.class.php");
@@ -87,7 +87,7 @@
 
   // Photos
 
-  function display_photo(&$waf, &$user)
+  function display_photo($waf, $user)
   {
     $username = WA::request("username");
     $fullsize = WA::request("fullsize");
@@ -98,7 +98,7 @@
 
   // Vacancies
 
-  function vacancy_directory(&$waf, $user, $title)
+  function vacancy_directory($waf, $user, $title)
   {
     require_once("model/Activitytype.class.php");
     require_once("model/Vacancytype.class.php");
@@ -120,7 +120,7 @@
     $waf->display("main.tpl", "staff:directories:vacancy_directory:vacancy_directory", "admin/directories/vacancy_directory.tpl");
   }
 
-  function search_vacancies(&$waf, $user, $title)
+  function search_vacancies($waf, $user, $title)
   {
     $search = WA::request("search");
     $year = WA::request("year");
@@ -147,7 +147,7 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "staff/directories/search_vacancies.tpl");
   }
 
-  function company_directory(&$waf, $user, $title)
+  function company_directory($waf, $user, $title)
   {
     require_once("model/Activitytype.class.php");
     $activity_types = Activitytype::get_id_and_field("name");
@@ -163,7 +163,7 @@
     $waf->display("main.tpl", "staff:directories:company_directory:company_directory", "admin/directories/company_directory.tpl");
   }
 
-  function search_companies(&$waf, $user, $title)
+  function search_companies($waf, $user, $title)
   {
     $search = WA::request("search");
     $activities = WA::request("activities");
@@ -182,7 +182,7 @@
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "staff/directories/search_companies.tpl");
   }
 
-  function view_company(&$waf, &$user)
+  function view_company($waf, $user)
   {
     $id = (int) WA::request("company_id");
 
@@ -217,7 +217,7 @@
     $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
-  function view_company_resource(&$waf, &$user)
+  function view_company_resource($waf, $user)
   {
     $id = (int) $_REQUEST["id"];
     require_once("model/Resource.class.php");
@@ -228,7 +228,7 @@
   /**
   * manages vacancies for a specific company
   */
-  function manage_vacancies(&$waf, $user, $title)
+  function manage_vacancies($waf, $user, $title)
   {
     $company_id = (int) WA::request("company_id", true);
 
@@ -259,7 +259,7 @@
     $waf->display("main.tpl", "admin:directories:vacancies:manage_vacancies", "list.tpl");
   }
 
-  function view_vacancy(&$waf, &$user)
+  function view_vacancy($waf, $user)
   {
     $id = (int) WA::request("id");
     $student_id = $_SESSION["student_id"];
@@ -311,7 +311,7 @@
 
   // Admin
 
-  function manage_admins(&$waf, $user, $title)
+  function manage_admins($waf, $user, $title)
   {
     require_once("model/Admin.class.php");
 
@@ -335,7 +335,7 @@
   /**
   * lists all notes associated with a given item
   */
-  function list_notes(&$waf, &$user)
+  function list_notes($waf, $user)
   {
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
@@ -354,7 +354,7 @@
   * @todo show other linked items
   * @todo modify referer code to allow cleanurls
   */
-  function view_note(&$waf, &$user)
+  function view_note($waf, $user)
   {
     $note_id = (int) WA::request("id");
 
@@ -377,7 +377,7 @@
     $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
-  function add_note(&$waf, &$user) 
+  function add_note($waf, $user) 
   {
     $object_type = WA::request("object_type");
     $object_id = WA::request("object_id");
@@ -395,7 +395,7 @@
     add_object($waf, $user, "Note", array("add note", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }
 
-  function add_note_do(&$waf, &$user) 
+  function add_note_do($waf, $user) 
   {
     $mainlink = WA::request("mainlink");
     $parts = explode("_", $mainlink);
@@ -405,7 +405,7 @@
     add_object_do($waf, $user, "Note", "section=directories&function=list_notes&object_type=$object_type&object_id=$object_id", "add_note");
   }
 
-  function reset_password(&$waf)
+  function reset_password($waf)
   {
     $user_id = (int) WA::request("user_id");
     $error_function = WA::request("error_function");

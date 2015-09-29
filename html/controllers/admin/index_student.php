@@ -11,7 +11,7 @@
   /**
   * link back to the edit student page
   */
-  function edit_student(&$waf)
+  function edit_student($waf)
   {
     $student_id = $_SESSION['student_id'];
     goto_section("directories", "edit_student&student_id=$student_id");
@@ -20,7 +20,7 @@
   /**
   * show the student's placement page, to the best of our ability
   */
-  function placement_home(&$waf)
+  function placement_home($waf)
   {
     $student_id = (int) WA::request("student_id", true);
     require_once("model/Student.class.php");
@@ -31,12 +31,12 @@
     $waf->display("main.tpl", "student:home:placement_home:placement_home", "student/placement/placement_home.tpl");
   }
 
-  function vacancy_directory(&$waf)
+  function vacancy_directory($waf)
   {
     goto_section("directories", "vacancy_directory");
   }
 
-  function manage_applications(&$waf, $user, $title)
+  function manage_applications($waf, $user, $title)
   {
     $student_id = (int) WA::request("student_id", true);
     $page = (int) WA::request("page", true);
@@ -46,7 +46,7 @@
     //manage_objects($waf, $user, "Application", array(), array(array('edit', 'edit_application', 'directories')), "get_all", array("where student_id=$student_id", "order by created", $page), "student:placement:list_applications:list_applications");
   }
 
-  function view_assessments(&$waf)
+  function view_assessments($waf)
   {
     $student_id = $_SESSION['student_id'];
 
@@ -60,17 +60,17 @@
     $waf->display("main.tpl", "student:placement:view_assessments:view_assessments", "general/assessment/assessment_results.tpl");
   }
 
-  function list_student_channels(&$waf)
+  function list_student_channels($waf)
   {
     goto_section("directories", "list_student_channels");
   }
 
-  function list_student_cvs(&$waf)
+  function list_student_cvs($waf)
   {
     goto_section("directories", "list_student_cvs");
   }
 
-  function list_notes(&$waf)
+  function list_notes($waf)
   {
     goto_section("directories", "list_notes&object_type=Student&object_id=" . $_SESSION['student_id']);
   }
@@ -78,7 +78,7 @@
   /**
   * removes the student from the session
   */
-  function drop_student(&$waf)
+  function drop_student($waf)
   {
     unset($_SESSION['student_id']);
     goto_section("home", "home");

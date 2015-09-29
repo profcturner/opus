@@ -9,13 +9,13 @@
 */
 
 
-function form_get_user_status(&$waf)
+function form_get_user_status($waf)
 {
   $waf->display("main.tpl", "application:user:form_get_user_status:form_get_user_status", 'application/user/form_get_user_status.tpl');
 }
 
 
-function get_user_status(&$waf)
+function get_user_status($waf)
 {
   $reg_number = WA::request("reg_number");
   $format = WA::request("format");
@@ -45,7 +45,7 @@ function get_user_status(&$waf)
   }
 }
 
-function form_kill_session(&$waf)
+function form_kill_session($waf)
 {
   $session_killed = WA::request("session_killed");
   if($session_killed)
@@ -58,7 +58,7 @@ function form_kill_session(&$waf)
 /**
 * Used by other applications to logout an OPUS user with a given session_id
 */
-function kill_session(&$waf)
+function kill_session($waf)
 {
   $session_id = WA::request("session_id");
   $interactive = WA::request("interactive");
