@@ -4,7 +4,7 @@
 * Controller for the Student User, Welcome Section
 */
 
-function home(&$waf) 
+function home($waf) 
 {
   $welcome_page = 'yes';
   $waf->assign("welcome_page", $welcome_page);

@@ -35,7 +35,7 @@ function main()
   require_once("UUWAF.class.php");
   require_once("model/Preference.class.php");
 
-//  error_reporting(E_ALL & ~E_NOTICE);
+  error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 
   if($config['opus']['benchmarking'])
@@ -124,7 +124,7 @@ function main()
     // Make sure we take them somewhere!
     if($currentgroup == "student" || $currentgroup == "admin")
     {
-		if(empty($section)) $section="welcome";
+		if(empty($section)) $section="home";
 		if(empty($function)) $function="home"; 
 	} 
 	else
@@ -437,7 +437,7 @@ function destroy_cookies()
 
 }
 
-function check_system_status(&$waf)
+function check_system_status($waf)
 {
   require_once("model/Service.class.php");
   $service_status = Service::checks();
@@ -482,7 +482,7 @@ function goto_section($section, $function)
  * @param WA &$waf
  */
 
-function login(&$waf) 
+function login($waf) 
 {
   $waf->display("login.tpl", "login");
 }
@@ -493,7 +493,7 @@ function login(&$waf)
  * @param WA &$waf
  */
 
-function logout(&$waf) 
+function logout($waf) 
 {
   $waf =& UUWAF::get_instance();
 
@@ -528,7 +528,7 @@ function logout(&$waf)
  * @param WA &$waf
  */
 
-function error(&$waf) 
+function error($waf) 
 {
   $content = $waf->fetch("error.tpl");
   $waf->assign("content", $content);
@@ -559,7 +559,7 @@ function error(&$waf)
  * @uses $config[pds][session][navigation]
  */
 
-function set_navigation_history(&$waf, $title) 
+function set_navigation_history($waf, $title) 
 {
   global $config;
 
@@ -576,7 +576,7 @@ function set_navigation_history(&$waf, $title)
  * @uses $config[pds][session][navigation]
  */
 
-function add_navigation_history(&$waf, $title) 
+function add_navigation_history($waf, $title) 
 {
   global $config;
 
@@ -614,7 +614,7 @@ function add_navigation_history(&$waf, $title)
  *
  */
 
-function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl',$popup=no) 
+function generate_table($waf, $objects, $config_section, $list_tpl='list.tpl',$popup=no) 
 {
     $page = WA::request("page", true);
     
@@ -643,7 +643,7 @@ function generate_table(&$waf, $objects, $config_section, $list_tpl='list.tpl',$
  * 
  */
 
-function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
+function view_object($waf, &$user, $object_name, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl')
 {
 
     $object = str_replace(" ", "_", ucwords($object_name));
@@ -686,7 +686,7 @@ function view_object(&$waf, &$user, $object_name, $action_links, $hidden_values,
  * 
  */
 
-function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $get_all_method, $get_all_parameter='', $config_section, $list_tpl='list.tpl', $field_def_param=null, $object_num=null, $popup=no)
+function manage_objects($waf, $user, $object_name, $action_links, $actions, $get_all_method, $get_all_parameter='', $config_section, $list_tpl='list.tpl', $field_def_param=null, $object_num=null, $popup=no)
 {
 	$objects = array();
     $object = str_replace(" ", "_", ucwords($object_name));
@@ -731,7 +731,7 @@ function manage_objects(&$waf, $user, $object_name, $action_links, $actions, $ge
  * @param string $field_def_param Used to fine tune the field defs returned by the object
  *
  */
-function add_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
+function add_object($waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
 {
 
   $object = str_replace(" ", "_", ucwords($object_name));
@@ -774,7 +774,7 @@ function add_object(&$waf, &$user, $object_name, $action_button, $action_links, 
  *
  * 
  */
-function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
+function add_object_do($waf, $user, $object_name, $goto, $goto_error='')
 {
   global $config;
 
@@ -833,7 +833,7 @@ function add_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
  * @uses WA::request()
  * 
  */
-function edit_object(&$waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
+function edit_object($waf, $user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl', $additional_fields='', $field_def_param=null)
 {
   $object = str_replace(" ", "_", ucwords($object_name));  
   require_once("model/".$object.".class.php");
@@ -880,7 +880,7 @@ function edit_object(&$waf, $user, $object_name, $action_button, $action_links, 
  *
  * 
  */
-function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
+function edit_object_do($waf, $user, $object_name, $goto, $goto_error='')
 {
   global $config;
 
@@ -926,7 +926,7 @@ function edit_object_do(&$waf, $user, $object_name, $goto, $goto_error='')
  * @uses WA::request()
  * 
  */
-function remove_object(&$waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl',  $additional_fields='', $field_def_param=null)
+function remove_object($waf, &$user, $object_name, $action_button, $action_links, $hidden_values, $config_section, $manage_tpl='manage.tpl',  $additional_fields='', $field_def_param=null)
 {
 
   $object = str_replace(" ", "_", ucwords($object_name));
@@ -1008,7 +1008,7 @@ function remove_object_do(&$waf, &$user, $object_name, $goto)
     }
   }
 
-  function associate_objects(&$waf, &$user, $object_name, $objects_name, $action_button, $get_all_method, $get_all_parameter="", $config_section, $assign_tpl='assign.tpl') {
+  function associate_objects($waf, &$user, $object_name, $objects_name, $action_button, $get_all_method, $get_all_parameter="", $config_section, $assign_tpl='assign.tpl') {
   
     $object = str_replace(" ", "_", ucwords($object_name));
 
@@ -1042,7 +1042,7 @@ function remove_object_do(&$waf, &$user, $object_name, $goto)
 * @uses WA::request()
 */
 
-function generate_assign_table(&$waf, $objects, $config_section, $assign_tpl='assign.tpl') 
+function generate_assign_table($waf, $objects, $config_section, $assign_tpl='assign.tpl') 
 {
   $page = WA::request("page", true);
 
@@ -1139,7 +1139,7 @@ function get_academic_year()
 }
 
 
-function edit_preferences(&$waf, $id)
+function edit_preferences($waf, $id)
 {
   require_once('model/Student.class.php');
 
@@ -1164,7 +1164,7 @@ function edit_preferences(&$waf, $id)
 }
 
 
-function edit_preferences_do(&$waf, $id)
+function edit_preferences_do($waf, $id)
 {
    $waf =& UUWAF::get_instance($config['waf']);
    $preference_id = $waf->user['opus']['reg_number'];

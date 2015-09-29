@@ -42,7 +42,7 @@ class Preference extends DTO_Preference
   * @param $reg_number the student or staff number of the user
   * @return an array of preference objects for the user
   */
-  function fetch_all($reg_number)
+  public static function fetch_all($reg_number)
   {
     $waf =& UUWAF::get_instance();
     $application = $waf->title;
@@ -66,7 +66,7 @@ class Preference extends DTO_Preference
   *
   * @param $reg_number the student or staff number of the user
   */
-  function load_all($reg_number)
+  public static function load_all($reg_number)
   {
     $waf =& UUWAF::get_instance();
 
@@ -89,7 +89,7 @@ class Preference extends DTO_Preference
   * @deprecated since PACE and OPUS will part company.
   * @return the system theme for OPUS or "blue" if not set
   */
-  function get_system_theme($reg_number)
+  public static function get_system_theme($reg_number)
   {	
 	  $preferences = $_SESSION['waf'][$waf->title]['preferences'];
 
@@ -107,7 +107,7 @@ class Preference extends DTO_Preference
   *
   * @param $reg_number the staff or student number of the user involved
   */
-  function save_all($reg_number)
+  public static function save_all($reg_number)
   {
     require_once("model/User.class.php");
     $waf =& UUWAF::get_instance();
@@ -149,7 +149,7 @@ class Preference extends DTO_Preference
   * @param $name the name or key for the preference
   * @param $value the value of the preference which can be any PHP object
   */  
-  function set_preference($name, $value)
+  public static function set_preference($name, $value)
   {
     $waf =& UUWAF::get_instance();
     $application = $waf->title;
@@ -163,7 +163,7 @@ class Preference extends DTO_Preference
   * @see get_system_theme()
   * @deprecated see comments on get_system_theme()
   */
-  function set_theme($name, $value)
+  public static function set_theme($name, $value)
   {
     $waf =& UUWAF::get_instance($config['waf']);
 
@@ -176,7 +176,7 @@ class Preference extends DTO_Preference
   * @param $name the name of the preference to return
   * @return the value of the preference
   */
-  function get_preference($name)
+  public static function get_preference($name)
   {
     $waf =& UUWAF::get_instance();
     $application = $waf->title;

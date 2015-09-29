@@ -36,7 +36,7 @@ class Channel extends DTO_Channel
     return(self::$_field_defs);
   }
 
-  function load_by_id($id) 
+  public static function load_by_id($id) 
   {
     $channel = new Channel;
     $channel->id = $id;

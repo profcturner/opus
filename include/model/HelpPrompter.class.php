@@ -16,7 +16,7 @@
 
 class HelpPrompter
 {
-  function display($lookup, $user_id = 0)
+  public static function display($lookup, $user_id = 0)
   {
     require_once("model/Preference.class.php");
     $options = Preference::get_preference("help_prompter");

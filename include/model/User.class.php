@@ -92,7 +92,7 @@ Class User extends DTO_User
   }
 
 
-  function load_by_id($id) 
+  public static function load_by_id($id) 
   {
      $user = new User;
      $user->id = $id;
@@ -100,39 +100,39 @@ Class User extends DTO_User
      return $user;
   }
 
-  function is_root($user_id = 0)
+  public static function is_root($user_id = 0)
   {
     return(User::is_type("root", $user_id));
   }
 
-  function is_admin($user_id = 0)
+  public static function is_admin($user_id = 0)
   {
     // root users also qualify as admins
     if(User::is_root($user_id)) return true;
     return(User::is_type("admin", $user_id));
   }
 
-  function is_company($user_id = 0)
+  public static function is_company($user_id = 0)
   {
     return(User::is_type("company", $user_id));
   }
 
-  function is_supervisor($user_id = 0)
+  public static function is_supervisor($user_id = 0)
   {
     return(User::is_type("supervisor", $user_id));
   }
 
-  function is_student($user_id = 0)
+  public static function is_student($user_id = 0)
   {
     return(User::is_type("student", $user_id));
   }
 
-  function is_staff($user_id = 0)
+  public static function is_staff($user_id = 0)
   {
     return(User::is_type("staff", $user_id));
   }
   
-  function get_type($user_id = 0)
+  public static function get_type($user_id = 0)
   {
     if($user_id == 0)
     {
@@ -149,7 +149,7 @@ Class User extends DTO_User
     }    
   }
 
-  function is_type($type, $user_id = 0)
+  public static function is_type($type, $user_id = 0)
   {
     if($user_id == 0)
     {
@@ -545,7 +545,7 @@ Class User extends DTO_User
     return($session_hashes);
   }
 
-  function get_name($id)
+  public static function get_name($id)
   {
     $id = (int) $id; // Security
 
@@ -553,7 +553,7 @@ Class User extends DTO_User
     return($data[$id]);
   }
 
-  function get_email($id)
+  public static function get_email($id)
   {
     $id = (int) $id; // Security
 
@@ -561,7 +561,7 @@ Class User extends DTO_User
     return($data[$id]);
   }
 
-  function get_username($id)
+  public static function get_username($id)
   {
     $id = (int) $id; // Security
 
@@ -569,7 +569,7 @@ Class User extends DTO_User
     return($data[$id]);
   }
 
-  function get_reg_number($id)
+  public static function get_reg_number($id)
   {
     $id = (int) $id; // Security
 
@@ -577,7 +577,7 @@ Class User extends DTO_User
     return($data[$id]);
   }
 
-  function get_user_type($id)
+  public static function get_user_type($id)
   {
     $id = (int) $id; // Security
 
