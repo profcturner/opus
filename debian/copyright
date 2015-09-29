@@ -4,7 +4,7 @@ Debianized-Date: Mon, 2 Jun 2008 02:00:00 +0100
 Original-Source: http://foss.ulster.ac.uk/projects/opus/
 
 Files: debian/*
-Copyright: Copyright 2007-2008, Colin Turner <c.turner@ulster.ac.uk>
+Copyright: Copyright 2007-2015, Colin Turner <c.turner@ulster.ac.uk>
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@ License: GPL-2+
  can be found in file "/usr/share/common-licenses/GPL-2".
 
 Files: *
-Copyright: 2001-2008 University of Ulster
+Copyright: 2001-2015 Colin Turner and the University of Ulster
 License: GPL-2
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
