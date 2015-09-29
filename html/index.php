@@ -163,6 +163,11 @@ function unauthenticated_functions($function)
 {
   switch($function)
   {
+	case "help_directory":
+	  $waf =& UUWAF::get_instance();
+	  require_once("controllers/guest/index_information.php");
+	  help_directory($waf);
+	  break;
     case "request_recover_password":
       request_recover_password();
       break;
