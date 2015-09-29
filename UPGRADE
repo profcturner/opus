@@ -5,33 +5,23 @@ Please read the RELEASE-NOTES *before* upgrading
 A. Running Debian?
 ------------------
 
-If you are running Debian, just install the new version of OPUS using the
-command in the INSTALL guide, and you are done. You might want to backup
-your database first (see step 3), but dbconfig-common does this as well for you.
+If you are running Debian, just install the new version of OPUS using
+the command in the INSTALL guide, and you are done. You might want to
+backup your database first (see step 3), but dbconfig-common does this
+as well for you.
 
 B. Manually Upgrading from before 4.1.0
 ---------------------------------------
 
-Install 4.1.0 first, following the instructions in that archive.
+Install 4.2.0 first, following the instructions in that archive.
 
-C. Manually Upgrading from 4.1.0 to 4.1.1
------------------------------------------
+C. Manually Upgrading from 4.2.0
+--------------------------------
 
 C.1 Backup anything first
 -------------------------
 
-C.2 Upgrade the database
-------------------------
-
-Now upgrade your database (back it up first)  
-
-From the command prompt run (assuming your database is called opus)
-
-mysql -u root -p opus < sql_patch/patch_4.1.0_4.1.1.sql
-(type password for mysql root user)
-
-
-C.3 Unpack the new archive over the old files
+C.2 Unpack the new archive over the old files
 ---------------------------------------------
 
 The commands used here will differ depending upon your installation

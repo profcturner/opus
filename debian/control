@@ -12,7 +12,7 @@ Standards-Version: 3.9.6
 
 Package: opus
 Architecture: all
-Depends: uuwaf (>= 1.1), debconf, dbconfig-common, ucf, uuwaf-preferences, php5-cli, tinymce, libjs-jquery, ${misc:Depends}
+Depends: uuwaf (>= 2.0), debconf, dbconfig-common, ucf, uuwaf-preferences, php5-cli, tinymce, libjs-jquery, ${misc:Depends}
 Recommends: php5-gd, php5-ldap, libgd-gd2-perl
 Description: On-line Placement University System
  OPUS is a comprehensive web based tool for managing all aspects of placement.

@@ -7,14 +7,15 @@ http://foss.ulster.ac.uk/projects/opus/
 * What is OPUS?
 ---------------
 
-OPUS is the On-line Placement University System, and is designed to facilitate
-placement operations for a school, college or university.
+OPUS is the On-line Placement University System, and is designed to
+facilitate placement operations for a school, college or university.
 
 It allows the following stakeholders access
 
   - Placement administrators from the university;
   - Students, who can apply for jobs with CVs, download resources, etc.;
-  - Companies and their HR staff, who can advertise jobs and recruit students;
+  - Companies and their HR staff, who can advertise jobs and recruit
+    students;
   - Workplace supervisors who can assess students and get information;
   - Academic staff who visit students on placement.
 
@@ -22,7 +23,8 @@ OPUS is designed to
 
   - do tedious repetitive tasks for you, to help free up your time for
     the important tasks;
-  - provide a mechanism for storing placement related information for audit;
+  - provide a mechanism for storing placement related information for
+    audit;
   - give ownership to stakeholders;
   - greatly speed up the placement process;
   - provide speedy assessment functionality
@@ -33,19 +35,20 @@ and more.
 * What if we don't use competitive recruitment?
 -----------------------------------------------
 
-That's only one string of OPUS's bow. All the other features could still help
-you.
+That's only one string of OPUS's bow. All the other features could still
+help you.
 
 
 * Who produces OPUS?
 --------------------
 
-OPUS originated in the School of Electrical and Mechanical Engineering in the
-University of Ulster as a solution to our problems, and is maintained on an
-ad-hoc basis by Colin Turner. Any help is welcome in its further development.
+OPUS originated in the School of Electrical and Mechanical Engineering,
+now simply the School of Engineering in Ulster University as a solution
+to our problems, and is maintained on an ad-hoc basis by Colin Turner.
+Any help is welcome in its further development.
 
-Ulster has a very large proportion of programmes of study with placement, so
-OPUS supports our own activity at this time.
+Ulster has a very large proportion of programmes of study with
+placement, so OPUS supports our own activity at this time.
 
 
 
@@ -95,15 +98,16 @@ will be handled automatically.
 * What do I need to run OPUS?
 -----------------------------
 
-OPUS is a web application, so it needs a functional web server, running with
+OPUS is a web application, so it needs a functional web server, running
+with
 
   - PHP >= 5.1
   - MySQL >= 4
 
 You also need to obtain some other software, again, all of which is free
 
-  - Smarty Templating System
-  - UUWAF (our framework)
+  - Smarty Templating System >=3
+  - UUWAF (our framework) >=2
 
 and you might need to obtain
 
@@ -112,72 +116,77 @@ and you might need to obtain
 
 for some non-essential functionality.
 
-You can find more details in the INSTALL document. All of this software is
-available free of charge, and much of it is packaged nicely. Note that MySQL
-may not be free (as in money) for you to use if you are running a for-profit
-scheme, but it is cheap, and OPUS should run on alternative databases such
-as PostGreSQL but this is currently untested.
+You can find more details in the INSTALL document. All of this software
+is available free of charge, and much of it is packaged nicely. Note
+that MySQL may not be free (as in money) for you to use if you are
+running a for-profit scheme, but it is cheap, and OPUS should run on
+alternative databases such as PostGreSQL but this is currently untested.
 
 
 * What hardware do I need to run OPUS?
 --------------------------------------
 
-This is now hard to quantify, since it is a year or so, and a version or so
-since we ran OPUS on really old, essentially obsolete hardware, but it still
-should not require anything special. It will certainly run with ease on a 
-standard modern desktop machine.
+This is now hard to quantify, since it is a year or so, and a version or
+so since we ran OPUS on really old, essentially obsolete hardware, but
+it still should not require anything special. It will certainly run with
+ease on a standard modern desktop machine.
 
 
 * How much storage space will I need?
 -------------------------------------
 
-Hard to quantify again, but looking at what we have racked up over about 6
-years of activity:
+Hard to quantify again, but looking at what we have racked up over about
+6 years of activity:
 
   - Database       ~80M
   - Resources      ~45M
   - User Photos    ~180M
   - Logs           ~350M
   
-Note that these logs contain maximum detail, stretch back years, and have the
-older files automatically compressed (on Debian). Obviously this isn't even
-1 Gigabyte, so by modern terms storage is not a problem.
+Note that these logs contain maximum detail, stretch back years, and
+have the older files automatically compressed (on Debian). Obviously
+this isn't even 1 Gigabyte, so by modern terms storage is not a problem.
 
 
 * Can I run OPUS on Windows?
 ----------------------------
 
-You can run OPUS on any environment for which the software above is available,
-which is almost every system and architecture since it is all open source.
+You can run OPUS on any environment for which the software above is
+available, which is almost every system and architecture since it is all
+open source.
 
-However, Windows, particularly its workstation versions is not, in my opinion,
-the ideal environment for a web application, and various steps in the
-installation might be harder for Windows. If you know what you are doing you
-will have no problems. See the INSTALL guide for more information.
+However, Windows, particularly its workstation versions is not, in my
+opinion, the ideal environment for a web application, and various steps
+in the installation might be harder for Windows. If you know what you
+are doing you will have no problems. See the INSTALL guide for more
+information.
 
 
 * So what OS should I use for OPUS?
 -----------------------------------
 
-OPUS will be easiest to install on a Unix / Linux server, and in particular
-it is trivial to install on Debian GNU/Linux since we package for that OS
-and use it ourselves. On that environment the installation is automated.
+OPUS will be easiest to install on a Unix / Linux server, and in
+particular it is trivial to install on Debian GNU/Linux since we package
+for that OS and use it ourselves. On that environment the installation
+is automated.
 
 Installing Linux based operating systems is now very simple, contrary to
-popular belief, and they are usually not resource hungry. As a consequence
-it is often easy to test an install on an old box. This will probably be much
-more simple than a Windows installation contrary to popular belief.
+popular belief, and they are usually not resource hungry. As a
+consequence it is often easy to test an install on an old box. This will
+probably be much more simple than a Windows installation contrary to
+popular belief.
 
 
 * OK, I'm interested, now what?
 -------------------------------
 
-It's strongly recommended you sign up to the opus-announce mailing list. This
-read-only list is used for announcements of new versions, and updates.
+It's strongly recommended you sign up to the opus-announce mailing list.
+This read-only list is used for announcements of new versions, and
+updates.
 
 You can find all the mailing lists for OPUS listed here
 
-https://foss.ulster.ac.uk/mail/?group=opus
+http://foss.ulster.ac.uk/redmine/projects/opus/wiki/Mailing_Lists
 
 Just click on the link for subscription and fill in your details.
 
@@ -185,27 +194,28 @@ Just click on the link for subscription and fill in your details.
 * How do I get it?
 ------------------
 
-There are several ways. (For Debian packages, see the instructions in the
-INSTALL guide.)
+There are several ways. (For Debian packages, see the instructions in
+the INSTALL guide.)
 
-You will almost certainly want to download an official release. You can obtain
-these from:
+You will almost certainly want to download an official release. You can
+obtain these from:
 
   - The official downloads directory (easiest):
-    http://foss.ulster.ac.uk/downloads/opus/
+    http://foss.ulster.ac.uk/redmine/projects/opus/files
     generally, download the latest version number, but previous versions are
     also available. You can check the signatures of archives if you wish to
     and know how.
 
   - The source control system (more advanced):
-    http://foss.ulster.ac.uk/cgi-bin/viewvc.cgi/tags/?root=opus
-    again, any tagged version can be used. You can use a version control client
-    or elect to "download tarball" in the directory you want.
+  
+    git clone git://foss.ulster.ac.uk/git/opus.git
 
-    You should generally NOT download from the trunk directory in source
-    control. This is the bleeding edge application and may be broken from one
-    minute to the next. Only download this if you want to develop code and are
-    not running a production system with it.
+    again, any tagged version can be used. You can use a version control
+    client/
+
+    You should generally NOT download from the bleeding edge directory
+    in source control. Only download this if you want to develop code
+    and are not running a production system with it.
 
 Did we mention yet you should sign up to opus-announce?
 
@@ -214,20 +224,21 @@ Did we mention yet you should sign up to opus-announce?
 -------------------------------------------
 
 On Debian, no. on other systems, a bit. See the INSTALL guide. Remember,
-installation is just a one time job, after that you won't need technical skill.
-If you are a placement practitioner, you might need help from IT staff to
-install OPUS, and as a matter of courtesy, you should inform them that you
-are running a web application on your machine.
+installation is just a one time job, after that you won't need technical
+skill. If you are a placement practitioner, you might need help from IT
+staff to install OPUS, and as a matter of courtesy, you should inform
+them that you are running a web application on your machine.
 
 
 * Can we get help from you?
 ---------------------------
 
-Yes, but please read the INSTALL guide carefully first, then file a support
-ticket at our site.
+Yes, but please read the INSTALL guide carefully first, then file a
+support ticket at our site.
 
-We can only offer relatively simple help in what is our spare time, complex
-jobs can be undertaken under a consultancy agreement, including installation.
+We can only offer relatively simple help in what is our spare time,
+complex jobs can be undertaken under a consultancy agreement, including
+installation.
 
 
 * What other help is there?
@@ -238,7 +249,8 @@ Go to our support site, you will find
   - support trackers for requesting help
   - bug trackers for reporting problems
   - mailing lists, including
-    * opus-announce (low volume, new releases, you should definitely subscribe if you install OPUS)
+    * opus-announce (low volume, new releases, you should definitely
+      subscribe if you install OPUS)
     * opus-users (general discussion and issues)
     * opus-developers (discussion for developers, but open to all)
 
@@ -255,15 +267,17 @@ incoporate your fixes.
 * What sort of CV support is in OPUS?
 -------------------------------------
 
-OPUS used to, in its original version, build CVs for students from supplied
-information. Since then our local Personal Development System (pdsystem)
-was produced, which not only performs a better job of CV building, but
-provides lots of other relevant personal development help.
+OPUS used to, in its original version, build CVs for students from
+supplied information. Since then our local Personal Development System 
+pdsystem) was produced, which not only performs a better job of CV
+building, but provides lots of other relevant personal development help.
+Pace, the new name for the PDSystem is being discontinued soon.
 
-OPUS 4.x reintroduces basic standalone CV functionality, allowing students to
-upload CVs which they can use to apply for vacancies. You can have much
-superior CV handling if you also install the PDSystem which is also free
-software. You can of course try this out at a later stage.
+OPUS 4.x and above reintroduces basic standalone CV functionality,
+allowing students to upload CVs which they can use to apply for
+vacancies. You can have much superior CV handling if you also install
+the PDSystem which is also free software. You can of course try this out
+at a later stage.
 
 See http://foss.ulster.ac.uk/projects/pdsystem/
 
@@ -271,14 +285,15 @@ See http://foss.ulster.ac.uk/projects/pdsystem/
 * Will OPUS speak to our student records system (SRS)
 -----------------------------------------------------
 
-OPUS and its sister products do not speak directly to a Student Records System.
-Instead they talk to a web service layer. Example code for this is available on
-our development site at
+OPUS and its sister products do not speak directly to a Student Records
+System. Instead they talk to a web service layer. Example code for this
+is available on our development site at
 
 http://foss.ulster.ac.uk/projects/wservices/
 
-and you can adapt it to talk to any student records system. If you want us to
-do this for you, it might be possible under a consultancy arrangement.
+and you can adapt it to talk to any student records system. If you want
+us to do this for you, it might be possible under a consultancy
+arrangement.
 
 Otherwise we will advise on how you should do it.
 
@@ -286,25 +301,26 @@ Otherwise we will advise on how you should do it.
 * Does OPUS really *need* to talk to a student records system?
 --------------------------------------------------------------
 
-No. It will be easier to do certain things with integration however, like mass
-import of students. You can always use the product for now, and think about
-tighter integration later?
+No. It will be easier to do certain things with integration however,
+like mass import of students. You can always use the product for now,
+and think about tighter integration later?
 
 
 * How else can we import lots of students?
 ------------------------------------------
 
-OPUS can import students from CSV files you will probably be able to export
-easily from student records, you will need to teach it (once) the format of
-your files. Go to Superuser -> CSV Mappings for more detail, or ask us.
+OPUS can import students from CSV files you will probably be able to
+export easily from student records, you will need to teach it (once) the
+format of your files. Go to Superuser -> CSV Mappings for more detail,
+or ask us.
 
 
 * Can I configure OPUS to authenticate against LDAP / X / Y?
 ------------------------------------------------------------
 
 Yes. OPUS has a system of authentication plugins that tell it how to
-authenticate a user. LDAP is one of the supplied examples. You will need very
-simple PHP scripts to do this, and can find details in
+authenticate a user. LDAP is one of the supplied examples. You will need
+very simple PHP scripts to do this, and can find details in
 
 include/auth.d/README
 
@@ -360,22 +376,22 @@ in ascending order of complexity.
 * Can normal staff run OPUS after installation?
 -----------------------------------------------
 
-Yes, that's the whole point. OPUS has a hiararchy of administrators that run
-the system. Starting off with superuser / root users who have total control.
-Ideally trained users should have that level of access, but generally
-responsible users who exercise care should be OK.
+Yes, that's the whole point. OPUS has a hiararchy of administrators that
+run the system. Starting off with superuser / root users who have total
+control. Ideally trained users should have that level of access, but
+generally responsible users who exercise care should be OK.
 
-Most administrative users should be ordinary admin accounts which themselves
-have configurable levels of access and control.
+Most administrative users should be ordinary admin accounts which
+themselves have configurable levels of access and control.
 
 
 * Why does OPUS ask to phone home?
 ----------------------------------
 
-Good manners. Many products routinely send information, behind your back, to
-their home base. We are asking politely, and will honour your refusal. However
-it would be very useful to know you have installed OPUS and what your system
-is like in very coarse detail.
+Good manners. Many products routinely send information, behind your
+back, to their home base. We are asking politely, and will honour your
+refusal. However it would be very useful to know you have installed OPUS
+and what your system is like in very coarse detail.
 
 
 * Why should I allow OPUS to phone home?
@@ -388,9 +404,11 @@ Because
   - you can even check the code;
   - we won't attribute anything against your individual institution;
   - we want to understand our customers better;
-  - we want to help explain to our management why we are using open source.
+  - we want to help explain to our management why we are using open
+    source.
 
-In short, it supports our development of OPUS on our own, and your behalf.
+In short, it supports our development of OPUS on our own, and your
+behalf.
 
 
 * Can OPUS produce a new report that has X, Y and Z?
@@ -403,87 +421,87 @@ PHP to create.
 
 see include/Model/reports/
 
-for more information. File a wish request in the tracker if you can't do it
-yourself, but if it is complex, and not of interest to us, it might require
-a consultancy agreement for us to write it for you.
+for more information. File a wish request in the tracker if you can't do
+it yourself, but if it is complex, and not of interest to us, it might
+require a consultancy agreement for us to write it for you.
 
 
 * Is there a manual?
 --------------------
 
-There is a work in progress only at this point in time. The application proves
-to be relatively intuitive however, and in particular, for non-admin users it
-is really quite straightforward.
-
-It is a plan that, since the development from version 4 on will likely need
-less work, the manual will be a priority for September 2008.
-
+There is a work in progress only at this point in time. The application
+proves to be relatively intuitive however, and in particular, for
+non-admin users it is really quite straightforward.
 
 * Can we contribute work to OPUS?
 ---------------------------------
 
-Absolutely, if you have code you'd like to contribute, then we will consider
-including it in the main codebase if:
+Absolutely, if you have code you'd like to contribute, then we will
+consider including it in the main codebase if:
 
   - the code is licensed under the GPL as for the rest of OPUS;
   - the code meets the coding guidelines set out.
 
-If you'd like to contribute anything else, artwork, documentation, please
-contact us. Lots of people can help.
+If you'd like to contribute anything else, artwork, documentation,
+please contact us. Lots of people can help.
 
 
 * How is the code ensured to be "authoritative"?
 ------------------------------------------------
 
-While we are happy to accept code contributions, we will audit all code added
-by ourselves and others. We have automated systems in place to make this simple.
+While we are happy to accept code contributions, we will audit all code
+added by ourselves and others. We have automated systems in place to
+make this simple.
 
-Official releases will be in cryptographically signed archives, which allow you
-to be sure (should you choose to check) that the code was officially signed off
-by us, and not altered by any third party before you receive it.
+Official releases will be in cryptographically signed archives, which
+allow you to be sure (should you choose to check) that the code was
+officially signed off by us, and not altered by any third party before
+you receive it.
 
-We will sign your GPG keys with appropriate documentation if we meet in person
-and are happy to provide documentation to allow you to sign ours.
+We will sign your GPG keys with appropriate documentation if we meet in
+person and are happy to provide documentation to allow you to sign ours.
 
 
 * OPUS produces a blank screen somewhere. What's happening?
 -----------------------------------------------------------
 
-This may be a PHP fatal error, and on screen reporting of errors is usually
-disabled for security reasons. Try editing the Apache (or similar)
-configuration and turn display_errors on, or alternatively enable the logging
-of errors (examples are shown commented out in the standard configuration),
-and restart the server. Now report a bug with the results of the problem if
-it doesn't reveal how to fix it.
+This may be a PHP fatal error, and on screen reporting of errors is
+usually disabled for security reasons. Try editing the Apache (or
+similar) configuration and turn display_errors on, or alternatively
+enable the logging of errors (examples are shown commented out in the
+standard configuration), and restart the server. Now report a bug with
+the results of the problem if it doesn't reveal how to fix it.
 
-Don't forget to turn display_errors back to off, but you can leave logging of
-errors on if you like.
+Don't forget to turn display_errors back to off, but you can leave
+logging of errors on if you like.
 
 
 * We get a wierd logout / second login problem
 ----------------------------------------------
 
-This is usually caused by a misconfigured fully qualified host name for your
-server in the configuration, or you using an alias (like localhost) for testing
-which is then redirected to a new name. Check the config file.
+This is usually caused by a misconfigured fully qualified host name for
+your server in the configuration, or you using an alias (like localhost)
+for testing which is then redirected to a new name. Check the config
+file.
 
 
 * Feature X is missing, but I saw it in a demo?
   Is it not in the Open Source Version?
 ---------------------------------------
 
-There is no "premium" closed source version, it's all open source. This is
-often caused by the fact that, for example, out of the box OPUS does not assume
-how you would wish to assess your students, so the default assessment group is
-empty. You need to configure that to your wishes. This is true of other
-examples too. If in doubt, please ask us.
+There is no "premium" closed source version, it's all open source. This
+is often caused by the fact that, for example, out of the box OPUS does
+not assume how you would wish to assess your students, so the default
+assessment group is empty. You need to configure that to your wishes.
+This is true of other examples too. If in doubt, please ask us.
 
 
 * Why is OPUS not sending mail?
 -------------------------------
 
-OPUS uses your standard SMTP server, if you have one, and the configuration of
-that is beyond this document, but you should look there.
+OPUS uses your standard SMTP server, if you have one, and the
+configuration of that is beyond this document, but you should look
+there.
 
 On Debian, the default SMTP server is exim4 but it installs in what is
 essentially a dormant state.
@@ -493,7 +511,7 @@ Either go to a terminal (recommended):
 su (enter root password)
 dpkg-reconfigure exim4-config
 
-Or, if it's more conformatble in a gui
+Or, if it's more comfortable in a gui
 
 System -> Administration -> Synaptic
 
@@ -504,7 +522,8 @@ the package menu package->configure
 * Can I get more information out of OPUS, about what is happening in it?
 ------------------------------------------------------------------------
 
-OPUS can produce a number of log files, here they are with what they are for
+OPUS can produce a number of log files, here they are with what they are
+for
 
   - general.log  (general, often quite detailed user activity)
   - admin.log    (user activity for admin users)

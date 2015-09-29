@@ -18,7 +18,7 @@ function nav_student()
       (
         array("home", "home", "home", "home")
       ),
-      "Career"=>array
+      "CV"=>array
       (
         array("CV Store", "career", "cv_store", "manage_cvs"),
         array("Portfolios", "career", "portfolio_store", "manage_portfolios")
