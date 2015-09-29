@@ -68,7 +68,9 @@ class Preference extends DTO_Preference
   */
   function load_all($reg_number)
   {
-    $preferences = Preferences::fetch_all($reg_number);
+    $waf =& UUWAF::get_instance();
+
+    $preferences = Preference::fetch_all($reg_number);
 
     // Unwind into the session
     foreach($preferences as $preference)
