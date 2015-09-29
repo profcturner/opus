@@ -5,4 +5,16 @@ wild that works correctly with all new PHP and Smarty versions.
 
 There is no data schema upgrade since version 4.2.0
 
+There was a major cosmetic update in version 4.3.0 which while available
+in source control was not packaged at that time due to some issues with
+the code.
+
+OPUS 5 sees a slow severing of links with Pace nee PDSystem which will
+likely advance in subsequent minor versions.
+
+OPUS now allows self service password recovery, but this can be
+disabled for various classes of user (and is disabled by default for
+root users).
+
 I might get time to detail what has changed, but I doubt it. Sorry :-(.
+
