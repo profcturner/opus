@@ -88,7 +88,7 @@
 
 <div id="page_wrapper">
   <div id="header">  {* start of the header div *}
-    <div id="institution_logo">{if $#instituion_logo#}<img src="{#institution_logo#}" title="Institution Logo"/>{else}{$config.opus.institution}{/if}
+    <div id="institution_logo">{if #institution_logo#}<img src="{#institution_logo#}" {if #institution_logo_height#}height="{#institution_logo_height#}"{/if} title="Institution Logo"/>{else}{$config.opus.institution}{/if}
     </div>
     <div id="application_logo">{if $config.opus.logo}<img src="images/{$config.opus.logo}" title="Application Logo"/>{else}{$config.opus.title}{/if}
     </div>
@@ -197,7 +197,7 @@
 		{$content} 
     </div>
 
-{config_load file=lang_en.conf section=footer}
+{config_load file="lang_en.conf" section=footer}
 </div> {* end of main content div *}
 
 {*{if $trails || $resources || $bookmarks }
@@ -211,16 +211,15 @@
   <div id="footer">
 	  <p>
 	{if $currentgroup == "admin"}
-		<a href="?section=information&function=help_directory">{#help_directory#}</a> |
+		<a href="?section=information&function=help_directory">{#help_directory#|capitalize}</a> |
 	{else}
-		<a href="?section=information&function=help_directory" class="thickbox">{#help_directory#}</a> |
+		<a href="?section=information&function=help_directory" class="thickbox">{#help_directory#|capitalize}</a> |
 	{/if}
 		<a href="?section=information&function=about" class="thickbox">{#about#}</a> |
-		<a href="?section=information&function=copyright" target="_blank">{#copyright#}</a> |
-		<a href="?section=information&function=privacy" target="_blank">{#privacy#}</a> |
-		<a href="?section=information&function=terms_conditions" target="_blank">{#terms_conditions#}</a> |
-		<a href="http://foss.ulster.ac.uk/support/?func=additem&group=opus" target="_blank">{#get_support#}</a> |
-		<a href="http://foss.ulster.ac.uk/bugs/?func=additem&group=opus" target="_blank">{#report_a_bug#}</a>
+		<a href="?section=information&function=copyright" class="thickbox">{#copyright#}</a> |
+		<a href="?section=information&function=privacy" class="thickbox">{#privacy#}</a> |
+		<a href="?section=information&function=terms_conditions" class="thickbox">{#terms_conditions#}</a> |
+		<a href="http://foss.ulster.ac.uk/projects/opus/issues" target="_blank">{#get_support#}</a> 
 
 		<div id="compile_time"><a href="">{if $config.opus.benchmarking}<small>Compile Time: {$benchmark->elapsed()|string_format:"%.2f"} seconds</small>{/if}</a></div>
 	  </p>

@@ -52,8 +52,8 @@ function main()
   $waf =& UUWAF::get_instance($config['waf']);
   $waf->log("cron job started");
 
-  $waf->assign_by_ref("benchmark", $benchmark);
-  $waf->assign_by_ref("config", $config);
+  $waf->assignByRef("benchmark", $benchmark);
+  $waf->assignByRef("config", $config);
 
 
   $waf->register_data_connection('default', $config_sensitive['opus']['database']['dsn'], $config_sensitive['opus']['database']['username'], $config_sensitive['opus']['database']['password']);

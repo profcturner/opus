@@ -8,7 +8,7 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  function last_items(&$waf, &$user)
+  function last_items($waf, &$user)
   {
     $waf->assign("recent_items", $_SESSION['lastitems']->get_nav());
 

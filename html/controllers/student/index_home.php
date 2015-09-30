@@ -11,7 +11,7 @@
 * Controller for the Student User, Home/Dashboard Section
 */
 
-function home(&$waf) 
+function home($waf) 
 {
   $waf->display("main.tpl", "student:home:home:home", 'student/home/home.tpl');
   //goto_section("placement", "placement_home");

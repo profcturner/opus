@@ -2,30 +2,33 @@ Notes for OPUS on Debian
 ------------------------
 
 OPUS installs into /opus on your webserver by default. You can of course
-change this, or use a virtual host configuration. See the bottom of this file
-for an example of that.
+change this, or use a virtual host configuration. See the bottom of
+this file for an example of that.
 
-OPUS normally installs apache2 on a clean installation, if you already have
-a web server installed that satisfies the httpd virtual package then it will
-not attempt to install a new server, but the automatic packaging only installs
-configuration for apache1 and apache2 installations, for other servers you are
-on your own for now.
+OPUS normally installs apache2 on a clean installation, if you already
+have a web server installed that satisfies the httpd virtual package
+then it will not attempt to install a new server, but the automatic
+packaging only installs configuration for apache1 and apache2
+installations, for other servers you are on your own for now.
 
-To fully customize OPUS for your use, there are a couple of other things you
-should do.
+To fully customize OPUS for your use, there are a couple of other
+things you should do.
 
 
 Customise text prompts
 ----------------------
 
 Next, go the configs directory for opus, /usr/share/opus/configs.
-or similar. Again, you will see a file called lang_en.conf. This contains
-all the text prompts for the system. Don't edit this file, since an
-upgrade will clobber it, but instead, if you wish to edit any prompts, 
-duplicate their key and section in the file /etc/opus/local_en.conf and
-make your changes there. You will at least want to edit the existing file
-to set up the details for your institution. Only add the bits you want to
-change from the defaults.
+or similar. Again, you will see a file called lang_en.conf. This
+contains all the text prompts for the system. Don't edit this file,
+since an upgrade will clobber it, but instead, if you wish to edit any
+prompts,  duplicate their key and section in the file
+
+/etc/opus/local_en.conf
+
+and make your changes there. You will at least want to edit the existing
+file to set up the details for your institution. Only add the bits you
+want to change from the defaults.
 
 
 Try to login
@@ -36,41 +39,44 @@ This should create an admin account with username "admin" and password
 
 OBVIOUSLY IF YOU CAN LOGIN YOU SHOULD CHANGE THIS PASSWORD!
 
-You will also want to set a valid email address for the your superadmin user,
-and probably choose a reg_number. The reg_number should be unique, so pick
-something that won't clash with other users, it will be used for storing
-preferences for certain forms.
+You will also want to set a valid email address for the your superadmin
+user, and probably choose a reg_number. The reg_number should be unique,
+so pick something that won't clash with other users, it will be used for
+storing preferences for certain forms.
 
 OPUS will be in a "closed" state to all users but superusers (like you).
-When you are happy, go to the Superuser -> service menu and open the site.
+When you are happy, go to the Superuser -> service menu and open the
+site.
 
 
 Phone Home (optional)
 ---------------------
 
-When you login for the first time, OPUS will ask you permission to "PhoneHome",
-to report the installation, and again, optionally report totally non
-confidential information about your OPUS install. You don't have to allow this
-but such information would really help us to understand our customer base,
-and we won't ever publish information identified against your institution.
+When you login for the first time, OPUS will ask you permission to
+"PhoneHome", to report the installation, and again, optionally report
+totally non confidential information about your OPUS install. You don't
+have to allow this but such information would really help us to
+understand our customer base, and we won't ever publish information
+identified against your institution.
 
-Read the FAQ for more reasons as to why you should do this. Sometimes if this
-is an initial install, your mail system will not yet be operational. Feel free
-to drop us a line in the usual way (c.turner@ulster.ac.uk).
+Read the FAQ for more reasons as to why you should do this. Sometimes if
+this is an initial install, your mail system will not yet be
+operational. Feel free to drop us a line in the usual way
+(c.turner@ulster.ac.uk).
 
 
 Open OPUS for business
 ----------------------
 
-Finally, go the service menu under SuperUser and open OPUS for business when
-you want to, it starts off closed to all but superusers like you.
+Finally, go the service menu under SuperUser and open OPUS for business
+when you want to, it starts off closed to all but superusers like you.
 
 
 Virtual Host Configuration
 --------------------------
 
-If you have DNS set up appropriately, you can slip something like the following
-into your sites-available and symlink it into sites-enabled
+If you have DNS set up appropriately, you can slip something like the
+following into your sites-available and symlink it into sites-enabled
 
 <VirtualHost *>
 

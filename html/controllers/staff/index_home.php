@@ -14,7 +14,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function home(&$waf)
+  function home($waf)
   {
     $page = (int) WA::request("page", true);
 
@@ -32,7 +32,7 @@
     manage_objects($waf, $user, "Student", array(), array(array('edit', 'edit_student', 'no')), "get_all", array("where academic_user_id = " . User::get_id(), "order by placement_year desc, lastname", $page), "staff:home:home:home", "staff/home/home.tpl");
   }
   
-  function other_assessees(&$waf)
+  function other_assessees($waf)
   {
     require_once("model/AssessorOther.class.php");
     $other_assessments = AssessorOther::get_all_by_assessor(User::get_id());
@@ -44,7 +44,7 @@
   /**
   * show an assessment (for an "other" student) for viewing or editing
   */
-  function edit_assessment(&$waf, &$user)
+  function edit_assessment($waf, $user)
   {
     // Note security is handled internally by the AssessmentCombined object
 
@@ -62,7 +62,7 @@
   /**
   * process inbound assessment information for an assessment for an "other" student
   */
-  function edit_assessment_do(&$waf, &$user)
+  function edit_assessment_do($waf, $user)
   {
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("regime_id");
@@ -74,7 +74,7 @@
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
   
-  function edit_staff(&$waf, &$user) 
+  function edit_staff($waf, $user) 
   {
     require_once("model/Staff.class.php");
     $staff = Staff::load_by_user_id(User::get_id());
@@ -83,7 +83,7 @@
     edit_object($waf, $user, "Staff", array("confirm", "home", "edit_staff_do"), array(array("cancel","section=home&function=home")), array(array("user_id", $staff->user_id)), "staff:home:edit_staff:edit_staff");
   }
 
-  function edit_staff_do(&$waf, &$user) 
+  function edit_staff_do($waf, $user) 
   {
     require_once("model/Staff.class.php");
     $staff = Staff::load_by_user_id(User::get_id());
@@ -93,7 +93,7 @@
   }
 
 
-  function edit_student(&$waf)
+  function edit_student($waf)
   {
     // Pick up the student
     $id = (int) WA::request("id");
@@ -108,7 +108,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password(&$waf)
+  function change_password($waf)
   {
     $waf->display("main.tpl", "staff:home:change_password:change_password", "admin/home/change_password.tpl");
   }
@@ -118,7 +118,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password_do(&$waf)
+  function change_password_do($waf)
   {
     $old_password      = WA::request("old_password");
     $new_password      = WA::request("new_password");
@@ -179,7 +179,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function company_activity(&$waf)
+  function company_activity($waf)
   {
     $days = (int) WA::request("days");
 
@@ -238,7 +238,7 @@
     $waf->display("main.tpl", "staff:home:company_activity:company_activity", "staff/home/company_activity.tpl");
   }
 
-  function view_vacancy(&$waf, &$user)
+  function view_vacancy($waf, $user)
   {
     $id = (int) WA::request("id");
     $student_id = $_SESSION["student_id"];
@@ -288,7 +288,7 @@
     $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_vacancy", "admin/directories/view_vacancy.tpl");
   }
   
-  function view_company_resource(&$waf, &$user)
+  function view_company_resource($waf, $user)
   {
     $id = (int) $_REQUEST["id"];
     require_once("model/Resource.class.php");
@@ -296,7 +296,7 @@
     Resource::view($id); 
   }
 
-  function view_company(&$waf, &$user)
+  function view_company($waf, $user)
   {
     $id = (int) WA::request("id");
 
@@ -336,7 +336,7 @@
   /**
   * lists all notes associated with a given item
   */
-  function list_notes(&$waf, &$user)
+  function list_notes($waf, $user)
   {
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
@@ -355,7 +355,7 @@
   * @todo show other linked items
   * @todo modify referer code to allow cleanurls
   */
-  function view_note(&$waf, &$user)
+  function view_note($waf, $user)
   {
     $note_id = (int) WA::request("id");
 
@@ -378,7 +378,7 @@
     $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
-  function add_note(&$waf, &$user) 
+  function add_note($waf, $user) 
   {
     $object_type = WA::request("object_type");
     $object_id = WA::request("object_id");
@@ -396,7 +396,7 @@
     add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }
 
-  function add_note_do(&$waf, &$user) 
+  function add_note_do($waf, $user) 
   {
     $mainlink = WA::request("mainlink");
     $parts = explode("_", $mainlink);

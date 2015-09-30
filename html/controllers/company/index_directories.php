@@ -8,7 +8,7 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  function mass_email(&$waf)
+  function mass_email($waf)
   {
     $users = WA::request('users');
     $message = WA::request('message');
@@ -78,7 +78,7 @@
 
   // Photos
 
-  function display_photo(&$waf, &$user)
+  function display_photo($waf, $user)
   {
     $username = WA::request("username");
     $fullsize = WA::request("fullsize");
@@ -89,7 +89,7 @@
 
   // Company
 
-  function edit_company(&$waf, &$user)
+  function edit_company($waf, $user)
   {
     $id = $_SESSION['company_id'];
     
@@ -106,7 +106,7 @@
     goto_section("directories", "edit_company_real&id=$id");
   }
 
-  function edit_company_real(&$waf, &$user) 
+  function edit_company_real($waf, $user) 
   {
     $id = WA::request("id");
 
@@ -116,7 +116,7 @@
     edit_object($waf, $user, "Company", array("confirm", "directories", "edit_company_do"), array(array("cancel","section=home&function=home&page=1"), array("contacts", "section=directories&function=manage_contacts&company_id=$id"), array("vacancies", "section=directories&function=manage_vacancies&company_id=$id&page=1"), array("notes", "section=directories&function=list_notes&object_type=Company&object_id=$id")), array(array("user_id",$user["user_id"])), "company:directories:edit_company:edit_company", "admin/directories/edit_company.tpl");
   }
 
-  function edit_company_do(&$waf, &$user) 
+  function edit_company_do($waf, $user) 
   {
     require_once("model/Contact.class.php");
     if(!Contact::is_auth_for_company(WA::request('id'))) $waf->die("error:contact:not_your_company");
@@ -124,7 +124,7 @@
     edit_object_do($waf, $user, "Company", "section=home&function=home", "edit_company");
   }
 
-  function view_company(&$waf, &$user)
+  function view_company($waf, $user)
   {
     $company_id = (int) WA::request("company_id");
 
@@ -173,7 +173,7 @@
   /**
   * manages vacancies for a specific company
   */
-  function manage_vacancies(&$waf, $user, $title)
+  function manage_vacancies($waf, $user, $title)
   {
     $page = (int) WA::request("page", true);
 
@@ -216,7 +216,7 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_vacancies", "list.tpl");
   }
 
-  function add_vacancy(&$waf, &$user) 
+  function add_vacancy($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -242,7 +242,7 @@
   /**
   * @todo activities don't copy across, manage.tpl needs changed.
   */
-  function clone_vacancy(&$waf, &$user) 
+  function clone_vacancy($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     $id = (int) WA::request("id");
@@ -263,7 +263,7 @@
     add_object($waf, $user, "Vacancy", array("add", "directories", "add_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancies:clone_vacancy");
   }
 
-  function add_vacancy_do(&$waf, &$user) 
+  function add_vacancy_do($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -272,7 +272,7 @@
     add_object_do($waf, $user, "Vacancy", "section=directories&function=manage_vacancies&company_id=$company_id", "add_vacancy");
   }
 
-  function edit_vacancy(&$waf, &$user) 
+  function edit_vacancy($waf, $user) 
   {
     $id = (int) WA::request("id");
     require_once("model/Contact.class.php");
@@ -289,7 +289,7 @@
     edit_object($waf, $user, "Vacancy", array("confirm", "directories", "edit_vacancy_do"), array(array("cancel","section=directories&function=manage_vacancies&company_id=$company_id"), array("view vacancy","section=directories&function=view_vacancy&id=$id")), array(array("company_id", $company_id), array("user_id",$user["user_id"])), "admin:directories:vacancy_directory:edit_vacancy", "admin/directories/edit_vacancy.tpl");
   }
 
-  function edit_vacancy_do(&$waf, &$user) 
+  function edit_vacancy_do($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -299,7 +299,7 @@
   }
 
 
-  function view_vacancy(&$waf, &$user)
+  function view_vacancy($waf, $user)
   {
     $id = (int) WA::request("id");
     require_once("model/Contact.class.php");
@@ -359,7 +359,7 @@
 
   // Manage Applicants
 
-  function manage_applicants(&$waf, $user, $title)
+  function manage_applicants($waf, $user, $title)
   {
     $vacancy_id = (int) WA::request("id");
     require_once("model/Vacancy.class.php");
@@ -381,7 +381,7 @@
     $waf->display("main.tpl", "admin:directories:vacancy_directory:manage_applicants", "admin/directories/company_applicants.tpl");
   }
 
-  function manage_applicants_do(&$waf)
+  function manage_applicants_do($waf)
   {
     $status = WA::request("status");                // New status array
     $old_status = WA::request("old_status");        // Original status array
@@ -443,7 +443,7 @@
     }
   }
 
-  function view_cv_by_application(&$waf)
+  function view_cv_by_application($waf)
   {
     $application_id = WA::request("application_id");
 
@@ -452,7 +452,7 @@
     CVCombined::view_cv_for_application($application_id);
   }
 
-  function view_cover_by_application(&$waf)
+  function view_cover_by_application($waf)
   {
     require_once("model/CVCombined.class.php");
     require_once("model/Application.class.php");
@@ -506,7 +506,7 @@
   // Contacts
 
 
-  function manage_contacts(&$waf, $user, $title)
+  function manage_contacts($waf, $user, $title)
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -539,7 +539,7 @@
     $waf->display("main.tpl", "admin:directories:contact_directory:company_contacts", "list.tpl");
   }
 
-  function edit_contact(&$waf, &$user) 
+  function edit_contact($waf, $user) 
   {
 
     require_once("model/Contact.class.php");
@@ -559,7 +559,7 @@
 	}
   }
 
-  function edit_contact_do(&$waf, &$user) 
+  function edit_contact_do($waf, $user) 
   {
     require_once("model/Contact.class.php");
     $id = WA::request("id");
@@ -577,7 +577,7 @@
   /**
   * lists all notes associated with a given item
   */
-  function list_notes(&$waf, &$user)
+  function list_notes($waf, $user)
   {
     $object_type = WA::request("object_type");
     $object_id = (int) WA::request("object_id");
@@ -596,7 +596,7 @@
   * @todo show other linked items
   * @todo modify referer code to allow cleanurls
   */
-  function view_note(&$waf, &$user)
+  function view_note($waf, $user)
   {
     $note_id = (int) WA::request("id");
 
@@ -619,7 +619,7 @@
     $waf->display("popup.tpl", "admin:directories:list_notes:view_note", "admin/directories/view_note.tpl");
   }
 
-  function add_note(&$waf, &$user) 
+  function add_note($waf, $user) 
   {
     $object_type = WA::request("object_type");
     $object_id = WA::request("object_id");
@@ -637,7 +637,7 @@
     add_object($waf, $user, "Note", array("add", "directories", "add_note_do"), array(array("cancel","section=directories&function=list_notes&object_type=$object_type&object_id=$object_id")), array(array("mainlink", $mainlink)), "admin:directories:list_notes:add_note", "admin/directories/add_note.tpl");
   }
 
-  function add_note_do(&$waf, &$user) 
+  function add_note_do($waf, $user) 
   {
     $mainlink = WA::request("mainlink");
     $parts = explode("_", $mainlink);
@@ -649,7 +649,7 @@
 
   // Company / Vacancy resources
 
-  function manage_company_resources(&$waf)
+  function manage_company_resources($waf)
   {
     if(empty($_SESSION['company_id']))
     {
@@ -667,7 +667,7 @@
     manage_objects($waf, $user, "Resource", array(array("add company resource","section=directories&function=add_company_resource&company_id=$company_id","thickbox")), array(array('view', 'view_company_resource', 'no'), array('edit', 'edit_company_resource'), array('remove','remove_company_resource')), "get_all", array("where company_id=$company_id", "", $page), "contact:directories:manage_company_resources:manage_company_resources", "list.tpl", "company");
   }
 
-  function view_company_resource(&$waf, &$user)
+  function view_company_resource($waf, $user)
   {
     $id = (int) $_REQUEST["id"];
     require_once("model/Resource.class.php");
@@ -675,7 +675,7 @@
     Resource::view($id); 
   }
 
-  function add_company_resource(&$waf, &$user) 
+  function add_company_resource($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -684,7 +684,7 @@
     add_object($waf, $user, "Resource", array("add", "directories", "add_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources")), array(array("company_id", $company_id), array("lookup", "PRIVATE"), array("auth", "all"), array("channel_id", 0)), "admin:configuration:resources:add_resource", "manage.tpl", "", "company");
   }
 
-  function add_company_resource_do(&$waf, &$user) 
+  function add_company_resource_do($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -693,7 +693,7 @@
     add_object_do($waf, $user, "Resource", "section=directories&function=manage_company_resources&company_id=$company_id", "add_company_resource");
   }
 
-  function edit_company_resource(&$waf, &$user) 
+  function edit_company_resource($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -702,7 +702,7 @@
     edit_object($waf, $user, "Resource", array("confirm", "directories", "edit_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources")), array(array("company_id", $company_id), array("lookup", "PRIVATE"), array("auth", "all"), array("channel_id", 0)), "admin:configuration:resources:edit_resource", "manage.tpl", "", "company");
   }
 
-  function edit_company_resource_do(&$waf, &$user) 
+  function edit_company_resource_do($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -711,7 +711,7 @@
     edit_object_do($waf, $user, "Resource", "section=directories&function=manage_company_resources", "edit_company_resource");
   }
 
-  function remove_company_resource(&$waf, &$user) 
+  function remove_company_resource($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -720,7 +720,7 @@
     remove_object($waf, $user, "Resource", array("remove", "directories", "remove_company_resource_do"), array(array("cancel","section=directories&function=manage_company_resources&company_id=$company_id")), "", "admin:configuration:resources:remove_resource");
   }
 
-  function remove_company_resource_do(&$waf, &$user) 
+  function remove_company_resource_do($waf, $user) 
   {
     $company_id = (int) WA::request("company_id", true);
     require_once("model/Contact.class.php");
@@ -731,7 +731,7 @@
 
 
 
-  function reset_password(&$waf)
+  function reset_password($waf)
   {
     $user_id = (int) WA::request("user_id");
     $error_function = WA::request("error_function");

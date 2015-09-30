@@ -8,7 +8,7 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  function home(&$waf)
+  function home($waf)
   {
     require_once("model/Supervisor.class.php");
     $student_user_id = Supervisor::get_supervisee_id(User::get_id());
@@ -75,7 +75,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password(&$waf)
+  function change_password($waf)
   {
     $waf->display("main.tpl", "admin:home:change_password:change_password", "admin/home/change_password.tpl");
   }
@@ -85,7 +85,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password_do(&$waf)
+  function change_password_do($waf)
   {
     $old_password      = WA::request("old_password");
     $new_password      = WA::request("new_password");
@@ -140,7 +140,7 @@
 
   // Photos
 
-  function display_photo(&$waf, &$user)
+  function display_photo($waf, $user)
   {
     $username = WA::request("username");
     $fullsize = WA::request("fullsize");
@@ -154,7 +154,7 @@
   /**
   * show an assessment for viewing or editing
   */
-  function edit_assessment(&$waf, &$user)
+  function edit_assessment($waf, $user)
   {
     // Note security is handled internally by the AssessmentCombined object
 
@@ -171,7 +171,7 @@
   /**
   * process inbound assessment information
   */
-  function edit_assessment_do(&$waf, &$user)
+  function edit_assessment_do($waf, $user)
   {
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("regime_id");
@@ -183,7 +183,7 @@
     $waf->display("main.tpl", "admin:directories:edit_assessment:edit_assessment", "general/assessment/edit_assessment.tpl");
   }
 
-  function edit_placement_do(&$waf, &$user) 
+  function edit_placement_do($waf, $user) 
   {
     require_once("model/Supervisor.class.php");
 

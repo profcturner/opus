@@ -8,7 +8,7 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  function home(&$waf)
+  function home($waf)
   {
     // Get the whole list of companies for this person
     require_once("model/Contact.class.php");
@@ -23,7 +23,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password(&$waf)
+  function change_password($waf)
   {
     $waf->display("main.tpl", "admin:home:change_password:change_password", "admin/home/change_password.tpl");
   }
@@ -33,7 +33,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password_do(&$waf)
+  function change_password_do($waf)
   {
     $old_password      = WA::request("old_password");
     $new_password      = WA::request("new_password");
@@ -88,7 +88,7 @@
 
   // Photos
 
-  function display_photo(&$waf, &$user)
+  function display_photo($waf, $user)
   {
     $username = WA::request("username");
     $fullsize = WA::request("fullsize");
@@ -102,7 +102,7 @@
   /**
   * show an assessment for viewing or editing
   */
-  function edit_assessment(&$waf, &$user)
+  function edit_assessment($waf, $user)
   {
     // Note security is handled internally by the AssessmentCombined object
 
@@ -119,7 +119,7 @@
   /**
   * process inbound assessment information
   */
-  function edit_assessment_do(&$waf, &$user)
+  function edit_assessment_do($waf, $user)
   {
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("regime_id");

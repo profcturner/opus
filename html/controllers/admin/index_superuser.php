@@ -14,7 +14,7 @@
   /**
   * @author Gordon Crawford <g.crawford@ulster.ac.uk>
   */
-  function view_phpinfo(&$waf) 
+  function view_phpinfo($waf) 
   {
     ob_start();
     phpinfo();
@@ -28,7 +28,7 @@
 
   // PhoneHome
 
-  function edit_phonehome(&$waf, &$user) 
+  function edit_phonehome($waf, $user) 
   {
     // Indicate we should not ask again this session
     $_SESSION['phonehome_asked'] = true;
@@ -39,14 +39,14 @@
     edit_object($waf, $user, "PhoneHome", array("confirm", "superuser", "edit_phonehome_do"), array(array("cancel","section=home&function=home")), array(array("admin_id",User::get_id())), "admin:superuser:edit_phonehome:edit_phonehome");
   }
 
-  function edit_phonehome_do(&$waf, &$user) 
+  function edit_phonehome_do($waf, $user) 
   {
     edit_object_do($waf, $user, "PhoneHome", "section=home&function=home", "edit_phonehome");
   }
 
   // Service
 
-  function edit_service(&$waf, &$user) 
+  function edit_service($waf, $user) 
   {
     // This table only has one row...
     $id = 1;
@@ -54,71 +54,71 @@
     edit_object($waf, $user, "Service", array("confirm", "superuser", "edit_service_do"), array(array("cancel","section=home&function=home")), array(array("admin_id",User::get_id())), "admin:superuser:edit_service:edit_service");
   }
 
-  function edit_service_do(&$waf, &$user) 
+  function edit_service_do($waf, $user) 
   {
     edit_object_do($waf, $user, "Service", "section=superuser&function=edit_service", "edit_service");
   }
 
   // CSV Mappings
 
-  function manage_csvmappings(&$waf, $user, $title)
+  function manage_csvmappings($waf, $user, $title)
   {
     $page = WA::request("page");
 
     manage_objects($waf, $user, "CSVMapping", array(array("add CSV mapping","section=superuser&function=add_csvmapping","thickbox")), array(array('edit', 'edit_csvmapping'), array('remove','remove_csvmapping')), "get_all", array("", "order by name", $page), "admin:superuser:manage_csvmappings:manage_csvmappings");
   }
 
-  function add_csvmapping(&$waf, &$user) 
+  function add_csvmapping($waf, $user) 
   {
     add_object($waf, $user, "CSVMapping", array("add", "superuser", "add_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), array(array("user_id",$user["user_id"])), "admin:superuser:manage_csvmappings:add_csvmapping", "super/home/manage_csvmapping.tpl");
   }
 
-  function add_csvmapping_do(&$waf, &$user) 
+  function add_csvmapping_do($waf, $user) 
   {
     add_object_do($waf, $user, "CSVMapping", "section=superuser&function=manage_csvmappings", "add_csvmapping");
   }
 
-  function edit_csvmapping(&$waf, &$user) 
+  function edit_csvmapping($waf, $user) 
   {
     edit_object($waf, $user, "CSVMapping", array("confirm", "superuser", "edit_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), array(array("user_id",$user["user_id"])), "admin:superuser:manage_csvmappings:edit_csvmapping", "super/home/manage_csvmapping.tpl");
   }
 
-  function edit_csvmapping_do(&$waf, &$user) 
+  function edit_csvmapping_do($waf, $user) 
   {
     edit_object_do($waf, $user, "CSVMapping", "section=superuser&function=manage_csvmappings", "edit_csvmapping");
   }
 
-  function remove_csvmapping(&$waf, &$user) 
+  function remove_csvmapping($waf, $user) 
   {
     remove_object($waf, $user, "CSVMapping", array("remove", "superuser", "remove_csvmapping_do"), array(array("cancel","section=superuser&function=manage_csvmappings")), "", "admin:superuser:manage_csvmappings:remove_csvmapping");
   }
 
-  function remove_csvmapping_do(&$waf, &$user) 
+  function remove_csvmapping_do($waf, $user) 
   {
     remove_object_do($waf, $user, "CSVMapping", "section=superuser&function=manage_csvmappings");
   }
 
-  function manage_api_users(&$waf)
+  function manage_api_users($waf)
   {
     manage_objects($waf, $user, "User", array(array("add API user","section=superuser&function=add_api_user","thickbox")), array(array('remove', 'remove_api_user')), "get_all", array("where user_type='application'", "order by real_name", $page), "admin:superuser:manage_api_users:manage_api_users", "list.tpl", "application");
   }
 
-  function remove_api_user(&$waf, &$user) 
+  function remove_api_user($waf, $user) 
   {
     remove_object($waf, $user, "User", array("remove", "superuser", "remove_api_user_do"), array(array("cancel","section=superuser&function=manage_api_users")), "", "admin:superuser:manage_api_users:remove_api_user", "manage.tpl", "", "application");
   }
 
-  function remove_api_user_do(&$waf, &$user) 
+  function remove_api_user_do($waf, $user) 
   {
     remove_object_do($waf, $user, "User", "section=superuser&function=manage_api_users");
   }
 
-  function add_api_user(&$waf, &$user) 
+  function add_api_user($waf, $user) 
   {
     add_object($waf, $user, "User", array("add", "superuser", "add_api_user_do"), array(array("cancel","section=superuser&function=manage_api_users")), "", "admin:superuser:manage_api_users:add_api_user", "manage.tpl", "", "application_add");
   }
 
-  function add_api_user_do(&$waf, &$user) 
+  function add_api_user_do($waf, $user) 
   {
     $username = WA::request("username");
     $firstname = WA::request("firstname");
@@ -136,7 +136,7 @@
     goto_section("superuser", "manage_api_users");
   }
 
-  function user_directory(&$waf)
+  function user_directory($waf)
   {
     $sort_types = array("lastname" => "Last name", "reg_number" => "Reg Number", "last_time" => "Last Access");
 
@@ -153,7 +153,7 @@
     $waf->display("main.tpl", "admin:superuser:user_directory:user_directory", "super/home/user_directory.tpl");
   }
 
-  function search_users(&$waf)
+  function search_users($waf)
   {
     require_once("model/User.class.php");
     $search = WA::request("search", true);
@@ -192,7 +192,7 @@
     $waf->display("main.tpl", "admin:superuser:user_directory:search_users", "list.tpl");
   }
 
-  function simple_search_users(&$waf)
+  function simple_search_users($waf)
   {
     require_once("model/User.class.php");
     $initial = WA::request("initial");
@@ -212,7 +212,7 @@
     $waf->display("main.tpl", "admin:superuser:user_directory:simple_search_users", "list.tpl");
   }
 
-  function edit_user(&$waf)
+  function edit_user($waf)
   {
     $id = WA::request("id");
     $user = User::load_by_id($id);
@@ -246,7 +246,7 @@
     }
   }
 
-  function view_preferences(&$waf)
+  function view_preferences($waf)
   {
     $id = (int) WA::request("id");
     $user = User::load_by_id($id);

@@ -17,7 +17,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function home(&$waf)
+  function home($waf)
   {
    
     require_once("model/User.class.php");
@@ -43,7 +43,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password(&$waf)
+  function change_password($waf)
   {
     $waf->display("main.tpl", "admin:home:change_password:change_password", "admin/home/change_password.tpl");
   }
@@ -53,7 +53,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function change_password_do(&$waf)
+  function change_password_do($waf)
   {
     $old_password      = WA::request("old_password");
     $new_password      = WA::request("new_password");
@@ -114,7 +114,7 @@
   *
   * @param uuwaf the web application framework object
   */
-  function company_activity(&$waf)
+  function company_activity($waf)
   {
     $days = (int) WA::request("days");
 

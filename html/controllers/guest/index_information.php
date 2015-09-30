@@ -8,7 +8,7 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
 */
 
-function help_directory(&$waf)
+function help_directory($waf)
 {
   require_once("model/Admin.class.php");
   require_once("model/HelpDirectory.class.php");
@@ -42,7 +42,7 @@ function help_directory(&$waf)
   $waf->display("popup.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
 }
 
-function about(&$waf)
+function about($waf)
 {
   $waf->assign("show_banners", true);
   $waf->assign("ulster_logo", true);

@@ -30,11 +30,11 @@ function nav_admin()
 
   $basic_nav = array
   (
-    "Welcome"=>array
+    /*"Welcome"=>array
     (
       array($waf->T('welcome'), "welcome", "welcome", "home")
-    ),
-    "Dashboard"=>array
+    ),*/
+    "Home"=>array
     (
       array($waf->T('home'), "home", "home", "home"),
       array($waf->T('company_activity'), "home", "company_activity", "company_activity"),

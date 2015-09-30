@@ -10,7 +10,7 @@
   * @param $waf reference to the waf object
   * @todo this function is now getting too large, we will soon need to reduce
   */
-  function vacancy_home(&$waf)
+  function vacancy_home($waf)
   {
     $days = (int) WA::request("days");
 
@@ -135,7 +135,7 @@
   
   // Photos
 
-  function display_photo(&$waf, &$user)
+  function display_photo($waf, $user)
   {
     $username = WA::request("username");
     $fullsize = WA::request("fullsize");
@@ -149,7 +149,7 @@
   /**
   * show an assessment for viewing or editing
   */
-  function edit_assessment(&$waf, &$user)
+  function edit_assessment($waf, $user)
   {
     // Note security is handled internally by the AssessmentCombined object
 
@@ -166,7 +166,7 @@
   /**
   * process inbound assessment information
   */
-  function edit_assessment_do(&$waf, &$user)
+  function edit_assessment_do($waf, $user)
   {
     // Get the unique identifer for the assessment instance
     $regime_id = (int) WA::request("regime_id");
@@ -180,7 +180,7 @@
 
 
 
-  function list_assessments(&$waf)
+  function list_assessments($waf)
   {
     $student_user_id = User::get_id();
     require_once("model/Student.class.php");
@@ -194,7 +194,7 @@
     $waf->display("main.tpl", "student:placement:list_assessments:list_assessments", "general/assessment/assessment_results.tpl");
   }
 
-  function list_resources(&$waf)
+  function list_resources($waf)
   {
     $waf->assign("nopage", true);
 
@@ -224,7 +224,7 @@
 
   // Vacanies
 
-  function vacancy_directory(&$waf, $user, $title)
+  function vacancy_directory($waf, $user, $title)
   {
     require_once("model/Activitytype.class.php");
     require_once("model/Vacancytype.class.php");
@@ -246,7 +246,7 @@ $section = "vacancies";
     $waf->display("main.tpl", "admin:directories:vacancy_directory:vacancy_directory", "admin/directories/vacancy_directory.tpl");
   }
 
-  function search_vacancies(&$waf, $user, $title)
+  function search_vacancies($waf, $user, $title)
   {
     $search = WA::request("search");
     $year = WA::request("year");
@@ -273,7 +273,7 @@ $section = "vacancies";
     $waf->display("main.tpl", "admin:directories:vacancy_directory:search_vacancies", "student/vacancies/search_vacancies.tpl");
   }
 
-  function company_directory(&$waf, $user, $title)
+  function company_directory($waf, $user, $title)
   {
     require_once("model/Activitytype.class.php");
     $activity_types = Activitytype::get_id_and_field("name");
@@ -289,7 +289,7 @@ $section = "vacancies";
     $waf->display("main.tpl", "admin:directories:company_directory:company_directory", "admin/directories/company_directory.tpl");
   }
 
-  function search_companies(&$waf, $user, $title)
+  function search_companies($waf, $user, $title)
   {
     $search = WA::request("search");
     $activities = WA::request("activities");
@@ -309,7 +309,7 @@ $section = "vacancies";
     $waf->display("main.tpl", "admin:directories:company_directory:search_companies", "student/vacancies/search_companies.tpl");
   }
 
-  function view_company(&$waf, &$user)
+  function view_company($waf, $user)
   {
     // Did we get id passed in?
     $id = (int) WA::request("id");
@@ -354,7 +354,7 @@ $section = "vacancies";
     $waf->display("popup.tpl", "admin:directories:vacancy_directory:view_company", "admin/directories/view_company.tpl");
   }
 
-  function view_company_resource(&$waf, &$user)
+  function view_company_resource($waf, $user)
   {
     $id = (int) $_REQUEST["id"];
     require_once("model/Resource.class.php");
@@ -362,7 +362,7 @@ $section = "vacancies";
     Resource::view($id); 
   }
 
-  function view_vacancy(&$waf, &$user)
+  function view_vacancy($waf, $user)
   {
     $id = (int) WA::request("id");
     $student_id = $_SESSION["student_id"];
@@ -415,7 +415,7 @@ $section = "vacancies";
 
   // Applications
 
-  function list_applications(&$waf, $user, $title)
+  function list_applications($waf, $user, $title)
   {
     $student_id = User::get_id();
     $page = (int) WA::request("page", true);
@@ -426,7 +426,7 @@ $section = "vacancies";
   /**
   * tag a student as having applied for a vacancy
   */
-  function add_application(&$waf, &$user)
+  function add_application($waf, $user)
   {
     $vacancy_id = (int) WA::request("id");
     $student_id = User::get_id();
@@ -474,7 +474,7 @@ $section = "vacancies";
 	}
   }
 
-  function add_application_do(&$waf, &$user) 
+  function add_application_do($waf, $user) 
   {
     $student_id = User::get_id();
     require_once("model/Student.class.php");
@@ -500,7 +500,7 @@ $section = "vacancies";
   /**
   * tag a student as having applied for a vacancy
   */
-  function edit_application(&$waf, &$user)
+  function edit_application($waf, $user)
   {
     $application_id = (int) WA::request("id");
 
@@ -554,7 +554,7 @@ $section = "vacancies";
 	}
   }
 
-  function edit_application_do(&$waf, &$user) 
+  function edit_application_do($waf, $user) 
   {
     $application_id = (int) WA::request("id");
     require_once("model/Application.class.php");

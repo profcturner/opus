@@ -1,8 +1,8 @@
 OPUS INSTALLATION NOTES
 
-These notes pertain to the the version 4.0 release, and are aimed at first
-time installs. If you are upgrading from 3.x, please read the UPGRADE file
-instead.
+These notes pertain to the the version 4.x and 5.x releases, and are
+aimed at first time installs. If you are upgrading from 3.x, please
+read the UPGRADE file instead.
 
 0. What should I install on?
 ----------------------------
@@ -19,36 +19,23 @@ complex to use the application on Windows. You might consider testing
 an initial pilot on a Unix/Linux based machine.
 
 I would recommend Debian GNU/Linux (www.debian.org) which is available
-on over 11 architectures, well security supported and exceptionally stable
-for running servers. You can easily download and install Debian (free of
-charge) on a relatively old machine for testing. Running Debian will make
-the installation *incredibly* simple, since we package for it. We might
-in the future package for other operating systems. If you want to help
-document installation on other platforms, correct errors in this document
-etc. please contact us.
+on over 11 architectures, well security supported and exceptionally
+stable for running servers. You can easily download and install Debian
+(free of charge) on a relatively old machine for testing. Running Debian
+will make the installation *incredibly* simple, since we package for it.
+We might in the future package for other operating systems. If you want
+to help document installation on other platforms, correct errors in this
+document etc. please contact us.
 
 Having said all that, I repeat, OPUS should work on any environment with
 PHP and MySQL.
 
-It requires PHP 5.1 or above for PDO support, and you will need to ensure that
-PHP has the mysql, mysql_pdo extension installed, together with ldap if you
-need it for authentication. This will be automatic on most platforms.
+It requires PHP 5.1 or above for PDO support, and you will need to
+ensure that PHP has the mysql, mysql_pdo extension installed, together
+with ldap if you need it for authentication. This will be automatic on
+most platforms.
 
-
-1. Decide whether to install the PDSystem
------------------------------------------
-
-The PDSystem, designed to handle students' personal development, is the sister
-application for OPUS. In recent years OPUS has disabled some of its internal
-handling for things like CVs in favour of tight integration of the PDSystem.
-Version 4.0 of OPUS introduces a simple facility to upload CVs that they may
-use for applications, but the PDSystem still offers a richer functionality
-should you need it. The PDSystem is also free software.
-
-Refer to http://foss.ulster.ac.uk/projects/pdsystem/ for more details.
-
-
-2. Are you running Debian?
+1. Are you running Debian?
 --------------------------
 
 If you are running Debian GNU/Linux this installation will be MUCH more
@@ -62,41 +49,35 @@ and then simply run
 aptitude update
 aptitude install opus
 
-(or use your favourite package management tool). Then answer the questions
-and skip to step 12 (for the rest of you, seriously consider how easy your
-life could be with Debian, running on an old box).
+(or use your favourite package management tool). Then answer the
+questions and skip to step 12 (for the rest of you, seriously consider
+how easy your life could be with Debian, running on an old box).
 
-You may also need or want to configure your mail server if this is a fresh
-Debian install, at a root command prompt type
+You may also need or want to configure your mail server if this is a
+fresh Debian install, at a root command prompt type
 
 dpkg-reconfigure exim4-config
 
 
-2a. Are you running Ubunutu?
-----------------------------
+2. Are you running Ubuntu?
+--------------------------
 
 Ubuntu installers have reported success installing the Debian packages
-as noted above. However, the location of the Smarty libraries is
-somewhat different. You will need to edit
-
-/etc/opus/apache2.conf
-
-and remove the "/libs/" part of the include_path for Smarty.
-
-Then restart the apache2 server
-
-/etc/init.d/apache2/opus.conf
-
+as noted above; and I think the libaries for Smarty are now in the
+same place for both.
 
 3. Obtain and unpack the UUWAF
 ------------------------------
 
-The 4.x generation of OPUS and PDSystem use a lightweight PHP framework to
-build upon, which improves consistency and configurability as well as
+The 5.x generation of OPUS runs on version 2.0 or above of a lightweight
+PHP framework, which improves consistency and configurability as well as
 providing full logging support.
 
 If you haven't already, download the framework and extract it somewhere
-sensible, a good choice on most Unix based systems would be /usr/share/uuwaf
+sensible, a good choice on most Unix based systems would be
+
+/usr/share/uuwaf
+
 or similar.
 
 Find UUWAF (which is free software) at
@@ -109,39 +90,43 @@ http://foss.ulster.ac.uk/projects/uuwaf/
 
 OK, so if you are reading this, you probably already followed this step.
 Unpack the files to somewhere sensible for your site architecture. For
-example, /usr/share/opus would be a good place for most flavours of Linux
-and maybe some unixes too.
+example, /usr/share/opus would be a good place for most flavours of
+Linux and maybe some unixes too.
 
 
 5. Ensure requirements are installed and working
 ------------------------------------------------
 
-Do you have a functional web server, with PHP 5.1 or better running, as well as
-a MySQL server and so on? Have you downloaded Smarty from
+Do you have a functional web server, with PHP 5.1 or better running, as
+well as a MySQL server and so on? Have you downloaded Smarty from
 
-http://smarty.php.net and installed it somewhere?
+http://smarty.php.net and installed it somewhere? Version 5.x requires
+version 3 of Smarty.
 
 Configuring fine details on these packages is outside the scope of this
-document, but there are thousands of help documents on the internet for this.
+document, but there are thousands of help documents on the internet for
+this.
 
 Install pear (http://pear.php.net) and
 
   pear install Log
 
-Many operating systems package these requirements. On Windows you might want to
-consider running the WAMP package, found at http://www.wampserver.com/.
+Many operating systems package these requirements. On Windows you might
+want to consider running the WAMP package, found at
+http://www.wampserver.com/.
 
-There is no reason why OPUS should not run on any web server that can talk to
-PHP, but Apache might be simplest.
+There is no reason why OPUS should not run on any web server that can
+talk to PHP, but Apache might be simplest.
 
-Other tools are required for 100% of the functionality, but you could happily
-survive without them. For example, perl is required to generate timelines.
-Perl is free software and tends to be installed on all unix like platforms but
-you might want to install it on Windows.
+Other tools are required for 100% of the functionality, but you could
+happily survive without them. For example, perl is required to generate
+timelines. Perl is free software and tends to be installed on all unix
+like platforms but you might want to install it on Windows.
 
-The log viewer uses some standard unix commands, which should be available for
-Windows in cygwin, and also available from GNU software anyway. Skip this for
-now if you are unsure. If you need such programs, you can get them from
+The log viewer uses some standard unix commands, which should be
+available for Windows in cygwin, and also available from GNU software
+anyway. Skip this for now if you are unsure. If you need such programs,
+you can get them from
 
 http://unxutils.sourceforge.net/
 
@@ -149,8 +134,8 @@ http://unxutils.sourceforge.net/
 6. Get the Web Server to see the pages
 --------------------------------------
 
-You want your web server to see the "html" directory in the archive. Here are three
-ways to achieve this:
+You want your web server to see the "html" directory in the archive.
+Here are three ways to achieve this:
 
   a) copy the directory underneath your htdocs or other directory root;
   b) make a symbolic link to the html directory along the lines of
@@ -158,11 +143,12 @@ ways to achieve this:
      obviously your paths will vary
   c) configure the web server directly.
 
-The third is probably the easiest. The etc directory contains a sample apache 2
-configuration file that can be dropped into your apache conf.d directory, but be
-sure to edit the file for paths. If you choose option a) or b) you will need to
-use another option, like an .htaccess file or equivalent to make your include
-path point at your smarty installation, and the include directory for opus.
+The third is probably the easiest. The etc directory contains a sample
+apache 2 configuration file that can be dropped into your apache
+conf-available directory, but be sure to edit the file for paths. If you
+choose option a) or b) you will need to use another option, like an
+.htaccess file or equivalent to make your include path point at your
+Smarty installation, and the include directory for OPUS and uuwaf.
 
 
 7. Make the OPUS database(s)
@@ -179,9 +165,9 @@ Use MySQL to create a new database. Details vary but something like:
   source /usr/share/opus/sql_patch/data.sql
 
 amend paths as needed. You should also create a database for the user
-preferences (these are stored separately to allow other applications to access
-them - you *can* configure OPUS to only use one database if you prefer, see
-later).
+preferences (these are stored separately to allow other applications to
+access them - you *can* configure OPUS to only use one database if you
+prefer, see later).
 
   mysql -u root -p
   (type password for mysql root user)
@@ -194,10 +180,10 @@ later).
 8. Set up other paths
 ---------------------
 
-OPUS will require some paths in which it will make temporary or changeable data.
-These should be created in some sensible path. For example, on a Unix/Linux
-system, possibly create a directory /var/lib/opus. Make the following paths
-under that.
+OPUS will require some paths in which it will make temporary or
+changeable data. These should be created in some sensible path. For
+example, on a Unix/Linux system, possibly create a directory 
+/var/lib/opus. Make the following paths under that.
 
 A path for holding PHP sessions
 
@@ -223,9 +209,10 @@ For example
 9. Set up Log files
 -------------------
 
-Similarly, you need a directory somewhere which is writable by the web server
-to contain the OPUS log files. Create one of your choice, and make it writeable
-as you did for the other paths above. Often the directory would be
+Similarly, you need a directory somewhere which is writable by the web
+server to contain the OPUS log files. Create one of your choice, and
+make it writeable as you did for the other paths above. Often the
+directory would be
 
 /var/log/opus
 
@@ -235,7 +222,9 @@ as you did for the other paths above. Often the directory would be
 
 You are almost there.
 
-Go to where your OPUS files are and go to the include directory. For example
+Go to where your OPUS files are and go to the include directory. For
+example
+
 /usr/share/opus/include/
 
 You will see a file called opus.conf.php.
@@ -246,8 +235,8 @@ For example, on *nix
 
 cp local.conf.php.dist local.conf.php
 
-then edit the file to contain the paths of all the things you have done above
-and the usernames and passwords and so on.
+then edit the file to contain the paths of all the things you have done
+above and the usernames and passwords and so on.
 
 
 11. Set up periodic jobs
@@ -268,11 +257,11 @@ ln -s /usr/share/opus/cron/cron.php /usr/sbin/opus
 to allow you to be able to easily run "opus" at the command prompt from
 where ever you are. This tool is used to run the regular jobs.
 
-Now copy the opus.cron.d file in the etc directory of the OPUS distribution
-to your own /etc/cron.d/ file if you have one. Otherwise see your system
-manual or email for help.
+Now copy the opus.cron.d file in the etc directory of the OPUS
+distribution to your own /etc/cron.d/ file if you have one. Otherwise
+see your system manual or email for help.
 
-For windows, you might want to look carefully at the Windows Scheduler
+For Windows, you might want to look carefully at the Windows Scheduler
 
 http://www.iopus.com/guides/winscheduler.htm
 
@@ -280,28 +269,29 @@ http://www.iopus.com/guides/winscheduler.htm
 12. Customise text prompts
 --------------------------
 
-Next, go the configs directory for opus, so probably /usr/share/opus/configs
-or similar. Again, you will see a file called lang_en.conf. This contains
-all the text prompts for the system. Once more, don't edit this file, since an
-upgrade will clobber it, but make a file called local_en.conf which contains
-anything you want to override. Fire this up in your favourite text editor.
+Next, go the configs directory for opus, so probably
+/usr/share/opus/configs or similar. Again, you will see a file called
+lang_en.conf. This contains all the text prompts for the system. Once
+more, don't edit this file, since an upgrade will clobber it, but make
+a file called local_en.conf which contains anything you want to
+override. Fire this up in your favourite text editor.
 
 For example, you probably want this to begin with
 
 -=-
 
-institution="The University of Ulster"
+institution="Ulster University"
 institution_short="UU"
 # This next logo is unusual, specify either a relative, or absolute URL
-institution_logo="http://fs1.ulster.ac.uk/library/images/uu.jpg"
+institution_logo="http://opus.ulster.ac.uk/opis/images/ulster.jpg"
 # You might need to scale this...
-institution_logo_width="250"
+institution_logo_height="62px"
 
 -=-
 
-where you edit this material appropriately for your institution. You can add
-more overrides later should you want to. Only add the bits you want to
-change from the defaults.
+where you edit this material appropriately for your institution. You can
+add more overrides later should you want to. Only add the bits you want
+to change from the defaults.
 
 
 13. Try to login
@@ -313,29 +303,31 @@ This should create an admin account with username "admin" and password
 OBVIOUSLY IF YOU CAN LOGIN YOU SHOULD CHANGE THIS PASSWORD!
 
 OPUS will be in a "closed" state to all users but superusers (like you).
-When you are happy, go to the Superuser -> service menu and open the site.
+When you are happy, go to the Superuser -> service menu and open the
+site.
 
 
 14. Phone Home (optional)
 -------------------------
 
-When you login for the first time, OPUS will ask you permission to "PhoneHome",
-to report the installation, and again, optionally report totally non
-confidential information about your OPUS install. You don't have to allow this
-but such information would really help us to understand our customer base,
-and we won't ever publish information identified against your institution.
+When you login for the first time, OPUS will ask you permission to
+"PhoneHome", to report the installation, and again, optionally report
+totally non confidential information about your OPUS install. You don't
+have to allow this but such information would really help us to
+understand our customer base, and we won't ever publish information
+identified against your institution.
 
 
 15. Open OPUS for business
 --------------------------
 
-Finally, go the service menu under SuperUser and open OPUS for business when
-you want to, it starts off closed to all but superusers like you.
+Finally, go the service menu under SuperUser and open OPUS for business
+when you want to, it starts off closed to all but superusers like you.
 
 See http://foss.ulster.ac.uk/projects/opus/ for more information.
 
 16. Problems?
 -------------
 
-If something went wrong, look in the FAQ for any guidance, and if that fails
-contact the development time using the site above.
+If something went wrong, look in the FAQ for any guidance, and if that
+fails contact the development team using the site above.

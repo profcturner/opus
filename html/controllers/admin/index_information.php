@@ -8,14 +8,14 @@
   * @license http://opensource.org/licenses/gpl-license.php GNU Public License v2
   */
 
-  function list_resources(&$opus, $user, $title)
+  function list_resources($opus, $user, $title)
   {
     $opus->assign("nopage", true);
 
     manage_objects($opus, $user, "Resource", array(), array(array('view', 'view_resource', 'no'), array('info','info_resource')), "get_all", array("where company_id = 0 or company_id is null"), "admin:information:list_resources:list_resources");
   }
 
-  function view_resource(&$opus, $user, $title)
+  function view_resource($opus, $user, $title)
   {
     $id = (int) $_REQUEST["id"];
     require_once("model/Resource.class.php");
@@ -24,7 +24,7 @@
   }
 
 
-  function info_resource(&$opus, $user, $title)
+  function info_resource($opus, $user, $title)
   {
     $id = (int) $_REQUEST["id"];
     require_once("model/Resource.class.php");
@@ -35,7 +35,7 @@
     $opus->display("popup.tpl", "admin:information:list_resources:info_resource", "general/information/info_resource.tpl");
   }
 
-  function list_reports(&$waf, $user, $title)
+  function list_reports($waf, $user, $title)
   {
     require_once("model/Report.class.php");
     $reports = Report::get_reports();
@@ -43,7 +43,7 @@
     $waf->display("main.tpl", "admin:information:list_reports:list_reports", "admin/information/list_reports.tpl");
   }
 
-  function report_input(&$waf)
+  function report_input($waf)
   {
     require_once("model/Report.class.php");
     $report = Report::make_object(WA::request("name"));
@@ -52,7 +52,7 @@
     $report->input($input_stage);
   }
 
-  function report_input_do(&$waf)
+  function report_input_do($waf)
   {
     require_once("model/Report.class.php");
     $report = Report::make_object(WA::request("name"));
@@ -61,7 +61,7 @@
     $report->input_do($input_stage);
   }
 
-  function view_logs(&$opus, $user, $title)
+  function view_logs($opus, $user, $title)
   {
     require_once("model/Log_Viewer.class.php");
     require_once("model/Preference.class.php");
@@ -87,7 +87,7 @@
     $opus->display("main.tpl", "admin:information:view_logs:view_logs", "admin/information/log_viewer.tpl");
   }
 
-  function help_directory(&$waf)
+  function help_directory($waf)
   {
     require_once("model/Admin.class.php");
     require_once("model/HelpDirectory.class.php");
@@ -119,7 +119,7 @@
     $waf->display("main.tpl", "admin:information:help_directory:help_directory", "admin/information/help_directory.tpl");
   }
 
-  function system_status(&$waf)
+  function system_status($waf)
   {
     // Find any ceiling on the number of users to show
     $max_users = (int) WA::request('max_users');
@@ -204,7 +204,7 @@
     $waf->display("main.tpl", "admin:information:system_status:system_status", "admin/information/system_status.tpl");
   }
 
-  function system_statistics(&$waf)
+  function system_statistics($waf)
   {
     // ignore limits on root users
     require_once("model/SystemStatistics.class.php");
@@ -219,29 +219,29 @@
     $waf->display("main.tpl", "admin:information:system_statistics:system_statistics", "admin/information/system_statistics.tpl");
   }
 
-  function about(&$waf)
+  function about($waf)
   {
     $waf->assign("show_banners", true);
     $waf->assign("ulster_logo", true);
     $waf->display("popup.tpl", "general:information:information:about", "general/information/about.tpl");
   }
 
-  function privacy(&$waf)
+  function privacy($waf)
   {
     $waf->assign("show_banners", true);
-    $waf->display("bounded.tpl", "general:information:information:privacy", "general/information/privacy.tpl");
+    $waf->display("popup.tpl", "general:information:information:privacy", "general/information/privacy.tpl");
   }
 
-  function copyright(&$waf)
+  function copyright($waf)
   {
     $waf->assign("show_banners", true);
-    $waf->display("bounded.tpl", "general:information:information:copyright", "general/information/copyright.tpl");
+    $waf->display("popup.tpl", "general:information:information:copyright", "general/information/copyright.tpl");
   }
 
-  function terms_conditions(&$waf)
+  function terms_conditions($waf)
   {
     $waf->assign("show_banners", true);
-    $waf->display("bounded.tpl", "general:information:information:terms_conditions", "general/information/terms.tpl");
+    $waf->display("popup.tpl", "general:information:information:terms_conditions", "general/information/terms.tpl");
   }
 
 

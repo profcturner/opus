@@ -152,7 +152,7 @@ class Policy extends DTO_Policy
     return $nvp_array;
   }
 
-  function get_name($id)
+  public static function get_name($id)
   {
     if(!$id) return("None defined");
     $id = (int) $id; // Security

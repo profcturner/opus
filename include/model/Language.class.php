@@ -42,7 +42,7 @@ class Language extends DTO_Language
   }
 
 
-  function load_by_id($id) 
+  public static function load_by_id($id) 
   {
     $language = new Language;
     $language->id = $id;
@@ -50,13 +50,13 @@ class Language extends DTO_Language
     return $language;
   }
 
-  function insert($fields) 
+  public static function insert($fields) 
   {
     $language = new Language;
     return($language->_insert($fields));
   }
   
-  function update($fields) 
+  public static function update($fields) 
   {
     $language = Language::load_by_id($fields[id]);
     $language->_update($fields);
@@ -96,7 +96,7 @@ class Language extends DTO_Language
     return $languages;
   }
 
-  function get_id_and_field($fieldname, $where_clause="") 
+  public static function get_id_and_field($fieldname, $where_clause="") 
   {
     $language = new Language;
     $language_array = $language->_get_id_and_field($fieldname, $where_clause);
@@ -131,7 +131,7 @@ class Language extends DTO_Language
 
   }
 
-  function get_name($id)
+  public static function get_name($id)
   {
     $id = (int) $id; // Security
 

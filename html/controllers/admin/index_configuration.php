@@ -11,7 +11,7 @@
 
   // Resources
 
-  function manage_resources(&$waf, $user, $title)
+  function manage_resources($waf, $user, $title)
   {
     if(!Policy::check_default_policy("resource", "list")) $waf->halt("error:policy:permissions");
     $waf->log("resources listed", PEAR_LOG_NOTICE, 'general');
@@ -21,7 +21,7 @@
     manage_objects($waf, $user, "Resource", array(array("add resource","section=configuration&function=add_resource","thickbox")), array(array('edit', 'edit_resource'), array('remove','remove_resource')), "get_all", array("where lookup NOT LIKE 'PRIVATE%'"), "admin:configuration:resources:manage_resources");
   }
 
-  function add_resource(&$waf, &$user) 
+  function add_resource($waf, $user) 
   {
     if(!Policy::check_default_policy("resource", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -33,7 +33,7 @@
 	}
   }
 
-  function add_resource_do(&$waf, &$user) 
+  function add_resource_do($waf, $user) 
   {
     if(!Policy::check_default_policy("resource", "create")) $waf->halt("error:policy:permissions");
     $waf->log("adding new resource");
@@ -41,7 +41,7 @@
     add_object_do($waf, $user, "Resource", "section=configuration&function=manage_resources", "add_resource");
   }
 
-  function edit_resource(&$waf, &$user) 
+  function edit_resource($waf, $user) 
   {
     if(!Policy::check_default_policy("resource", "list")) //$waf->halt("error:policy:permissions");
     {
@@ -55,7 +55,7 @@
 	}
   }
 
-  function edit_resource_do(&$waf, &$user) 
+  function edit_resource_do($waf, $user) 
   {
     if(!Policy::check_default_policy("resource", "edit")) $waf->halt("error:policy:permissions");
     $waf->log("editing a resource");
@@ -63,7 +63,7 @@
     edit_object_do($waf, $user, "Resource", "section=configuration&function=manage_resources", "edit_resource");
   }
 
-  function remove_resource(&$waf, &$user) 
+  function remove_resource($waf, $user) 
   {
     if(!Policy::check_default_policy("resource", "delete")) //$waf->halt("error:policy:permissions");
     {
@@ -77,7 +77,7 @@
 	}
   }
 
-  function remove_resource_do(&$waf, &$user) 
+  function remove_resource_do($waf, $user) 
   {
     if(!Policy::check_default_policy("resource", "delete")) $waf->halt("error:policy:permissions");
     $waf->log("deleting a resource");
@@ -88,14 +88,14 @@
 
   // Organisation
 
-  function organisation_details(&$waf, &$user, $title) 
+  function organisation_details($waf, $user, $title) 
   {
     manage_faculties($waf, $user, $title);
   }
 
   // Faculties
 
-  function manage_faculties(&$waf, &$user, $title)
+  function manage_faculties($waf, $user, $title)
   {
     if(!Policy::check_default_policy("faculty", "list")) $waf->halt("error:policy:permissions");
     set_navigation_history($waf, "Faculties");
@@ -105,7 +105,7 @@
     manage_objects($waf, $user, "Faculty", array(array("add faculty","section=configuration&function=add_faculty","thickbox")), array(array('admins', 'manage_facultyadmins','no'), array('schools', 'manage_schools','no'), array('edit', 'edit_faculty'), array('remove','remove_faculty')), "get_all", array("", "order by name", $page), "admin:configuration:organisation_details:manage_faculties");
   }
 
-  function add_faculty(&$waf, &$user) 
+  function add_faculty($waf, $user) 
   {
     if(!Policy::check_default_policy("faculty", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -117,14 +117,14 @@
 	}
   }
 
-  function add_faculty_do(&$waf, &$user) 
+  function add_faculty_do($waf, $user) 
   {
     if(!Policy::check_default_policy("faculty", "create")) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "Faculty", "section=configuration&function=manage_faculties", "add_faculty");
   }
 
-  function edit_faculty(&$waf, &$user) 
+  function edit_faculty($waf, $user) 
   {
     if(!Policy::check_default_policy("faculty", "edit")) //$waf->halt("error:policy:permissions");
 	{
@@ -136,14 +136,14 @@
 	}
   }
 
-  function edit_faculty_do(&$waf, &$user) 
+  function edit_faculty_do($waf, $user) 
   {
     if(!Policy::check_default_policy("faculty", "edit")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "Faculty", "section=configuration&function=manage_faculties", "edit_faculty");
   }
 
-  function remove_faculty(&$waf, &$user) 
+  function remove_faculty($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -155,7 +155,7 @@
 	}
   }
 
-  function remove_faculty_do(&$waf, &$user) 
+  function remove_faculty_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
@@ -164,7 +164,7 @@
 
   // Schools
 
-  function manage_schools(&$waf, $user, $title)
+  function manage_schools($waf, $user, $title)
   {
     if(!Policy::check_default_policy("school", "list")) $waf->halt("error:policy:permissions");
 
@@ -181,7 +181,7 @@
     manage_objects($waf, $user, "School", array(array("add school","section=configuration&function=add_school","thickbox")), array(array('admins', 'manage_schooladmins','no'), array('programmes', 'manage_programmes','no'), array('edit', 'edit_school'), array('remove','remove_school')), "get_all", array("where faculty_id=$faculty_id", "order by name", $page), "admin:configuration:organisation_details:manage_schools");
   }
 
-  function add_school(&$waf, &$user) 
+  function add_school($waf, $user) 
   {
     if(!Policy::check_default_policy("school", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -199,7 +199,7 @@
 	}
   }
 
-  function add_school_do(&$waf, &$user) 
+  function add_school_do($waf, $user) 
   {
     if(!Policy::check_default_policy("school", "create")) $waf->halt("error:policy:permissions");
 
@@ -208,7 +208,7 @@
     add_object_do($waf, $user, "School", "section=configuration&function=manage_schools&id=$faculty_id", "add_school");
   }
 
-  function edit_school(&$waf, &$user) 
+  function edit_school($waf, $user) 
   {
     if(!Policy::check_default_policy("school", "edit")) //$waf->halt("error:policy:permissions");
 	{
@@ -222,7 +222,7 @@
 	}
   }
 
-  function edit_school_do(&$waf, &$user) 
+  function edit_school_do($waf, $user) 
   {
     if(!Policy::check_default_policy("school", "edit")) $waf->halt("error:policy:permissions");
 
@@ -231,7 +231,7 @@
     edit_object_do($waf, $user, "School", "section=configuration&function=manage_schools&id=$faculty_id", "edit_school");
   }
 
-  function remove_school(&$waf, &$user) 
+  function remove_school($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -243,7 +243,7 @@
 	}
   }
 
-  function remove_school_do(&$waf, &$user) 
+  function remove_school_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
@@ -254,7 +254,7 @@
 
   // Faculty Admins
 
-  function manage_facultyadmins(&$waf, $user, $title)
+  function manage_facultyadmins($waf, $user, $title)
   {
     if(!Policy::check_default_policy("faculty", "list")) $waf->halt("error:policy:permissions");
 
@@ -281,7 +281,7 @@
     $waf->display("main.tpl", "admin:configuration:organisation_details:manage_facultyadmins", "list.tpl");
   }
 
-  function add_facultyadmin(&$waf)
+  function add_facultyadmin($waf)
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -310,14 +310,14 @@
 	}
   }
 
-  function add_facultyadmin_do(&$waf, &$user) 
+  function add_facultyadmin_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "FacultyAdmin", "section=configuration&function=manage_facultyadmins", "add_facultyadmin");
   }
 
-  function remove_facultyadmin(&$waf, &$user) 
+  function remove_facultyadmin($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
     {
@@ -337,7 +337,7 @@
 	}
   }
 
-  function remove_facultyadmin_do(&$waf, &$user) 
+  function remove_facultyadmin_do($waf, $user) 
   {
     $faculty_id = (int) WA::request("faculty_id", true);
     if(!User::is_root()) $waf->halt("error:policy:permissions");
@@ -347,7 +347,7 @@
 
   // School Admins
 
-  function manage_schooladmins(&$waf, $user, $title)
+  function manage_schooladmins($waf, $user, $title)
   {
     if(!Policy::check_default_policy("school", "list")) $waf->halt("error:policy:permissions");
 
@@ -374,7 +374,7 @@
     $waf->display("main.tpl", "admin:configuration:organisation_details:manage_schooladmins", "list.tpl");
   }
 
-  function add_schooladmin(&$waf)
+  function add_schooladmin($waf)
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -403,14 +403,14 @@
 	}
   }
 
-  function add_schooladmin_do(&$waf, &$user) 
+  function add_schooladmin_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "SchoolAdmin", "section=configuration&function=manage_schooladmins", "add_schooladmin");
   }
 
-  function remove_schooladmin(&$waf, &$user) 
+  function remove_schooladmin($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -430,7 +430,7 @@
 	}
   }
 
-  function remove_schooladmin_do(&$waf, &$user) 
+  function remove_schooladmin_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
     $school_id = (int) WA::request("school_id", true);
@@ -440,7 +440,7 @@
 
   // Programme Admins
 
-  function manage_programmeadmins(&$waf, $user, $title)
+  function manage_programmeadmins($waf, $user, $title)
   {
     if(!Policy::check_default_policy("programme", "list")) $waf->halt("error:policy:permissions");
 
@@ -467,7 +467,7 @@
     $waf->display("main.tpl", "admin:configuration:organisation_details:manage_programmeadmins", "list.tpl");
   }
 
-  function add_programmeadmin(&$waf)
+  function add_programmeadmin($waf)
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -496,14 +496,14 @@
 	}
   }
 
-  function add_programmeadmin_do(&$waf, &$user) 
+  function add_programmeadmin_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "ProgrammeAdmin", "section=configuration&function=manage_programmeadmins", "add_programmeadmin");
   }
 
-  function remove_programmeadmin(&$waf, &$user) 
+  function remove_programmeadmin($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -523,7 +523,7 @@
 	}
   }
 
-  function remove_programmeadmin_do(&$waf, &$user) 
+  function remove_programmeadmin_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
     $programme_id = (int) WA::request("programme_id", true);
@@ -533,7 +533,7 @@
 
   // Programmes
 
-  function manage_programmes(&$waf, $user, $title)
+  function manage_programmes($waf, $user, $title)
   {
     if(!Policy::check_default_policy("programme", "list")) $waf->halt("error:policy:permissions");
 
@@ -558,7 +558,7 @@
     manage_objects($waf, $user, "Programme", $other_actions, array(array('admins', 'manage_programmeadmins', 'no'), array('assessment', 'manage_assessmentgroupprogrammes', 'no'), array('edit', 'edit_programme'), array('remove','remove_programme')), "get_all", array("where school_id=$school_id", "order by name", $page), "admin:configuration:organisation_details:manage_programmes");
   }
   
-  function bulk_change_assessment_group(&$waf, $user, $title)
+  function bulk_change_assessment_group($waf, $user, $title)
   {
 		if(!Policy::check_default_policy("assessmentgroup", "create")) //$waf->halt("error:policy:permissions");
 		{
@@ -580,7 +580,7 @@
 		}
 	}
 
-  function bulk_change_assessment_group_do(&$waf, $user, $title)
+  function bulk_change_assessment_group_do($waf, $user, $title)
   {
 		if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
 		
@@ -606,7 +606,7 @@
 
 	}
 
-  function add_programme(&$waf, &$user) 
+  function add_programme($waf, $user) 
   {
     if(!Policy::check_default_policy("programme", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -626,7 +626,7 @@
 	}
   }
 
-  function add_programme_do(&$waf, &$user) 
+  function add_programme_do($waf, $user) 
   {
     if(!Policy::check_default_policy("programme", "create")) $waf->halt("error:policy:permissions");
 
@@ -635,7 +635,7 @@
     add_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes&id=$school_id", "add_programme");
   }
 
-  function edit_programme(&$waf, &$user) 
+  function edit_programme($waf, $user) 
   {
     if(!Policy::check_default_policy("programme", "edit")) //$waf->halt("error:policy:permissions");
 	{
@@ -653,7 +653,7 @@
 	}
   }
 
-  function edit_programme_do(&$waf, &$user) 
+  function edit_programme_do($waf, $user) 
   {
     if(!Policy::check_default_policy("programme", "edit")) $waf->halt("error:policy:permissions");
 
@@ -662,7 +662,7 @@
     edit_object_do($waf, $user, "Programme", "section=configuration&function=manage_programmes&id=$school_id", "edit_programme");
   }
 
-  function remove_programme(&$waf, &$user) 
+  function remove_programme($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -674,7 +674,7 @@
 	}
   }
 
-  function remove_programme_do(&$waf, &$user) 
+  function remove_programme_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
 
@@ -685,14 +685,14 @@
 
   // Assessmentgroups
 
-  function manage_assessmentgroups(&$waf, $user, $title)
+  function manage_assessmentgroups($waf, $user, $title)
   {
     if(!Policy::check_default_policy("assessmentgroup", "list")) $waf->halt("error:policy:permissions");
 
     manage_objects($waf, $user, "AssessmentGroup", array(array("add assessment group","section=configuration&function=add_assessmentgroup","thickbox")), array(array('regime', 'manage_assessmentregimes','no'), array('edit', 'edit_assessmentgroup'), array('remove','remove_assessmentgroup')), "get_all", "", "admin:configuration:manage_assessmentgroups:manage_assessmentgroups");
   }
 
-  function add_assessmentgroup(&$waf, &$user) 
+  function add_assessmentgroup($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -704,14 +704,14 @@
 	}
   }
 
-  function add_assessmentgroup_do(&$waf, &$user) 
+  function add_assessmentgroup_do($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "AssessmentGroup", "section=configuration&function=manage_assessmentgroups", "add_assessmentgroup");
   }
 
-  function edit_assessmentgroup(&$waf, &$user) 
+  function edit_assessmentgroup($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "edit")) //$waf->halt("error:policy:permissions");
 	{
@@ -723,14 +723,14 @@
 	}
   }
 
-  function edit_assessmentgroup_do(&$waf, &$user) 
+  function edit_assessmentgroup_do($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "edit")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "AssessmentGroup", "section=configuration&function=manage_assessmentgroups", "edit_assessmentgroup");
   }
 
-  function remove_assessmentgroup(&$waf, &$user) 
+  function remove_assessmentgroup($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "delete")) //$waf->halt("error:policy:permissions");
 	{
@@ -742,7 +742,7 @@
 	}
   }
 
-  function remove_assessmentgroup_do(&$waf, &$user) 
+  function remove_assessmentgroup_do($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "delete")) $waf->halt("error:policy:permissions");
 
@@ -751,7 +751,7 @@
 
   // AssessmentRegimes
 
-  function manage_assessmentregimes(&$waf, $user, $title)
+  function manage_assessmentregimes($waf, $user, $title)
   {
     if(!Policy::check_default_policy("assessmentgroup", "list")) $waf->halt("error:policy:permissions");
 
@@ -763,7 +763,7 @@
     manage_objects($waf, $user, "AssessmentRegime", array(array("add assessment regime","section=configuration&function=add_assessmentregime","thickbox")), array(array('edit', 'edit_assessmentregime'), array('remove','remove_assessmentregime')), "get_all", array("where group_id=$group_id", "ORDER BY student_description", $page), "admin:configuration:manage_assessmentgroups:manage_assessmentregimes");
   }
 
-  function add_assessmentregime(&$waf, &$user) 
+  function add_assessmentregime($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -777,7 +777,7 @@
 	}
   }
 
-  function add_assessmentregime_do(&$waf, &$user) 
+  function add_assessmentregime_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
     $group_id = (int) WA::request('group_id', true);
@@ -785,7 +785,7 @@
     add_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes&id={$group_id}", "add_assessmentregime");
   }
 
-  function edit_assessmentregime(&$waf, &$user) 
+  function edit_assessmentregime($waf, $user) 
   {
     if(!User::is_root()) //$waf->halt("error:policy:permissions");
 	{
@@ -799,7 +799,7 @@
 	}
   }
 
-  function edit_assessmentregime_do(&$waf, &$user) 
+  function edit_assessmentregime_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
     $group_id = (int) WA::request('group_id', true);
@@ -807,14 +807,14 @@
     edit_object_do($waf, $user, "AssessmentRegime", "section=configuration&function=manage_assessmentregimes&id={$group_id}", "edit_assessmentregime");
   }
 
-  function remove_assessmentregime(&$waf, &$user) 
+  function remove_assessmentregime($waf, $user) 
   {
     $group_id = (int) WA::request('group_id', true);
 
     remove_object($waf, $user, "AssessmentRegime", array("remove", "configuration", "remove_assessmentregime_do"), array(array("cancel","section=configuration&function=manage_assessmentregimes&id={$group_id}")), "", "admin:configuration:manage_assessmentgroups:remove_assessmentregime");
   }
 
-  function remove_assessmentregime_do(&$waf, &$user) 
+  function remove_assessmentregime_do($waf, $user) 
   {
     if(!User::is_root()) $waf->halt("error:policy:permissions");
     
@@ -825,7 +825,7 @@
 
   // AssessmentGroupProgrammes
 
-  function manage_assessmentgroupprogrammes(&$waf, $user, $title)
+  function manage_assessmentgroupprogrammes($waf, $user, $title)
   {
     if(!Policy::check_default_policy("assessmentgroup", "list")) $waf->halt("error:policy:permissions");
 
@@ -837,7 +837,7 @@
     manage_objects($waf, $user, "AssessmentGroupProgramme", array(array("add programme","section=configuration&function=add_assessmentgroupprogramme", "thickbox")), array(array('edit', 'edit_assessmentgroupprogramme'), array('remove','remove_assessmentgroupprogramme')), "get_all", array("where programme_id=$programme_id", "", $page), "admin:configuration:organisation_details:manage_assessmentgroupprogrammes");
   }
 
-  function add_assessmentgroupprogramme(&$waf, &$user) 
+  function add_assessmentgroupprogramme($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -851,14 +851,14 @@
 	}
   }
 
-  function add_assessmentgroupprogramme_do(&$waf, &$user) 
+  function add_assessmentgroupprogramme_do($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "AssessmentGroupProgramme", "section=configuration&function=manage_assessmentgroupprogrammes", "add_assessmentgroupprogramme");
   }
 
-  function edit_assessmentgroupprogramme(&$waf, &$user) 
+  function edit_assessmentgroupprogramme($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -872,14 +872,14 @@
 	}
   }
 
-  function edit_assessmentgroupprogramme_do(&$waf, &$user) 
+  function edit_assessmentgroupprogramme_do($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "AssessmentGroupProgramme", "section=configuration&function=manage_assessmentgroupprogrammes", "edit_assessmentgroupprogramme");
   }
 
-  function remove_assessmentgroupprogramme(&$waf, &$user) 
+  function remove_assessmentgroupprogramme($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -891,7 +891,7 @@
 	}
   }
 
-  function remove_assessmentgroupprogramme_do(&$waf, &$user) 
+  function remove_assessmentgroupprogramme_do($waf, $user) 
   {
     if(!Policy::check_default_policy("assessmentgroup", "create")) $waf->halt("error:policy:permissions");
 
@@ -901,7 +901,7 @@
 
   // CVGroups
 
-  function manage_cvgroups(&$waf, $user, $title)
+  function manage_cvgroups($waf, $user, $title)
   {
     if(!Policy::check_default_policy("cvgroup", "list")) $waf->halt("error:policy:permissions");
 
@@ -916,7 +916,7 @@
     manage_objects($waf, $user, "CVGroup", array(array("add CV group","section=configuration&function=add_cvgroup","thickbox")), $actions , "get_all", "", "admin:configuration:manage_cvgroups:manage_cvgroups");
   }
 
-  function add_cvgroup(&$waf, &$user) 
+  function add_cvgroup($waf, $user) 
   {
     if(!Policy::check_default_policy("cvgroup", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -928,14 +928,14 @@
 	}
   }
 
-  function add_cvgroup_do(&$waf, &$user) 
+  function add_cvgroup_do($waf, $user) 
   {
     if(!Policy::check_default_policy("cvgroup", "create")) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "CVGroup", "section=configuration&function=manage_cvgroups", "add_cvgroup");
   }
 
-  function edit_cvgroup(&$waf, &$user) 
+  function edit_cvgroup($waf, $user) 
   {
     if(!Policy::check_default_policy("cvgroup", "edit")) //$waf->halt("error:policy:permissions");
 	{
@@ -947,14 +947,14 @@
 	}
   }
 
-  function edit_cvgroup_do(&$waf, &$user) 
+  function edit_cvgroup_do($waf, $user) 
   {
     if(!Policy::check_default_policy("cvgroup", "edit")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "CVGroup", "section=configuration&function=manage_cvgroups", "edit_cvgroup");
   }
 
-  function remove_cvgroup(&$waf, &$user) 
+  function remove_cvgroup($waf, $user) 
   {
     if(!Policy::check_default_policy("cvgroup", "delete")) //$waf->halt("error:policy:permissions");
 	{
@@ -966,14 +966,14 @@
 	}
   }
 
-  function remove_cvgroup_do(&$waf, &$user) 
+  function remove_cvgroup_do($waf, $user) 
   {
     if(!Policy::check_default_policy("cvgroup", "delete")) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "CVGroup", "section=configuration&function=manage_cvgroups");
   }
 
-  function manage_cvgroup_templates(&$waf, $user, $title)
+  function manage_cvgroup_templates($waf, $user, $title)
   {
     if(!Policy::check_default_policy("cvgroup", "edit")) $waf->halt("error:policy:permissions");
 
@@ -1026,7 +1026,7 @@
     $waf->display("main.tpl", "admin:configuration:manage_cvgroups:manage_cvgroup_templates", "admin/configuration/manage_cvgroup_templates.tpl");
   }
 
-  function manage_cvgroup_templates_do(&$waf, $user, $title)
+  function manage_cvgroup_templates_do($waf, $user, $title)
   {
     if(!Policy::check_default_policy("cvgroup", "edit")) $waf->halt("error:policy:permissions");
 
@@ -1071,7 +1071,7 @@
 
   // Help
 
-  function manage_help(&$waf, $user, $title)
+  function manage_help($waf, $user, $title)
   {
     $page = WA::request("page", true);
 
@@ -1080,7 +1080,7 @@
     manage_objects($waf, $user, "Help", array(array("add help","section=configuration&function=add_help","thickbox")), array(array('edit', 'edit_help', 'no'), array('remove','remove_help')), "get_all", array("", "order by lookup, channel_id", $page), "admin:configuration:manage_help:manage_help");
   }
 
-  function add_help(&$waf, &$user) 
+  function add_help($waf, $user) 
   {
     if(!Policy::check_default_policy("help", "create")) //$waf->halt("error:policy:permissions");
 	{
@@ -1093,14 +1093,14 @@
 	}
   }
 
-  function add_help_do(&$waf, &$user) 
+  function add_help_do($waf, $user) 
   {
     if(!Policy::check_default_policy("help", "create")) $waf->halt("error:policy:permissions");
 
     add_object_do($waf, $user, "Help", "section=configuration&function=manage_help", "add_help");
   }
 
-  function edit_help(&$waf, &$user) 
+  function edit_help($waf, $user) 
   {
     if(!Policy::check_default_policy("help", "edit")) //$waf->halt("error:policy:permissions");
 	{
@@ -1113,14 +1113,14 @@
 	}
   }
 
-  function edit_help_do(&$waf, &$user) 
+  function edit_help_do($waf, $user) 
   {
     if(!Policy::check_default_policy("help", "edit")) $waf->halt("error:policy:permissions");
 
     edit_object_do($waf, $user, "Help", "section=configuration&function=manage_help", "edit_help");
   }
 
-  function remove_help(&$waf, &$user) 
+  function remove_help($waf, $user) 
   {
     if(!Policy::check_default_policy("help", "delete")) //$waf->halt("error:policy:permissions");
 	{
@@ -1132,19 +1132,19 @@
 	}
   }
 
-  function remove_help_do(&$waf, &$user) 
+  function remove_help_do($waf, $user) 
   {
     if(!Policy::check_default_policy("help", "delete")) $waf->halt("error:policy:permissions");
 
     remove_object_do($waf, $user, "Help", "section=configuration&function=manage_help");
   }
 
-  function import_data(&$waf, &$user)
+  function import_data($waf, $user)
   {
     import_students($waf, $user);
   }
 
-  function import_students(&$waf)
+  function import_students($waf)
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
@@ -1169,7 +1169,7 @@
     $waf->display("main.tpl", "admin:configuration:import_data:import_students", "admin/configuration/import_students_form.tpl");
   }
 
-  function import_students_do(&$waf)
+  function import_students_do($waf)
   {
     if(!Policy::check_default_policy("student", "create")) $waf->halt("error:policy:permissions");
 
