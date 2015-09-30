@@ -65,6 +65,7 @@ class File_Upload
     $mimetypes = Mimetype::get_all("where type='" . $_FILES[$file_var_name]['type'] . "'");
     if(!count($mimetypes))
     {
+      $waf->log("file is of an unknown type [" . $_FILES[$file_var_name]['type'] . "]", PEAR_LOG_ERR, 'general');		
       $result['config_error'] = "error:file_upload:unknown_mimetype";
       return($result);
     }
