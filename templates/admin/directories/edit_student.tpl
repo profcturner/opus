@@ -1,10 +1,10 @@
 {* Smarty *}
 
-<h3>Basic Information</h3>
+<h3>{#basic_information#|capitalize}</h3>
 {if $changes}{#changes_applied#}{/if}
 {include file="manage.tpl"}
 
-<h3>{#placement_history#}</h3>
+<h3>{#placement_history#|capitalize}</h3>
 {if $placements}
 {include file="list.tpl" objects=$placements headings=$placement_fields actions=$placement_options}
 {else}

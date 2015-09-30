@@ -52,47 +52,47 @@ function toggleByDiv(divid, checked)
         <td colspan="2" class="button"><input type="submit" class="submit" value="search" /></td>
       </tr>
       <tr>
-        <td class="property">Search For</td>
+        <td class="property">{#search_for#|capitalize}</td>
         <td>
           <input type="text" name="search" size="20" value="{$form_options.search}" />
         </td>
       </tr>
       <tr>
-        <td class="property">For placement in year </td>
+        <td class="property">{#from_placement_year#|capitalize}</td>
         <td>
           <input type="text" name="year" size="5" value="{$form_options.year}" />
         </td>
       </tr>
       <tr>
-        <td class="property">From Programmes</td>
+        <td class="property">{#from_programmes#|capitalize}</td>
         <td>
-        <a href="" onclick="toggleAll(0, true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleAll(0, false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+        <a href="" onclick="toggleAll(0, true); return false;" onmouseover="status='{#select_all#|capitalize}'; return true;">{#select_all#|capitalize}</a> |
+        <a href="" onclick="toggleAll(0, false); return false;" onmouseover="status='{#deselect_all#|capitalize}'; return true;">{#deselect_all#|capitalize}</a><br />
         {foreach from=$structure item=faculty}
         <div id="faculty_{$faculty.id}" name="faculty_{$faculty.id}">
-        <strong>{$faculty.name}</strong><small> (<a href="" onclick="toggleByDiv('faculty_{$faculty.id}', true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleByDiv('faculty_{$faculty.id}', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a>)</small><br />
+        <strong>{$faculty.name}</strong><small> (<a href="" onclick="toggleByDiv('faculty_{$faculty.id}', true); return false;" onmouseover="status='{#select_all#|capitalize}'; return true;">{#select_all#|capitalize}</a> |
+        <a href="" onclick="toggleByDiv('faculty_{$faculty.id}', false); return false;" onmouseover="status='{#deselect_all#|capitalize}'; return true;">{#deselect_all#|capitalize}</a>)</small><br />
           {foreach from=$faculty.schools item=school}
             <div id="school_{$school.id}" name="school_{$school.id}">
-            <em>&nbsp;&nbsp;{$school.name}</em><small> (<a href="" onclick="toggleByDiv('school_{$school.id}', true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleByDiv('school_{$school.id}', false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a>)</small><br />
+            <em>&nbsp;&nbsp;{$school.name}</em><small> (<a href="" onclick="toggleByDiv('school_{$school.id}', true); return false;" onmouseover="status='{#select_all#|capitalize}'; return true;">{#select_all#|capitalize}</a> |
+        <a href="" onclick="toggleByDiv('school_{$school.id}', false); return false;" onmouseover="status='{#deselect_all#|capitalize}'; return true;">{#deselect_all#|capitalize}</a>)</small><br />
               {html_checkboxes name="programmes" options=$school.programmes selected=$form_options.programmes separator="<br />"}
             </div>
           {/foreach}
         </div> <!-- faculty_{$faculty.id} -->
         {/foreach}
-        <a href="" onclick="toggleAll(0, true); return false;" onmouseover="status='Select all'; return true;">Select All</a> |
-        <a href="" onclick="toggleAll(0, false); return false;" onmouseover="status='Select all'; return true;">Deselect All</a><br />
+        <a href="" onclick="toggleAll(0, true); return false;" onmouseover="status='{#select_all#|capitalize}'; return true;">{#select_all#|capitalize}</a> |
+        <a href="" onclick="toggleAll(0, false); return false;" onmouseover="status='{#deselect_all#|capitalize}'; return true;">{#deselect_all#|capitalize}</a><br />
         </td>
       </tr>
       <tr>
-        <td class="property">Other Options</td>
+        <td class="property">{#other_options#|capitalize}</td>
         <td>
         {html_checkboxes name="other_options" options=$other_options selected=$form_options.other_options separator="<br />"}
         </td>
       </tr>
       <tr>
-        <td class="property">Sort Criterion</td>
+        <td class="property">{#sort_criterion#|capitalize}</td>
         <td>
           {html_radios name="sort" options=$sort_types selected=$form_options.sort|default:"name"}
         </td>
