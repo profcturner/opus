@@ -12,12 +12,16 @@
   {
     if(!Policy::check_default_policy("student", "list")) $waf->halt("error:policy:permissions");
 
+    $waf->language_load("admin:directories:student_directory:student_directory");
     $letters = array();
     for($loop = ord('A'); $loop <= ord('Z'); $loop++) array_push($letters, chr($loop));
     $waf->assign("letters", $letters);
 
-    $sort_types = array("lastname" => "Last name", "reg_number" => "Student Number", "last_time" => "Last Access", "placement_status" => "Placement Status");
-    $other_options = array("ShowTimelines" => "Show Timelines");
+    $sort_types = array("lastname" => $waf->T('lastname'),
+    		                "reg_number" => $waf->T('reg_number'),
+    		                "last_time" => $waf->T('last_time'),
+    		                "placement_status" => $waf->T('placement_status'));
+    $other_options = array("ShowTimelines" => $waf->T('show_timelines'));
 
     require_once("model/Preference.class.php");
     $form_options = Preference::get_preference("student_directory_form");
@@ -251,15 +255,23 @@
     require_once("model/Student.class.php");
     require_once("model/Policy.class.php");
 
+    // Load the Student data
     $id = (int) WA::request("id");
     $student = Student::load_by_id($id);
 
+    // Check authorisation
     if(!Policy::is_auth_for_student($student->user_id, "student", "viewStatus")) $waf->halt("error:policy:permissions");
+
+    // Get translations
+    $waf->language_load("admin:directories:student_directory:edit_student");
+    
+    // Load other important data
     $assessment_group_id = Student::get_assessment_group_id($student->user_id);
     $regime_items = Student::get_assessment_regime($student->user_id, $aggregate_total, $weighting_total);
     $other_items = Student::get_other_assessors($student->user_id);
     require_once("model/Placement.class.php");
     $placements = Placement::get_all("where student_id=" . $student->user_id, "order by jobstart");
+    
     $placement_fields = array(
        'position'=>array('type'=>'text', 'size'=>30, 'maxsize'=>100, 'title'=>'Job Description','header'=>true),
        'company_id'=>array('type'=>'lookup', 'size'=>30, 'maxsize'=>100, 'title'=>'Company','header'=>true),
