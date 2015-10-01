@@ -72,9 +72,7 @@ em.validation_message {
 #footer 
 {
   font-size: 0.8em;
-  background-image: url(/opus/images/opusheaderbg.jpg);
-  background-repeat: repeat-x;
-  background-color: transparent;
+  background-color: #b2b2b2;
   height: 139px;
   padding-top: 1em;
   padding-left: 53px;
@@ -1212,9 +1210,7 @@ textarea {
 
 #header 
 {
-  background-image: url(/opus/images/opusheaderbg.jpg);
-  background-repeat: repeat-x;
-  background-position: top right;
+  background-color: #b2b2b2;
   height: 139px;
 }
 #page_title {
