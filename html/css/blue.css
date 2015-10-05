@@ -54,47 +54,6 @@ em.validation_message {
 	margin-top:20px;
 }
 
-#bounded_page{
-    border-radius: 25px;
-    border: 2px solid #8080FC;
-    padding: 20px;
-    width: 800px;
-    height: 600px;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#ulster_logo{
-	background-color:#CCCCCC;
-}
-
-#footer 
-{
-  font-size: 0.8em;
-  background-color: #b2b2b2;
-  height: 139px;
-  padding-top: 1em;
-  padding-left: 53px;
-  padding-right:62px;
-  clear:both;
-
-}
-
-#footer p {
-  font-size: 8pt;
-}
-#footer a {
-  color: #ffffff;
-  font-weight: bold;
-}
-#compile_time a{
-  width:100%;
-  float:right;
-  font-size: 1em;
-  color: #fff;
-}
-
 #login {
   min-width:28em;
   max-width:28em;
@@ -1210,7 +1169,10 @@ textarea {
 
 #header 
 {
-  background-color: #b2b2b2;
+  /*background-image: url(/opus/images/opusheaderbg.jpg);
+  background-repeat: repeat-x;
+  background-position: top right;*/
+  background-color: #f4f4f4;
   height: 139px;
 }
 #page_title {
@@ -1735,7 +1697,7 @@ td.data_title_bright {
   background: #ffffff;
   padding: 10px;
   color:#000000;
-  width:80%;
+  width:55%;
   margin-bottom: 40px;
 }
 
