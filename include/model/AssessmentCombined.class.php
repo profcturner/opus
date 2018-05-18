@@ -147,7 +147,7 @@ class AssessmentCombined
       $this->can_view = true; // Academic tutors can see
       if($this->regime->assessor == 'academic') $this->can_edit = true;
     }
-    else
+    if
     {
       if($this->regime->assessor != 'other') return; // Can't have rights...
       // Ok, is this staff member the designated "other"?
