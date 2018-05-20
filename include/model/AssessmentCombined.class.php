@@ -147,18 +147,16 @@ class AssessmentCombined
       $this->can_view = true; // Academic tutors can see
       if($this->regime->assessor == 'academic') $this->can_edit = true;
     }
-    if
+    
+    if($this->regime->assessor != 'other') return; // Can't have rights...
+    // Ok, is this staff member the designated "other"?
+    require_once("model/AssessorOther.class.php");
+    $assessorother = AssessorOther::load_where("where assessor_id=" . User::get_id() . " and assessed_id=" . $this->assessed_id . " and regime_id=" . $this->regime->id);
+    if($assessorother->id)
     {
-      if($this->regime->assessor != 'other') return; // Can't have rights...
-      // Ok, is this staff member the designated "other"?
-      require_once("model/AssessorOther.class.php");
-      $assessorother = AssessorOther::load_where("where assessor_id=" . User::get_id() . " and assessed_id=" . $this->assessed_id . " and regime_id=" . $this->regime->id);
-      if($assessorother->id)
-      {
-        // They are
-        $this->can_view = true;
-        $this->can_edit = true;
-      }
+      // They are
+      $this->can_view = true;
+      $this->can_edit = true;
     }
   }
 
